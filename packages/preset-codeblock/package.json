@@ -1,0 +1,17 @@
+{
+  "name": "prosemirror-preset-codeblock",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc"
+  },
+  "main": "dist/index.js",
+  "private": true,
+  "dependencies": {
+    "prosemirror-model": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-keymap": "*",
+    "prosemirror-preset-core": "*"
+  }
+}

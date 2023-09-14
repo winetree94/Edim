@@ -1,0 +1,11 @@
+<div>
+  <button (click)="enable = !enable">toggle editor</button>
+  <button (click)="updateValue()">update value</button>
+</div>
+
+<form [formGroup]="formGroup">
+  <ng-prose-editor *ngIf="enable" class="editor" formControlName="content">
+  </ng-prose-editor>
+</form>
+
+<div *ngIf="values$ | async as value" [innerHTML]="value"></div>

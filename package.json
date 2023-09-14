@@ -1,0 +1,27 @@
+{
+  "name": "edim",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run serve",
+    "serve:angular": "nx start prosemirror-preset-angular-dev",
+    "serve": "nx run-many -t start --all --maxParallel=100",
+    "build": "nx run-many -t build --all --maxParallel=100"
+  },
+  "private": true,
+  "devDependencies": {
+    "@nx/js": "16.8.1",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "nx": "16.8.1",
+    "nx-cloud": "latest",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

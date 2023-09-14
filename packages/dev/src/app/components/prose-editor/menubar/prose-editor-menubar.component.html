@@ -1,0 +1,27 @@
+<button [class.active]="bold" (click)="toggleBold()" title="toggle bold">
+  {{ bold ? "B" : "b" }}
+</button>
+<button [class.active]="italic" (click)="toggleItalic()" title="toggle italic">
+  {{ italic ? "I" : "i" }}
+</button>
+<button
+  [class.active]="strikethrough"
+  (click)="toggleStrikethrough()"
+  title="toggle strikethrough"
+>
+  {{ strikethrough ? "S" : "s" }}
+</button>
+<button
+  [class.active]="inlineCode"
+  (click)="toggleInlineCode()"
+  title="toggle code"
+>
+  {{ inlineCode ? "Code" : "code" }}
+</button>
+<button>set url</button>
+<button>ordered list</button>
+<button>bullet list</button>
+<button>block quote</button>
+<button>code block</button>
+<button>mention</button>
+<button>emoji</button>

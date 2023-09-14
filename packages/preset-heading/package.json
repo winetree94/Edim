@@ -1,0 +1,20 @@
+{
+  "name": "prosemirror-preset-heading",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc"
+  },
+  "main": "dist/index.js",
+  "private": true,
+  "dependencies": {
+    "prosemirror-model": "*",
+    "prosemirror-keymap": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-inputrules": "*",
+    "prosemirror-state": "*",
+    "prosemirror-preset-core": "*",
+    "prosemirror-preset-utils": "*"
+  }
+}
