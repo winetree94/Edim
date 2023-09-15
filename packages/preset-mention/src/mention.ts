@@ -1,0 +1,1 @@
+import { Plugin } from 'prosemirror-preset-core';
