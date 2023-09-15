@@ -2,6 +2,7 @@ import {
   ApplicationRef,
   Component,
   EnvironmentInjector,
+  Injector,
   OnInit,
   ViewChild,
   ViewContainerRef,
@@ -23,6 +24,7 @@ import { Image } from 'prosemirror-preset-image';
 import { BasicKeymap } from 'prosemirror-preset-keymap';
 import { HardBreak } from 'prosemirror-preset-hardbreak';
 import { History } from 'prosemirror-preset-history';
+import { Mention } from 'prosemirror-preset-mention';
 import { Link } from 'prosemirror-preset-link';
 import { Strikethrough } from 'prosemirror-preset-strikethrough';
 import { BlockQuote } from 'prosemirror-preset-blockquote';
@@ -37,14 +39,16 @@ import { menuBar } from 'src/app/components/prose-mirror/plugins/menu-bar/menuba
 import { buildMenuItems } from 'src/app/components/prose-mirror/plugins/menu-bar/basic-menu-items';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Node } from 'prosemirror-model';
+import { MentionView } from 'src/app/components/prose-editor/mention/mention';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'ng-prose-editor',
   templateUrl: './prose-editor.component.html',
   styleUrls: ['./prose-editor.component.scss'],
   standalone: true,
-  imports: [ProseMirrorModule, ProseEditorMenubarComponent],
-providers: [
+  imports: [CommonModule, ProseMirrorModule, ProseEditorMenubarComponent],
+  providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ProseEditorComponent),
@@ -55,6 +59,7 @@ providers: [
 export class ProseEditorComponent implements ControlValueAccessor, OnInit {
   private readonly applicationRef = inject(ApplicationRef);
   private readonly environmentInjector = inject(EnvironmentInjector);
+  private readonly injector = inject(Injector);
 
   @ViewChild('menubarContentRoot', { static: true, read: ViewContainerRef })
   public menubarContentRoot!: ViewContainerRef;
@@ -64,6 +69,8 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
 
   @ViewChild('proseMirror', { static: true })
   public proseMirror!: ProseMirrorComponent;
+
+  public mentionOpened = false;
 
   public state: EditorState = new PMEditor({
     extensions: [
@@ -77,7 +84,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       }),
       CodeBlock(),
       Table({
-        resizing: true
+        resizing: true,
       }),
       HardBreak(),
       Image(),
@@ -87,6 +94,19 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       Code(),
       Strikethrough(),
       BasicKeymap(),
+      Mention({
+        schemeKey: 'mention',
+        mentionKey: '@',
+        view: (editorView, plugin) => {
+          return new MentionView(
+            editorView,
+            plugin,
+            this.environmentInjector,
+            this.applicationRef,
+            this.injector,
+          );
+        },
+      }),
       AngularAdapter({
         applicationRef: this.applicationRef,
         environmentInjector: this.environmentInjector,

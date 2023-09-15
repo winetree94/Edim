@@ -43,6 +43,7 @@
     "prosemirror-preset-hr": "*",
     "prosemirror-preset-history": "*",
     "prosemirror-preset-paragraph": "*",
+    "prosemirror-preset-mention": "*",
     "prosemirror-preset-italic": "*",
     "prosemirror-preset-image": "*",
     "prosemirror-preset-link": "*",

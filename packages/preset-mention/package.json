@@ -10,6 +10,8 @@
   "private": true,
   "dependencies": {
     "prosemirror-model": "*",
-    "prosemirror-preset-core": "*"
+    "prosemirror-preset-core": "*",
+    "prosemirror-keymap": "*",
+    "prosemirror-inputrules": "*"
   }
 }
