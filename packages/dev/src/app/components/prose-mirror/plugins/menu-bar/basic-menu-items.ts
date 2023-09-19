@@ -38,7 +38,7 @@ import {
   toggleHeaderCell,
   toggleHeaderColumn,
   toggleHeaderRow,
-} from 'prosemirror-tables';
+} from 'prosemirror-preset-tables';
 
 // Helpers to create specific types of items
 
