@@ -9,7 +9,7 @@ import {
   forwardRef,
   inject,
 } from '@angular/core';
-import { EditorProps, EditorView } from 'prosemirror-view';
+import { EditorProps } from 'prosemirror-view';
 import { ProseMirrorModule } from '../prose-mirror/prose-mirror.module';
 import { ProseMirrorComponent } from '../prose-mirror/prose-mirror.component';
 import { ProseEditorMenubarComponent } from './menubar/prose-editor-menubar.component';
@@ -22,7 +22,6 @@ import { Separator } from 'prosemirror-preset-hr';
 import { Italic } from 'prosemirror-preset-italic';
 import { Image } from 'prosemirror-preset-image';
 import { BasicKeymap } from 'prosemirror-preset-keymap';
-import { HardBreak } from 'prosemirror-preset-hardbreak';
 import { History } from 'prosemirror-preset-history';
 import { Mention } from 'prosemirror-preset-mention';
 import { Link } from 'prosemirror-preset-link';
@@ -86,17 +85,17 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       Table({
         resizing: true,
       }),
-      HardBreak(),
+      // HardBreak(),
       Image(),
       Link(),
       Italic(),
       Strong(),
       Code(),
       Strikethrough(),
-      BasicKeymap(),
       Mention({
         schemeKey: 'mention',
         mentionKey: '@',
+        elementName: 'ng-pmp-mention',
         view: (editorView, plugin) => {
           return new MentionView(
             editorView,
@@ -107,6 +106,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
           );
         },
       }),
+      BasicKeymap(),
       AngularAdapter({
         applicationRef: this.applicationRef,
         environmentInjector: this.environmentInjector,
@@ -120,8 +120,6 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       }),
     ],
   }).configure();
-
-  public constructor() {}
 
   public attributes: EditorProps['attributes'] = {
     spellcheck: 'false',

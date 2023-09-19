@@ -19,11 +19,10 @@ export class MentionView implements PluginView {
     private readonly environmentInjector: EnvironmentInjector,
     private readonly applicationRef: ApplicationRef,
     private readonly elementInjector: Injector,
-  ) {
-  }
+  ) {}
 
   public update(view: EditorView, prevState: EditorState) {
-    const opened = this._plugin.getState(view.state)?.opened;
+    const opened = this._plugin.getState(view.state)?.actived;
     if (opened && !this.componentRef) {
       this.componentRef = createComponent(MentionComponent, {
         environmentInjector: this.environmentInjector,
@@ -36,9 +35,11 @@ export class MentionView implements PluginView {
       this.componentRef.destroy();
       this.componentRef = null;
     }
+
+    this.componentRef?.instance.update(view, prevState);
   }
 
   public destroy(): void {
     return;
-  };
+  }
 }

@@ -17,20 +17,19 @@ export const AngularAdapter = (
   config: AngularAdapterConfig,
 ): PMPluginsFactory => {
   return () => {
+    const plugin = new Plugin({
+      view: (editor) => {
+        return new config.view(
+          editor,
+          config.applicationRef,
+          config.environmentInjector,
+        );
+      },
+    });
     return {
       nodes: {},
       marks: {},
-      plugins: () => [
-        new Plugin({
-          view: (editor) => {
-            return new config.view(
-              editor,
-              config.applicationRef,
-              config.environmentInjector,
-            );
-          },
-        }),
-      ],
+      plugins: () => [plugin],
     };
   };
 };

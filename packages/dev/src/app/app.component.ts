@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProseEditorComponent } from 'src/app/components/prose-editor/prose-editor.component';
+import { ProseEditorModule } from 'src/app/components/prose-editor/prose-editor.module';
 import { GlobalService } from 'src/app/global.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { data, data2 } from 'src/app/data';
@@ -9,7 +9,7 @@ import { map, startWith } from 'rxjs';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ProseEditorComponent, ReactiveFormsModule],
+  imports: [CommonModule, ProseEditorModule, ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
