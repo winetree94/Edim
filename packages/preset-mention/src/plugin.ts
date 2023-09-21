@@ -45,6 +45,7 @@ export const Mention = (configs: MentionConfigs): PMPluginsFactory => {
           const oldNodeHasMention = oldNode?.marks.some(
             (mark) => mark.type.name === configs.schemeKey,
           );
+
           if (
             oldNode &&
             oldNodeHasMention &&

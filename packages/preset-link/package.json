@@ -9,6 +9,7 @@
   "main": "dist/index.js",
   "private": true,
   "dependencies": {
+    "prosemirror-state": "*",
     "prosemirror-model": "*",
     "prosemirror-preset-core": "*"
   }

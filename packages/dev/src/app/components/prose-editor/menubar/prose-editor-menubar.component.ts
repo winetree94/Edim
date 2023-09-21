@@ -20,12 +20,15 @@ export class ProseEditorMenubarComponent implements OnDestroy, PluginView {
   private readonly _toggleBold = toggleMark(
     this._editorView.state.schema.marks['strong'],
   );
+
   private readonly _toggleItalic = toggleMark(
     this._editorView.state.schema.marks['em'],
   );
+
   private readonly _toggleStrikethrough = toggleMark(
     this._editorView.state.schema.marks['strikethrough'],
   );
+
   private readonly _toggleInlineCode = toggleMark(
     this._editorView.state.schema.marks['code'],
   );
