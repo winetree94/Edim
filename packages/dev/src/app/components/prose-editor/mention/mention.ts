@@ -6,11 +6,12 @@ import {
   createComponent,
 } from '@angular/core';
 import { MentionState } from 'prosemirror-preset-mention';
-import { EditorState, Plugin, PluginView } from 'prosemirror-state';
+import { MentionExtentionView, MentionPos } from 'prosemirror-preset-mention';
+import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { MentionComponent } from 'src/app/components/prose-editor/mention/mention.component';
 
-export class MentionView implements PluginView {
+export class MentionView implements MentionExtentionView {
   public componentRef: ComponentRef<MentionComponent> | null = null;
 
   public constructor(
@@ -22,7 +23,10 @@ export class MentionView implements PluginView {
   ) {}
 
   public update(view: EditorView, prevState: EditorState) {
-    const opened = this._plugin.getState(view.state)?.actived;
+    this.componentRef?.instance.update(view, prevState);
+  }
+
+  public activeStateChange(opened: boolean): void {
     if (opened && !this.componentRef) {
       this.componentRef = createComponent(MentionComponent, {
         environmentInjector: this.environmentInjector,
@@ -35,8 +39,14 @@ export class MentionView implements PluginView {
       this.componentRef.destroy();
       this.componentRef = null;
     }
+  }
 
-    this.componentRef?.instance.update(view, prevState);
+  public mentionPosChange(start: MentionPos): void {
+    this.componentRef?.instance.mentionPosChange(start);
+  }
+
+  public arrowKeydown(event: KeyboardEvent) {
+    this.componentRef?.instance.arrowKeydown(event);
   }
 
   public destroy(): void {

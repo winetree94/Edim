@@ -1,4 +1,5 @@
 import { Component, ElementRef, inject } from '@angular/core';
+import { MentionPos } from 'prosemirror-preset-mention';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
@@ -13,13 +14,14 @@ export class MentionComponent {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   public update(view: EditorView, prevState: EditorState): void {
-    const { from, to } = view.state.selection;
-    // These are in screen coordinates
-    const start = view.coordsAtPos(from);
+    return;
+  }
 
+  public mentionPosChange(start: MentionPos): void {
     this.elementRef.nativeElement.style.top = start.top + 20 + 'px';
     this.elementRef.nativeElement.style.left = start.left + 'px';
+  }
 
-    return;
+  public arrowKeydown(event: KeyboardEvent) {
   }
 }

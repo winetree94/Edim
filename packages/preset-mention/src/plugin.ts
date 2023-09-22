@@ -4,26 +4,31 @@ import { MarkSpec } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { getMentionRange } from './utils';
 import { MentionState } from './state';
-import { MentionView, MentionViewProvider } from './view';
+import { MentionView, MentionExtentionView } from './view';
 
 export interface MentionAttribute {
   data_id: string;
 }
 
-export interface MentionConfigs {
+export interface MentionExtensionConfigs {
   schemeKey: string;
   mentionKey: string;
   elementName?: string;
-  view: (view: EditorView, plugin: Plugin<MentionState>) => MentionViewProvider;
+  view: (
+    view: EditorView,
+    plugin: Plugin<MentionState>,
+  ) => MentionExtentionView;
 }
 
-export const Mention = (configs: MentionConfigs): PMPluginsFactory => {
+export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
   const defaultPluginState: MentionState = {
     actived: false,
     keyword: '',
   };
 
   return () => {
+    let extensionView!: MentionView;
+
     const mentionPlugin: Plugin<MentionState> = new Plugin<MentionState>({
       key: new PluginKey('mention'),
       appendTransaction: (transactions, oldState, newState) => {
@@ -88,10 +93,6 @@ export const Mention = (configs: MentionConfigs): PMPluginsFactory => {
       },
       props: {
         handleKeyDown: (view, event) => {
-          if (event.key !== 'Enter') {
-            return false;
-          }
-
           const range = getMentionRange(
             view.state,
             configs.mentionKey,
@@ -102,24 +103,35 @@ export const Mention = (configs: MentionConfigs): PMPluginsFactory => {
             return false;
           }
 
-          const tr = view.state.tr.addMark(
-            range.rangeStart,
-            range.rangeEnd,
-            view.state.schema.marks[configs.schemeKey].create({
-              data_id: range.keyword,
-            }),
-          );
-
-          view.dispatch(tr);
-          return true;
+          switch (event.key) {
+            case 'ArrowUp':
+            case 'ArrowDown':
+              return extensionView.onArrowKeydown(event);
+            case 'Enter':
+              view.dispatch(
+                view.state.tr.addMark(
+                  range.rangeStart,
+                  range.rangeEnd,
+                  view.state.schema.marks[configs.schemeKey].create({
+                    data_id: range.keyword,
+                  }),
+                ),
+              );
+              return true;
+            default:
+              return false;
+          }
         },
       },
       view: (editorView) => {
-        return new MentionView(
+        const view = new MentionView(
           editorView,
+          configs,
           mentionPlugin,
           configs.view(editorView, mentionPlugin),
         );
+        extensionView = view;
+        return view;
       },
     });
 

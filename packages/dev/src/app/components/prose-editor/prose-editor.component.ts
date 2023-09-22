@@ -76,22 +76,6 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       Document(),
       Text(),
       Paragraph({ addListNodes: true }),
-      BlockQuote(),
-      Separator(),
-      Heading({
-        level: 6,
-      }),
-      CodeBlock(),
-      Table({
-        resizing: true,
-      }),
-      // HardBreak(),
-      Image(),
-      Link(),
-      Italic(),
-      Strong(),
-      Code(),
-      Strikethrough(),
       Mention({
         schemeKey: 'mention',
         mentionKey: '@',
@@ -105,6 +89,22 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
             this.injector,
           );
         },
+      }),
+      BlockQuote(),
+      Separator(),
+      Heading({
+        level: 6,
+      }),
+      CodeBlock(),
+      // HardBreak(),
+      Image(),
+      Link(),
+      Italic(),
+      Strong(),
+      Code(),
+      Strikethrough(),
+      Table({
+        resizing: true,
       }),
       BasicKeymap(),
       AngularAdapter({

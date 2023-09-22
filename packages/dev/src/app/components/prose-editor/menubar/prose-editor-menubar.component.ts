@@ -5,17 +5,30 @@ import { ProseMirrorEditorView } from './menubar';
 import { markActive } from 'prosemirror-preset-utils';
 import { GlobalService } from 'src/app/global.service';
 import { toggleMark } from 'prosemirror-commands';
+import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
   templateUrl: './prose-editor-menubar.component.html',
   styleUrls: ['./prose-editor-menubar.component.scss'],
   standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class ProseEditorMenubarComponent implements OnDestroy, PluginView {
   private readonly _editorView = inject(ProseMirrorEditorView);
   private readonly _globalService = inject(GlobalService);
   private readonly _cdr = inject(ChangeDetectorRef);
+
+  public linkFormActive = false;
+  public readonly linkForm = new FormGroup({
+    from: new FormControl<number>(0, { nonNullable: true }),
+    to: new FormControl<number>(0, { nonNullable: true }),
+    text: new FormControl<string>('', { nonNullable: true }),
+    url: new FormControl<string>('', {
+      nonNullable: true,
+    }),
+  });
 
   private readonly _toggleBold = toggleMark(
     this._editorView.state.schema.marks['strong'],
@@ -81,6 +94,47 @@ export class ProseEditorMenubarComponent implements OnDestroy, PluginView {
   public toggleInlineCode(): void {
     this._toggleInlineCode(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
+  }
+
+  public setLink(): void {
+    const rangeHasLinkMark = this._editorView.state.doc.rangeHasMark(
+      this._editorView.state.selection.from,
+      this._editorView.state.selection.to,
+      this._editorView.state.schema.marks['link'],
+    );
+
+    if (!rangeHasLinkMark) {
+      this.linkFormActive = true;
+      return this.linkForm.patchValue({
+        from: this._editorView.state.selection.from,
+        to: this._editorView.state.selection.to,
+        text: this._editorView.state.doc.textBetween(
+          this._editorView.state.selection.from,
+          this._editorView.state.selection.to,
+        ),
+        url: '',
+      });
+    }
+  }
+
+  public linkSubmit(): void {
+    const values = this.linkForm.getRawValue();
+    this._editorView.dispatch(
+      this._editorView.state.tr
+        .removeMark(
+          values.from,
+          values.to,
+          this._editorView.state.schema.marks['link'],
+        )
+        .addMark(
+          values.from,
+          values.to,
+          this._editorView.state.schema.marks['link'].create({
+            href: values.url,
+          }),
+        ),
+    );
+    this.linkFormActive = false;
   }
 
   public ngOnDestroy(): void {
