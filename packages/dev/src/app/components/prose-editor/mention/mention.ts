@@ -5,7 +5,7 @@ import {
   Injector,
   createComponent,
 } from '@angular/core';
-import { MentionState } from 'prosemirror-preset-mention';
+import { MentionState, MentionValue } from 'prosemirror-preset-mention';
 import { MentionExtentionView, MentionPos } from 'prosemirror-preset-mention';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -41,12 +41,20 @@ export class MentionView implements MentionExtentionView {
     }
   }
 
+  public keywordChange(keyword: string): void {
+    this.componentRef?.instance.onKeywordChange(keyword);
+  }
+
   public mentionPosChange(start: MentionPos): void {
     this.componentRef?.instance.mentionPosChange(start);
   }
 
   public arrowKeydown(event: KeyboardEvent) {
     this.componentRef?.instance.arrowKeydown(event);
+  }
+
+  public onSubmit(event: KeyboardEvent): MentionValue | null {
+    return this.componentRef?.instance.onSubmit(event) || null;
   }
 
   public destroy(): void {

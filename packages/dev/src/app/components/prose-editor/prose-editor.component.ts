@@ -75,7 +75,9 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
     extensions: [
       Document(),
       Text(),
-      Paragraph({ addListNodes: true }),
+      Paragraph({
+        addListNodes: true,
+      }),
       Mention({
         schemeKey: 'mention',
         mentionKey: '@',

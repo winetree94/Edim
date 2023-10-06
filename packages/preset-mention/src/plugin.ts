@@ -103,24 +103,36 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
             return false;
           }
 
-          switch (event.key) {
-            case 'ArrowUp':
-            case 'ArrowDown':
-              return extensionView.onArrowKeydown(event);
-            case 'Enter':
-              view.dispatch(
-                view.state.tr.addMark(
+          if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            return extensionView.onArrowKeydown(event);
+          } else if (event.key === 'Enter') {
+            const mentionValue = extensionView.onSubmit(event);
+
+            if (!mentionValue) {
+              return true;
+            }
+
+            view.dispatch(
+              view.state.tr
+                .replaceWith(
                   range.rangeStart,
                   range.rangeEnd,
+                  view.state.schema.text(
+                    configs.mentionKey + mentionValue.text,
+                  ),
+                )
+                .addMark(
+                  range.rangeStart,
+                  range.rangeStart + mentionValue.text.length + 1,
                   view.state.schema.marks[configs.schemeKey].create({
-                    data_id: range.keyword,
+                    data_id: mentionValue.dataId,
                   }),
                 ),
-              );
-              return true;
-            default:
-              return false;
+            );
+            return true;
           }
+
+          return false;
         },
       },
       view: (editorView) => {

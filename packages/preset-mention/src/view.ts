@@ -11,9 +11,16 @@ export interface MentionPos {
   bottom: number;
 }
 
+export interface MentionValue {
+  dataId: string;
+  text: string;
+}
+
 export interface MentionExtentionView {
+  onSubmit(event: KeyboardEvent): MentionValue | null;
   activeStateChange?(opened: boolean): void;
   mentionPosChange?(start: MentionPos, end: MentionPos): void;
+  keywordChange?(keyword: string): void;
   arrowKeydown?(event: KeyboardEvent): void;
   update?(view: EditorView, prevState: EditorState): void;
   destroy?(): void;
@@ -54,13 +61,21 @@ export class MentionView implements PluginView {
 
     const start = view.coordsAtPos(range.rangeStart);
     const end = view.coordsAtPos(range.rangeEnd);
-
     this.mentionViewProvider.mentionPosChange?.(start, end);
+    this.mentionViewProvider.keywordChange?.(range.keyword);
+  }
+
+  public keywordChange(keyword: string): void {
+    this.mentionViewProvider.keywordChange?.(keyword);
   }
 
   public onArrowKeydown(event: KeyboardEvent): boolean {
     this.mentionViewProvider.arrowKeydown?.(event);
     return true;
+  }
+
+  public onSubmit(event: KeyboardEvent): MentionValue | null {
+    return this.mentionViewProvider.onSubmit(event);
   }
 
   public destroy(): void {
