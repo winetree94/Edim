@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npm run serve",
-    "serve:angular": "nx start prosemirror-preset-angular-dev",
-    "serve": "nx run-many -t start --all --maxParallel=100",
-    "build": "nx run-many -t build --all --maxParallel=100"
+    "start": "nx start prosemirror-preset-angular-dev",
+    "clean:dist": "nx run-many -t clean:dist --all --maxParallel=10",
+    "clean:dependency": "nx run-many -t clean:dependency --all --maxParallel=10 && rimraf node_modules",
+    "build": "nx run-many -t build --all --maxParallel=10"
   },
   "private": true,
   "devDependencies": {
@@ -19,6 +19,7 @@
     "nx": "16.8.1",
     "nx-cloud": "latest",
     "prettier": "^3.0.3",
+    "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   },
   "workspaces": [

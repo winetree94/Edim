@@ -4,6 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc --watch",
+    "clean:dist": "rimraf dist",
+    "clean:dependency": "rimraf node_modules",
     "build": "tsc"
   },
   "main": "dist/index.js",
@@ -11,5 +13,9 @@
   "dependencies": {
     "prosemirror-model": "*",
     "prosemirror-preset-core": "*"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
   }
 }

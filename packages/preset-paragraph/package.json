@@ -4,6 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc --watch",
+    "clean:dist": "rimraf dist",
+    "clean:dependency": "rimraf node_modules",
     "build": "tsc"
   },
   "main": "dist/index.js",
@@ -16,5 +18,9 @@
     "prosemirror-keymap": "*",
     "prosemirror-commands": "*",
     "orderedmap": "*"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
   }
 }
