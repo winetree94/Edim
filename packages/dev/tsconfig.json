@@ -44,6 +44,7 @@
       "prosemirror-preset-text": ["../preset-text/src/index.ts"],
       "prosemirror-preset-angular": ["../preset-angular/src/index.ts"],
       "prosemirror-preset-utils": ["../preset-utils/src/index.ts"],
+      "prosemirror-preset-code": ["../preset-code/src/index.ts"],
     }
   },
   "angularCompilerOptions": {
