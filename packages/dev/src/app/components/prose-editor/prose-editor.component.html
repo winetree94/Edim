@@ -1,8 +1,10 @@
-<div
-  class="editor-root"
-  #proseMirror
-  ngProseMirror
-  [state]="state"
-  [attributes]="attributes"
-  [handleKeydown]="handleKeydown"
-></div>
+<div class="editor-wrapper">
+  <div
+    class="editor-root scrollbar"
+    #proseMirror
+    ngProseMirror
+    [state]="state"
+    [attributes]="attributes"
+    [handleKeydown]="handleKeydown"
+  ></div>
+</div>

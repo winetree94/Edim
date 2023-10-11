@@ -1,7 +1,7 @@
 import { setBlockType } from 'prosemirror-commands';
 import { inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
-import { NodeSpec, NodeType } from 'prosemirror-model';
+import { NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { Command } from 'prosemirror-state';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 
@@ -50,7 +50,7 @@ export const Heading = (config: HeadingConfig): PMPluginsFactory => {
         ...heading,
       },
       marks: {},
-      plugins: (schema) => {
+      plugins: (schema: Schema) => {
         const headingKeymaps: Record<string, Command> = {};
         for (let i = 1; i <= config.level; i++) {
           headingKeymaps['Shift-Ctrl-' + i] = setBlockType(

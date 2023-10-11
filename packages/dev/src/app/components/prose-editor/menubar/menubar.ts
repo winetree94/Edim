@@ -34,9 +34,9 @@ export class NgMenubarView implements PluginView {
       }),
     });
     this.applicationRef.attachView(this.componentRef.hostView);
-    this.editorView.dom.parentNode?.insertBefore(
+    this.editorView.dom.parentNode?.parentNode?.parentNode?.insertBefore(
       this.componentRef.location.nativeElement,
-      this.editorView.dom,
+      this.editorView.dom.parentNode.parentNode,
     );
   }
 

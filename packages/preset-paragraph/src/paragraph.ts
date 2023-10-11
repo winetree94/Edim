@@ -1,4 +1,4 @@
-import { DOMOutputSpec, NodeSpec, NodeType } from 'prosemirror-model';
+import { DOMOutputSpec, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import {
   addListNodes,
   liftListItem,
@@ -59,7 +59,7 @@ export const Paragraph =
     return {
       nodes: nodes,
       marks: {},
-      plugins: (schema) => {
+      plugins: (schema: Schema) => {
         if (!pluginConfig.addListNodes) {
           return [
             keymap({

@@ -34,8 +34,6 @@ import { Code } from 'prosemirror-preset-code';
 import { Strong } from 'prosemirror-preset-strong';
 import { EditorState } from 'prosemirror-state';
 import { NgMenubarView } from './menubar/menubar';
-import { menuBar } from 'src/app/components/prose-mirror/plugins/menu-bar/menubar';
-import { buildMenuItems } from 'src/app/components/prose-mirror/plugins/menu-bar/basic-menu-items';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Node } from 'prosemirror-model';
 import { MentionView } from 'src/app/components/prose-editor/mention/mention';
@@ -116,11 +114,11 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       }),
       History(),
     ],
-    nativePlugins: (schema) => [
-      menuBar({
-        content: buildMenuItems(schema).fullMenu,
-      }),
-    ],
+    // nativePlugins: (schema) => [
+    //   menuBar({
+    //     content: buildMenuItems(schema).fullMenu,
+    //   }),
+    // ],
   }).configure();
 
   public attributes: EditorProps['attributes'] = {
@@ -136,7 +134,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
   }
 
   public writeValue(value: string): void {
-    if (!this.proseMirror.editorView) {
+    if (!this.proseMirror.editorView && value) {
       this.state.doc = Node.fromJSON(this.state.schema, JSON.parse(value));
     } else {
       this.proseMirror.writeValue(value);

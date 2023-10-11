@@ -34,6 +34,7 @@
     "prosemirror-inputrules": "^1.2.1",
     "prosemirror-keymap": "^1.2.2",
     "prosemirror-model": "^1.19.3",
+    "prosemirror-transform": "^1.8.0",
     "prosemirror-preset-angular": "*",
     "prosemirror-preset-blockquote": "*",
     "prosemirror-preset-codeblock": "*",
@@ -58,6 +59,7 @@
     "prosemirror-schema-list": "^1.3.0",
     "prosemirror-state": "^1.4.3",
     "prosemirror-view": "^1.31.7",
+    "remixicon": "^3.5.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"

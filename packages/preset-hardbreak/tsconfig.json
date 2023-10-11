@@ -3,7 +3,11 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "outDir": "./dist",
-    "declaration": true
+    "declaration": true,
+    "paths": {
+      "prosemirror-preset-core": ["../../preset-core/src/index.ts"],
+      "prosemirror-preset-utils": ["../../preset-utils/src/index.ts"]
+    }
   },
   "include": [
     "src/*"

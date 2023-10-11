@@ -3,13 +3,13 @@ import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 const image: Record<string, NodeSpec> = {
   image: {
-    inline: true,
+    // inline: true,
     attrs: {
       src: {},
       alt: { default: null },
       title: { default: null },
     },
-    group: 'inline',
+    group: 'block',
     draggable: true,
     parseDOM: [
       {

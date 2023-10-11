@@ -6,17 +6,19 @@
     "start": "tsc --watch",
     "clean:dist": "rimraf dist",
     "clean:dependency": "rimraf node_modules",
-    "build": "tsc"
+    "build": "tsc -p ./tsconfig.build.json"
   },
   "main": "dist/index.js",
   "private": true,
   "dependencies": {
     "prosemirror-model": "*",
     "prosemirror-schema-list": "*",
+    "prosemirror-state": "*",
     "prosemirror-preset-core": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-keymap": "*",
     "prosemirror-commands": "*",
+    "prosemirror-transform": "*",
     "orderedmap": "*"
   },
   "devDependencies": {

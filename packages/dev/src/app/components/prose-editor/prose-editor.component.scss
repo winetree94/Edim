@@ -1,19 +1,28 @@
 :host {
   display: flex;
   flex-direction: column;
-  border: 1px solid gray;
+  overflow: hidden;
 }
 
 .menubar-root {
   flex-shrink: 0;
 }
 
+.editor-wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+}
+
 ::ng-deep.editor-root {
+  max-width: 760px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   height: inherit;
-  width: inherit;
   height: 500px;
   min-height: 0;
 

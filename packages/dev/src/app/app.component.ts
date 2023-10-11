@@ -18,14 +18,19 @@ export class AppComponent {
   public enable = true;
 
   public readonly formGroup = new FormGroup({
-    content: new FormControl<string>(JSON.stringify(data), {
+    content: new FormControl<string>('', {
       nonNullable: true,
     }),
   });
 
   public values$ = this.formGroup.controls.content.valueChanges.pipe(
     startWith(this.formGroup.controls.content.value),
-    map((value) => JSON.stringify(JSON.parse(value), null, 4)),
+    map((value) => {
+      if (value) {
+        return JSON.stringify(JSON.parse(value), null, 4);
+      }
+      return '';
+    }),
   );
 
   public updateValue(): void {
