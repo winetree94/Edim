@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Node, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import {
   addListNodes,
@@ -61,11 +64,13 @@ const paragraph: Record<string, NodeSpec> = {
   },
 };
 
+const indentAllowedParents = ['doc'];
+
 const paragraphWithList = addListNodes(
   OrderedMap.from(paragraph),
   'paragraph block*',
   'block',
-).toObject();
+).toObject() as Record<string, NodeSpec>;
 
 /// Given a list node type, returns an input rule that turns a number
 /// followed by a dot at the start of a textblock into an ordered list.
@@ -93,6 +98,7 @@ export const Paragraph =
   (pluginConfig: ParagraphPluginConfigs): PMPluginsFactory =>
   () => {
     const nodes = pluginConfig.addListNodes ? paragraphWithList : paragraph;
+    // const nodes = paragraph;
     return {
       nodes: nodes,
       marks: {},
@@ -112,9 +118,37 @@ export const Paragraph =
             ],
           }),
           keymap({
-            'Shift-Ctrl-0': setBlockType(schema.nodes['paragraph']),
-            'Shift-Ctrl-8': wrapInList(schema.nodes['bullet_list']),
-            'Shift-Ctrl-9': wrapInList(schema.nodes['ordered_list']),
+            'Ctrl-Alt-0': setBlockType(schema.nodes['paragraph']),
+            'Shift-Ctrl-7': (state, dispatch) => {
+              const tr = wrapInList(
+                state,
+                state.tr,
+                schema.nodes['ordered_list'],
+              );
+              if (tr === null) {
+                return false;
+              }
+              if (dispatch) {
+                dispatch(tr);
+                return true;
+              }
+              return false;
+            },
+            'Shift-Ctrl-8': (state, dispatch) => {
+              const tr = wrapInList(
+                state,
+                state.tr,
+                schema.nodes['bullet_list'],
+              );
+              if (tr === null) {
+                return false;
+              }
+              if (dispatch) {
+                dispatch(tr);
+                return true;
+              }
+              return false;
+            },
             Enter: splitListItem(schema.nodes['list_item']),
             'Mod-[': liftListItem(schema.nodes['list_item']),
             'Mod-]': sinkListItem(schema.nodes['list_item']),
@@ -189,7 +223,10 @@ export const Paragraph =
                   view.state.selection.from,
                   view.state.selection.to,
                   (node, pos, parent) => {
-                    if (node.type.name === 'paragraph') {
+                    if (
+                      node.type.name === 'paragraph' &&
+                      indentAllowedParents.includes(parent?.type.name || '')
+                    ) {
                       nodes.push({ node, pos, parent });
                     }
                   },
@@ -205,10 +242,14 @@ export const Paragraph =
                     0,
                     Math.min(attrs.indent + (shiftPressed ? -1 : 1), 6),
                   );
-                  return tr.setNodeMarkup(node.pos, undefined, {
-                    ...attrs,
-                    indent: targetIndent,
-                  });
+                  return tr.setNodeMarkup(
+                    node.pos,
+                    view.state.schema.nodes['paragraph'],
+                    {
+                      ...attrs,
+                      indent: targetIndent,
+                    },
+                  );
                 }, view.state.tr);
 
                 if (!tr.docChanged) {

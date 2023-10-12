@@ -27,19 +27,6 @@ export const wrapIn = (
   return tr.wrap(range, wrapping);
 };
 
-export const getRangeNodes = (state: EditorState) => {
-  const { $from, $to } = state.selection;
-  const range = $from.blockRange($to);
-  if (!range) {
-    throw new Error('Cannot get range nodes');
-  }
-  const nodes: Node[] = [];
-  state.doc.nodesBetween(range.start, range.end, (node, pos, parent) => {
-    nodes.push(node);
-  });
-  return nodes;
-};
-
 export const findParentNode = (
   editorState: EditorState,
   from: number,

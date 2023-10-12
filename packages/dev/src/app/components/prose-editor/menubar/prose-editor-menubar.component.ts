@@ -28,7 +28,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
-import { wrapInList2 } from 'prosemirror-preset-list';
+import { wrapInList } from 'prosemirror-preset-list';
 import { Fragment, Node } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
 
@@ -165,51 +165,49 @@ export class ProseEditorMenubarComponent
         return isNormalText;
       });
 
+    const rangeFromNode = this._editorView.state.selection.$from.parent;
+
     this.activeParagraph =
-      this.canNormalText &&
-      this.getRangeNodes()[0]?.node.type.name === 'paragraph';
+      this.canNormalText && rangeFromNode.type.name === 'paragraph';
 
     this.activeH1 =
       this.canNormalText &&
-      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
-      this.getRangeNodes()[0]?.node.attrs['level'] === 1;
+      rangeFromNode.type.name === 'heading' &&
+      rangeFromNode.attrs['level'] === 1;
 
     this.activeH2 =
       this.canNormalText &&
-      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
-      this.getRangeNodes()[0]?.node.attrs['level'] === 2;
+      rangeFromNode.type.name === 'heading' &&
+      rangeFromNode.attrs['level'] === 2;
 
     this.activeH3 =
       this.canNormalText &&
-      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
-      this.getRangeNodes()[0]?.node.attrs['level'] === 3;
+      rangeFromNode.type.name === 'heading' &&
+      rangeFromNode.attrs['level'] === 3;
 
     this.activeH4 =
       this.canNormalText &&
-      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
-      this.getRangeNodes()[0]?.node.attrs['level'] === 4;
+      rangeFromNode.type.name === 'heading' &&
+      rangeFromNode.attrs['level'] === 4;
 
     this.activeH5 =
       this.canNormalText &&
-      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
-      this.getRangeNodes()[0]?.node.attrs['level'] === 5;
+      rangeFromNode.type.name === 'heading' &&
+      rangeFromNode.attrs['level'] === 5;
 
     this.activeH6 =
       this.canNormalText &&
-      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
-      this.getRangeNodes()[0]?.node.attrs['level'] === 6;
+      rangeFromNode.type.name === 'heading' &&
+      rangeFromNode.attrs['level'] === 6;
 
     this.activeAlignLeft =
-      this.canNormalText &&
-      this.getRangeNodes()[0]?.node.attrs['textAlign'] === 'left';
+      this.canNormalText && rangeFromNode.attrs['textAlign'] === 'left';
 
     this.activeAlignCenter =
-      this.canNormalText &&
-      this.getRangeNodes()[0]?.node.attrs['textAlign'] === 'center';
+      this.canNormalText && rangeFromNode.attrs['textAlign'] === 'center';
 
     this.activeAlignRight =
-      this.canNormalText &&
-      this.getRangeNodes()[0]?.node.attrs['textAlign'] === 'right';
+      this.canNormalText && rangeFromNode.attrs['textAlign'] === 'right';
 
     this.canAlign = this.getAlignmentAbleNodes().length > 0;
     this.canUndo = undo(editorView.state);
@@ -335,11 +333,14 @@ export class ProseEditorMenubarComponent
         this._editorView.state.schema.nodes['ordered_list'],
       )
     ) {
-      const tr = wrapInList2(
+      const tr = wrapInList(
         this._editorView.state,
         lift(this._editorView.state, this._editorView.state.tr),
         this._editorView.state.schema.nodes['ordered_list'],
       );
+      if (!tr) {
+        return;
+      }
       this._editorView.dispatch(tr);
       this._editorView.focus();
     } else if (
@@ -354,11 +355,14 @@ export class ProseEditorMenubarComponent
       this._editorView.focus();
       return;
     } else {
-      const tr = wrapInList2(
+      const tr = wrapInList(
         this._editorView.state,
         this._editorView.state.tr,
         this._editorView.state.schema.nodes['ordered_list'],
       );
+      if (!tr) {
+        return;
+      }
       this._editorView.dispatch(tr);
       this._editorView.focus();
     }
@@ -372,11 +376,14 @@ export class ProseEditorMenubarComponent
         this._editorView.state.schema.nodes['ordered_list'],
       )
     ) {
-      const tr = wrapInList2(
+      const tr = wrapInList(
         this._editorView.state,
         lift(this._editorView.state, this._editorView.state.tr),
         this._editorView.state.schema.nodes['ordered_list'],
       );
+      if (!tr) {
+        return;
+      }
       this._editorView.dispatch(tr);
       this._editorView.focus();
     } else if (
@@ -391,11 +398,14 @@ export class ProseEditorMenubarComponent
       this._editorView.focus();
       return;
     } else {
-      const tr = wrapInList2(
+      const tr = wrapInList(
         this._editorView.state,
         this._editorView.state.tr,
         this._editorView.state.schema.nodes['bullet_list'],
       );
+      if (!tr) {
+        return;
+      }
       this._editorView.dispatch(tr);
       this._editorView.focus();
     }

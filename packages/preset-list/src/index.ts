@@ -1,2 +1,1 @@
-export * from './list';
-export * from './custom';
+export * from './legacy';
