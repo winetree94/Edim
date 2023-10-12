@@ -158,8 +158,11 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
           parseDOM: [
             {
               tag: 'span',
-              getAttrs: (node): MentionAttribute => {
+              getAttrs: (node): MentionAttribute | boolean => {
                 const dom = node as HTMLSpanElement;
+                if (!dom.classList.contains('pmp-mention')) {
+                  return false;
+                }
                 return {
                   data_id: dom.getAttribute('data-id') || '',
                 };
