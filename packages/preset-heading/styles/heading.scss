@@ -1,0 +1,23 @@
+.ProseMirror {
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+  }
+
+  .pmp-heading {
+    &.pmp-align-center {
+      text-align: center;
+    }
+    &.pmp-align-right {
+      text-align: right;
+    }
+  }
+
+  h1:first-child,
+  h2:first-child,
+  h3:first-child,
+  h4:first-child,
+  h5:first-child,
+  h6:first-child {
+    margin-top: 10px;
+  }
+}

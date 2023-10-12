@@ -1,13 +1,16 @@
-<form [formGroup]="formGroup">
-  <ng-prose-editor *ngIf="enable" class="editor" formControlName="content">
-  </ng-prose-editor>
-</form>
+<div class="root" [class.horizontal]="layout === 'horizontal'">
+  <form class="form" [formGroup]="formGroup">
+    <ng-prose-editor *ngIf="enable" class="editor" formControlName="content">
+    </ng-prose-editor>
+  </form>
 
-<hr />
-
-<div>
-  <button (click)="enable = !enable">toggle editor</button>
-  <button (click)="updateValue()">update value</button>
+  <div class="toolbar">
+    <hr />
+    <div>
+      <button (click)="enable = !enable">toggle editor</button>
+      <button (click)="updateValue()">update value</button>
+      <button (click)="toggleLayout()">toggle layout</button>
+    </div>
+    <div class="codemirror" #codeMirrorRoot></div>
+  </div>
 </div>
-
-<div *ngIf="values$ | async as value" [innerHTML]="value"></div>

@@ -1,10 +1,18 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProseEditorModule } from 'src/app/components/prose-editor/prose-editor.module';
 import { GlobalService } from 'src/app/global.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { data, data2 } from 'src/app/data';
-import { map, startWith } from 'rxjs';
+import { data2 } from 'src/app/data';
+import { map, startWith, tap } from 'rxjs';
+import { EditorView, basicSetup } from 'codemirror';
+import { json } from '@codemirror/lang-json';
 
 @Component({
   selector: 'app-root',
@@ -13,12 +21,13 @@ import { map, startWith } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public globalService = inject(GlobalService);
+  public layout: 'vertical' | 'horizontal' = 'horizontal';
   public enable = true;
 
   public readonly formGroup = new FormGroup({
-    content: new FormControl<string>('', {
+    content: new FormControl<string>(``, {
       nonNullable: true,
     }),
   });
@@ -33,7 +42,37 @@ export class AppComponent {
     }),
   );
 
+  @ViewChild('codeMirrorRoot', { static: true })
+  public readonly codeMirrorRoot!: ElementRef<HTMLDivElement>;
+
+  public editor!: EditorView;
+
   public updateValue(): void {
     this.formGroup.controls.content.patchValue(JSON.stringify(data2));
+  }
+
+  public toggleLayout(): void {
+    this.layout = this.layout === 'vertical' ? 'horizontal' : 'vertical';
+  }
+
+  public ngOnInit(): void {
+    this.editor = new EditorView({
+      extensions: [basicSetup, json()],
+      parent: this.codeMirrorRoot.nativeElement,
+    });
+
+    this.values$
+      .pipe(
+        tap((value) => {
+          this.editor.dispatch({
+            changes: {
+              from: 0,
+              to: this.editor.state.doc.length,
+              insert: value,
+            },
+          });
+        }),
+      )
+      .subscribe();
   }
 }

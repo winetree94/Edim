@@ -27,13 +27,24 @@ export const wrapIn = (
   return tr.wrap(range, wrapping);
 };
 
+export const getRangeNodes = (state: EditorState) => {
+  const { $from, $to } = state.selection;
+  const range = $from.blockRange($to);
+  if (!range) {
+    throw new Error('Cannot get range nodes');
+  }
+  const nodes: Node[] = [];
+  state.doc.nodesBetween(range.start, range.end, (node, pos, parent) => {
+    nodes.push(node);
+  });
+  return nodes;
+};
+
 export const findParentNode = (
   editorState: EditorState,
+  from: number,
   nodeType: NodeType,
 ): Node | null => {
-  const { selection } = editorState;
-  const { from } = selection;
-
   const pos = editorState.doc.resolve(from);
   let depth = pos.depth;
 
@@ -46,4 +57,21 @@ export const findParentNode = (
   }
 
   return null;
+};
+
+export const forEachParentNodes = (
+  state: EditorState,
+  from: number,
+  cb: (node: Node, pos: number, parent: Node) => void,
+): void => {
+  const pos = state.doc.resolve(from);
+  let depth = pos.depth;
+
+  while (depth > 0) {
+    const node = pos.node(depth);
+    if (node) {
+      cb(node, pos.before(depth), pos.node(depth - 1));
+    }
+    depth -= 1;
+  }
 };

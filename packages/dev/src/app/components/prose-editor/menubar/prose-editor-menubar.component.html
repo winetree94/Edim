@@ -10,6 +10,65 @@
 
   <button
     prose-button
+    [disabled]="!canNormalText"
+    [class.active]="activeParagraph"
+    (click)="onParagraphClick()"
+  >
+    <i class="ri-text"></i>
+  </button>
+  <button
+    prose-button
+    [disabled]="!canNormalText"
+    [class.active]="activeH1"
+    (click)="onHeadingClick(1)"
+  >
+    <i class="ri-h-1"></i>
+  </button>
+  <button
+    prose-button
+    [disabled]="!canNormalText"
+    [class.active]="activeH2"
+    (click)="onHeadingClick(2)"
+  >
+    <i class="ri-h-2"></i>
+  </button>
+  <button
+    prose-button
+    [disabled]="!canNormalText"
+    [class.active]="activeH3"
+    (click)="onHeadingClick(3)"
+  >
+    <i class="ri-h-3"></i>
+  </button>
+  <button
+    prose-button
+    [disabled]="!canNormalText"
+    [class.active]="activeH4"
+    (click)="onHeadingClick(4)"
+  >
+    <i class="ri-h-4"></i>
+  </button>
+  <button
+    prose-button
+    [disabled]="!canNormalText"
+    [class.active]="activeH5"
+    (click)="onHeadingClick(5)"
+  >
+    <i class="ri-h-5"></i>
+  </button>
+  <button
+    prose-button
+    [disabled]="!canNormalText"
+    [class.active]="activeH6"
+    (click)="onHeadingClick(6)"
+  >
+    <i class="ri-h-6"></i>
+  </button>
+
+  <prose-separator class="separator" />
+
+  <button
+    prose-button
     [class.active]="activeBold"
     (click)="toggleBold()"
     title="toggle bold"
@@ -43,13 +102,31 @@
 
   <prose-separator class="separator" />
 
-  <button prose-button [disabled]="!canAlign" title="toggle code">
+  <button
+    prose-button
+    title="toggle code"
+    [disabled]="!canAlign"
+    [class.active]="activeAlignLeft"
+    (click)="onAlignClick('left')"
+  >
     <i class="ri-align-left"></i>
   </button>
-  <button prose-button [disabled]="!canAlign" title="toggle code">
+  <button
+    prose-button
+    title="toggle code"
+    [disabled]="!canAlign"
+    [class.active]="activeAlignCenter"
+    (click)="onAlignClick('center')"
+  >
     <i class="ri-align-center"></i>
   </button>
-  <button prose-button [disabled]="!canAlign" title="toggle code">
+  <button
+    prose-button
+    title="toggle code"
+    [disabled]="!canAlign"
+    [class.active]="activeAlignRight"
+    (click)="onAlignClick('right')"
+  >
     <i class="ri-align-right"></i>
   </button>
 
@@ -100,6 +177,12 @@
   </button>
   <button prose-button (click)="onTableClick()">
     <i class="ri-table-2"></i>
+  </button>
+  <button prose-button disabled>
+    <i class="ri-code-s-slash-fill"></i>
+  </button>
+  <button prose-button disabled>
+    <i class="ri-slash-commands"></i>
   </button>
 </div>
 <div>

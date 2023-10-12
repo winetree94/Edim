@@ -1,3 +1,56 @@
-.editor {
-  height: 300px;
+:host {
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.root {
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+
+  .form {
+    width: 50%;
+    .editor {
+      height: 100%;
+      flex: 1 1 auto;
+    }
+  }
+
+  .toolbar {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border-left: 1px solid gray;
+
+    .codemirror {
+      margin-top: 20px;
+      border-top: 1px solid gray;
+      flex: 1 1 auto;
+      overflow: auto;
+
+      ::ng-deep {
+        .cm-editor {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  &.horizontal {
+    flex-direction: column;
+
+    .form {
+      width: 100%;
+      height: 50%;
+    }
+
+    .toolbar {
+      width: 100%;
+      height: 50%;
+      border-left: unset;
+      border-top: 1px solid gray;
+    }
+  }
 }

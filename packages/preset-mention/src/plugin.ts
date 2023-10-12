@@ -153,7 +153,7 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
         [configs.schemeKey]: {
           inclusive: false,
           attrs: {
-            data_id: '',
+            data_id: 'none',
           },
           parseDOM: [
             {

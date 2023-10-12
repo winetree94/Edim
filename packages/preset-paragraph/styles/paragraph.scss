@@ -1,0 +1,42 @@
+.ProseMirror {
+
+  p.pmp-paragraph {
+    &:first-child {
+      margin-top: 10px;
+    }
+    &.pmp-align-center {
+      text-align: center;
+    }
+    &.pmp-align-right {
+      text-align: right;
+    }
+
+    &.pmp-paragraph-indent-1 {
+      margin-left: 30px;
+    }
+    &.pmp-paragraph-indent-2 {
+      margin-left: 60px;
+    }
+    &.pmp-paragraph-indent-3 {
+      margin-left: 90px;
+    }
+    &.pmp-paragraph-indent-4 {
+      margin-left: 120px;
+    }
+    &.pmp-paragraph-indent-5 {
+      margin-left: 150px;
+    }
+    &.pmp-paragraph-indent-6 {
+      margin-left: 180px;
+    }
+  }
+
+  li {
+    position: relative;
+  }
+
+  ul,
+  ol {
+    padding-left: 30px;
+  }
+}

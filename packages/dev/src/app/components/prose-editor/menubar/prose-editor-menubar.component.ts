@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   ChangeDetectorRef,
   Component,
@@ -5,17 +6,23 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import { EditorState, PluginView, TextSelection } from 'prosemirror-state';
+import {
+  EditorState,
+  PluginView,
+  TextSelection,
+  Transaction,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProseMirrorEditorView } from './menubar';
 import {
   findParentNode,
+  forEachParentNodes,
   lift,
   markActive,
   wrapIn,
 } from 'prosemirror-preset-utils';
 import { GlobalService } from 'src/app/global.service';
-import { toggleMark } from 'prosemirror-commands';
+import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
@@ -81,7 +88,19 @@ export class ProseEditorMenubarComponent
   public activeLink = false;
   public activeOrderedList = false;
   public activeUnorderedList = false;
+  public activeParagraph = false;
+  public activeH1 = false;
+  public activeH2 = false;
+  public activeH3 = false;
+  public activeH4 = false;
+  public activeH5 = false;
+  public activeH6 = false;
 
+  public activeAlignLeft = false;
+  public activeAlignCenter = false;
+  public activeAlignRight = false;
+
+  public canNormalText = false;
   public canAlign = false;
   public canOrderedList = true;
   public canUnorderedList = true;
@@ -116,16 +135,100 @@ export class ProseEditorMenubarComponent
 
     this.activeOrderedList = !!findParentNode(
       editorView.state,
+      editorView.state.selection.from,
       editorView.state.schema.nodes['ordered_list'],
     );
 
     this.activeUnorderedList = !!findParentNode(
       editorView.state,
+      editorView.state.selection.from,
       editorView.state.schema.nodes['bullet_list'],
     );
 
+    this.canNormalText = this.getRangeNodes()
+      .filter(
+        (node) =>
+          node.node.type.name === 'paragraph' ||
+          node.node.type.name === 'heading',
+      )
+      .every((node) => {
+        let isNormalText = true;
+        forEachParentNodes(editorView.state, node.pos, (parent) => {
+          if (
+            ['bullet_list', 'ordered_list', 'blockquote'].includes(
+              parent.type.name,
+            )
+          ) {
+            isNormalText = false;
+          }
+        });
+        return isNormalText;
+      });
+
+    this.activeParagraph =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.type.name === 'paragraph';
+
+    this.activeH1 =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
+      this.getRangeNodes()[0]?.node.attrs['level'] === 1;
+
+    this.activeH2 =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
+      this.getRangeNodes()[0]?.node.attrs['level'] === 2;
+
+    this.activeH3 =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
+      this.getRangeNodes()[0]?.node.attrs['level'] === 3;
+
+    this.activeH4 =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
+      this.getRangeNodes()[0]?.node.attrs['level'] === 4;
+
+    this.activeH5 =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
+      this.getRangeNodes()[0]?.node.attrs['level'] === 5;
+
+    this.activeH6 =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.type.name === 'heading' &&
+      this.getRangeNodes()[0]?.node.attrs['level'] === 6;
+
+    this.activeAlignLeft =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.attrs['textAlign'] === 'left';
+
+    this.activeAlignCenter =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.attrs['textAlign'] === 'center';
+
+    this.activeAlignRight =
+      this.canNormalText &&
+      this.getRangeNodes()[0]?.node.attrs['textAlign'] === 'right';
+
+    this.canAlign = this.getAlignmentAbleNodes().length > 0;
     this.canUndo = undo(editorView.state);
     this.canRedo = redo(editorView.state);
+  }
+
+  public onParagraphClick(): void {
+    setBlockType(this._editorView.state.schema.nodes['paragraph'])(
+      this._editorView.state,
+      this._editorView.dispatch,
+    );
+    this._editorView.focus();
+  }
+
+  public onHeadingClick(level: number): void {
+    setBlockType(this._editorView.state.schema.nodes['heading'], {
+      level,
+    })(this._editorView.state, this._editorView.dispatch);
+    this._editorView.focus();
   }
 
   public toggleBold(): void {
@@ -177,6 +280,23 @@ export class ProseEditorMenubarComponent
     }
   }
 
+  public onAlignClick(alignment: 'left' | 'center' | 'right'): void {
+    const alignmentAbleNodes = this.getAlignmentAbleNodes();
+
+    const tr = alignmentAbleNodes.reduce<Transaction>((tr, node) => {
+      return tr.setNodeMarkup(node.pos, undefined, {
+        ...node.node.attrs,
+        textAlign: alignment,
+      });
+    }, this._editorView.state.tr);
+
+    if (tr.docChanged) {
+      this._editorView.dispatch(tr);
+    }
+
+    this._editorView.focus();
+  }
+
   public linkSubmit(): void {
     const values = this.linkForm.getRawValue();
     this._editorView.dispatch(
@@ -211,6 +331,7 @@ export class ProseEditorMenubarComponent
     if (
       findParentNode(
         this._editorView.state,
+        this._editorView.state.selection.from,
         this._editorView.state.schema.nodes['ordered_list'],
       )
     ) {
@@ -224,6 +345,7 @@ export class ProseEditorMenubarComponent
     } else if (
       findParentNode(
         this._editorView.state,
+        this._editorView.state.selection.from,
         this._editorView.state.schema.nodes['bullet_list'],
       )
     ) {
@@ -246,6 +368,7 @@ export class ProseEditorMenubarComponent
     if (
       findParentNode(
         this._editorView.state,
+        this._editorView.state.selection.from,
         this._editorView.state.schema.nodes['ordered_list'],
       )
     ) {
@@ -259,6 +382,7 @@ export class ProseEditorMenubarComponent
     } else if (
       findParentNode(
         this._editorView.state,
+        this._editorView.state.selection.from,
         this._editorView.state.schema.nodes['bullet_list'],
       )
     ) {
@@ -371,12 +495,13 @@ export class ProseEditorMenubarComponent
   }
 
   public ngOnInit(): void {
-    this.isScrollTop = this._editorView.dom.scrollTop === 0;
+    const scrollbarElement = this._editorView.dom.parentElement!.parentElement!;
+    this.isScrollTop = scrollbarElement.scrollTop === 0;
     this._subscriptions.push(
-      fromEvent(this._editorView.dom, 'scroll')
+      fromEvent(scrollbarElement, 'scroll')
         .pipe(
           tap(() => {
-            this.isScrollTop = this._editorView.dom.scrollTop === 0;
+            this.isScrollTop = scrollbarElement.scrollTop === 0;
           }),
         )
         .subscribe(),
@@ -385,5 +510,43 @@ export class ProseEditorMenubarComponent
 
   public ngOnDestroy(): void {
     this._subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  private getRangeNodes() {
+    const { from, to } = this._editorView.state.selection;
+
+    const nodes: {
+      node: Node;
+      parent: Node | null;
+      pos: number;
+    }[] = [];
+
+    this._editorView.state.doc.nodesBetween(from, to, (node, pos, parent) => {
+      nodes.push({ node, parent, pos });
+    });
+
+    return nodes;
+  }
+
+  private getAlignmentAbleNodes() {
+    return this.getRangeNodes().filter((node) => {
+      if (
+        node.node.type.name !== 'paragraph' &&
+        node.node.type.name !== 'heading'
+      ) {
+        return false;
+      }
+      let alignmentAble = true;
+      forEachParentNodes(this._editorView.state, node.pos, (parent) => {
+        if (
+          ['bullet_list', 'ordered_list', 'blockquote'].includes(
+            parent.type.name,
+          )
+        ) {
+          alignmentAble = false;
+        }
+      });
+      return alignmentAble;
+    });
   }
 }

@@ -1,6 +1,7 @@
 .wrapper {
   padding: 8px 8px;
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
 
   &:not(.scroll-top) {

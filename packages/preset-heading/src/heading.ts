@@ -7,30 +7,104 @@ import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
+export interface HeadingAttributes {
+  level: HeadingLevel;
+  textAlign: 'left' | 'right' | 'center' | null;
+}
+
 const heading: Record<string, NodeSpec> = {
   heading: {
-    attrs: { level: { default: 1 } },
+    attrs: {
+      level: { default: 1 },
+      textAlign: { default: 'left' },
+    },
     content: 'inline*',
     group: 'block',
     defining: true,
     parseDOM: [
-      { tag: 'h1', attrs: { level: 1 } },
-      { tag: 'h2', attrs: { level: 2 } },
-      { tag: 'h3', attrs: { level: 3 } },
-      { tag: 'h4', attrs: { level: 4 } },
-      { tag: 'h5', attrs: { level: 5 } },
-      { tag: 'h6', attrs: { level: 6 } },
+      {
+        tag: 'h1',
+        getAttrs: (node) => {
+          const dom = node as HTMLElement;
+          const align = dom.getAttribute('data-text-align');
+          return {
+            level: 1,
+            align: align || null,
+          };
+        },
+      },
+      {
+        tag: 'h2',
+        getAttrs: (node) => {
+          const dom = node as HTMLElement;
+          const align = dom.getAttribute('data-text-align');
+          return {
+            level: 2,
+            align: align || null,
+          };
+        },
+      },
+      {
+        tag: 'h3',
+        getAttrs: (node) => {
+          const dom = node as HTMLElement;
+          const align = dom.getAttribute('data-text-align');
+          return {
+            level: 3,
+            align: align || null,
+          };
+        },
+      },
+      {
+        tag: 'h4',
+        getAttrs: (node) => {
+          const dom = node as HTMLElement;
+          const align = dom.getAttribute('data-text-align');
+          return {
+            level: 4,
+            align: align || null,
+          };
+        },
+      },
+      {
+        tag: 'h5',
+        getAttrs: (node) => {
+          const dom = node as HTMLElement;
+          const align = dom.getAttribute('data-text-align');
+          return {
+            level: 5,
+            align: align || null,
+          };
+        },
+      },
+      {
+        tag: 'h6',
+        getAttrs: (node) => {
+          const dom = node as HTMLElement;
+          const align = dom.getAttribute('data-text-align');
+          return {
+            level: 6,
+            align: align || null,
+          };
+        },
+      },
     ],
     toDOM(node) {
-      return ['h' + node.attrs['level'], 0];
+      const attrs = node.attrs as HeadingAttributes;
+      return [
+        'h' + attrs.level,
+        {
+          class: `pmp-heading${
+            attrs.textAlign ? ` pmp-align-${attrs.textAlign}` : ''
+          }`,
+          'data-text-align': attrs.textAlign || 'left',
+        },
+        0,
+      ];
     },
   },
 };
 
-/// Given a node type and a maximum level, creates an input rule that
-/// turns up to that number of `#` characters followed by a space at
-/// the start of a textblock into a heading whose level corresponds to
-/// the number of `#` ssicigns.
 export function headingRule(nodeType: NodeType, maxLevel: number) {
   return textblockTypeInputRule(
     new RegExp('^(#{1,' + maxLevel + '})\\s$'),
