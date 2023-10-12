@@ -22,7 +22,7 @@ import {
 } from 'prosemirror-state';
 import { Schema, NodeType, MarkType, Fragment, Node } from 'prosemirror-model';
 import { toggleMark } from 'prosemirror-commands';
-import { wrapInList } from 'prosemirror-schema-list';
+import { wrapInList } from 'prosemirror-preset-list';
 import { TextField, openPrompt } from './prompt';
 import {
   addColumnAfter,

@@ -6,7 +6,7 @@ import {
   findWrapping,
 } from 'prosemirror-transform';
 
-export const doWrapInList = (
+export const doWrapInList2 = (
   tr: Transaction,
   range: NodeRange,
   wrappers: { type: NodeType; attrs?: Attrs | null }[],
@@ -52,7 +52,7 @@ export const doWrapInList = (
   return tr;
 };
 
-export const wrapInList = (
+export const wrapInList2 = (
   state: EditorState,
   tr: Transaction,
   listType: NodeType,
@@ -89,5 +89,5 @@ export const wrapInList = (
   if (!wrap) {
     throw new Error('Connot wrapInList');
   }
-  return doWrapInList(tr, range, wrap, doJoin, listType);
+  return doWrapInList2(tr, range, wrap, doJoin, listType);
 };

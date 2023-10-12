@@ -28,7 +28,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
-import { wrapInList } from 'prosemirror-preset-paragraph';
+import { wrapInList2 } from 'prosemirror-preset-list';
 import { Fragment, Node } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
 
@@ -335,7 +335,7 @@ export class ProseEditorMenubarComponent
         this._editorView.state.schema.nodes['ordered_list'],
       )
     ) {
-      const tr = wrapInList(
+      const tr = wrapInList2(
         this._editorView.state,
         lift(this._editorView.state, this._editorView.state.tr),
         this._editorView.state.schema.nodes['ordered_list'],
@@ -354,7 +354,7 @@ export class ProseEditorMenubarComponent
       this._editorView.focus();
       return;
     } else {
-      const tr = wrapInList(
+      const tr = wrapInList2(
         this._editorView.state,
         this._editorView.state.tr,
         this._editorView.state.schema.nodes['ordered_list'],
@@ -372,7 +372,7 @@ export class ProseEditorMenubarComponent
         this._editorView.state.schema.nodes['ordered_list'],
       )
     ) {
-      const tr = wrapInList(
+      const tr = wrapInList2(
         this._editorView.state,
         lift(this._editorView.state, this._editorView.state.tr),
         this._editorView.state.schema.nodes['ordered_list'],
@@ -391,7 +391,7 @@ export class ProseEditorMenubarComponent
       this._editorView.focus();
       return;
     } else {
-      const tr = wrapInList(
+      const tr = wrapInList2(
         this._editorView.state,
         this._editorView.state.tr,
         this._editorView.state.schema.nodes['bullet_list'],

@@ -5,7 +5,7 @@ import {
   sinkListItem,
   splitListItem,
   wrapInList,
-} from 'prosemirror-schema-list';
+} from 'prosemirror-preset-list';
 import OrderedMap from 'orderedmap';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';

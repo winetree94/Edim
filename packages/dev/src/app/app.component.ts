@@ -23,7 +23,7 @@ import { json } from '@codemirror/lang-json';
 })
 export class AppComponent implements OnInit {
   public globalService = inject(GlobalService);
-  public layout: 'vertical' | 'horizontal' = 'horizontal';
+  public layout: 'vertical' | 'horizontal' = 'vertical';
   public enable = true;
 
   public readonly formGroup = new FormGroup({
