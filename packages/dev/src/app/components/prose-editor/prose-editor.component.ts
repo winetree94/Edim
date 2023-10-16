@@ -18,6 +18,7 @@ import { AngularAdapter } from 'prosemirror-preset-angular';
 import { Document } from 'prosemirror-preset-document';
 import { Heading } from 'prosemirror-preset-heading';
 import { Paragraph } from 'prosemirror-preset-paragraph';
+import { FreeList } from 'prosemirror-preset-free-list';
 import { Separator } from 'prosemirror-preset-hr';
 import { Italic } from 'prosemirror-preset-italic';
 import { Image } from 'prosemirror-preset-image';
@@ -76,6 +77,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       Paragraph({
         addListNodes: true,
       }),
+      FreeList({}),
       Mention({
         schemeKey: 'mention',
         mentionKey: '@',

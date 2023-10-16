@@ -1,4 +1,5 @@
-import { DOMOutputSpec, NodeSpec } from 'prosemirror-model';
+import { DOMOutputSpec, NodeSpec, Schema } from 'prosemirror-model';
+import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 const olDOM: DOMOutputSpec = [
   'ol',
@@ -16,25 +17,29 @@ const ulDOM: DOMOutputSpec = [
   0,
 ];
 
-export const orderedList = {
-  attrs: {},
-  parseDOM: [
-    {
-      tag: 'ol',
-      getAttrs() {
-        return {};
+export const orderedList: Record<string, NodeSpec> = {
+  ordered_list: {
+    attrs: {},
+    parseDOM: [
+      {
+        tag: 'ol',
+        getAttrs() {
+          return {};
+        },
       },
+    ],
+    toDOM() {
+      return olDOM;
     },
-  ],
-  toDOM() {
-    return olDOM;
   },
-} as NodeSpec;
+};
 
-export const bulletList: NodeSpec = {
-  parseDOM: [{ tag: 'ul' }],
-  toDOM() {
-    return ulDOM;
+export const bulletList: Record<string, NodeSpec> = {
+  bullet_list: {
+    parseDOM: [{ tag: 'ul' }],
+    toDOM() {
+      return ulDOM;
+    },
   },
 };
 
@@ -42,33 +47,53 @@ export interface ListItemAttrs {
   indent: number;
 }
 
-export const listItem: NodeSpec = {
-  attrs: {
-    indent: {
-      default: 0,
-    },
-  },
-  parseDOM: [
-    {
-      tag: 'li',
-      getAttrs(node) {
-        const dom = node as HTMLElement;
-        return {
-          indent: dom.getAttribute('data-indent') || 0,
-        };
+export const listItem: Record<string, NodeSpec> = {
+  list_item: {
+    attrs: {
+      indent: {
+        default: 0,
       },
     },
-  ],
-  toDOM(node) {
-    const attrs = node.attrs as ListItemAttrs;
-    return [
-      'li',
+    parseDOM: [
       {
-        class: `pmp-list-item pmp-list-item-indent-${attrs.indent || 0}`,
-        'data-indent': attrs.indent || 0,
+        tag: 'li',
+        getAttrs(node) {
+          const dom = node as HTMLElement;
+          return {
+            indent: dom.getAttribute('data-indent') || 0,
+          };
+        },
       },
-      0,
-    ];
+    ],
+    toDOM(node) {
+      const attrs = node.attrs as ListItemAttrs;
+      return [
+        'li',
+        {
+          class: `pmp-list-item pmp-list-item-indent-${attrs.indent || 0}`,
+          'data-indent': attrs.indent || 0,
+        },
+        0,
+      ];
+    },
+    defining: true,
   },
-  defining: true,
 };
+
+export interface FreeListPluginConfigs {}
+
+export const FreeList =
+  (pluginConfig: FreeListPluginConfigs): PMPluginsFactory =>
+  () => {
+    return {
+      nodes: {
+        orderedList,
+        bulletList,
+        listItem,
+      },
+      marks: {},
+      plugins: (schema: Schema) => {
+        return [];
+      },
+    };
+  };

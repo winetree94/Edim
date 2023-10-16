@@ -14,6 +14,7 @@
     "prosemirror-model": "*",
     "prosemirror-state": "*",
     "prosemirror-transform": "*",
+    "prosemirror-preset-core": "*",
     "orderedmap": "*"
   },
   "devDependencies": {

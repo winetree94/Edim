@@ -66,11 +66,11 @@ const paragraph: Record<string, NodeSpec> = {
 
 const indentAllowedParents = ['doc'];
 
-const paragraphWithList = addListNodes(
-  OrderedMap.from(paragraph),
-  'paragraph block*',
-  'block',
-).toObject() as Record<string, NodeSpec>;
+// const paragraphWithList = addListNodes(
+//   OrderedMap.from(paragraph),
+//   'paragraph block*',
+//   'block',
+// ).toObject() as Record<string, NodeSpec>;
 
 /// Given a list node type, returns an input rule that turns a number
 /// followed by a dot at the start of a textblock into an ordered list.
@@ -97,8 +97,8 @@ export interface ParagraphPluginConfigs {
 export const Paragraph =
   (pluginConfig: ParagraphPluginConfigs): PMPluginsFactory =>
   () => {
-    const nodes = pluginConfig.addListNodes ? paragraphWithList : paragraph;
-    // const nodes = paragraph;
+    // const nodes = pluginConfig.addListNodes ? paragraphWithList : paragraph;
+    const nodes = paragraph;
     return {
       nodes: nodes,
       marks: {},
@@ -113,42 +113,42 @@ export const Paragraph =
         return [
           inputRules({
             rules: [
-              orderedListRule(schema.nodes['ordered_list']),
-              bulletListRule(schema.nodes['bullet_list']),
+              // orderedListRule(schema.nodes['ordered_list']),
+              // bulletListRule(schema.nodes['bullet_list']),
             ],
           }),
           keymap({
             'Ctrl-Alt-0': setBlockType(schema.nodes['paragraph']),
-            'Shift-Ctrl-7': (state, dispatch) => {
-              const tr = wrapInList(
-                state,
-                state.tr,
-                schema.nodes['ordered_list'],
-              );
-              if (tr === null) {
-                return false;
-              }
-              if (dispatch) {
-                dispatch(tr);
-                return true;
-              }
-              return false;
-            },
-            'Shift-Ctrl-8': (state, dispatch) => {
-              const tr = wrapInList(
-                state,
-                state.tr,
-                schema.nodes['bullet_list'],
-              );
-              if (tr === null) {
-                return false;
-              }
-              if (dispatch) {
-                dispatch(tr);
-                return true;
-              }
-              return false;
-            },
+            // 'Shift-Ctrl-7': (state, dispatch) => {
+            //   const tr = wrapInList(
+            //     state,
+            //     state.tr,
+            //     schema.nodes['ordered_list'],
+            //   );
+            //   if (tr === null) {
+            //     return false;
+            //   }
+            //   if (dispatch) {
+            //     dispatch(tr);
+            //     return true;
+            //   }
+            //   return false;
+            // },
+            // 'Shift-Ctrl-8': (state, dispatch) => {
+            //   const tr = wrapInList(
+            //     state,
+            //     state.tr,
+            //     schema.nodes['bullet_list'],
+            //   );
+            //   if (tr === null) {
+            //     return false;
+            //   }
+            //   if (dispatch) {
+            //     dispatch(tr);
+            //     return true;
+            //   }
+            //   return false;
+            // },
             Enter: splitListItem(schema.nodes['list_item']),
             'Mod-[': liftListItem(schema.nodes['list_item']),
             'Mod-]': sinkListItem(schema.nodes['list_item']),

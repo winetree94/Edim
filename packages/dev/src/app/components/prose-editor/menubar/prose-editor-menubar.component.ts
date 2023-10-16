@@ -133,17 +133,17 @@ export class ProseEditorMenubarComponent
       editorView.state.schema.marks['link'],
     );
 
-    this.activeOrderedList = !!findParentNode(
-      editorView.state,
-      editorView.state.selection.from,
-      editorView.state.schema.nodes['ordered_list'],
-    );
+    // this.activeOrderedList = !!findParentNode(
+    //   editorView.state,
+    //   editorView.state.selection.from,
+    //   editorView.state.schema.nodes['ordered_list'],
+    // );
 
-    this.activeUnorderedList = !!findParentNode(
-      editorView.state,
-      editorView.state.selection.from,
-      editorView.state.schema.nodes['bullet_list'],
-    );
+    // this.activeUnorderedList = !!findParentNode(
+    //   editorView.state,
+    //   editorView.state.selection.from,
+    //   editorView.state.schema.nodes['bullet_list'],
+    // );
 
     this.canNormalText = this.getRangeNodes()
       .filter(
