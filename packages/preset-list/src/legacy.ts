@@ -273,9 +273,10 @@ export function liftListItem(itemType: NodeType): Command {
     );
     if (!range) return false;
     if (!dispatch) return true;
-    if ($from.node(range.depth - 1).type == itemType)
+    if ($from.node(range.depth - 1).type == itemType) {
       // Inside a parent list
       return liftToOuterList(state, dispatch, itemType, range);
+    }
     // Outer list node
     else return liftOutOfList(state, dispatch, range);
   };

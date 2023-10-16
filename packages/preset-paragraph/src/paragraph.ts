@@ -98,6 +98,7 @@ export const Paragraph =
   (pluginConfig: ParagraphPluginConfigs): PMPluginsFactory =>
   () => {
     // const nodes = pluginConfig.addListNodes ? paragraphWithList : paragraph;
+    // console.log(nodes);
     const nodes = paragraph;
     return {
       nodes: nodes,
@@ -149,9 +150,9 @@ export const Paragraph =
             //   }
             //   return false;
             // },
-            Enter: splitListItem(schema.nodes['list_item']),
-            'Mod-[': liftListItem(schema.nodes['list_item']),
-            'Mod-]': sinkListItem(schema.nodes['list_item']),
+            // Enter: splitListItem(schema.nodes['list_item']),
+            // 'Mod-[': liftListItem(schema.nodes['list_item']),
+            // 'Mod-]': sinkListItem(schema.nodes['list_item']),
           }),
           new Plugin({
             key: new PluginKey('paragraphBackspacePlugin'),

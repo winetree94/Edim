@@ -31,19 +31,44 @@ export const findParentNode = (
   editorState: EditorState,
   from: number,
   nodeType: NodeType,
-): Node | null => {
+): {
+  node: Node;
+  pos: number;
+  depth: number;
+  parent: Node;
+} | null => {
   const pos = editorState.doc.resolve(from);
   let depth = pos.depth;
 
   while (depth > 0) {
     const node = pos.node(depth);
     if (node && node.type.name === nodeType.name) {
-      return node;
+      return {
+        node,
+        pos: pos.before(depth),
+        depth,
+        parent: pos.node(depth - 1),
+      };
     }
     depth -= 1;
   }
 
   return null;
+};
+
+export const getRangeTailNodes = (
+  state: EditorState,
+  from: number,
+  to: number,
+): Node[] => {
+  const { doc } = state;
+  const tailNodes: Node[] = [];
+  doc.nodesBetween(from, to, (node, pos) => {
+    if (pos >= from) {
+      tailNodes.push(node);
+    }
+  });
+  return tailNodes;
 };
 
 export const forEachParentNodes = (

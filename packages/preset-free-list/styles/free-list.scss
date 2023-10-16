@@ -1,2 +1,14 @@
 .ProseMirror {
+
+  ul.pmp-bullet-list, ol.pmp-ordered-list {
+    padding-left: 0;
+  }
+  
+  li.pmp-list-item {
+    @for $i from 1 through 6 {
+      &.pmp-list-item-indent-#{$i} {
+        margin-left: 30px * $i;
+      }
+    }
+  }
 }

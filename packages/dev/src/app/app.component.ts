@@ -27,9 +27,90 @@ export class AppComponent implements OnInit {
   public enable = true;
 
   public readonly formGroup = new FormGroup({
-    content: new FormControl<string>(``, {
-      nonNullable: true,
-    }),
+    content: new FormControl<string>(
+      `
+      {
+        "type": "doc",
+        "content": [
+            {
+                "type": "paragraph",
+                "attrs": {
+                    "textAlign": "left",
+                    "indent": 0
+                },
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "lkjasdf"
+                    }
+                ]
+            },
+            {
+                "type": "bullet_list",
+                "content": [
+                    {
+                        "type": "list_item",
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "laksdjflk"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "list_item",
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "aslkdfjalksdf"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                      "type": "list_item",
+                      "content": [
+                          {
+                              "type": "paragraph",
+                              "attrs": {
+                                  "textAlign": "left",
+                                  "indent": 0
+                              },
+                              "content": [
+                                  {
+                                      "type": "text",
+                                      "text": "aalskdfjasldkfjasldkfjalskdjfslkdfjalksdf"
+                                  }
+                              ]
+                          }
+                      ]
+                  }
+                ]
+            }
+        ]
+    }
+`,
+      {
+        nonNullable: true,
+      },
+    ),
   });
 
   public values$ = this.formGroup.controls.content.valueChanges.pipe(
