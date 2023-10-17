@@ -30,7 +30,15 @@ const image: Record<string, NodeSpec> = {
           const dom = node as HTMLElement;
           const viewportWidth = dom.dataset['viewportWidth'];
           const textAlign = dom.parentElement?.dataset['textAlign'] || 'center';
-          console.log('getAttrs');
+
+          if (dom.classList.contains('pmp-emoji')) {
+            return false;
+          }
+
+          if (dom.getAttribute('key')) {
+            return false;
+          }
+
           return {
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
@@ -44,7 +52,7 @@ const image: Record<string, NodeSpec> = {
     toDOM(node) {
       const { src, alt, title, textAlign, viewportWidth } =
         node.attrs as ImageAttrs;
-      console.log('toDOM');
+
       return [
         'div',
         {

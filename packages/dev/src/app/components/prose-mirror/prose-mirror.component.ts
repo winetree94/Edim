@@ -61,6 +61,9 @@ export class ProseMirrorComponent
   @Input()
   public handleKeydown: DirectEditorProps['handleKeyDown'];
 
+  @Input()
+  public transformPastedHTML: DirectEditorProps['transformPastedHTML'];
+
   public ngOnInit(): void {
     this.editorView = new EditorView(this.elementRef.nativeElement, {
       state: this.state,
@@ -75,6 +78,7 @@ export class ProseMirrorComponent
           this._onChange(json);
         }
       },
+      transformPastedHTML: this.transformPastedHTML,
       handleKeyDown: this.handleKeydown,
     });
   }

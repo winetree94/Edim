@@ -46,23 +46,27 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
           if (!node.isText || !hasMention) {
             return;
           }
-          const oldNode = oldState.doc.nodeAt(pos);
-          const oldNodeHasMention = oldNode?.marks.some(
-            (mark) => mark.type.name === configs.schemeKey,
-          );
-
-          if (
-            oldNode &&
-            oldNodeHasMention &&
-            oldNode.isText &&
-            node.text !== oldNode.text
-          ) {
-            tr.removeMark(
-              pos,
-              pos + node.nodeSize,
-              newState.schema.marks[configs.schemeKey],
+          try {
+            const oldNode = oldState.doc.nodeAt(pos);
+            const oldNodeHasMention = oldNode?.marks.some(
+              (mark) => mark.type.name === configs.schemeKey,
             );
-            modified = true;
+
+            if (
+              oldNode &&
+              oldNodeHasMention &&
+              oldNode.isText &&
+              node.text !== oldNode.text
+            ) {
+              tr.removeMark(
+                pos,
+                pos + node.nodeSize,
+                newState.schema.marks[configs.schemeKey],
+              );
+              modified = true;
+            }
+          } catch (error) {
+            console.warn('mention not found');
           }
         });
 
@@ -165,6 +169,19 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
                 }
                 return {
                   data_id: dom.getAttribute('data-id') || '',
+                };
+              },
+            },
+            {
+              tag: 'a',
+              getAttrs: (node): MentionAttribute | boolean => {
+                const dom = node as HTMLAnchorElement;
+                const data_id = dom.dataset['mentionId'];
+                if (!data_id) {
+                  return false;
+                }
+                return {
+                  data_id: data_id,
                 };
               },
             },

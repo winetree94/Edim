@@ -26,6 +26,7 @@
     "paths": {
       "prosemirror-preset-document": ["../preset-document/src/index.ts"],
       "prosemirror-preset-tables": ["../preset-tables/src/index.ts"],
+      "prosemirror-preset-emoji": ["../preset-emoji/src/index.ts"],
       "prosemirror-preset-heading": ["../preset-heading/src/index.ts"],
       "prosemirror-preset-hr": ["../preset-hr/src/index.ts"],
       "prosemirror-preset-history": ["../preset-history/src/index.ts"],

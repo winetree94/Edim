@@ -84,10 +84,14 @@ export const listItem: Record<string, NodeSpec> = {
         tag: 'li',
         getAttrs(node) {
           const dom = node as HTMLElement;
+
           let qlIndent: number = 0;
           for (let i = 1; i <= 4; i++) {
-            qlIndent = dom.classList.contains(`ql-indent-${i}`) ? i : qlIndent;
+            qlIndent = dom.classList.contains(`ql-indent-${i}`)
+              ? i + 1
+              : qlIndent;
           }
+
           return {
             indent: qlIndent || dom.getAttribute('data-indent') || 1,
           };

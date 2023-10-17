@@ -40,6 +40,7 @@
     "prosemirror-preset-blockquote": "*",
     "prosemirror-preset-codeblock": "*",
     "prosemirror-preset-core": "*",
+    "prosemirror-preset-emoji": "*",
     "prosemirror-preset-document": "*",
     "prosemirror-preset-hardbreak": "*",
     "prosemirror-preset-heading": "*",

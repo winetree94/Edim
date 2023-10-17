@@ -286,6 +286,28 @@ export const data2 = {
           ],
           text: 'Code',
         },
+        {
+          type: 'text',
+          text: ' ',
+        },
+        {
+          type: 'text',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'code',
+            },
+            {
+              type: 'strikethrough',
+            },
+          ],
+          text: 'Combined',
+        },
       ],
     },
     {

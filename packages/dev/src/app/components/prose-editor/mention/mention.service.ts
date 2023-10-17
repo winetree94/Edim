@@ -17,7 +17,7 @@ export class MentionService {
   }));
 
   public fetch$(keyword?: string): Observable<MentionData[]> {
-    return timer(1000).pipe(
+    return timer(300).pipe(
       map(() => {
         if (keyword) {
           return this.db.filter((item) =>
