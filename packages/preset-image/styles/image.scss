@@ -1,0 +1,13 @@
+.ProseMirror {
+  div.pmp-image-wrapper {
+    &.pmp-image-align-left {
+      text-align: left;
+    }
+    &.pmp-image-align-center {
+      text-align: center;
+    }
+    &.pmp-image-align-right {
+      text-align: right;
+    }
+  }
+}

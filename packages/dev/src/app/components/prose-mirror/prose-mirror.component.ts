@@ -14,6 +14,7 @@ import {
   NgControl,
 } from '@angular/forms';
 import { Node } from 'prosemirror-model';
+import applyDevTools from 'prosemirror-dev-tools';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { DirectEditorProps, EditorView } from 'prosemirror-view';
 
@@ -77,6 +78,7 @@ export class ProseMirrorComponent
       },
       handleKeyDown: this.handleKeydown,
     });
+    applyDevTools(this.editorView);
   }
 
   public writeValue(value: string): void {

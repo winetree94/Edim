@@ -324,7 +324,7 @@ function liftToOuterList(
   return true;
 }
 
-function liftOutOfList(
+export function liftOutOfList(
   state: EditorState,
   dispatch: (tr: Transaction) => void,
   range: NodeRange,

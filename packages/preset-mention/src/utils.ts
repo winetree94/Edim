@@ -19,7 +19,7 @@ export const getMentionRange = (
   }
 
   const previousHasMention = state.doc
-    .resolve(state.tr.selection.$from.pos - 1)
+    .resolve(Math.max(state.tr.selection.$from.pos - 1, 0))
     .marks()
     .some((mark) => mark.type.name === schemaKey);
 

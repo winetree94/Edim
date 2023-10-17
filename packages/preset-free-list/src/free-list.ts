@@ -1,15 +1,25 @@
 import {
   Attrs,
   DOMOutputSpec,
+  Fragment,
+  Node,
+  NodeRange,
   NodeSpec,
   NodeType,
   Schema,
+  Slice,
 } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
-import { EditorState, Transaction } from 'prosemirror-state';
-import { liftTarget } from 'prosemirror-transform';
+import {
+  Command,
+  EditorState,
+  NodeSelection,
+  Selection,
+  Transaction,
+} from 'prosemirror-state';
+import { ReplaceAroundStep, canSplit } from 'prosemirror-transform';
 
 const olDOM: DOMOutputSpec = [
   'ol',
@@ -74,8 +84,12 @@ export const listItem: Record<string, NodeSpec> = {
         tag: 'li',
         getAttrs(node) {
           const dom = node as HTMLElement;
+          let qlIndent: number = 0;
+          for (let i = 1; i <= 4; i++) {
+            qlIndent = dom.classList.contains(`ql-indent-${i}`) ? i : qlIndent;
+          }
           return {
-            indent: dom.getAttribute('data-indent') || 1,
+            indent: qlIndent || dom.getAttribute('data-indent') || 1,
           };
         },
       },
@@ -113,40 +127,62 @@ export const bulletListRule = (nodeType: NodeType) => {
   return wrappingInputRule(/^\s*([-+*])\s$/, nodeType);
 };
 
-export const splitListItem = (itemType: NodeType, itemAttrs?: Attrs) => {
-  return (
-    state: EditorState,
-    dispatch?: (tr: Transaction) => void,
-  ): boolean => {
-    const { $from, $to } = state.tr.selection;
-
-    const parent = $from.node(-1);
-
-    if (parent.type.name !== 'list_item') {
-      return false;
-    }
-
-    const tr = state.tr.delete($from.pos, $to.pos);
-
-    if (!dispatch) {
-      return false;
-    }
-
-    const nextType =
-      $to.pos == $from.end() ? parent.contentMatchAt(0).defaultType : null;
-
-    const types = nextType
-      ? [
-          itemAttrs ? { type: itemType, attrs: itemAttrs } : null,
-          { type: nextType },
-        ]
-      : undefined;
-
-    dispatch(tr.split($from.pos, 2, types).scrollIntoView());
-
-    return true;
-  };
-};
+export function liftOutOfList(
+  state: EditorState,
+  range: NodeRange,
+): Transaction | null {
+  const tr = state.tr,
+    list = range.parent;
+  // Merge the list items into a single big item
+  for (
+    let pos = range.end, i = range.endIndex - 1, e = range.startIndex;
+    i > e;
+    i--
+  ) {
+    pos -= list.child(i).nodeSize;
+    tr.delete(pos - 1, pos + 1);
+  }
+  const $start = tr.doc.resolve(range.start),
+    item = $start.nodeAfter!;
+  if (tr.mapping.map(range.end) != range.start + $start.nodeAfter!.nodeSize)
+    return null;
+  const atStart = range.startIndex == 0,
+    atEnd = range.endIndex == list.childCount;
+  const parent = $start.node(-1),
+    indexBefore = $start.index(-1);
+  if (
+    !parent.canReplace(
+      indexBefore + (atStart ? 0 : 1),
+      indexBefore + 1,
+      item.content.append(atEnd ? Fragment.empty : Fragment.from(list)),
+    )
+  )
+    return null;
+  const start = $start.pos,
+    end = start + item.nodeSize;
+  // Strip off the surrounding list. At the sides where we're not at
+  // the end of the list, the existing list is closed. At sides where
+  // this is the end, it is overwritten to its end.
+  return tr.step(
+    new ReplaceAroundStep(
+      start - (atStart ? 1 : 0),
+      end + (atEnd ? 1 : 0),
+      start + 1,
+      end - 1,
+      new Slice(
+        (atStart
+          ? Fragment.empty
+          : Fragment.from(list.copy(Fragment.empty))
+        ).append(
+          atEnd ? Fragment.empty : Fragment.from(list.copy(Fragment.empty)),
+        ),
+        atStart ? 0 : 1,
+        atEnd ? 0 : 1,
+      ),
+      atStart ? 0 : 1,
+    ),
+  );
+}
 
 export const indentListItem = (itemType: NodeType, reduce: number) => {
   return (
@@ -164,6 +200,11 @@ export const indentListItem = (itemType: NodeType, reduce: number) => {
 
     let tr = state.tr;
 
+    const liftOutNode: {
+      node: Node;
+      pos: number;
+    }[] = [];
+
     state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
       if (node.type.name !== 'list_item') return;
       const attrs = node.attrs as ListItemAttrs;
@@ -171,14 +212,12 @@ export const indentListItem = (itemType: NodeType, reduce: number) => {
         0,
         Math.min((attrs.indent || 0) + reduce, 6),
       );
+
       if (targetIndent <= 0) {
-        const resolvedPos = state.doc.resolve(pos + 2);
-        const range = resolvedPos.blockRange();
-        const target = range && liftTarget(range);
-        if (!range || target === null) {
-          throw new Error('Cannot lift');
-        }
-        tr = tr.lift(range, target);
+        liftOutNode.push({
+          node,
+          pos,
+        });
       } else {
         tr = tr.setNodeMarkup(pos, undefined, {
           ...attrs,
@@ -186,6 +225,15 @@ export const indentListItem = (itemType: NodeType, reduce: number) => {
         });
       }
     });
+
+    if (liftOutNode.length > 0) {
+      const range = $from.blockRange(
+        $to,
+        (node) => node.childCount > 0 && node.firstChild!.type == itemType,
+      );
+      if (!range) return false;
+      tr = liftOutOfList(state, range) || tr;
+    }
 
     if (tr.docChanged) {
       dispatch?.(tr);
@@ -195,6 +243,75 @@ export const indentListItem = (itemType: NodeType, reduce: number) => {
     return false;
   };
 };
+
+/// Build a command that splits a non-empty textblock at the top level
+/// of a list item by also splitting that list item.
+export function splitListItem(itemType: NodeType, itemAttrs?: Attrs): Command {
+  return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
+    const { $from, $to, node } = state.selection as NodeSelection;
+    if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to))
+      return false;
+    const grandParent = $from.node(-1);
+    if (grandParent.type != itemType) return false;
+    if (
+      $from.parent.content.size == 0 &&
+      $from.node(-1).childCount == $from.indexAfter(-1)
+    ) {
+      // In an empty block. If this is a nested list, the wrapping
+      // list item should be split. Otherwise, bail out and let next
+      // command handle lifting.
+      if (
+        $from.depth == 3 ||
+        $from.node(-3).type != itemType ||
+        $from.index(-2) != $from.node(-2).childCount - 1
+      )
+        return false;
+      if (dispatch) {
+        let wrap = Fragment.empty;
+        const depthBefore = $from.index(-1) ? 1 : $from.index(-2) ? 2 : 3;
+        // Build a fragment containing empty versions of the structure
+        // from the outer list item to the parent node of the cursor
+        for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d--)
+          wrap = Fragment.from($from.node(d).copy(wrap));
+        const depthAfter =
+          $from.indexAfter(-1) < $from.node(-2).childCount
+            ? 1
+            : $from.indexAfter(-2) < $from.node(-3).childCount
+            ? 2
+            : 3;
+        // Add a second list item with an empty default start node
+        wrap = wrap.append(Fragment.from(itemType.createAndFill()));
+        const start = $from.before($from.depth - (depthBefore - 1));
+        const tr = state.tr.replace(
+          start,
+          $from.after(-depthAfter),
+          new Slice(wrap, 4 - depthBefore, 0),
+        );
+        let sel = -1;
+        tr.doc.nodesBetween(start, tr.doc.content.size, (node, pos) => {
+          if (sel > -1) return false;
+          if (node.isTextblock && node.content.size == 0) sel = pos + 1;
+          return false;
+        });
+        if (sel > -1) tr.setSelection(Selection.near(tr.doc.resolve(sel)));
+        dispatch(tr.scrollIntoView());
+      }
+      return true;
+    }
+    const nextType =
+      $to.pos == $from.end() ? grandParent.contentMatchAt(0).defaultType : null;
+    const tr = state.tr.delete($from.pos, $to.pos);
+    const types = nextType
+      ? [
+          itemAttrs ? { type: itemType, attrs: itemAttrs } : null,
+          { type: nextType },
+        ]
+      : undefined;
+    if (!canSplit(tr.doc, $from.pos, 2, types)) return false;
+    if (dispatch) dispatch(tr.split($from.pos, 2, types).scrollIntoView());
+    return true;
+  };
+}
 
 export interface FreeListPluginConfigs {}
 
