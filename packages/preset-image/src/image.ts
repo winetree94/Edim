@@ -30,6 +30,7 @@ const image: Record<string, NodeSpec> = {
           const dom = node as HTMLElement;
           const viewportWidth = dom.dataset['viewportWidth'];
           const textAlign = dom.parentElement?.dataset['textAlign'] || 'center';
+          console.log('getAttrs');
           return {
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
@@ -43,6 +44,7 @@ const image: Record<string, NodeSpec> = {
     toDOM(node) {
       const { src, alt, title, textAlign, viewportWidth } =
         node.attrs as ImageAttrs;
+      console.log('toDOM');
       return [
         'div',
         {
@@ -58,7 +60,6 @@ const image: Record<string, NodeSpec> = {
             class: 'pmp-image',
             style: `width: ${viewportWidth}%`,
             'data-viewport-width': viewportWidth,
-            'data-text-align': textAlign,
           },
         ],
       ];
@@ -72,27 +73,6 @@ export const Image = (): PMPluginsFactory => () => {
       ...image,
     },
     marks: {},
-    plugins: () => [
-      new Plugin({
-        key: new PluginKey('imagePlugin'),
-        props: {
-          decorations: (state) => {
-            const { doc } = state;
-            const decorations: any[] = [];
-            doc.descendants((node, pos) => {
-              if (node.type.name === 'image') {
-                const { viewportWidth } = node.attrs as ImageAttrs;
-                decorations.push(
-                  Decoration.node(pos, pos + node.nodeSize, {
-                    class: `image-${viewportWidth}`,
-                  }),
-                );
-              }
-            });
-            return DecorationSet.create(doc, decorations);
-          },
-        },
-      }),
-    ],
+    plugins: () => [],
   };
 };

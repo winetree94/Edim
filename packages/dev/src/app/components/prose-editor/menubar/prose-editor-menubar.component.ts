@@ -134,17 +134,17 @@ export class ProseEditorMenubarComponent
       editorView.state.schema.marks['link'],
     );
 
-    // this.activeOrderedList = !!findParentNode(
-    //   editorView.state,
-    //   editorView.state.selection.from,
-    //   editorView.state.schema.nodes['ordered_list'],
-    // );
+    this.activeOrderedList = !!findParentNode(
+      editorView.state,
+      editorView.state.selection.from,
+      editorView.state.schema.nodes['ordered_list'],
+    );
 
-    // this.activeUnorderedList = !!findParentNode(
-    //   editorView.state,
-    //   editorView.state.selection.from,
-    //   editorView.state.schema.nodes['bullet_list'],
-    // );
+    this.activeUnorderedList = !!findParentNode(
+      editorView.state,
+      editorView.state.selection.from,
+      editorView.state.schema.nodes['bullet_list'],
+    );
 
     this.canNormalText = this.getRangeNodes()
       .filter(
@@ -176,8 +176,7 @@ export class ProseEditorMenubarComponent
       rangeFromNode.type.name === 'heading' &&
       rangeFromNode.attrs['level'] === 1;
 
-    this.activeH2 =
-      this.canNormalText &&
+    this.activeH2 = this.canNormalText &&
       rangeFromNode.type.name === 'heading' &&
       rangeFromNode.attrs['level'] === 2;
 
@@ -370,70 +369,6 @@ export class ProseEditorMenubarComponent
   }
 
   public onUnorderedListClick(): void {
-    const rangeParagraphNodes: {
-      node: Node;
-      parent: Node | null;
-      pos: number;
-      isBulletListChild: boolean;
-      isOrderedListChild: boolean;
-    }[] = [];
-
-    this._editorView.state.doc.nodesBetween(
-      this._editorView.state.selection.from,
-      this._editorView.state.selection.to,
-      (node, pos, parent) => {
-        if (node.type.name === 'paragraph') {
-          let isBulletListChild = false;
-          let isOrderedListChild = false;
-          forEachParentNodes(this._editorView.state, pos, (parent) => {
-            if (parent.type.name === 'bullet_list') {
-              isBulletListChild = true;
-            }
-            if (parent.type.name === 'ordered_list') {
-              isOrderedListChild = true;
-            }
-          });
-          rangeParagraphNodes.push({
-            node,
-            parent,
-            pos,
-            isBulletListChild,
-            isOrderedListChild,
-          });
-        }
-      },
-    );
-
-    if (rangeParagraphNodes.length === 0) {
-      return;
-    }
-
-    const isAllBulletListChild = rangeParagraphNodes.every(
-      (node) => node.isBulletListChild,
-    );
-
-    if (isAllBulletListChild) {
-      // convert to paragraph
-      const tr = rangeParagraphNodes.reduce<Transaction>((tr, node) => {
-        return tr.setNodeMarkup(
-          node.pos,
-          this._editorView.state.schema.nodes['paragraph'],
-          {
-            indent: 0,
-            textAlign: 'left',
-          },
-        );
-      }, this._editorView.state.tr);
-      this._editorView.dispatch(tr);
-      return;
-    }
-
-    rangeParagraphNodes.reduce<Transaction>((tr, node) => {
-      return tr;
-    }, this._editorView.state.tr);
-
-    console.log(isAllBulletListChild);
-
     // const isOrdered = findParentNode(
     //   this._editorView.state,
     //   this._editorView.state.selection.from,

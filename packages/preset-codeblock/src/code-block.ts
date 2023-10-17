@@ -4,7 +4,17 @@ import { inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
 
-const preDOM: DOMOutputSpec = ['pre', ['code', 0]];
+const preDOM: DOMOutputSpec = [
+  'pre',
+  { class: 'pmp-codeblock-wrapper' },
+  [
+    'code',
+    {
+      class: 'pmp-codeblock-code',
+    },
+    0,
+  ],
+];
 const code_block: Record<string, NodeSpec> = {
   code_block: {
     content: 'text*',

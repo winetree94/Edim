@@ -1,13 +1,75 @@
 .ProseMirror {
-
-  ul.pmp-bullet-list, ol.pmp-ordered-list {
+  ul.pmp-bullet-list,
+  ol.pmp-ordered-list {
     padding-left: 0;
+    list-style-type: none;
+
+    li.pmp-list-item {
+      @for $i from 1 through 6 {
+        &.pmp-list-item-indent-#{$i} {
+          margin-left: 30px * $i;
+        }
+      }
+
+      &:before {
+        position: absolute;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        left: -20px;
+      }
+    }
   }
-  
-  li.pmp-list-item {
-    @for $i from 1 through 6 {
-      &.pmp-list-item-indent-#{$i} {
-        margin-left: 30px * $i;
+
+  ul.pmp-bullet-list {
+    li.pmp-list-item {
+      &.pmp-list-item-indent-1::before {
+        content: '\25cf';
+      }
+      &.pmp-list-item-indent-2::before {
+        content: '\25cb';
+      }
+      &.pmp-list-item-indent-3::before {
+        content: '\25a0';
+      }
+      &.pmp-list-item-indent-4::before {
+        content: '\25cf';
+      }
+      &.pmp-list-item-indent-5::before {
+        content: '\25cb';
+      }
+      &.pmp-list-item-indent-6::before {
+        content: '\25a0';
+      }
+    }
+  }
+
+  ol.pmp-ordered-list {
+    counter-reset: list-1 list-2 list-3 list-4 list-5 list-6;
+
+    li.pmp-list-item {
+      &.pmp-list-item-indent-1::before {
+        content: counter(list-1, decimal) '. ';
+        counter-increment: list-1;
+      }
+      &.pmp-list-item-indent-2::before {
+        content: counter(list-2, lower-alpha) '. ';
+        counter-increment: list-2;
+      }
+      &.pmp-list-item-indent-3::before {
+        content: counter(list-3, lower-roman) '. ';
+        counter-increment: list-3;
+      }
+      &.pmp-list-item-indent-4::before {
+        content: counter(list-4, decimal) '. ';
+        counter-increment: list-4;
+      }
+      &.pmp-list-item-indent-5::before {
+        content: counter(list-5, lower-alpha) '. ';
+        counter-increment: list-5;
+      }
+      &.pmp-list-item-indent-6::before {
+        content: counter(list-6, lower-roman) '. ';
+        counter-increment: list-6;
       }
     }
   }

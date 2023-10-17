@@ -48,7 +48,7 @@ export const orderedList: Record<string, NodeSpec> = {
         },
       },
     ],
-    content: 'list_item+',
+    content: 'list_item*',
     group: 'block',
     toDOM() {
       return olDOM;
@@ -59,7 +59,7 @@ export const orderedList: Record<string, NodeSpec> = {
 export const bulletList: Record<string, NodeSpec> = {
   bullet_list: {
     parseDOM: [{ tag: 'ul' }],
-    content: 'list_item+',
+    content: 'list_item*',
     group: 'block',
     toDOM() {
       return ulDOM;

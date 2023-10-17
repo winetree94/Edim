@@ -19,7 +19,6 @@
     "nx": "16.8.1",
     "nx-cloud": "latest",
     "prettier": "^3.0.3",
-    "prosemirror-dev-tools": "^4.0.0",
     "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   },
