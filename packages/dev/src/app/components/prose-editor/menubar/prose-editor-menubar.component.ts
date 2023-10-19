@@ -9,6 +9,7 @@ import {
 import {
   EditorState,
   PluginView,
+  Selection,
   TextSelection,
   Transaction,
 } from 'prosemirror-state';
@@ -23,15 +24,16 @@ import {
   wrapIn,
 } from 'prosemirror-preset-utils';
 import { GlobalService } from 'src/app/global.service';
-import { setBlockType, toggleMark } from 'prosemirror-commands';
+import { chainCommands, joinBackward, setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
 import { wrapInList } from 'prosemirror-preset-list';
-import { Fragment, Node } from 'prosemirror-model';
+import { Fragment, Node, Slice } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
+import { ReplaceAroundStep, ReplaceStep } from 'prosemirror-transform';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -176,7 +178,8 @@ export class ProseEditorMenubarComponent
       rangeFromNode.type.name === 'heading' &&
       rangeFromNode.attrs['level'] === 1;
 
-    this.activeH2 = this.canNormalText &&
+    this.activeH2 =
+      this.canNormalText &&
       rangeFromNode.type.name === 'heading' &&
       rangeFromNode.attrs['level'] === 2;
 
@@ -369,6 +372,43 @@ export class ProseEditorMenubarComponent
   }
 
   public onUnorderedListClick(): void {
+    const { $from, $to } = this._editorView.state.tr.selection;
+
+    const range = $from.blockRange($to, (node) => {
+      return (
+        node.childCount > 0 &&
+        ['bullet_list', 'ordered_list', 'doc'].includes(node.type.name)
+      );
+    });
+
+    if (!range) {
+      return;
+    }
+
+    const parentType = range.parent.type.name;
+
+    // convert to ordered list
+    if (parentType === 'bullet_list') {
+      const list = this._editorView.state.schema.nodes['ordered_list'].create(
+        null,
+        this._editorView.state.doc.slice(range.start, range.end).content,
+      );
+
+      const tr = this._editorView.state.tr.replaceWith(
+        range.start,
+        range.end,
+        list,
+      );
+
+      this._editorView.dispatch(
+        tr
+          // .setSelection(TextSelection.create(tr.doc, $from.pos, $to.pos))
+          .scrollIntoView(),
+      );
+
+      this._editorView.focus();
+    }
+
     // const isOrdered = findParentNode(
     //   this._editorView.state,
     //   this._editorView.state.selection.from,

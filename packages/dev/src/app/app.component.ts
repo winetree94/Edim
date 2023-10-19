@@ -50,6 +50,9 @@ export class AppComponent implements OnInit {
                 "content": [
                     {
                         "type": "list_item",
+                        "attrs": {
+                            "indent": 1
+                        },
                         "content": [
                             {
                                 "type": "paragraph",
@@ -68,6 +71,9 @@ export class AppComponent implements OnInit {
                     },
                     {
                         "type": "list_item",
+                        "attrs": {
+                            "indent": 1
+                        },
                         "content": [
                             {
                                 "type": "paragraph",
@@ -85,23 +91,39 @@ export class AppComponent implements OnInit {
                         ]
                     },
                     {
-                      "type": "list_item",
-                      "content": [
-                          {
-                              "type": "paragraph",
-                              "attrs": {
-                                  "textAlign": "left",
-                                  "indent": 0
-                              },
-                              "content": [
-                                  {
-                                      "type": "text",
-                                      "text": "aalskdfjasldkfjasldkfjalskdjfslkdfjalksdf"
-                                  }
-                              ]
-                          }
-                      ]
-                  }
+                        "type": "list_item",
+                        "attrs": {
+                            "indent": 1
+                        },
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "aalskdfjasldkfjasldkfjalskdjfslkdfjalksdf"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "attrs": {
+                    "textAlign": "left",
+                    "indent": 0
+                },
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "asdfasdfasdf"
+                    }
                 ]
             }
         ]

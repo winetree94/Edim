@@ -267,12 +267,15 @@ export function splitListItem(itemType: NodeType, itemAttrs?: Attrs): Command {
 export function liftListItem(itemType: NodeType): Command {
   return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
     const { $from, $to } = state.selection;
+
     const range = $from.blockRange(
       $to,
       (node) => node.childCount > 0 && node.firstChild!.type == itemType,
     );
+
     if (!range) return false;
     if (!dispatch) return true;
+
     if ($from.node(range.depth - 1).type == itemType) {
       // Inside a parent list
       return liftToOuterList(state, dispatch, itemType, range);

@@ -16,6 +16,7 @@ import {
   Command,
   EditorState,
   NodeSelection,
+  Plugin,
   Selection,
   Transaction,
 } from 'prosemirror-state';
@@ -84,16 +85,17 @@ export const listItem: Record<string, NodeSpec> = {
         tag: 'li',
         getAttrs(node) {
           const dom = node as HTMLElement;
+          const indent = dom.dataset['indent'];
 
-          let qlIndent: number = 0;
+          let legacyIndent: number = 0;
           for (let i = 1; i <= 4; i++) {
-            qlIndent = dom.classList.contains(`ql-indent-${i}`)
+            legacyIndent = dom.classList.contains(`ql-indent-${i}`)
               ? i + 1
-              : qlIndent;
+              : legacyIndent;
           }
 
           return {
-            indent: qlIndent || dom.getAttribute('data-indent') || 1,
+            indent: legacyIndent || indent || 1,
           };
         },
       },
@@ -135,50 +137,61 @@ export function liftOutOfList(
   state: EditorState,
   range: NodeRange,
 ): Transaction | null {
-  const tr = state.tr,
-    list = range.parent;
-  // Merge the list items into a single big item
+  const tr = state.tr;
+  const listNode = range.parent;
+
+  // 마지막 li 부터 지우면서 첫번째 li 안으로 모두 병합
   for (
     let pos = range.end, i = range.endIndex - 1, e = range.startIndex;
     i > e;
     i--
   ) {
-    pos -= list.child(i).nodeSize;
+    pos -= listNode.child(i).nodeSize;
     tr.delete(pos - 1, pos + 1);
   }
-  const $start = tr.doc.resolve(range.start),
-    item = $start.nodeAfter!;
-  if (tr.mapping.map(range.end) != range.start + $start.nodeAfter!.nodeSize)
+
+  const $rangeStartPos = tr.doc.resolve(range.start);
+  const rangeStartItemNode = $rangeStartPos.nodeAfter!;
+
+  if (tr.mapping.map(range.end) != range.start + rangeStartItemNode.nodeSize) {
     return null;
-  const atStart = range.startIndex == 0,
-    atEnd = range.endIndex == list.childCount;
-  const parent = $start.node(-1),
-    indexBefore = $start.index(-1);
+  }
+
+  const atStart = range.startIndex == 0;
+  const atEnd = range.endIndex == listNode.childCount;
+  const parent = $rangeStartPos.node(-1);
+  const indexBefore = $rangeStartPos.index(-1);
+
   if (
     !parent.canReplace(
       indexBefore + (atStart ? 0 : 1),
       indexBefore + 1,
-      item.content.append(atEnd ? Fragment.empty : Fragment.from(list)),
+      rangeStartItemNode.content.append(
+        atEnd ? Fragment.empty : Fragment.from(listNode),
+      ),
     )
-  )
+  ) {
     return null;
-  const start = $start.pos,
-    end = start + item.nodeSize;
+  }
+
+  const rangeStartItemPos = $rangeStartPos.pos;
+  const rangeEndItemPos = rangeStartItemPos + rangeStartItemNode.nodeSize;
+
   // Strip off the surrounding list. At the sides where we're not at
   // the end of the list, the existing list is closed. At sides where
   // this is the end, it is overwritten to its end.
   return tr.step(
     new ReplaceAroundStep(
-      start - (atStart ? 1 : 0),
-      end + (atEnd ? 1 : 0),
-      start + 1,
-      end - 1,
+      rangeStartItemPos - (atStart ? 1 : 0),
+      rangeEndItemPos + (atEnd ? 1 : 0),
+      rangeStartItemPos + 1,
+      rangeEndItemPos - 1,
       new Slice(
         (atStart
           ? Fragment.empty
-          : Fragment.from(list.copy(Fragment.empty))
+          : Fragment.from(listNode.copy(Fragment.empty))
         ).append(
-          atEnd ? Fragment.empty : Fragment.from(list.copy(Fragment.empty)),
+          atEnd ? Fragment.empty : Fragment.from(listNode.copy(Fragment.empty)),
         ),
         atStart ? 0 : 1,
         atEnd ? 0 : 1,
@@ -253,10 +266,15 @@ export const indentListItem = (itemType: NodeType, reduce: number) => {
 export function splitListItem(itemType: NodeType, itemAttrs?: Attrs): Command {
   return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
     const { $from, $to, node } = state.selection as NodeSelection;
-    if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to))
+    if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
       return false;
+    }
+
     const grandParent = $from.node(-1);
-    if (grandParent.type != itemType) return false;
+    if (grandParent.type != itemType) {
+      return false;
+    }
+
     if (
       $from.parent.content.size == 0 &&
       $from.node(-1).childCount == $from.indexAfter(-1)
@@ -348,6 +366,25 @@ export const FreeList =
               indentListItem(schema.nodes['list_item'], 1)(state, dispatch),
             'Shift-Tab': (state, dispatch) =>
               indentListItem(schema.nodes['list_item'], -1)(state, dispatch),
+          }),
+          new Plugin({
+            state: {
+              init(config, instance) {
+                return {};
+              },
+              apply(tr, value, oldState, newState) {
+                const { $from, from, $to } = tr.selection;
+                console.log(from);
+                // const range = $from.blockRange($to, (node) => {
+                //   return (
+                //     node.childCount > 0 &&
+                //     node.firstChild!.type.name === 'list_item'
+                //   );
+                // });
+                // console.log(range);
+                return newState;
+              },
+            },
           }),
         ];
       },

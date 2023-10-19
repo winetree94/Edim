@@ -172,6 +172,7 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
                 };
               },
             },
+            // for legacy
             {
               tag: 'a',
               getAttrs: (node): MentionAttribute | boolean => {
