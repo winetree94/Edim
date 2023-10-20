@@ -40,7 +40,6 @@ const ulDOM: DOMOutputSpec = [
 
 export const orderedList: Record<string, NodeSpec> = {
   ordered_list: {
-    attrs: {},
     parseDOM: [
       {
         tag: 'ol',
@@ -196,7 +195,7 @@ export function liftOutOfList(
   );
 }
 
-export const indentListItem = (itemType: NodeType, reduce: number) => {
+export const indentListItem = (itemType: NodeType, reduce: number): Command => {
   return (
     state: EditorState,
     dispatch?: (tr: Transaction) => void,
@@ -370,6 +369,25 @@ export const FreeList =
               );
             },
           }),
+          // new Plugin({
+          //   state: {
+          //     init(config, instance) {
+          //       return {};
+          //     },
+          //     apply(tr, value, oldState, newState) {
+          //       const { $from, from, $to } = tr.selection;
+          //       console.log(from);
+          //       // const range = $from.blockRange($to, (node) => {
+          //       //   return (
+          //       //     node.childCount > 0 &&
+          //       //     node.firstChild!.type.name === 'list_item'
+          //       //   );
+          //       // });
+          //       // console.log(range);
+          //       return newState;
+          //     },
+          //   },
+          // }),
         ];
       },
     };

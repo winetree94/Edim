@@ -36,11 +36,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
-import { wrapInList, wrapInList2 } from 'prosemirror-preset-list';
-import { Fragment, Node, Slice } from 'prosemirror-model';
+import { liftListItem, wrapInList, wrapInList2 } from 'prosemirror-preset-list';
+import { Fragment, Node, NodeRange, Slice } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
 import { ReplaceAroundStep, ReplaceStep } from 'prosemirror-transform';
-import { wrapInFreeList } from 'prosemirror-preset-free-list';
+import { wrapInFreeList, wrapInFreeList2 } from 'prosemirror-preset-free-list';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -336,12 +336,72 @@ export class ProseEditorMenubarComponent
   }
 
   public onOrderedListClick(): void {
-    autoJoin(
-      wrapInFreeList(this._editorView.state.schema.nodes['ordered_list'], {
-        indent: 0,
-      }),
-      ['ordered_list'],
-    )(this._editorView.state, this._editorView.dispatch);
+    // const step = new ReplaceAroundStep(
+    //   23,
+    //   40,
+    //   0,
+    //   0,
+    //   new Slice(
+    //     Fragment.fromArray([
+    //       this._editorView.state.schema.nodes['paragraph'].create(
+    //         null,
+    //         Fragment.fromArray([this._editorView.state.schema.text('test')]),
+    //       ),
+    //     ]),
+    //     0,
+    //     0,
+    //   ),
+    //   1,
+    // );
+    // this._editorView.dispatch(this._editorView.state.tr.step(step));
+
+    // this._editorView.state.doc.descendants((node, pos, parent) => {
+    //   new NodeRange(
+
+    //   )
+    // });
+
+    return;
+
+    let tr = this._editorView.state.tr;
+
+    const liftPending: {
+      node: Node;
+      pos: number;
+    }[] = [];
+    this._editorView.state.tr.doc.nodesBetween(
+      this._editorView.state.selection.from,
+      this._editorView.state.selection.to,
+      (node, pos) => {
+        if (
+          node.type.name === 'bullet_list' ||
+          node.type.name === 'ordered_list'
+        ) {
+          liftPending.push({ node, pos });
+        }
+      },
+    );
+
+    let reducedSize = 0;
+    liftPending.reverse().forEach(({ node, pos }) => {
+      const content: Node[] = [];
+      node.forEach((listItem) => {
+        listItem.forEach((itemContent) => {
+          content.push(
+            this._editorView.state.schema.nodes['paragraph'].create(
+              null,
+              itemContent.content,
+            ),
+          );
+        });
+      });
+      tr = tr.replaceWith(pos, pos + node.nodeSize, content);
+      reducedSize += node.nodeSize - content.length;
+    });
+
+    console.log(reducedSize);
+
+    this._editorView.dispatch(tr);
     this._editorView.focus();
   }
 

@@ -19,7 +19,7 @@ export const BasicKeymap = (): PMPluginsFactory => () => {
         'Alt-ArrowUp': joinUp,
         'Alt-ArrowDown': joinDown,
         'Mod-BracketLeft': lift,
-        // Escape: selectParentNode,
+        Escape: selectParentNode,
       }),
       keymap(baseKeymap),
     ],
