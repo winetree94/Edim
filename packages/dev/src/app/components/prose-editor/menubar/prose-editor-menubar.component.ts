@@ -24,16 +24,23 @@ import {
   wrapIn,
 } from 'prosemirror-preset-utils';
 import { GlobalService } from 'src/app/global.service';
-import { chainCommands, joinBackward, setBlockType, toggleMark } from 'prosemirror-commands';
+import {
+  autoJoin,
+  chainCommands,
+  joinBackward,
+  setBlockType,
+  toggleMark,
+} from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
-import { wrapInList } from 'prosemirror-preset-list';
+import { wrapInList, wrapInList2 } from 'prosemirror-preset-list';
 import { Fragment, Node, Slice } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
 import { ReplaceAroundStep, ReplaceStep } from 'prosemirror-transform';
+import { wrapInFreeList } from 'prosemirror-preset-free-list';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -329,46 +336,13 @@ export class ProseEditorMenubarComponent
   }
 
   public onOrderedListClick(): void {
-    if (
-      findParentNode(
-        this._editorView.state,
-        this._editorView.state.selection.from,
-        this._editorView.state.schema.nodes['ordered_list'],
-      )
-    ) {
-      const tr = wrapInList(
-        this._editorView.state,
-        lift(this._editorView.state, this._editorView.state.tr),
-        this._editorView.state.schema.nodes['ordered_list'],
-      );
-      if (!tr) {
-        return;
-      }
-      this._editorView.dispatch(tr);
-      this._editorView.focus();
-    } else if (
-      findParentNode(
-        this._editorView.state,
-        this._editorView.state.selection.from,
-        this._editorView.state.schema.nodes['bullet_list'],
-      )
-    ) {
-      const tr = lift(this._editorView.state, this._editorView.state.tr);
-      this._editorView.dispatch(tr);
-      this._editorView.focus();
-      return;
-    } else {
-      const tr = wrapInList(
-        this._editorView.state,
-        this._editorView.state.tr,
-        this._editorView.state.schema.nodes['ordered_list'],
-      );
-      if (!tr) {
-        return;
-      }
-      this._editorView.dispatch(tr);
-      this._editorView.focus();
-    }
+    autoJoin(
+      wrapInFreeList(this._editorView.state.schema.nodes['ordered_list'], {
+        indent: 0,
+      }),
+      ['ordered_list'],
+    )(this._editorView.state, this._editorView.dispatch);
+    this._editorView.focus();
   }
 
   public onUnorderedListClick(): void {
@@ -450,10 +424,12 @@ export class ProseEditorMenubarComponent
   }
 
   public onIncreaseIndentClick(): void {
+    alert('not implemented');
     return;
   }
 
   public onDecreaseIndentClick(): void {
+    alert('not implemented');
     return;
   }
 

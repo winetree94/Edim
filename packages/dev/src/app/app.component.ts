@@ -125,6 +125,87 @@ export class AppComponent implements OnInit {
                         "text": "asdfasdfasdf"
                     }
                 ]
+            },
+            {
+                "type": "ordered_list",
+                "content": [
+                    {
+                        "type": "list_item",
+                        "attrs": {
+                            "indent": 1
+                        },
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "alksdfjlaskdfj"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "list_item",
+                        "attrs": {
+                            "indent": 1
+                        },
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "aslkdfjalskdjf"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "list_item",
+                        "attrs": {
+                            "indent": 1
+                        },
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "asdlkfjasdf"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "paragraph",
+                "attrs": {
+                    "textAlign": "left",
+                    "indent": 0
+                },
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "asdfasdfasdfasdf"
+                    }
+                ]
             }
         ]
     }

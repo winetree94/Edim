@@ -1,7 +1,8 @@
 import { wrapIn } from 'prosemirror-commands';
-import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';
+import { inputRules } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
 import { DOMOutputSpec, NodeSpec, NodeType, Schema } from 'prosemirror-model';
+import { wrappingInputRuleWithJoin } from 'prosemirror-preset-utils';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 const blockquoteDOM: DOMOutputSpec = ['blockquote', 0];
@@ -20,7 +21,7 @@ const blockquote: Record<string, NodeSpec> = {
 /// Given a blockquote node type, returns an input rule that turns `"> "`
 /// at the start of a textblock into a blockquote.
 export function blockQuoteRule(nodeType: NodeType) {
-  return wrappingInputRule(/^\s*>\s$/, nodeType);
+  return wrappingInputRuleWithJoin(/^\s*>\s$/, nodeType);
 }
 
 export const BlockQuote = (): PMPluginsFactory => () => {

@@ -10,13 +10,13 @@ import {
   Slice,
 } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
-import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';
+import { inputRules } from 'prosemirror-inputrules';
+import { wrappingInputRuleWithJoin } from 'prosemirror-preset-utils';
 import { keymap } from 'prosemirror-keymap';
 import {
   Command,
   EditorState,
   NodeSelection,
-  Plugin,
   Selection,
   Transaction,
 } from 'prosemirror-state';
@@ -118,19 +118,14 @@ export const listItem: Record<string, NodeSpec> = {
 /// Given a list node type, returns an input rule that turns a number
 /// followed by a dot at the start of a textblock into an ordered list.
 export const orderedListRule = (nodeType: NodeType) => {
-  return wrappingInputRule(
-    /^(\d+)\.\s$/,
-    nodeType,
-    (match) => ({ order: +match[1] }),
-    (match, node) => node.childCount + node.attrs['order'] == +match[1],
-  );
+  return wrappingInputRuleWithJoin(/^(\d+)\.\s$/, nodeType);
 };
 
 /// Given a list node type, returns an input rule that turns a bullet
 /// (dash, plush, or asterisk) at the start of a textblock into a
 /// bullet list.
 export const bulletListRule = (nodeType: NodeType) => {
-  return wrappingInputRule(/^\s*([-+*])\s$/, nodeType);
+  return wrappingInputRuleWithJoin(/^\s*([-+*])\s$/, nodeType);
 };
 
 export function liftOutOfList(
@@ -362,28 +357,17 @@ export const FreeList =
             'Shift-Enter': (state, dispatch) => {
               return splitListItem(schema.nodes['list_item'])(state, dispatch);
             },
-            Tab: (state, dispatch) =>
-              indentListItem(schema.nodes['list_item'], 1)(state, dispatch),
-            'Shift-Tab': (state, dispatch) =>
-              indentListItem(schema.nodes['list_item'], -1)(state, dispatch),
-          }),
-          new Plugin({
-            state: {
-              init(config, instance) {
-                return {};
-              },
-              apply(tr, value, oldState, newState) {
-                const { $from, from, $to } = tr.selection;
-                console.log(from);
-                // const range = $from.blockRange($to, (node) => {
-                //   return (
-                //     node.childCount > 0 &&
-                //     node.firstChild!.type.name === 'list_item'
-                //   );
-                // });
-                // console.log(range);
-                return newState;
-              },
+            Tab: (state, dispatch) => {
+              return indentListItem(schema.nodes['list_item'], 1)(
+                state,
+                dispatch,
+              );
+            },
+            'Shift-Tab': (state, dispatch) => {
+              return indentListItem(schema.nodes['list_item'], -1)(
+                state,
+                dispatch,
+              );
             },
           }),
         ];
