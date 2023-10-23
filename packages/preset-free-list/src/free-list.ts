@@ -174,22 +174,34 @@ export function liftOutOfList(
   // Strip off the surrounding list. At the sides where we're not at
   // the end of the list, the existing list is closed. At sides where
   // this is the end, it is overwritten to its end.
+
+  const slice = new Slice(
+    (atStart
+      ? Fragment.empty
+      : Fragment.from(listNode.copy(Fragment.empty))
+    ).append(
+      atEnd ? Fragment.empty : Fragment.from(listNode.copy(Fragment.empty)),
+    ),
+    atStart ? 0 : 1,
+    atEnd ? 0 : 1,
+  );
+
+  // console.log(
+  //   rangeStartItemPos - (atStart ? 1 : 0),
+  //   rangeEndItemPos + (atEnd ? 1 : 0),
+  //   rangeStartItemPos + 1,
+  //   rangeEndItemPos - 1,
+  //   slice,
+  //   atStart ? 0 : 1,
+  // );
+
   return tr.step(
     new ReplaceAroundStep(
       rangeStartItemPos - (atStart ? 1 : 0),
       rangeEndItemPos + (atEnd ? 1 : 0),
       rangeStartItemPos + 1,
       rangeEndItemPos - 1,
-      new Slice(
-        (atStart
-          ? Fragment.empty
-          : Fragment.from(listNode.copy(Fragment.empty))
-        ).append(
-          atEnd ? Fragment.empty : Fragment.from(listNode.copy(Fragment.empty)),
-        ),
-        atStart ? 0 : 1,
-        atEnd ? 0 : 1,
-      ),
+      slice,
       atStart ? 0 : 1,
     ),
   );

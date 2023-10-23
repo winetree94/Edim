@@ -24,13 +24,13 @@ export function wrappingInputRuleWithJoin(
 
     const beforePos = start - 1;
     const before = tr.doc.resolve(beforePos).nodeBefore;
-
-    if (
+    const beforeCanJoin =
       before &&
       before.type == nodeType &&
       canJoin(tr.doc, beforePos) &&
-      (!beforeJoinPredicate || beforeJoinPredicate(match, before))
-    ) {
+      (!beforeJoinPredicate || beforeJoinPredicate(match, before));
+
+    if (beforeCanJoin) {
       tr.join(beforePos);
     }
 
@@ -42,15 +42,39 @@ export function wrappingInputRuleWithJoin(
 
     const afterPos = start + afterNode.nodeSize + 1;
     const after = tr.doc.resolve(afterPos).nodeBefore;
-
-    if (
+    const afterCanJoin =
       after &&
       after.type == nodeType &&
       canJoin(tr.doc, afterPos) &&
-      (!afterJoinPredicate || afterJoinPredicate(match, after))
-    ) {
+      (!afterJoinPredicate || afterJoinPredicate(match, after));
+
+    if (afterCanJoin) {
       tr.join(afterPos);
     }
+
+    const $beforeMergedNodePos =
+      beforeCanJoin &&
+      tr.doc
+        .resolve(beforePos)
+        .blockRange(undefined, (node) => node.type === nodeType);
+
+    if (!$beforeMergedNodePos) {
+      return tr;
+    }
+
+    if (tr.doc.nodeSize <= $beforeMergedNodePos.end + 3) {
+      return tr;
+    }
+
+    const nextNode = tr.doc
+      .resolve($beforeMergedNodePos.end + 3)
+      .blockRange(undefined, (node) => node.type === nodeType);
+
+    if (!nextNode) {
+      return tr;
+    }
+
+    tr.delete($beforeMergedNodePos.end, nextNode.start);
 
     return tr;
   });

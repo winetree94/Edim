@@ -40,7 +40,12 @@ import { liftListItem, wrapInList, wrapInList2 } from 'prosemirror-preset-list';
 import { Fragment, Node, NodeRange, Slice } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
 import { ReplaceAroundStep, ReplaceStep } from 'prosemirror-transform';
-import { wrapInFreeList, wrapInFreeList2 } from 'prosemirror-preset-free-list';
+import {
+  liftOutOfList,
+  wrapInFreeList,
+  wrapInFreeList2,
+  wrapInFreeList3,
+} from 'prosemirror-preset-free-list';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -336,6 +341,98 @@ export class ProseEditorMenubarComponent
   }
 
   public onOrderedListClick(): void {
+    const { $from, $to } = this._editorView.state.tr.selection;
+    const whiteList = ['doc', 'table_cell'];
+    const range = $from.blockRange($to, (node) => {
+      return ![
+        'ordered_list',
+        'bullet_list',
+        'paragraph',
+        'list_item',
+        'text',
+      ].includes(node.type.name);
+    });
+
+    if (!range) {
+      return;
+    }
+
+    if (!whiteList.includes(range.parent.type.name)) {
+      return;
+    }
+
+    const rangeNodes: {
+      node: Node;
+      pos: number;
+    }[] = [];
+
+    this._editorView.state.doc.nodesBetween(
+      range.start,
+      range.end,
+      (node, pos, parent) => {
+        if (parent !== range.parent) {
+          return;
+        }
+        rangeNodes.push({
+          node,
+          pos: pos,
+        });
+        return true;
+      },
+    );
+
+    // 모두 ordered_list 인 경우 해제
+    if (rangeNodes.every(({ node }) => node.type.name === 'ordered_list')) {
+      const range = $from.blockRange($to);
+      if (!range) return;
+      const tr = liftOutOfList(this._editorView.state, range);
+      if (!tr) {
+        return;
+      }
+      this._editorView.dispatch(tr);
+      this._editorView.focus();
+      return;
+    }
+
+    const groups = rangeNodes
+      .filter(({ node }) => node.type.name !== 'ordered_list')
+      .reduce<{ node: Node; pos: number }[][]>((result, { node, pos }) => {
+        const previousGroup = result[result.length - 1];
+        if (
+          previousGroup &&
+          previousGroup[0] &&
+          previousGroup[0]?.node.type.name === node.type.name
+        ) {
+          previousGroup.push({ node, pos });
+        } else {
+          result.push([{ node, pos }]);
+        }
+        return result;
+      }, []);
+
+    let tr = this._editorView.state.tr;
+    groups.reverse().forEach((group) => {
+      const type = group[0].node.type.name;
+      if (type === 'paragraph') {
+        tr =
+          wrapInFreeList3(this._editorView.state.schema.nodes['ordered_list'])(
+            tr,
+            this._editorView.state.doc.resolve(group[0].pos),
+            this._editorView.state.doc.resolve(
+              group[group.length - 1].pos +
+                group[group.length - 1].node.nodeSize,
+            ),
+          ) || tr;
+      }
+    });
+
+    this._editorView.dispatch(tr);
+
+    // wrapInList2(this._editorView.state.schema.nodes['ordered_list'])(
+    //   this._editorView.state,
+    //   this._editorView.dispatch,
+    // );
+
     // const step = new ReplaceAroundStep(
     //   23,
     //   40,
@@ -360,49 +457,6 @@ export class ProseEditorMenubarComponent
 
     //   )
     // });
-
-    return;
-
-    let tr = this._editorView.state.tr;
-
-    const liftPending: {
-      node: Node;
-      pos: number;
-    }[] = [];
-    this._editorView.state.tr.doc.nodesBetween(
-      this._editorView.state.selection.from,
-      this._editorView.state.selection.to,
-      (node, pos) => {
-        if (
-          node.type.name === 'bullet_list' ||
-          node.type.name === 'ordered_list'
-        ) {
-          liftPending.push({ node, pos });
-        }
-      },
-    );
-
-    let reducedSize = 0;
-    liftPending.reverse().forEach(({ node, pos }) => {
-      const content: Node[] = [];
-      node.forEach((listItem) => {
-        listItem.forEach((itemContent) => {
-          content.push(
-            this._editorView.state.schema.nodes['paragraph'].create(
-              null,
-              itemContent.content,
-            ),
-          );
-        });
-      });
-      tr = tr.replaceWith(pos, pos + node.nodeSize, content);
-      reducedSize += node.nodeSize - content.length;
-    });
-
-    console.log(reducedSize);
-
-    this._editorView.dispatch(tr);
-    this._editorView.focus();
   }
 
   public onUnorderedListClick(): void {
