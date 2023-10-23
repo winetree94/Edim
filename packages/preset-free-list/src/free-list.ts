@@ -1,27 +1,10 @@
-import {
-  Attrs,
-  DOMOutputSpec,
-  Fragment,
-  Node,
-  NodeRange,
-  NodeSpec,
-  NodeType,
-  Schema,
-  Slice,
-} from 'prosemirror-model';
+import { DOMOutputSpec, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { inputRules } from 'prosemirror-inputrules';
 import { wrappingInputRuleWithJoin } from 'prosemirror-preset-utils';
 import { keymap } from 'prosemirror-keymap';
-import {
-  Command,
-  EditorState,
-  NodeSelection,
-  Selection,
-  Transaction,
-} from 'prosemirror-state';
-import { ReplaceAroundStep, canSplit } from 'prosemirror-transform';
-import { liftOutOfList } from './commands';
+import { indentListItem, splitListItem } from './commands';
+import { Plugin, PluginKey } from 'prosemirror-state';
 
 const olDOM: DOMOutputSpec = [
   'ol',
@@ -74,7 +57,7 @@ export interface ListItemAttrs {
 
 export const listItem: Record<string, NodeSpec> = {
   list_item: {
-    content: 'paragraph block*',
+    content: 'paragraph*',
     attrs: {
       indent: {
         default: 1,
@@ -118,6 +101,7 @@ export const listItem: Record<string, NodeSpec> = {
 /// Given a list node type, returns an input rule that turns a number
 /// followed by a dot at the start of a textblock into an ordered list.
 export const orderedListRule = (nodeType: NodeType) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
   return wrappingInputRuleWithJoin(/^(\d+)\.\s$/, nodeType);
 };
 
@@ -125,142 +109,9 @@ export const orderedListRule = (nodeType: NodeType) => {
 /// (dash, plush, or asterisk) at the start of a textblock into a
 /// bullet list.
 export const bulletListRule = (nodeType: NodeType) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
   return wrappingInputRuleWithJoin(/^\s*([-+*])\s$/, nodeType);
 };
-
-export const indentListItem = (itemType: NodeType, reduce: number): Command => {
-  return (
-    state: EditorState,
-    dispatch?: (tr: Transaction) => void,
-  ): boolean => {
-    const { $from, $to } = state.selection;
-
-    const fromGrandParent = $from.node(-2);
-    const toGrandParent = $to.node(-2);
-
-    if (fromGrandParent !== toGrandParent) {
-      return false;
-    }
-
-    let tr = state.tr;
-
-    const liftOutNode: {
-      node: Node;
-      pos: number;
-    }[] = [];
-
-    state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      if (node.type.name !== 'list_item') return;
-      const attrs = node.attrs as ListItemAttrs;
-      const targetIndent = Math.max(
-        0,
-        Math.min((attrs.indent || 0) + reduce, 6),
-      );
-
-      if (targetIndent <= 0) {
-        liftOutNode.push({
-          node,
-          pos,
-        });
-      } else {
-        tr = tr.setNodeMarkup(pos, undefined, {
-          ...attrs,
-          indent: targetIndent,
-        });
-      }
-    });
-
-    if (liftOutNode.length > 0) {
-      const range = $from.blockRange(
-        $to,
-        (node) => node.childCount > 0 && node.firstChild!.type == itemType,
-      );
-      if (!range) return false;
-      tr = liftOutOfList(state.tr, range) || tr;
-    }
-
-    if (tr.docChanged) {
-      dispatch?.(tr);
-      return true;
-    }
-
-    return false;
-  };
-};
-
-/// Build a command that splits a non-empty textblock at the top level
-/// of a list item by also splitting that list item.
-export function splitListItem(itemType: NodeType, itemAttrs?: Attrs): Command {
-  return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
-    const { $from, $to, node } = state.selection as NodeSelection;
-    if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
-      return false;
-    }
-
-    const grandParent = $from.node(-1);
-    if (grandParent.type != itemType) {
-      return false;
-    }
-
-    if (
-      $from.parent.content.size == 0 &&
-      $from.node(-1).childCount == $from.indexAfter(-1)
-    ) {
-      // In an empty block. If this is a nested list, the wrapping
-      // list item should be split. Otherwise, bail out and let next
-      // command handle lifting.
-      if (
-        $from.depth == 3 ||
-        $from.node(-3).type != itemType ||
-        $from.index(-2) != $from.node(-2).childCount - 1
-      )
-        return false;
-      if (dispatch) {
-        let wrap = Fragment.empty;
-        const depthBefore = $from.index(-1) ? 1 : $from.index(-2) ? 2 : 3;
-        // Build a fragment containing empty versions of the structure
-        // from the outer list item to the parent node of the cursor
-        for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d--)
-          wrap = Fragment.from($from.node(d).copy(wrap));
-        const depthAfter =
-          $from.indexAfter(-1) < $from.node(-2).childCount
-            ? 1
-            : $from.indexAfter(-2) < $from.node(-3).childCount
-            ? 2
-            : 3;
-        // Add a second list item with an empty default start node
-        wrap = wrap.append(Fragment.from(itemType.createAndFill()));
-        const start = $from.before($from.depth - (depthBefore - 1));
-        const tr = state.tr.replace(
-          start,
-          $from.after(-depthAfter),
-          new Slice(wrap, 4 - depthBefore, 0),
-        );
-        let sel = -1;
-        tr.doc.nodesBetween(start, tr.doc.content.size, (node, pos) => {
-          if (sel > -1) return false;
-          if (node.isTextblock && node.content.size == 0) sel = pos + 1;
-          return false;
-        });
-        if (sel > -1) tr.setSelection(Selection.near(tr.doc.resolve(sel)));
-        dispatch(tr.scrollIntoView());
-      }
-      return true;
-    }
-    const nextType =
-      $to.pos == $from.end() ? grandParent.contentMatchAt(0).defaultType : null;
-    const tr = state.tr.delete($from.pos, $to.pos);
-    const types = nextType
-      ? [
-          itemAttrs ? { type: itemType, attrs: itemAttrs } : null,
-          { type: nextType },
-        ]
-      : undefined;
-    if (!canSplit(tr.doc, $from.pos, 2, types)) return false;
-    if (dispatch) dispatch(tr.split($from.pos, 2, types).scrollIntoView());
-    return true;
-  };
-}
 
 export interface FreeListPluginConfigs {}
 
@@ -283,7 +134,7 @@ export const FreeList =
             ],
           }),
           keymap({
-            Enter: (state, dispatch, view) => {
+            Enter: (state, dispatch) => {
               return splitListItem(schema.nodes['list_item'])(state, dispatch);
             },
             'Shift-Enter': (state, dispatch) => {
@@ -300,6 +151,16 @@ export const FreeList =
                 state,
                 dispatch,
               );
+            },
+          }),
+          // TODO to flat list
+          new Plugin({
+            key: new PluginKey('freelist'),
+            props: {
+              transformPastedHTML(html, view) {
+                const dom = new DOMParser().parseFromString(html, 'text/html');
+                return dom.documentElement.innerHTML;
+              },
             },
           }),
           // new Plugin({

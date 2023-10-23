@@ -1,7 +1,7 @@
 /// Returns a command function that wraps the selection in a list with
 /// the given type an attributes. If `dispatch` is null, only return a
 /// value to indicate whether this is possible, but don't actually
-import { joinBackward } from 'prosemirror-commands';
+import { ListItemAttrs } from './free-list';
 import {
   Attrs,
   Fragment,
@@ -11,21 +11,26 @@ import {
   ResolvedPos,
   Slice,
 } from 'prosemirror-model';
-import { lift } from 'prosemirror-preset-utils';
-import { Command, EditorState, Transaction } from 'prosemirror-state';
+import {
+  Command,
+  EditorState,
+  NodeSelection,
+  Selection,
+  Transaction,
+} from 'prosemirror-state';
 import {
   ReplaceAroundStep,
   canSplit,
   findWrapping,
 } from 'prosemirror-transform';
 
-export function doWrapInList(
+export const doWrapInList = (
   tr: Transaction,
   range: NodeRange,
   wrappers: { type: NodeType; attrs?: Attrs | null }[],
   joinBefore: boolean,
   listType: NodeType,
-) {
+) => {
   let content = Fragment.empty;
   for (let i = wrappers.length - 1; i >= 0; i--)
     content = Fragment.from(
@@ -63,60 +68,17 @@ export function doWrapInList(
     splitPos += parent.child(i).nodeSize;
   }
   return tr;
-}
+};
 
-/// perform the change.
-export function wrapInFreeList(
+export const wrapInFreeList = (
   listType: NodeType,
   attrs: Attrs | null = null,
-): Command {
-  return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
-    const { $from, $to } = state.selection;
-    let range = $from.blockRange($to);
-    let doJoin = false;
-    let outerRange = range;
-
-    if (!range) return false;
-    // This is at the top of an existing list item
-
-    if (
-      range.depth >= 2 &&
-      $from.node(range.depth - 1).type.compatibleContent(listType) &&
-      range.startIndex == 0
-    ) {
-      // Don't do anything if this is the top of the list
-      if ($from.index(range.depth - 1) == 0) return false;
-      const $insert = state.doc.resolve(range.start - 2);
-      outerRange = new NodeRange($insert, $insert, range.depth);
-      if (range.endIndex < range.parent.childCount)
-        range = new NodeRange(
-          $from,
-          state.doc.resolve($to.end(range.depth)),
-          range.depth,
-        );
-      doJoin = true;
-    }
-
-    const wrap = findWrapping(outerRange!, listType, attrs, range);
-    if (!wrap) return false;
-    if (dispatch) {
-      dispatch(
-        doWrapInList(state.tr, range, wrap, doJoin, listType).scrollIntoView(),
-      );
-    }
-    return true;
-  };
-}
-
-export function wrapInFreeList3(
-  listType: NodeType,
-  attrs: Attrs | null = null,
-) {
-  return function (
+) => {
+  return (
     tr: Transaction,
     $from: ResolvedPos,
     $to: ResolvedPos,
-  ): Transaction | null {
+  ): Transaction | null => {
     let range = $from.blockRange($to);
     let doJoin = false;
     let outerRange = range;
@@ -146,9 +108,9 @@ export function wrapInFreeList3(
     if (!wrap) return null;
     return doWrapInList(tr, range, wrap, doJoin, listType);
   };
-}
+};
 
-export const liftOutOfList = (
+export const liftOutOfFreeList = (
   tr: Transaction,
   range: NodeRange,
 ): Transaction | null => {
@@ -206,15 +168,6 @@ export const liftOutOfList = (
     atEnd ? 0 : 1,
   );
 
-  // console.log(
-  //   rangeStartItemPos - (atStart ? 1 : 0),
-  //   rangeEndItemPos + (atEnd ? 1 : 0),
-  //   rangeStartItemPos + 1,
-  //   rangeEndItemPos - 1,
-  //   slice,
-  //   atStart ? 0 : 1,
-  // );
-
   return tr.step(
     new ReplaceAroundStep(
       rangeStartItemPos - (atStart ? 1 : 0),
@@ -227,11 +180,15 @@ export const liftOutOfList = (
   );
 };
 
-export const toggleList = (
-  nodeType: NodeType,
-  attrs: Attrs | null = null,
-): Command => {
+export const conversionList = (nodeType: NodeType): Command => {
   return (state, dispatch) => {
+    return false;
+  };
+};
+
+export const toggleList = (nodeType: NodeType): Command => {
+  return (state, dispatch) => {
+    let tr = state.tr;
     const { $from, $to } = state.tr.selection;
     const whiteList = ['doc', 'table_cell'];
     const originRange = $from.blockRange($to, (node) => {
@@ -266,7 +223,8 @@ export const toggleList = (
         }
         rangeNodes.push({
           node,
-          pos: pos,
+          // pos: pos,
+          pos: Math.min(Math.max(pos, originRange.start), originRange.end),
         });
         return true;
       },
@@ -274,14 +232,15 @@ export const toggleList = (
 
     // if every node already target list, lift out all
     if (rangeNodes.every(({ node }) => node.type === nodeType)) {
+      console.log(rangeNodes);
       const tr = rangeNodes
         .slice()
         .reverse()
         .reduce((tr, { node, pos }) => {
           const start = tr.doc.resolve(pos + 1);
           const end = tr.doc.resolve(pos + node.nodeSize - 1);
-          const range = new NodeRange(start, end, start.depth);
-          return liftOutOfList(tr, range) || tr;
+          const range = start.blockRange(end);
+          return range ? liftOutOfFreeList(tr, range) || tr : tr;
         }, state.tr);
       if (!tr.docChanged) {
         return false;
@@ -307,31 +266,28 @@ export const toggleList = (
       .reverse()
       .filter((group) => group.length > 0);
 
-    let tr = state.tr;
-    groups.forEach((group) => {
+    tr = groups.reduce<Transaction>((tr, group) => {
       const type = group[0].node.type.name;
-      switch (type) {
-        case 'paragraph':
-          tr =
-            wrapInFreeList3(nodeType)(
-              tr,
-              state.doc.resolve(group[0].pos),
-              state.doc.resolve(
-                group[group.length - 1].pos +
-                  group[group.length - 1].node.nodeSize,
-              ),
-            ) || tr;
-          break;
-        default:
-          group.forEach(({ node, pos }) => {
-            tr = tr.setNodeMarkup(pos, nodeType, {
-              ...node.attrs,
-              type: nodeType.name,
-            });
+      if (type === 'paragraph') {
+        return (
+          wrapInFreeList(nodeType)(
+            tr,
+            state.doc.resolve(group[0].pos),
+            state.doc.resolve(
+              group[group.length - 1].pos +
+                group[group.length - 1].node.nodeSize,
+            ),
+          ) || tr
+        );
+      } else {
+        return group.reduce<Transaction>((tr, { node, pos }) => {
+          return tr.setNodeMarkup(pos, nodeType, {
+            ...node.attrs,
+            type: nodeType.name,
           });
-          break;
+        }, tr);
       }
-    });
+    }, tr);
 
     const prevSelection = state.selection;
     const mappedSelection = prevSelection.map(tr.doc, tr.mapping);
@@ -367,6 +323,143 @@ export const toggleList = (
     dispatch?.(
       tr.setSelection(prevSelection.map(tr.doc, tr.mapping)).scrollIntoView(),
     );
+    return true;
+  };
+};
+
+export const indentListItem = (itemType: NodeType, reduce: number): Command => {
+  return (
+    state: EditorState,
+    dispatch?: (tr: Transaction) => void,
+  ): boolean => {
+    const { $from, $to } = state.selection;
+
+    const fromGrandParent = $from.node(-2);
+    const toGrandParent = $to.node(-2);
+
+    if (fromGrandParent !== toGrandParent) {
+      return false;
+    }
+
+    let tr = state.tr;
+
+    const liftOutNode: {
+      node: Node;
+      pos: number;
+    }[] = [];
+
+    state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
+      if (node.type.name !== 'list_item') return;
+      const attrs = node.attrs as ListItemAttrs;
+      const targetIndent = Math.max(
+        0,
+        Math.min((attrs.indent || 0) + reduce, 6),
+      );
+
+      if (targetIndent <= 0) {
+        liftOutNode.push({
+          node,
+          pos,
+        });
+      } else {
+        tr = tr.setNodeMarkup(pos, undefined, {
+          ...attrs,
+          indent: targetIndent,
+        });
+      }
+    });
+
+    if (liftOutNode.length > 0) {
+      const range = $from.blockRange(
+        $to,
+        (node) => node.childCount > 0 && node.firstChild!.type == itemType,
+      );
+      if (!range) return false;
+      tr = liftOutOfFreeList(state.tr, range) || tr;
+    }
+
+    if (tr.docChanged) {
+      dispatch?.(tr);
+      return true;
+    }
+
+    return false;
+  };
+};
+
+/// Build a command that splits a non-empty textblock at the top level
+/// of a list item by also splitting that list item.
+export const splitListItem = (
+  itemType: NodeType,
+  itemAttrs?: Attrs,
+): Command => {
+  return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
+    const { $from, $to, node } = state.selection as NodeSelection;
+    if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
+      return false;
+    }
+
+    const grandParent = $from.node(-1);
+    if (grandParent.type != itemType) {
+      return false;
+    }
+
+    if (
+      $from.parent.content.size == 0 &&
+      $from.node(-1).childCount == $from.indexAfter(-1)
+    ) {
+      // In an empty block. If this is a nested list, the wrapping
+      // list item should be split. Otherwise, bail out and let next
+      // command handle lifting.
+      if (
+        $from.depth == 3 ||
+        $from.node(-3).type != itemType ||
+        $from.index(-2) != $from.node(-2).childCount - 1
+      )
+        return false;
+      if (dispatch) {
+        let wrap = Fragment.empty;
+        const depthBefore = $from.index(-1) ? 1 : $from.index(-2) ? 2 : 3;
+        // Build a fragment containing empty versions of the structure
+        // from the outer list item to the parent node of the cursor
+        for (let d = $from.depth - depthBefore; d >= $from.depth - 3; d--)
+          wrap = Fragment.from($from.node(d).copy(wrap));
+        const depthAfter =
+          $from.indexAfter(-1) < $from.node(-2).childCount
+            ? 1
+            : $from.indexAfter(-2) < $from.node(-3).childCount
+            ? 2
+            : 3;
+        // Add a second list item with an empty default start node
+        wrap = wrap.append(Fragment.from(itemType.createAndFill()));
+        const start = $from.before($from.depth - (depthBefore - 1));
+        const tr = state.tr.replace(
+          start,
+          $from.after(-depthAfter),
+          new Slice(wrap, 4 - depthBefore, 0),
+        );
+        let sel = -1;
+        tr.doc.nodesBetween(start, tr.doc.content.size, (node, pos) => {
+          if (sel > -1) return false;
+          if (node.isTextblock && node.content.size == 0) sel = pos + 1;
+          return false;
+        });
+        if (sel > -1) tr.setSelection(Selection.near(tr.doc.resolve(sel)));
+        dispatch(tr.scrollIntoView());
+      }
+      return true;
+    }
+    const nextType =
+      $to.pos == $from.end() ? grandParent.contentMatchAt(0).defaultType : null;
+    const tr = state.tr.delete($from.pos, $to.pos);
+    const types = nextType
+      ? [
+          itemAttrs ? { type: itemType, attrs: itemAttrs } : null,
+          { type: nextType },
+        ]
+      : undefined;
+    if (!canSplit(tr.doc, $from.pos, 2, types)) return false;
+    if (dispatch) dispatch(tr.split($from.pos, 2, types).scrollIntoView());
     return true;
   };
 };

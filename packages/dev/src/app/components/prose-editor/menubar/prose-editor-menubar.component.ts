@@ -30,11 +30,7 @@ import { ProseSeparatorComponent } from 'src/app/components/separator/prose-sepa
 import { redo, undo } from 'prosemirror-history';
 import { Fragment, Node } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
-import {
-  liftOutOfList,
-  toggleList,
-  wrapInFreeList3,
-} from 'prosemirror-preset-free-list';
+import { toggleList } from 'prosemirror-preset-free-list';
 
 @Component({
   selector: 'ng-prose-editor-menubar',

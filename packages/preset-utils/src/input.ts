@@ -2,13 +2,13 @@ import { InputRule } from 'prosemirror-inputrules';
 import { Attrs, Node, NodeType } from 'prosemirror-model';
 import { canJoin, findWrapping } from 'prosemirror-transform';
 
-export function wrappingInputRuleWithJoin(
+export const wrappingInputRuleWithJoin = (
   regexp: RegExp,
   nodeType: NodeType,
   getAttrs: Attrs | null | ((matches: RegExpMatchArray) => Attrs | null) = null,
   beforeJoinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
   afterJoinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
-) {
+) => {
   return new InputRule(regexp, (state, match, start, end) => {
     const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
     const tr = state.tr.delete(start, end);
@@ -78,4 +78,4 @@ export function wrappingInputRuleWithJoin(
 
     return tr;
   });
-}
+};
