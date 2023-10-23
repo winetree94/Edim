@@ -10,7 +10,6 @@ import {
 import {
   EditorState,
   PluginView,
-  Selection,
   TextSelection,
   Transaction,
 } from 'prosemirror-state';
@@ -19,32 +18,21 @@ import { ProseMirrorEditorView } from './menubar';
 import {
   findParentNode,
   forEachParentNodes,
-  getRangeTailNodes,
-  lift,
   markActive,
   wrapIn,
 } from 'prosemirror-preset-utils';
 import { GlobalService } from 'src/app/global.service';
-import {
-  autoJoin,
-  chainCommands,
-  joinBackward,
-  setBlockType,
-  toggleMark,
-} from 'prosemirror-commands';
+import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
-import { liftListItem, wrapInList, wrapInList2 } from 'prosemirror-preset-list';
-import { Fragment, Node, NodeRange, Slice } from 'prosemirror-model';
+import { Fragment, Node } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
-import { ReplaceAroundStep, ReplaceStep } from 'prosemirror-transform';
 import {
   liftOutOfList,
-  wrapInFreeList,
-  wrapInFreeList2,
+  toggleList,
   wrapInFreeList3,
 } from 'prosemirror-preset-free-list';
 
@@ -342,220 +330,19 @@ export class ProseEditorMenubarComponent
   }
 
   public onOrderedListClick(): void {
-    const { $from, $to } = this._editorView.state.tr.selection;
-    const whiteList = ['doc', 'table_cell'];
-    const range = $from.blockRange($to, (node) => {
-      return ![
-        'ordered_list',
-        'bullet_list',
-        'paragraph',
-        'list_item',
-        'text',
-      ].includes(node.type.name);
-    });
-
-    if (!range) {
-      return;
-    }
-
-    if (!whiteList.includes(range.parent.type.name)) {
-      return;
-    }
-
-    const rangeNodes: {
-      node: Node;
-      pos: number;
-    }[] = [];
-
-    this._editorView.state.doc.nodesBetween(
-      range.start,
-      range.end,
-      (node, pos, parent) => {
-        if (parent !== range.parent) {
-          return;
-        }
-        rangeNodes.push({
-          node,
-          pos: pos,
-        });
-        return true;
-      },
+    toggleList(this._editorView.state.schema.nodes['ordered_list'])(
+      this._editorView.state,
+      this._editorView.dispatch,
     );
-
-    // 모두 ordered_list 인 경우 해제
-    if (rangeNodes.every(({ node }) => node.type.name === 'ordered_list')) {
-      const range = $from.blockRange($to);
-      if (!range) return;
-      const tr = liftOutOfList(this._editorView.state, range);
-      if (!tr) {
-        return;
-      }
-      this._editorView.dispatch(tr);
-      this._editorView.focus();
-      return;
-    }
-
-    const groups = rangeNodes
-      .reduce<{ node: Node; pos: number }[][]>((result, { node, pos }) => {
-        const previousGroup = result[result.length - 1];
-        if (
-          previousGroup &&
-          previousGroup[0] &&
-          previousGroup[0]?.node.type.name === node.type.name
-        ) {
-          previousGroup.push({ node, pos });
-        } else {
-          result.push([{ node, pos }]);
-        }
-        return result;
-      }, [])
-      .reverse()
-      .filter((group) => group.length > 0);
-
-    let tr = this._editorView.state.tr;
-    groups.forEach((group) => {
-      const type = group[0].node.type.name;
-      switch (type) {
-        case 'paragraph':
-          tr =
-            wrapInFreeList3(
-              this._editorView.state.schema.nodes['ordered_list'],
-            )(
-              tr,
-              this._editorView.state.doc.resolve(group[0].pos),
-              this._editorView.state.doc.resolve(
-                group[group.length - 1].pos +
-                  group[group.length - 1].node.nodeSize,
-              ),
-            ) || tr;
-          break;
-        // case 'bullet_list':
-        //   const start = group[0].pos - group[0].node.nodeSize;
-        //   const end = group[0].pos + group[0].node.nodeSize;
-        //   const slice = new Slice(
-        //     this._editorView.state.schema.nodes['ordered_list'].create(
-        //       null,
-        //       group[0].node.content,
-        //       group[0].node.marks,
-        //     ).content,
-        //     0,
-        //     0,
-        //   );
-        //   const step = new ReplaceStep(start, end, slice);
-        //   tr = tr.step(step);
-        //   break;
-      }
-    });
-
-    this._editorView.dispatch(tr);
-
-    // wrapInList2(this._editorView.state.schema.nodes['ordered_list'])(
-    //   this._editorView.state,
-    //   this._editorView.dispatch,
-    // );
-
-    // const step = new ReplaceAroundStep(
-    //   23,
-    //   40,
-    //   0,
-    //   0,
-    //   new Slice(
-    //     Fragment.fromArray([
-    //       this._editorView.state.schema.nodes['paragraph'].create(
-    //         null,
-    //         Fragment.fromArray([this._editorView.state.schema.text('test')]),
-    //       ),
-    //     ]),
-    //     0,
-    //     0,
-    //   ),
-    //   1,
-    // );
-    // this._editorView.dispatch(this._editorView.state.tr.step(step));
-
-    // this._editorView.state.doc.descendants((node, pos, parent) => {
-    //   new NodeRange(
-
-    //   )
-    // });
+    this._editorView.focus();
   }
 
   public onUnorderedListClick(): void {
-    const { $from, $to } = this._editorView.state.tr.selection;
-
-    const range = $from.blockRange($to, (node) => {
-      return (
-        node.childCount > 0 &&
-        ['bullet_list', 'ordered_list', 'doc'].includes(node.type.name)
-      );
-    });
-
-    if (!range) {
-      return;
-    }
-
-    const parentType = range.parent.type.name;
-
-    // convert to ordered list
-    if (parentType === 'bullet_list') {
-      const list = this._editorView.state.schema.nodes['ordered_list'].create(
-        null,
-        this._editorView.state.doc.slice(range.start, range.end).content,
-      );
-
-      const tr = this._editorView.state.tr.replaceWith(
-        range.start,
-        range.end,
-        list,
-      );
-
-      this._editorView.dispatch(
-        tr
-          // .setSelection(TextSelection.create(tr.doc, $from.pos, $to.pos))
-          .scrollIntoView(),
-      );
-
-      this._editorView.focus();
-    }
-
-    // const isOrdered = findParentNode(
-    //   this._editorView.state,
-    //   this._editorView.state.selection.from,
-    //   this._editorView.state.schema.nodes['ordered_list'],
-    // );
-    // if (isOrdered) {
-    //   const tr = this._editorView.state.tr.setNodeMarkup(
-    //     isOrdered.pos,
-    //     this._editorView.state.schema.nodes['bullet_list'],
-    //   );
-    //   if (!tr) {
-    //     return;
-    //   }
-    //   this._editorView.dispatch(tr);
-    //   this._editorView.focus();
-    // } else if (
-    //   findParentNode(
-    //     this._editorView.state,
-    //     this._editorView.state.selection.from,
-    //     this._editorView.state.schema.nodes['bullet_list'],
-    //   )
-    // ) {
-    //   const tr = lift(this._editorView.state, this._editorView.state.tr);
-    //   this._editorView.dispatch(tr);
-    //   this._editorView.focus();
-    //   return;
-    // } else {
-    //   const tr = wrapInList(
-    //     this._editorView.state,
-    //     this._editorView.state.tr,
-    //     this._editorView.state.schema.nodes['bullet_list'],
-    //   );
-    //   if (!tr) {
-    //     return;
-    //   }
-    //   this._editorView.dispatch(tr);
-    //   this._editorView.focus();
-    // }
+    toggleList(this._editorView.state.schema.nodes['bullet_list'])(
+      this._editorView.state,
+      this._editorView.dispatch,
+    );
+    this._editorView.focus();
   }
 
   public onIncreaseIndentClick(): void {
