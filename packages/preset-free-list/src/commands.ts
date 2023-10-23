@@ -26,12 +26,10 @@ export function doWrapInList(
   listType: NodeType,
 ) {
   let content = Fragment.empty;
-
-  for (let i = wrappers.length - 1; i >= 0; i--) {
+  for (let i = wrappers.length - 1; i >= 0; i--)
     content = Fragment.from(
       wrappers[i].type.create(wrappers[i].attrs, content),
     );
-  }
 
   tr.step(
     new ReplaceAroundStep(
@@ -46,17 +44,12 @@ export function doWrapInList(
   );
 
   let found = 0;
-  for (let i = 0; i < wrappers.length; i++) {
-    if (wrappers[i].type == listType) {
-      found = i + 1;
-    }
-  }
+  for (let i = 0; i < wrappers.length; i++)
+    if (wrappers[i].type == listType) found = i + 1;
+  const splitDepth = wrappers.length - found;
 
-  const splitDepth = 1;
   let splitPos = range.start + wrappers.length - (joinBefore ? 2 : 0);
   const parent = range.parent;
-  console.log(splitPos);
-
   for (
     let i = range.startIndex, e = range.endIndex, first = true;
     i < e;
@@ -68,7 +61,6 @@ export function doWrapInList(
     }
     splitPos += parent.child(i).nodeSize;
   }
-
   return tr;
 }
 

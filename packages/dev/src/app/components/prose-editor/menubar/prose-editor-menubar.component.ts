@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   ChangeDetectorRef,
@@ -395,7 +396,6 @@ export class ProseEditorMenubarComponent
     }
 
     const groups = rangeNodes
-      .filter(({ node }) => node.type.name !== 'ordered_list')
       .reduce<{ node: Node; pos: number }[][]>((result, { node, pos }) => {
         const previousGroup = result[result.length - 1];
         if (
@@ -408,21 +408,42 @@ export class ProseEditorMenubarComponent
           result.push([{ node, pos }]);
         }
         return result;
-      }, []);
+      }, [])
+      .reverse()
+      .filter((group) => group.length > 0);
 
     let tr = this._editorView.state.tr;
-    groups.reverse().forEach((group) => {
+    groups.forEach((group) => {
       const type = group[0].node.type.name;
-      if (type === 'paragraph') {
-        tr =
-          wrapInFreeList3(this._editorView.state.schema.nodes['ordered_list'])(
-            tr,
-            this._editorView.state.doc.resolve(group[0].pos),
-            this._editorView.state.doc.resolve(
-              group[group.length - 1].pos +
-                group[group.length - 1].node.nodeSize,
-            ),
-          ) || tr;
+      switch (type) {
+        case 'paragraph':
+          tr =
+            wrapInFreeList3(
+              this._editorView.state.schema.nodes['ordered_list'],
+            )(
+              tr,
+              this._editorView.state.doc.resolve(group[0].pos),
+              this._editorView.state.doc.resolve(
+                group[group.length - 1].pos +
+                  group[group.length - 1].node.nodeSize,
+              ),
+            ) || tr;
+          break;
+        // case 'bullet_list':
+        //   const start = group[0].pos - group[0].node.nodeSize;
+        //   const end = group[0].pos + group[0].node.nodeSize;
+        //   const slice = new Slice(
+        //     this._editorView.state.schema.nodes['ordered_list'].create(
+        //       null,
+        //       group[0].node.content,
+        //       group[0].node.marks,
+        //     ).content,
+        //     0,
+        //     0,
+        //   );
+        //   const step = new ReplaceStep(start, end, slice);
+        //   tr = tr.step(step);
+        //   break;
       }
     });
 
