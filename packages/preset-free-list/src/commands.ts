@@ -243,6 +243,24 @@ export const toggleList = (nodeType: NodeType): Command => {
       return true;
     }
 
+    // memoize indents
+    const indents: number[] = [];
+    rangeNodes.slice().forEach(({ node, start, end }) => {
+      const isParagraph = node.type.name === 'paragraph';
+      if (isParagraph) {
+        indents.push(0);
+        return;
+      }
+      const range = tr.doc
+        .resolve(start + 1)
+        .blockRange(tr.doc.resolve(end - 1), (node) => {
+          return node.type.spec.group?.includes('list') || false;
+        })!;
+      for (let i = range.startIndex; i < range.endIndex; i++) {
+        indents.push(range.parent.child(i).attrs['indent'] as number);
+      }
+    });
+
     // lifting
     tr = rangeNodes
       .slice()
@@ -273,6 +291,25 @@ export const toggleList = (nodeType: NodeType): Command => {
     // wrapping
     tr = wrapInFreeList(nodeType)(tr, selection.$from, selection.$to) || tr;
     selection = state.selection.map(tr.doc, tr.mapping);
+
+    // apply memoized indents
+    const listRange = selection.$from.blockRange(selection.$to, (node) => {
+      return node.type === nodeType;
+    });
+    if (listRange) {
+      for (
+        let pos = listRange.end,
+          i = listRange.endIndex - 1,
+          e = listRange.startIndex;
+        i > e;
+        i--
+      ) {
+        pos -= listRange.parent.child(i).nodeSize;
+        tr = tr.setNodeMarkup(pos, state.schema.nodes['list_item'], {
+          indent: indents.pop(),
+        });
+      }
+    }
 
     // merge with adjacent list
     const range = selection.$from.blockRange(selection.$to, (node) => {
