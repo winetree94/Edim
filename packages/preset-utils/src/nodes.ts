@@ -1,16 +1,6 @@
 import { Attrs, Node, NodeType } from 'prosemirror-model';
 import { EditorState, Transaction } from 'prosemirror-state';
-import { findWrapping, liftTarget } from 'prosemirror-transform';
-
-export const lift = (state: EditorState, tr: Transaction) => {
-  const { $from, $to } = state.selection;
-  const range = $from.blockRange($to);
-  const target = range && liftTarget(range);
-  if (!range || target === null) {
-    throw new Error('Cannot lift');
-  }
-  return tr.lift(range, target);
-};
+import { findWrapping } from 'prosemirror-transform';
 
 export const wrapIn = (
   state: EditorState,
@@ -54,21 +44,6 @@ export const findParentNode = (
   }
 
   return null;
-};
-
-export const getRangeTailNodes = (
-  state: EditorState,
-  from: number,
-  to: number,
-): Node[] => {
-  const { doc } = state;
-  const tailNodes: Node[] = [];
-  doc.nodesBetween(from, to, (node, pos) => {
-    if (pos >= from) {
-      tailNodes.push(node);
-    }
-  });
-  return tailNodes;
 };
 
 export const forEachParentNodes = (

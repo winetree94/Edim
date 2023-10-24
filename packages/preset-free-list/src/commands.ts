@@ -189,6 +189,7 @@ export const conversionList = (nodeType: NodeType): Command => {
 export const toggleList = (nodeType: NodeType): Command => {
   return (state, dispatch) => {
     let tr = state.tr;
+    let selection = state.selection;
     const { $from, $to } = state.tr.selection;
     const whiteList = ['doc', 'table_cell'];
     const originRange = $from.blockRange($to, (node) => {
@@ -209,37 +210,39 @@ export const toggleList = (nodeType: NodeType): Command => {
       return false;
     }
 
-    const rangeNodes: {
-      node: Node;
-      pos: number;
-    }[] = [];
+    const getRangeNodes = (doc: Node, start: number, to: number) => {
+      const rangeNodes: {
+        node: Node;
+        pos: number;
+        start: number;
+        end: number;
+      }[] = [];
 
-    state.doc.nodesBetween(
-      originRange.start,
-      originRange.end,
-      (node, pos, parent) => {
+      doc.nodesBetween(start, to, (node, pos, parent) => {
         if (parent !== originRange.parent) {
           return true;
         }
         rangeNodes.push({
           node,
-          // pos: pos,
-          pos: Math.min(Math.max(pos, originRange.start), originRange.end),
+          pos: pos,
+          start: Math.max($from.pos, pos) + 1,
+          end: Math.min($to.pos, pos + node.nodeSize) - 1,
         });
         return true;
-      },
-    );
+      });
+
+      return rangeNodes;
+    };
+
+    const rangeNodes = getRangeNodes(state.doc, selection.from, selection.to);
 
     // if every node already target list, lift out all
     if (rangeNodes.every(({ node }) => node.type === nodeType)) {
-      console.log(rangeNodes);
       const tr = rangeNodes
         .slice()
         .reverse()
-        .reduce((tr, { node, pos }) => {
-          const start = tr.doc.resolve(pos + 1);
-          const end = tr.doc.resolve(pos + node.nodeSize - 1);
-          const range = start.blockRange(end);
+        .reduce((tr, { start, end }) => {
+          const range = tr.doc.resolve(start).blockRange(tr.doc.resolve(end));
           return range ? liftOutOfFreeList(tr, range) || tr : tr;
         }, state.tr);
       if (!tr.docChanged) {
@@ -249,80 +252,53 @@ export const toggleList = (nodeType: NodeType): Command => {
       return true;
     }
 
-    const groups = rangeNodes
-      .reduce<{ node: Node; pos: number }[][]>((result, { node, pos }) => {
-        const previousGroup = result[result.length - 1];
-        if (
-          previousGroup &&
-          previousGroup[0] &&
-          previousGroup[0]?.node.type.name === node.type.name
-        ) {
-          previousGroup.push({ node, pos });
-        } else {
-          result.push([{ node, pos }]);
-        }
-        return result;
-      }, [])
-      .reverse()
-      .filter((group) => group.length > 0);
-
-    tr = groups.reduce<Transaction>((tr, group) => {
-      const type = group[0].node.type.name;
-      if (type === 'paragraph') {
-        return (
-          wrapInFreeList(nodeType)(
-            tr,
-            state.doc.resolve(group[0].pos),
-            state.doc.resolve(
-              group[group.length - 1].pos +
-                group[group.length - 1].node.nodeSize,
-            ),
-          ) || tr
-        );
-      } else {
-        return group.reduce<Transaction>((tr, { node, pos }) => {
-          return tr.setNodeMarkup(pos, nodeType, {
-            ...node.attrs,
-            type: nodeType.name,
-          });
-        }, tr);
-      }
-    }, tr);
-
-    const prevSelection = state.selection;
-    const mappedSelection = prevSelection.map(tr.doc, tr.mapping);
-
-    const listNodePositions: number[] = [];
-
-    tr.doc.nodesBetween(
-      mappedSelection.from,
-      mappedSelection.to,
-      (node, pos) => {
-        if (node.type === nodeType) {
-          listNodePositions.push(pos);
-        }
-        return true;
-      },
-    );
-
-    // merge all converted list
-    tr = listNodePositions
+    // lifting
+    tr = rangeNodes
       .slice()
       .reverse()
-      .reduce((tr, pos, index, self) => {
+      .filter(({ node }) => node.type.name !== 'paragraph')
+      .reduce((tr, { start, end }) => {
+        const range = tr.doc.resolve(start).blockRange(tr.doc.resolve(end));
+        if (!range) {
+          return tr;
+        }
+        return liftOutOfFreeList(tr, range) || tr;
+      }, tr);
+    selection = state.selection.map(tr.doc, tr.mapping);
+
+    // wrapping
+    tr = wrapInFreeList(nodeType)(tr, selection.$from, selection.$to) || tr;
+    selection = state.selection.map(tr.doc, tr.mapping);
+
+    // merge with adjacent list
+    const range = selection.$from.blockRange(selection.$to)!;
+    const adjacentsNodes: { node: Node; pos: number }[] = [];
+    tr.doc.nodesBetween(range.start - 2, range.end + 2, (node, pos) => {
+      if (node.type !== nodeType) {
+        return true;
+      }
+      adjacentsNodes.push({
+        node,
+        pos,
+      });
+      return true;
+    });
+    tr = adjacentsNodes
+      .slice()
+      .reverse()
+      .reduce((tr, { pos }, index, self) => {
         if (index === self.length - 1) {
           return tr;
         }
         return tr.delete(pos - 1, pos + 1);
       }, tr);
+    selection = state.selection.map(tr.doc, tr.mapping);
 
     if (!tr.docChanged) {
       return false;
     }
 
-    dispatch?.(
-      tr.setSelection(prevSelection.map(tr.doc, tr.mapping)).scrollIntoView(),
-    );
+    dispatch?.(tr.setSelection(selection).scrollIntoView());
     return true;
   };
 };
