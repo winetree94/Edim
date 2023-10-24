@@ -190,9 +190,8 @@ export const toggleList = (nodeType: NodeType): Command => {
   return (state, dispatch) => {
     let tr = state.tr;
     let selection = state.selection;
-    const { $from, $to } = state.tr.selection;
-    const whiteList = ['doc', 'table_cell'];
-    const originRange = $from.blockRange($to, (node) => {
+
+    const originRange = selection.$from.blockRange(selection.$to, (node) => {
       return ![
         'ordered_list',
         'bullet_list',
@@ -203,10 +202,6 @@ export const toggleList = (nodeType: NodeType): Command => {
     });
 
     if (!originRange) {
-      return false;
-    }
-
-    if (!whiteList.includes(originRange.parent.type.name)) {
       return false;
     }
 
@@ -225,8 +220,8 @@ export const toggleList = (nodeType: NodeType): Command => {
         rangeNodes.push({
           node,
           pos: pos,
-          start: Math.max($from.pos, pos) + 1,
-          end: Math.min($to.pos, pos + node.nodeSize) - 1,
+          start: Math.max(selection.$from.pos, pos),
+          end: Math.min(selection.$to.pos, pos + node.nodeSize),
         });
         return true;
       });
@@ -236,13 +231,24 @@ export const toggleList = (nodeType: NodeType): Command => {
 
     const rangeNodes = getRangeNodes(state.doc, selection.from, selection.to);
 
+    // if rangeNodes has no list able item, return false
+    if (
+      !rangeNodes.every(({ node }) =>
+        ['ordered_list', 'bullet_list', 'paragraph'].includes(node.type.name),
+      )
+    ) {
+      return false;
+    }
+
     // if every node already target list, lift out all
     if (rangeNodes.every(({ node }) => node.type === nodeType)) {
       const tr = rangeNodes
         .slice()
         .reverse()
         .reduce((tr, { start, end }) => {
-          const range = tr.doc.resolve(start).blockRange(tr.doc.resolve(end));
+          const range = tr.doc
+            .resolve(start)
+            .blockRange(tr.doc.resolve(end), (node) => node.type === nodeType);
           return range ? liftOutOfFreeList(tr, range) || tr : tr;
         }, state.tr);
       if (!tr.docChanged) {
@@ -257,11 +263,16 @@ export const toggleList = (nodeType: NodeType): Command => {
       .slice()
       .reverse()
       .filter(({ node }) => node.type.name !== 'paragraph')
-      .reduce((tr, { start, end }) => {
-        const range = tr.doc.resolve(start).blockRange(tr.doc.resolve(end));
+      .reduce((tr, { start, end, node }) => {
+        const range = tr.doc
+          .resolve(start + 1)
+          .blockRange(tr.doc.resolve(end - 1), (node) =>
+            ['ordered_list', 'bullet_list'].includes(node.type.name),
+          );
         if (!range) {
           return tr;
         }
+        console.log(node, start, end, range);
         return liftOutOfFreeList(tr, range) || tr;
       }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
@@ -271,7 +282,15 @@ export const toggleList = (nodeType: NodeType): Command => {
     selection = state.selection.map(tr.doc, tr.mapping);
 
     // merge with adjacent list
-    const range = selection.$from.blockRange(selection.$to)!;
+    const range = selection.$from.blockRange(selection.$to, (node) => {
+      return ![
+        'ordered_list',
+        'bullet_list',
+        'paragraph',
+        'list_item',
+        'text',
+      ].includes(node.type.name);
+    })!;
     const adjacentsNodes: { node: Node; pos: number }[] = [];
     tr.doc.nodesBetween(range.start - 2, range.end + 2, (node, pos) => {
       if (node.type !== nodeType) {
