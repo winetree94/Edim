@@ -1,7 +1,6 @@
 /// Returns a command function that wraps the selection in a list with
 /// the given type an attributes. If `dispatch` is null, only return a
 /// value to indicate whether this is possible, but don't actually
-import { ListItemAttrs } from './free-list';
 import {
   Attrs,
   Fragment,
@@ -11,7 +10,6 @@ import {
   ResolvedPos,
   Slice,
 } from 'prosemirror-model';
-import { NodePair } from 'prosemirror-preset-utils';
 import {
   Command,
   EditorState,
@@ -256,7 +254,10 @@ export const toggleList = (nodeType: NodeType): Command => {
         .resolve(start + 1)
         .blockRange(tr.doc.resolve(end - 1), (node) => {
           return node.type.spec.group?.includes('list') || false;
-        })!;
+        });
+      if (!range) {
+        return;
+      }
       for (let i = range.startIndex; i < range.endIndex; i++) {
         indents.push(range.parent.child(i).attrs['indent'] as number);
       }

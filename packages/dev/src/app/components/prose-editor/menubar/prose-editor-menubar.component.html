@@ -151,14 +151,14 @@
   <button
     prose-button
     [disabled]="!canDeindent"
-    (click)="onIncreaseIndentClick()"
+    (click)="onDecreaseIndentClick()"
   >
     <i class="ri-indent-decrease"></i>
   </button>
   <button
     prose-button
     [disabled]="!canIndent"
-    (click)="onDecreaseIndentClick()"
+    (click)="onIncreaseIndentClick()"
   >
     <i class="ri-indent-increase"></i>
   </button>
@@ -202,3 +202,5 @@
     </form>
   </div>
 </div>
+
+<ng-container #layerRoot></ng-container>

@@ -5,6 +5,8 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  ViewChild,
+  ViewContainerRef,
   inject,
 } from '@angular/core';
 import { EditorState, PluginView, TextSelection } from 'prosemirror-state';
@@ -26,6 +28,7 @@ import {
   getRangeIsText,
   setAlignment,
 } from 'prosemirror-preset-paragraph';
+import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/link/link-layer.component';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -37,6 +40,7 @@ import {
     ProseSeparatorComponent,
     CommonModule,
     ReactiveFormsModule,
+    ProseEditorLinkLayerComponent,
   ],
 })
 export class ProseEditorMenubarComponent
@@ -109,6 +113,9 @@ export class ProseEditorMenubarComponent
   public canIndent = false;
   public canDeindent = false;
 
+  @ViewChild('layerRoot', { static: true, read: ViewContainerRef })
+  public layerRoot!: ViewContainerRef;
+
   public update(editorView: EditorView, prevState: EditorState): void {
     this.activeBold = markActive(
       editorView.state,
@@ -151,7 +158,6 @@ export class ProseEditorMenubarComponent
     );
 
     this.canNormalText = getRangeIsText(this._editorView.state);
-
     const rangeFromNode = this._editorView.state.selection.$from.parent;
 
     this.activeParagraph =
@@ -300,18 +306,12 @@ export class ProseEditorMenubarComponent
   }
 
   public onOrderedListClick(): void {
-    toggleList(this._editorView.state.schema.nodes['ordered_list'])(
-      this._editorView.state,
-      this._editorView.dispatch,
-    );
+    this._toggleOrderedList(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 
   public onUnorderedListClick(): void {
-    toggleList(this._editorView.state.schema.nodes['bullet_list'])(
-      this._editorView.state,
-      this._editorView.dispatch,
-    );
+    this._toggleBulletList(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 
@@ -338,7 +338,6 @@ export class ProseEditorMenubarComponent
       merge(
         fromEvent(input, 'change').pipe(
           tap((event) => {
-            console.log('change');
             const reader = new FileReader();
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             reader.readAsDataURL((event.target as HTMLInputElement).files![0]);
@@ -407,6 +406,7 @@ export class ProseEditorMenubarComponent
         .scrollIntoView()
         .setSelection(TextSelection.near(transaction.doc.resolve(offset))),
     );
+
     this._editorView.focus();
   }
 
