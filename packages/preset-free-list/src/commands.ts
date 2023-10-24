@@ -260,7 +260,6 @@ export const toggleList = (nodeType: NodeType): Command => {
         indents.push(range.parent.child(i).attrs['indent'] as number);
       }
     });
-    console.log(indents);
 
     // lifting
     tr = rangeNodes
@@ -306,7 +305,6 @@ export const toggleList = (nodeType: NodeType): Command => {
         i--
       ) {
         pos -= listRange.parent.child(i).nodeSize;
-        console.log(i);
         tr = tr.setNodeMarkup(pos, state.schema.nodes['list_item'], {
           indent: indents.pop(),
         });
