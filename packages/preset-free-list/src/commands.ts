@@ -186,13 +186,7 @@ export const toggleList = (nodeType: NodeType): Command => {
     let selection = state.selection;
 
     const originRange = selection.$from.blockRange(selection.$to, (node) => {
-      return ![
-        'ordered_list',
-        'bullet_list',
-        'paragraph',
-        'list_item',
-        'text',
-      ].includes(node.type.name);
+      return node.type.spec.group?.includes('block-container') || false;
     });
 
     if (!originRange) {
@@ -257,9 +251,9 @@ export const toggleList = (nodeType: NodeType): Command => {
       .reduce((tr, { start, end }) => {
         const range = tr.doc
           .resolve(start + 1)
-          .blockRange(tr.doc.resolve(end - 1), (node) =>
-            ['ordered_list', 'bullet_list'].includes(node.type.name),
-          );
+          .blockRange(tr.doc.resolve(end - 1), (node) => {
+            return node.type.spec.group?.includes('list') || false;
+          });
         if (!range) {
           return tr;
         }
@@ -282,13 +276,7 @@ export const toggleList = (nodeType: NodeType): Command => {
 
     // merge with adjacent list
     const range = selection.$from.blockRange(selection.$to, (node) => {
-      return ![
-        'ordered_list',
-        'bullet_list',
-        'paragraph',
-        'list_item',
-        'text',
-      ].includes(node.type.name);
+      return node.type.spec.group?.includes('block-container') || false;
     })!;
     const adjacentsNodes: { node: Node; pos: number }[] = [];
     tr.doc.nodesBetween(

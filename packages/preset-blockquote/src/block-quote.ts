@@ -9,7 +9,7 @@ const blockquoteDOM: DOMOutputSpec = ['blockquote', 0];
 const blockquote: Record<string, NodeSpec> = {
   blockquote: {
     content: 'block+',
-    group: 'block',
+    group: 'block disable-paragraph-attributes',
     defining: true,
     parseDOM: [{ tag: 'blockquote' }],
     toDOM() {

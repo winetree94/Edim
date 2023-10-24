@@ -10,7 +10,7 @@ import { ProseEditorModule } from 'src/app/components/prose-editor/prose-editor.
 import { GlobalService } from 'src/app/global.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { data2 } from 'src/app/data';
-import { map, startWith, tap } from 'rxjs';
+import { debounceTime, map, startWith, tap } from 'rxjs';
 import { EditorView, basicSetup } from 'codemirror';
 import { json } from '@codemirror/lang-json';
 
@@ -32,6 +32,20 @@ export class AppComponent implements OnInit {
       {
         "type": "doc",
         "content": [
+            {
+                "type": "heading",
+                "attrs": {
+                    "level": 1,
+                    "indent": 0,
+                    "textAlign": "left"
+                },
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Heading"
+                    }
+                ]
+            },
             {
                 "type": "paragraph",
                 "attrs": {
@@ -72,7 +86,28 @@ export class AppComponent implements OnInit {
                     {
                         "type": "list_item",
                         "attrs": {
-                            "indent": 1
+                            "indent": 3
+                        },
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "asdfasdfasdf"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "list_item",
+                        "attrs": {
+                            "indent": 2
                         },
                         "content": [
                             {
@@ -106,6 +141,48 @@ export class AppComponent implements OnInit {
                                     {
                                         "type": "text",
                                         "text": "aalskdfjasldkfjasldkfjalskdjfslkdfjalksdf"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "list_item",
+                        "attrs": {
+                            "indent": 2
+                        },
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "asdfasdfasdfasdf"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "list_item",
+                        "attrs": {
+                            "indent": 3
+                        },
+                        "content": [
+                            {
+                                "type": "paragraph",
+                                "attrs": {
+                                    "textAlign": "left",
+                                    "indent": 0
+                                },
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": "asdfasdfasdf"
                                     }
                                 ]
                             }
@@ -602,6 +679,7 @@ export class AppComponent implements OnInit {
 
     this.values$
       .pipe(
+        debounceTime(1000),
         tap((value) => {
           this.editor.dispatch({
             changes: {

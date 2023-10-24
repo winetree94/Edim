@@ -33,7 +33,7 @@ export const orderedList: Record<string, NodeSpec> = {
       },
     ],
     content: 'list_item*',
-    group: 'block',
+    group: 'block list',
     toDOM() {
       return olDOM;
     },
@@ -44,7 +44,7 @@ export const bulletList: Record<string, NodeSpec> = {
   bullet_list: {
     parseDOM: [{ tag: 'ul' }],
     content: 'list_item*',
-    group: 'block',
+    group: 'block list',
     toDOM() {
       return ulDOM;
     },
@@ -58,6 +58,7 @@ export interface ListItemAttrs {
 export const listItem: Record<string, NodeSpec> = {
   list_item: {
     content: 'paragraph*',
+    group: 'disable-paragraph-attributes',
     attrs: {
       indent: {
         default: 1,

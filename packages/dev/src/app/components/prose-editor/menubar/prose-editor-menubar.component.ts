@@ -7,20 +7,10 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import {
-  EditorState,
-  PluginView,
-  TextSelection,
-  Transaction,
-} from 'prosemirror-state';
+import { EditorState, PluginView, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProseMirrorEditorView } from './menubar';
-import {
-  findParentNode,
-  forEachParentNodes,
-  markActive,
-  wrapIn,
-} from 'prosemirror-preset-utils';
+import { findParentNode, markActive, wrapIn } from 'prosemirror-preset-utils';
 import { GlobalService } from 'src/app/global.service';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
@@ -31,6 +21,12 @@ import { redo, undo } from 'prosemirror-history';
 import { Fragment, Node } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
 import { toggleList } from 'prosemirror-preset-free-list';
+import {
+  getRangeFirstAlignment,
+  getRangeIsText,
+  indentFirstRange,
+  setAlignment,
+} from 'prosemirror-preset-paragraph';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -66,18 +62,23 @@ export class ProseEditorMenubarComponent
   private readonly _toggleBold = toggleMark(
     this._editorView.state.schema.marks['strong'],
   );
-
   private readonly _toggleItalic = toggleMark(
     this._editorView.state.schema.marks['em'],
   );
-
   private readonly _toggleStrikethrough = toggleMark(
     this._editorView.state.schema.marks['strikethrough'],
   );
-
   private readonly _toggleInlineCode = toggleMark(
     this._editorView.state.schema.marks['code'],
   );
+  private readonly _toggleOrderedList = toggleList(
+    this._editorView.state.schema.nodes['ordered_list'],
+  );
+  private readonly _toggleBulletList = toggleList(
+    this._editorView.state.schema.nodes['bullet_list'],
+  );
+  private readonly _deindentFirstRange = indentFirstRange(-1);
+  private readonly _indentFirstRange = indentFirstRange(1);
 
   public isScrollTop = false;
 
@@ -103,7 +104,7 @@ export class ProseEditorMenubarComponent
   public canNormalText = false;
   public canAlign = false;
   public canOrderedList = true;
-  public canUnorderedList = true;
+  public canBulletList = true;
   public canUndo = false;
   public canRedo = false;
 
@@ -133,6 +134,9 @@ export class ProseEditorMenubarComponent
       editorView.state.schema.marks['link'],
     );
 
+    this.canOrderedList = this._toggleOrderedList(this._editorView.state);
+    this.canBulletList = this._toggleBulletList(this._editorView.state);
+
     this.activeOrderedList = !!findParentNode(
       editorView.state,
       editorView.state.selection.from,
@@ -145,25 +149,7 @@ export class ProseEditorMenubarComponent
       editorView.state.schema.nodes['bullet_list'],
     );
 
-    this.canNormalText = this.getRangeNodes()
-      .filter(
-        (node) =>
-          node.node.type.name === 'paragraph' ||
-          node.node.type.name === 'heading',
-      )
-      .every((node) => {
-        let isNormalText = true;
-        forEachParentNodes(editorView.state, node.pos, (parent) => {
-          if (
-            ['bullet_list', 'ordered_list', 'blockquote'].includes(
-              parent.type.name,
-            )
-          ) {
-            isNormalText = false;
-          }
-        });
-        return isNormalText;
-      });
+    this.canNormalText = getRangeIsText(this._editorView.state);
 
     const rangeFromNode = this._editorView.state.selection.$from.parent;
 
@@ -200,16 +186,12 @@ export class ProseEditorMenubarComponent
       rangeFromNode.type.name === 'heading' &&
       rangeFromNode.attrs['level'] === 6;
 
-    this.activeAlignLeft =
-      this.canNormalText && rangeFromNode.attrs['textAlign'] === 'left';
+    const firstAlignment = getRangeFirstAlignment(this._editorView.state);
+    this.activeAlignLeft = firstAlignment === 'left';
+    this.activeAlignCenter = firstAlignment === 'center';
+    this.activeAlignRight = firstAlignment === 'right';
+    this.canAlign = firstAlignment !== null;
 
-    this.activeAlignCenter =
-      this.canNormalText && rangeFromNode.attrs['textAlign'] === 'center';
-
-    this.activeAlignRight =
-      this.canNormalText && rangeFromNode.attrs['textAlign'] === 'right';
-
-    this.canAlign = this.getAlignmentAbleNodes().length > 0;
     this.canUndo = undo(editorView.state);
     this.canRedo = redo(editorView.state);
   }
@@ -279,19 +261,7 @@ export class ProseEditorMenubarComponent
   }
 
   public onAlignClick(alignment: 'left' | 'center' | 'right'): void {
-    const alignmentAbleNodes = this.getAlignmentAbleNodes();
-
-    const tr = alignmentAbleNodes.reduce<Transaction>((tr, node) => {
-      return tr.setNodeMarkup(node.pos, undefined, {
-        ...node.node.attrs,
-        textAlign: alignment,
-      });
-    }, this._editorView.state.tr);
-
-    if (tr.docChanged) {
-      this._editorView.dispatch(tr);
-    }
-
+    setAlignment(alignment)(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 
@@ -342,13 +312,13 @@ export class ProseEditorMenubarComponent
   }
 
   public onIncreaseIndentClick(): void {
-    alert('not implemented');
-    return;
+    this._indentFirstRange(this._editorView.state, this._editorView.dispatch);
+    this._editorView.focus();
   }
 
   public onDecreaseIndentClick(): void {
-    alert('not implemented');
-    return;
+    this._deindentFirstRange(this._editorView.state, this._editorView.dispatch);
+    this._editorView.focus();
   }
 
   public onImageClick(): void {
@@ -452,43 +422,5 @@ export class ProseEditorMenubarComponent
 
   public ngOnDestroy(): void {
     this._subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  private getRangeNodes() {
-    const { from, to } = this._editorView.state.selection;
-
-    const nodes: {
-      node: Node;
-      parent: Node | null;
-      pos: number;
-    }[] = [];
-
-    this._editorView.state.doc.nodesBetween(from, to, (node, pos, parent) => {
-      nodes.push({ node, parent, pos });
-    });
-
-    return nodes;
-  }
-
-  private getAlignmentAbleNodes() {
-    return this.getRangeNodes().filter((node) => {
-      if (
-        node.node.type.name !== 'paragraph' &&
-        node.node.type.name !== 'heading'
-      ) {
-        return false;
-      }
-      let alignmentAble = true;
-      forEachParentNodes(this._editorView.state, node.pos, (parent) => {
-        if (
-          ['bullet_list', 'ordered_list', 'blockquote'].includes(
-            parent.type.name,
-          )
-        ) {
-          alignmentAble = false;
-        }
-      });
-      return alignmentAble;
-    });
   }
 }

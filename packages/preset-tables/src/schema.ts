@@ -151,6 +151,7 @@ export function tableNodes(options: TableNodesOptions): TableNodes {
     table_cell: {
       content: options.cellContent,
       attrs: cellAttrs,
+      group: 'block-container',
       tableRole: 'cell',
       isolating: true,
       parseDOM: [

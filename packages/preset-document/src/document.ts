@@ -3,6 +3,7 @@ import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 const doc: Record<string, NodeSpec> = {
   doc: {
+    group: 'block-container',
     content: 'block+',
   },
 };
