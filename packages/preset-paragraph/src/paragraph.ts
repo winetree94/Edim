@@ -2,14 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Node, NodeSpec, NodeType, Schema } from 'prosemirror-model';
-import {
-  addListNodes,
-  liftListItem,
-  sinkListItem,
-  splitListItem,
-  wrapInList,
-} from 'prosemirror-preset-list';
-import OrderedMap from 'orderedmap';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';

@@ -21,7 +21,7 @@ const blockquote: Record<string, NodeSpec> = {
 /// Given a blockquote node type, returns an input rule that turns `"> "`
 /// at the start of a textblock into a blockquote.
 export function blockQuoteRule(nodeType: NodeType) {
-  return wrappingInputRuleWithJoin(/^\s*>\s$/, nodeType);
+  return wrappingInputRuleWithJoin(/^\s*>\s$/, nodeType, { indent: 0 });
 }
 
 export const BlockQuote = (): PMPluginsFactory => () => {

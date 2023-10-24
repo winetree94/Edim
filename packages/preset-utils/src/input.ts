@@ -5,22 +5,37 @@ import { canJoin, findWrapping } from 'prosemirror-transform';
 export const wrappingInputRuleWithJoin = (
   regexp: RegExp,
   nodeType: NodeType,
-  getAttrs: Attrs | null | ((matches: RegExpMatchArray) => Attrs | null) = null,
+  getNodeAttrs:
+    | Attrs
+    | null
+    | ((matches: RegExpMatchArray) => Attrs | null) = null,
+  getWrapperAttrs:
+    | Attrs
+    | null
+    | ((matches: RegExpMatchArray) => Attrs | null) = null,
   beforeJoinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
   afterJoinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
 ) => {
   return new InputRule(regexp, (state, match, start, end) => {
-    const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
-    const tr = state.tr.delete(start, end);
+    const nodeAttrs =
+      getNodeAttrs instanceof Function ? getNodeAttrs(match) : getNodeAttrs;
+    const wrapperAttrs =
+      getWrapperAttrs instanceof Function
+        ? getWrapperAttrs(match)
+        : getWrapperAttrs;
+    let tr = state.tr.delete(start, end);
     const $start = tr.doc.resolve(start);
     const range = $start.blockRange();
-    const wrapping = range && findWrapping(range, nodeType, attrs);
+    const wrapping = range && findWrapping(range, nodeType, wrapperAttrs);
 
     if (!wrapping) {
       return null;
     }
 
-    tr.wrap(range, wrapping);
+    if (nodeAttrs) {
+      tr = tr.setNodeMarkup(start - 1, undefined, nodeAttrs);
+    }
+    tr = tr.wrap(range, wrapping);
 
     const beforePos = start - 1;
     const before = tr.doc.resolve(beforePos).nodeBefore;
@@ -31,7 +46,7 @@ export const wrappingInputRuleWithJoin = (
       (!beforeJoinPredicate || beforeJoinPredicate(match, before));
 
     if (beforeCanJoin) {
-      tr.join(beforePos);
+      tr = tr.join(beforePos);
     }
 
     const afterNode = tr.doc.resolve(start).nodeAfter;
@@ -49,7 +64,7 @@ export const wrappingInputRuleWithJoin = (
       (!afterJoinPredicate || afterJoinPredicate(match, after));
 
     if (afterCanJoin) {
-      tr.join(afterPos);
+      tr = tr.join(afterPos);
     }
 
     const $beforeMergedNodePos =
@@ -74,7 +89,7 @@ export const wrappingInputRuleWithJoin = (
       return tr;
     }
 
-    tr.delete($beforeMergedNodePos.end, nextNode.start);
+    tr = tr.delete($beforeMergedNodePos.end, nextNode.start);
 
     return tr;
   });

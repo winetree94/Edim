@@ -254,7 +254,7 @@ export const toggleList = (nodeType: NodeType): Command => {
       .slice()
       .reverse()
       .filter(({ node }) => node.type.name !== 'paragraph')
-      .reduce((tr, { start, end, node }) => {
+      .reduce((tr, { start, end }) => {
         const range = tr.doc
           .resolve(start + 1)
           .blockRange(tr.doc.resolve(end - 1), (node) =>
@@ -263,8 +263,16 @@ export const toggleList = (nodeType: NodeType): Command => {
         if (!range) {
           return tr;
         }
-        console.log(node, start, end, range);
         return liftOutOfFreeList(tr, range) || tr;
+      }, tr);
+    selection = state.selection.map(tr.doc, tr.mapping);
+
+    // remove indent attribute of paragraph
+    tr = getRangeNodes(tr.doc, selection.from, selection.to)
+      .slice()
+      .reverse()
+      .reduce((tr, { pos }) => {
+        return tr.setNodeAttribute(pos, 'indent', 0);
       }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
 
