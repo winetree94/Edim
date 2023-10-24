@@ -148,10 +148,18 @@
   >
     <i class="ri-list-unordered"></i>
   </button>
-  <button prose-button (click)="onIncreaseIndentClick()">
+  <button
+    prose-button
+    [disabled]="!canDeindent"
+    (click)="onIncreaseIndentClick()"
+  >
     <i class="ri-indent-decrease"></i>
   </button>
-  <button prose-button (click)="onDecreaseIndentClick()">
+  <button
+    prose-button
+    [disabled]="!canIndent"
+    (click)="onDecreaseIndentClick()"
+  >
     <i class="ri-indent-increase"></i>
   </button>
 

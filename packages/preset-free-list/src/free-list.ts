@@ -141,8 +141,8 @@ export const FreeList =
           keymap({
             Enter: splitListItem(schema.nodes['list_item']),
             'Shift-Enter': splitListItem(schema.nodes['list_item']),
-            Tab: indentListItem(schema.nodes['list_item'], 1),
-            'Shift-Tab': indentListItem(schema.nodes['list_item'], -1),
+            Tab: indentListItem(1),
+            'Shift-Tab': indentListItem(-1),
           }),
           // TODO to flat list
           new Plugin({

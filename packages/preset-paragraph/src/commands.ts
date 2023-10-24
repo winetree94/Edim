@@ -79,36 +79,3 @@ export const getRangeIsText = (state: EditorState) => {
     ['heading', 'paragraph'].includes(node.type.name),
   );
 };
-
-export const indentFirstRange = (incremental: number): Command => {
-  return (state, dispatch) => {
-    const { $from, $to } = state.selection;
-
-    const range = $from.blockRange(
-      $to,
-      (node) => node.type.spec.group?.includes('block-container') || false,
-    );
-
-    if (!range) {
-      return false;
-    }
-
-    const descendentsNodes: NodePair[] = [];
-    state.doc.nodesBetween($from.pos, $to.pos, (node, pos, parent) => {
-      if (parent === range.parent) {
-        descendentsNodes.push({
-          node,
-          pos,
-          parent,
-        });
-      }
-      return true;
-    });
-
-    if (descendentsNodes.length === 0) {
-      return false;
-    }
-
-    return false;
-  };
-};

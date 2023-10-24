@@ -347,7 +347,7 @@ export const toggleList = (nodeType: NodeType): Command => {
   };
 };
 
-export const indentListItem = (itemType: NodeType, reduce: number): Command => {
+export const indentListItem = (reduce: number): Command => {
   return (
     state: EditorState,
     dispatch?: (tr: Transaction) => void,
@@ -379,15 +379,20 @@ export const indentListItem = (itemType: NodeType, reduce: number): Command => {
       .reverse()
       .reduce<Transaction>((tr, { node, pos }) => {
         const attrs = node.attrs as { indent: number };
-        const targetIndent = Math.min((attrs.indent || 0) + reduce, 6);
+        const originIndent = attrs.indent;
+        const expectedIndent = Math.min((originIndent || 0) + reduce, 6);
 
         if (node.type.name !== 'list_item') {
+          const targetIndent = Math.max(expectedIndent, 0);
+          if (targetIndent === originIndent) {
+            return tr;
+          }
           return tr.setNodeMarkup(tr.mapping.map(pos), node.type, {
-            indent: Math.max(targetIndent, 0),
+            indent: targetIndent,
           });
         }
 
-        if (targetIndent <= 0) {
+        if (expectedIndent <= 0) {
           const range = tr.doc
             .resolve(pos)
             .blockRange(tr.doc.resolve(pos + node.nodeSize), (node) => {
@@ -396,10 +401,17 @@ export const indentListItem = (itemType: NodeType, reduce: number): Command => {
           return liftOutOfFreeList(tr, range!)!;
         }
 
+        if (originIndent === expectedIndent) {
+          return tr;
+        }
         return tr.setNodeMarkup(pos, node.type, {
-          indent: targetIndent,
+          indent: expectedIndent,
         });
       }, tr);
+
+    if (!tr.docChanged) {
+      return false;
+    }
 
     selection = state.selection.map(tr.doc, tr.mapping);
     dispatch?.(tr);

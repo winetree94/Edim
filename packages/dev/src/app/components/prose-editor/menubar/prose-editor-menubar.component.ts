@@ -20,11 +20,10 @@ import { ProseSeparatorComponent } from 'src/app/components/separator/prose-sepa
 import { redo, undo } from 'prosemirror-history';
 import { Fragment, Node } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
-import { toggleList } from 'prosemirror-preset-free-list';
+import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
 import {
   getRangeFirstAlignment,
   getRangeIsText,
-  indentFirstRange,
   setAlignment,
 } from 'prosemirror-preset-paragraph';
 
@@ -77,8 +76,8 @@ export class ProseEditorMenubarComponent
   private readonly _toggleBulletList = toggleList(
     this._editorView.state.schema.nodes['bullet_list'],
   );
-  private readonly _deindentFirstRange = indentFirstRange(-1);
-  private readonly _indentFirstRange = indentFirstRange(1);
+  private readonly _indent = indentListItem(1);
+  private readonly _deindent = indentListItem(-1);
 
   public isScrollTop = false;
 
@@ -107,6 +106,8 @@ export class ProseEditorMenubarComponent
   public canBulletList = true;
   public canUndo = false;
   public canRedo = false;
+  public canIndent = false;
+  public canDeindent = false;
 
   public update(editorView: EditorView, prevState: EditorState): void {
     this.activeBold = markActive(
@@ -191,6 +192,9 @@ export class ProseEditorMenubarComponent
     this.activeAlignCenter = firstAlignment === 'center';
     this.activeAlignRight = firstAlignment === 'right';
     this.canAlign = firstAlignment !== null;
+
+    this.canIndent = this._indent(this._editorView.state);
+    this.canDeindent = this._deindent(this._editorView.state);
 
     this.canUndo = undo(editorView.state);
     this.canRedo = redo(editorView.state);
@@ -312,12 +316,12 @@ export class ProseEditorMenubarComponent
   }
 
   public onIncreaseIndentClick(): void {
-    this._indentFirstRange(this._editorView.state, this._editorView.dispatch);
+    this._indent(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 
   public onDecreaseIndentClick(): void {
-    this._deindentFirstRange(this._editorView.state, this._editorView.dispatch);
+    this._deindent(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 
