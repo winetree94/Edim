@@ -15,6 +15,7 @@ import {
   EditorState,
   NodeSelection,
   Selection,
+  TextSelection,
   Transaction,
 } from 'prosemirror-state';
 import {
@@ -184,6 +185,9 @@ export const toggleList = (nodeType: NodeType): Command => {
     let tr = state.tr;
     let selection = state.selection;
 
+    const minPos = TextSelection.atStart(tr.doc).from;
+    const maxPos = TextSelection.atEnd(tr.doc).to;
+
     const originRange = selection.$from.blockRange(selection.$to, (node) => {
       return node.type.spec.group?.includes('block-container') || false;
     });
@@ -207,8 +211,8 @@ export const toggleList = (nodeType: NodeType): Command => {
         rangeNodes.push({
           node,
           pos: pos,
-          start: Math.max(selection.$from.pos, pos),
-          end: Math.min(selection.$to.pos, pos + node.nodeSize),
+          start: Math.max(selection.$from.pos, pos + 1, minPos + 1),
+          end: Math.min(selection.$to.pos, pos + node.nodeSize - 1, maxPos - 1),
         });
         return true;
       });
@@ -235,8 +239,11 @@ export const toggleList = (nodeType: NodeType): Command => {
         .reduce((tr, { start, end }) => {
           const range = tr.doc
             .resolve(start)
-            .blockRange(tr.doc.resolve(end), (node) => node.type === nodeType);
-          return range ? liftOutOfFreeList(tr, range) || tr : tr;
+            .blockRange(
+              tr.doc.resolve(end),
+              (node) => node.type.spec.group?.includes('list') || false,
+            )!;
+          return liftOutOfFreeList(tr, range)!;
         }, state.tr);
       dispatch?.(tr);
       return true;
@@ -244,20 +251,17 @@ export const toggleList = (nodeType: NodeType): Command => {
 
     // memoize indents
     const indents: number[] = [];
-    rangeNodes.slice().forEach(({ node, start, end }) => {
+    rangeNodes.slice().forEach(({ node, pos, start, end }) => {
       const isParagraph = node.type.name === 'paragraph';
       if (isParagraph) {
         indents.push(0);
         return;
       }
       const range = tr.doc
-        .resolve(start + 1)
-        .blockRange(tr.doc.resolve(end - 1), (node) => {
+        .resolve(start)
+        .blockRange(tr.doc.resolve(end), (node) => {
           return node.type.spec.group?.includes('list') || false;
-        });
-      if (!range) {
-        return;
-      }
+        })!;
       for (let i = range.startIndex; i < range.endIndex; i++) {
         indents.push(range.parent.child(i).attrs['indent'] as number);
       }
@@ -270,13 +274,10 @@ export const toggleList = (nodeType: NodeType): Command => {
       .filter(({ node }) => node.type.name !== 'paragraph')
       .reduce((tr, { start, end }) => {
         const range = tr.doc
-          .resolve(start + 1)
-          .blockRange(tr.doc.resolve(end - 1), (node) => {
+          .resolve(start)
+          .blockRange(tr.doc.resolve(end), (node) => {
             return node.type.spec.group?.includes('list') || false;
-          });
-        if (!range) {
-          return tr;
-        }
+          })!;
         return liftOutOfFreeList(tr, range) || tr;
       }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);

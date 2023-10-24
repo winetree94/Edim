@@ -8,7 +8,7 @@ import { PMPluginsFactory } from 'prosemirror-preset-core';
 const blockquoteDOM: DOMOutputSpec = ['blockquote', 0];
 const blockquote: Record<string, NodeSpec> = {
   blockquote: {
-    content: 'block+',
+    content: 'paragraph+',
     group: 'block disable-paragraph-attributes',
     defining: true,
     parseDOM: [{ tag: 'blockquote' }],

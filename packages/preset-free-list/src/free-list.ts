@@ -160,8 +160,8 @@ export const FreeList =
           //       return {};
           //     },
           //     apply(tr, value, oldState, newState) {
-          //       const { $from, from, $to } = tr.selection;
-          //       console.log(from);
+          //       const { $from, from, $to, to } = tr.selection;
+          //       console.log('position: ', from, to);
           //       // const range = $from.blockRange($to, (node) => {
           //       //   return (
           //       //     node.childCount > 0 &&

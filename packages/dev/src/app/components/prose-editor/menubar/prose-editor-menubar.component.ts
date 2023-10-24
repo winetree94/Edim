@@ -145,17 +145,21 @@ export class ProseEditorMenubarComponent
     this.canOrderedList = this._toggleOrderedList(this._editorView.state);
     this.canBulletList = this._toggleBulletList(this._editorView.state);
 
-    this.activeOrderedList = !!findParentNode(
-      editorView.state,
-      editorView.state.selection.from,
-      editorView.state.schema.nodes['ordered_list'],
-    );
+    this.activeOrderedList =
+      this.canOrderedList &&
+      !!findParentNode(
+        editorView.state,
+        editorView.state.selection.from,
+        editorView.state.schema.nodes['ordered_list'],
+      );
 
-    this.activeUnorderedList = !!findParentNode(
-      editorView.state,
-      editorView.state.selection.from,
-      editorView.state.schema.nodes['bullet_list'],
-    );
+    this.activeUnorderedList =
+      this.canBulletList &&
+      !!findParentNode(
+        editorView.state,
+        editorView.state.selection.from,
+        editorView.state.schema.nodes['bullet_list'],
+      );
 
     this.canNormalText = getRangeIsText(this._editorView.state);
     const rangeFromNode = this._editorView.state.selection.$from.parent;
