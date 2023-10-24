@@ -134,24 +134,10 @@ export const FreeList =
             ],
           }),
           keymap({
-            Enter: (state, dispatch) => {
-              return splitListItem(schema.nodes['list_item'])(state, dispatch);
-            },
-            'Shift-Enter': (state, dispatch) => {
-              return splitListItem(schema.nodes['list_item'])(state, dispatch);
-            },
-            Tab: (state, dispatch) => {
-              return indentListItem(schema.nodes['list_item'], 1)(
-                state,
-                dispatch,
-              );
-            },
-            'Shift-Tab': (state, dispatch) => {
-              return indentListItem(schema.nodes['list_item'], -1)(
-                state,
-                dispatch,
-              );
-            },
+            Enter: splitListItem(schema.nodes['list_item']),
+            'Shift-Enter': splitListItem(schema.nodes['list_item']),
+            Tab: indentListItem(schema.nodes['list_item'], 1),
+            'Shift-Tab': indentListItem(schema.nodes['list_item'], -1),
           }),
           // TODO to flat list
           new Plugin({

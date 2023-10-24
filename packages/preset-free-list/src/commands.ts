@@ -24,7 +24,7 @@ import {
   findWrapping,
 } from 'prosemirror-transform';
 
-export const doWrapInList = (
+export const doWrapInFreeList = (
   tr: Transaction,
   range: NodeRange,
   wrappers: { type: NodeType; attrs?: Attrs | null }[],
@@ -106,7 +106,7 @@ export const wrapInFreeList = (
 
     const wrap = findWrapping(outerRange!, listType, attrs, range);
     if (!wrap) return null;
-    return doWrapInList(tr, range, wrap, doJoin, listType);
+    return doWrapInFreeList(tr, range, wrap, doJoin, listType);
   };
 };
 
@@ -180,12 +180,6 @@ export const liftOutOfFreeList = (
   );
 };
 
-export const conversionList = (nodeType: NodeType): Command => {
-  return (state, dispatch) => {
-    return false;
-  };
-};
-
 export const toggleList = (nodeType: NodeType): Command => {
   return (state, dispatch) => {
     let tr = state.tr;
@@ -251,9 +245,6 @@ export const toggleList = (nodeType: NodeType): Command => {
             .blockRange(tr.doc.resolve(end), (node) => node.type === nodeType);
           return range ? liftOutOfFreeList(tr, range) || tr : tr;
         }, state.tr);
-      if (!tr.docChanged) {
-        return false;
-      }
       dispatch?.(tr);
       return true;
     }
@@ -292,16 +283,20 @@ export const toggleList = (nodeType: NodeType): Command => {
       ].includes(node.type.name);
     })!;
     const adjacentsNodes: { node: Node; pos: number }[] = [];
-    tr.doc.nodesBetween(range.start - 2, range.end + 2, (node, pos) => {
-      if (node.type !== nodeType) {
+    tr.doc.nodesBetween(
+      Math.max(range.start - 2, 0),
+      Math.min(range.end + 2, tr.doc.nodeSize - 2),
+      (node, pos) => {
+        if (node.type !== nodeType) {
+          return true;
+        }
+        adjacentsNodes.push({
+          node,
+          pos,
+        });
         return true;
-      }
-      adjacentsNodes.push({
-        node,
-        pos,
-      });
-      return true;
-    });
+      },
+    );
     tr = adjacentsNodes
       .slice()
       .reverse()
@@ -312,10 +307,6 @@ export const toggleList = (nodeType: NodeType): Command => {
         return tr.delete(pos - 1, pos + 1);
       }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
-
-    if (!tr.docChanged) {
-      return false;
-    }
 
     dispatch?.(tr.setSelection(selection).scrollIntoView());
     return true;
