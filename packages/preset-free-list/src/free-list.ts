@@ -61,7 +61,7 @@ export const listItem: Record<string, NodeSpec> = {
     group: 'disable-paragraph-attributes',
     attrs: {
       indent: {
-        default: 0,
+        default: 1,
       },
     },
     parseDOM: [

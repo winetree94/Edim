@@ -352,71 +352,59 @@ export const indentListItem = (itemType: NodeType, reduce: number): Command => {
     state: EditorState,
     dispatch?: (tr: Transaction) => void,
   ): boolean => {
-    const { $from, $to } = state.selection;
+    let tr = state.tr;
+    let selection = state.selection;
+    const { $from, $to } = selection;
 
-    const indentableNodes: NodePair[] = [];
-    state.tr.doc.nodesBetween($from.pos, $to.pos, (node) => {
+    const indentableNodes: {
+      node: Node;
+      pos: number;
+      parent: Node | null;
+    }[] = [];
+
+    state.tr.doc.nodesBetween($from.pos, $to.pos, (node, pos, parent) => {
       if (node.type.spec.attrs?.['indent']) {
         indentableNodes.push({
           node,
-          pos: $from.pos,
-          parent: $from.node(-1),
+          pos: pos,
+          parent: parent,
         });
         return false;
       }
       return true;
     });
 
-    const fromGrandParent = $from.node(-2);
-    const toGrandParent = $to.node(-2);
+    tr = indentableNodes
+      .slice()
+      .reverse()
+      .reduce<Transaction>((tr, { node, pos }) => {
+        const attrs = node.attrs as { indent: number };
+        const targetIndent = Math.min((attrs.indent || 0) + reduce, 6);
 
-    if (fromGrandParent !== toGrandParent) {
-      return false;
-    }
+        if (node.type.name !== 'list_item') {
+          return tr.setNodeMarkup(tr.mapping.map(pos), node.type, {
+            indent: Math.max(targetIndent, 0),
+          });
+        }
 
-    let tr = state.tr;
+        if (targetIndent <= 0) {
+          const range = tr.doc
+            .resolve(pos)
+            .blockRange(tr.doc.resolve(pos + node.nodeSize), (node) => {
+              return ['ordered_list', 'bullet_list'].includes(node.type.name);
+            });
+          return liftOutOfFreeList(tr, range!)!;
+        }
 
-    const liftOutNode: {
-      node: Node;
-      pos: number;
-    }[] = [];
-
-    state.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
-      if (node.type.name !== 'list_item') return;
-      const attrs = node.attrs as ListItemAttrs;
-      const targetIndent = Math.max(
-        0,
-        Math.min((attrs.indent || 0) + reduce, 6),
-      );
-
-      if (targetIndent <= 0) {
-        liftOutNode.push({
-          node,
-          pos,
-        });
-      } else {
-        tr = tr.setNodeMarkup(pos, undefined, {
-          ...attrs,
+        return tr.setNodeMarkup(pos, node.type, {
           indent: targetIndent,
         });
-      }
-    });
+      }, tr);
 
-    if (liftOutNode.length > 0) {
-      const range = $from.blockRange(
-        $to,
-        (node) => node.childCount > 0 && node.firstChild!.type == itemType,
-      );
-      if (!range) return false;
-      tr = liftOutOfFreeList(state.tr, range) || tr;
-    }
+    selection = state.selection.map(tr.doc, tr.mapping);
+    dispatch?.(tr);
 
-    if (tr.docChanged) {
-      dispatch?.(tr);
-      return true;
-    }
-
-    return false;
+    return true;
   };
 };
 
