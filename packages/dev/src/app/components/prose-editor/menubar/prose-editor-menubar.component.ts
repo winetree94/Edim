@@ -3,6 +3,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -12,7 +13,12 @@ import {
 import { EditorState, PluginView, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProseMirrorEditorView } from './menubar';
-import { findParentNode, markActive, wrapIn } from 'prosemirror-preset-utils';
+import {
+  AppComponent,
+  findParentNode,
+  markActive,
+  wrapIn,
+} from 'prosemirror-preset-utils';
 import { GlobalService } from 'src/app/global.service';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
@@ -29,6 +35,7 @@ import {
   setAlignment,
 } from 'prosemirror-preset-paragraph';
 import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/link/link-layer.component';
+import { h, render } from 'preact';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -115,6 +122,12 @@ export class ProseEditorMenubarComponent
 
   @ViewChild('layerRoot', { static: true, read: ViewContainerRef })
   public layerRoot!: ViewContainerRef;
+
+  @ViewChild('reactRoot', { static: true })
+  public reactRoot!: ElementRef<HTMLDivElement>;
+
+  @ViewChild('reactRoot2', { static: true })
+  public reactRoot2!: ElementRef<HTMLDivElement>;
 
   public update(editorView: EditorView, prevState: EditorState): void {
     this.activeBold = markActive(
@@ -272,6 +285,22 @@ export class ProseEditorMenubarComponent
         url: '',
       });
     }
+  }
+
+  public textPreact(): void {
+    render(
+      h(AppComponent, {
+        name: 'hansol',
+      }),
+      this.reactRoot.nativeElement,
+    );
+
+    render(
+      h(AppComponent, {
+        name: 'winetree94',
+      }),
+      this.reactRoot2.nativeElement,
+    );
   }
 
   public onAlignClick(alignment: 'left' | 'center' | 'right'): void {

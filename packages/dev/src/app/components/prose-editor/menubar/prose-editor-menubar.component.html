@@ -192,6 +192,9 @@
   <button prose-button disabled>
     <i class="ri-slash-commands"></i>
   </button>
+  <button prose-button (click)="textPreact()">
+    <i class="ri-reactjs-line"></i>
+  </button>
 </div>
 <div>
   <div *ngIf="linkFormActive">
@@ -203,4 +206,6 @@
   </div>
 </div>
 
+<div #reactRoot></div>
+<div #reactRoot2></div>
 <ng-container #layerRoot></ng-container>

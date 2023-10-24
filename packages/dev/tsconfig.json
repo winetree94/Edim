@@ -48,7 +48,9 @@
       "prosemirror-preset-utils": ["../preset-utils/src/index.ts"],
       "prosemirror-preset-code": ["../preset-code/src/index.ts"],
       "prosemirror-preset-list": ["../preset-list/src/index.ts"],
-    }
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
