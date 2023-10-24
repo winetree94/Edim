@@ -11,6 +11,7 @@ import {
   ResolvedPos,
   Slice,
 } from 'prosemirror-model';
+import { NodePair } from 'prosemirror-preset-utils';
 import {
   Command,
   EditorState,
@@ -352,6 +353,19 @@ export const indentListItem = (itemType: NodeType, reduce: number): Command => {
     dispatch?: (tr: Transaction) => void,
   ): boolean => {
     const { $from, $to } = state.selection;
+
+    const indentableNodes: NodePair[] = [];
+    state.tr.doc.nodesBetween($from.pos, $to.pos, (node) => {
+      if (node.type.spec.attrs?.['indent']) {
+        indentableNodes.push({
+          node,
+          pos: $from.pos,
+          parent: $from.node(-1),
+        });
+        return false;
+      }
+      return true;
+    });
 
     const fromGrandParent = $from.node(-2);
     const toGrandParent = $to.node(-2);
