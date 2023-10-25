@@ -180,12 +180,7 @@
   <button prose-button disabled>
     <i class="ri-checkbox-line"></i>
   </button>
-  <button
-    prose-button
-    [disabled]="!canLink"
-    [class.active]="activeLink"
-    (click)="setLink()"
-  >
+  <button prose-button [disabled]="!canLink" (click)="setLink()">
     <i class="ri-links-line"></i>
   </button>
   <button prose-button (click)="onImageClick()">
@@ -212,15 +207,6 @@
   <button prose-button (click)="textPreact()">
     <i class="ri-reactjs-line"></i>
   </button>
-</div>
-<div>
-  <div *ngIf="linkFormActive">
-    <form [formGroup]="linkForm" (submit)="linkSubmit()">
-      <input type="text" formControlName="text" placeholder="text" />
-      <input type="text" formControlName="url" placeholder="url" />
-      <button prose-button type="submit">submit</button>
-    </form>
-  </div>
 </div>
 
 <div #reactRoot></div>

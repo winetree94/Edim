@@ -22,7 +22,7 @@ import {
 import { GlobalService } from 'src/app/global.service';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
@@ -38,7 +38,7 @@ import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/l
 import { h } from 'preact';
 import { PreactRef, usePreactRenderer } from 'src/app/components/preact/preact';
 import { PmpLayer, PmpLinkFormLayer } from 'prosemirror-preset-view';
-import { canAddLink } from 'prosemirror-preset-link';
+import { addLink, canAddLink } from 'prosemirror-preset-link';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -64,19 +64,8 @@ export class ProseEditorMenubarComponent
   private readonly _cdr = inject(ChangeDetectorRef);
   private readonly _renderedRoots: HTMLElement[] = [];
 
-  public linkFormActive = false;
-
   private _linkRef: PreactRef | null = null;
   private _preactRef: PreactRef | null = null;
-
-  public readonly linkForm = new FormGroup({
-    from: new FormControl<number>(0, { nonNullable: true }),
-    to: new FormControl<number>(0, { nonNullable: true }),
-    text: new FormControl<string>('', { nonNullable: true }),
-    url: new FormControl<string>('', {
-      nonNullable: true,
-    }),
-  });
 
   private readonly _toggleBold = toggleMark(
     this._editorView.state.schema.marks['strong'],
@@ -105,7 +94,6 @@ export class ProseEditorMenubarComponent
   public activeItalic = false;
   public activeStrikethrough = false;
   public activeInlineCode = false;
-  public activeLink = false;
   public activeOrderedList = false;
   public activeUnorderedList = false;
   public activeParagraph = false;
@@ -158,11 +146,6 @@ export class ProseEditorMenubarComponent
     this.activeInlineCode = markActive(
       editorView.state,
       editorView.state.schema.marks['code'],
-    );
-
-    this.activeLink = markActive(
-      editorView.state,
-      editorView.state.schema.marks['link'],
     );
 
     this.canOrderedList = this._toggleOrderedList(this._editorView.state);
@@ -294,34 +277,7 @@ export class ProseEditorMenubarComponent
             onSubmit: (link: string, text: string) => {
               let tr = this._editorView.state.tr;
               this._linkRef?.destroy();
-
-              if (from === to) {
-                tr = this._editorView.state.tr
-                  .insertText(text, from, to)
-                  .addMark(
-                    from,
-                    to + text.length,
-                    this._editorView.state.schema.marks['link'].create({
-                      href: link,
-                    }),
-                  )
-                  .scrollIntoView();
-                this._editorView.dispatch(tr);
-                this._editorView.focus();
-                return;
-              }
-
-              tr = this._editorView.state.tr
-                .delete(from, to)
-                .insertText(text, from)
-                .addMark(
-                  from,
-                  from + text.length,
-                  this._editorView.state.schema.marks['link'].create({
-                    href: link,
-                  }),
-                )
-                .scrollIntoView();
+              tr = addLink(tr, from, to, text, link);
               this._editorView.dispatch(tr);
               this._editorView.focus();
             },
@@ -331,31 +287,6 @@ export class ProseEditorMenubarComponent
       ),
       this._linkRef?.parent,
     );
-
-    return;
-    if (this.linkFormActive) {
-      this.linkFormActive = false;
-      return;
-    }
-
-    const rangeHasLinkMark = this._editorView.state.doc.rangeHasMark(
-      this._editorView.state.selection.from,
-      this._editorView.state.selection.to,
-      this._editorView.state.schema.marks['link'],
-    );
-
-    if (!rangeHasLinkMark) {
-      this.linkFormActive = true;
-      return this.linkForm.patchValue({
-        from: this._editorView.state.selection.from,
-        to: this._editorView.state.selection.to,
-        text: this._editorView.state.doc.textBetween(
-          this._editorView.state.selection.from,
-          this._editorView.state.selection.to,
-        ),
-        url: '',
-      });
-    }
   }
 
   public textPreact(): void {
@@ -370,26 +301,6 @@ export class ProseEditorMenubarComponent
   public onAlignClick(alignment: 'left' | 'center' | 'right'): void {
     setAlignment(alignment)(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
-  }
-
-  public linkSubmit(): void {
-    const values = this.linkForm.getRawValue();
-    this._editorView.dispatch(
-      this._editorView.state.tr
-        .removeMark(
-          values.from,
-          values.to,
-          this._editorView.state.schema.marks['link'],
-        )
-        .addMark(
-          values.from,
-          values.to,
-          this._editorView.state.schema.marks['link'].create({
-            href: values.url,
-          }),
-        ),
-    );
-    this.linkFormActive = false;
   }
 
   public onUndoClick(): void {

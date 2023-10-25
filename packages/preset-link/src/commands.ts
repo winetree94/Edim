@@ -22,11 +22,12 @@ export const addLink = (
   link: string,
 ) => {
   if (from === to) {
+    const alternativeText = text || link;
     return tr
-      .insertText(text, from, to)
+      .insertText(alternativeText, from, to)
       .addMark(
         from,
-        to + text.length,
+        to + alternativeText.length,
         tr.doc.type.schema.marks['link'].create({
           href: link,
         }),
