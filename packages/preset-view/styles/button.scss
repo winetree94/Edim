@@ -1,0 +1,26 @@
+.pmp-button {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+
+  font-size: 16px;
+  height: 28px;
+  color: #172b4d;
+
+  &:disabled {
+    cursor: not-allowed;
+    color: #b9c0c9;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &:active:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}

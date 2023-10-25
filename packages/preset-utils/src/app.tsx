@@ -5,6 +5,7 @@ export interface AppProps {
 }
 
 export const AppComponent = (props: AppProps) => {
+  console.log('update');
   const [bool, setBool] = useState(false);
   const [value, setValue] = useState<string>('');
   return (
@@ -12,7 +13,7 @@ export const AppComponent = (props: AppProps) => {
       <input
         type="text"
         value={value}
-        onChange={(e) => {
+        onInput={(e) => {
           const target = e.target as HTMLInputElement;
           setValue(target.value);
         }}

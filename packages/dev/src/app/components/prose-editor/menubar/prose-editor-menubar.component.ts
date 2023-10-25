@@ -35,7 +35,9 @@ import {
   setAlignment,
 } from 'prosemirror-preset-paragraph';
 import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/link/link-layer.component';
-import { h, render } from 'preact';
+import { h } from 'preact';
+import { PreactRef, usePreactRenderer } from 'src/app/components/preact/preact';
+import { PmpLayer, PmpLinkFormLayer } from 'prosemirror-preset-view';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -53,12 +55,18 @@ import { h, render } from 'preact';
 export class ProseEditorMenubarComponent
   implements OnInit, OnDestroy, PluginView
 {
+  private readonly _preactRenderer = usePreactRenderer();
+  private readonly _elementRef = inject(ElementRef);
   private readonly _subscriptions: SubscriptionLike[] = [];
   private readonly _editorView = inject(ProseMirrorEditorView);
   private readonly _globalService = inject(GlobalService);
   private readonly _cdr = inject(ChangeDetectorRef);
+  private readonly _renderedRoots: HTMLElement[] = [];
 
   public linkFormActive = false;
+
+  private _linkRef: PreactRef | null = null;
+  private _preactRef: PreactRef | null = null;
 
   public readonly linkForm = new FormGroup({
     from: new FormControl<number>(0, { nonNullable: true }),
@@ -262,6 +270,33 @@ export class ProseEditorMenubarComponent
   }
 
   public setLink(): void {
+    const { from, to } = this._editorView.state.selection;
+    const start = this._editorView.coordsAtPos(from);
+    const end = this._editorView.coordsAtPos(to);
+    this._linkRef = this._preactRenderer(
+      h(
+        PmpLayer,
+        {
+          top: end.bottom + 10,
+          left: start.left,
+          closeOnEsc: true,
+          outerMousedown: () => this._linkRef?.destroy(),
+          onClose: () => this._linkRef?.destroy(),
+        },
+        [
+          h(PmpLinkFormLayer, {
+            onSubmit: (link: string, text: string) => {
+              console.log(link, text);
+              this._linkRef?.destroy();
+            },
+            onCancel: () => this._linkRef?.destroy(),
+          }),
+        ],
+      ),
+      this._linkRef?.parent,
+    );
+
+    return;
     if (this.linkFormActive) {
       this.linkFormActive = false;
       return;
@@ -288,18 +323,11 @@ export class ProseEditorMenubarComponent
   }
 
   public textPreact(): void {
-    render(
+    this._preactRef = this._preactRenderer(
       h(AppComponent, {
         name: 'hansol',
       }),
-      this.reactRoot.nativeElement,
-    );
-
-    render(
-      h(AppComponent, {
-        name: 'winetree94',
-      }),
-      this.reactRoot2.nativeElement,
+      this._preactRef?.parent,
     );
   }
 

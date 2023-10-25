@@ -17,6 +17,7 @@
     "prosemirror-keymap": "*",
     "prosemirror-view": "*",
     "prosemirror-inputrules": "*",
+    "prosemirror-preset-view": "*",
     "preact": "*"
   },
   "devDependencies": {

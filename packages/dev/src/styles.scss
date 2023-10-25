@@ -15,6 +15,10 @@
 @import 'prosemirror-preset-tables/styles/tables.scss';
 @import 'prosemirror-preset-command/styles/command.scss';
 
+// pmp view
+@import 'prosemirror-preset-view/styles/view.scss';
+@import 'prosemirror-preset-view/styles/button.scss';
+
 /* You can add global styles to this file, and also import other style files */
 body {
   margin: 0;

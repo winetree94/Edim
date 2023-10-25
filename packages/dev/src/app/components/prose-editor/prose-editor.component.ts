@@ -34,7 +34,6 @@ import { TextColor } from 'prosemirror-preset-text-color';
 import { Table } from 'prosemirror-preset-tables';
 import { Code } from 'prosemirror-preset-code';
 import { Strong } from 'prosemirror-preset-strong';
-import { HardBreak } from 'prosemirror-preset-hardbreak';
 import { EmojiExtension } from 'prosemirror-preset-emoji';
 import { EditorState } from 'prosemirror-state';
 import { NgMenubarView } from './menubar/menubar';

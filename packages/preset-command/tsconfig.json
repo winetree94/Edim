@@ -5,7 +5,8 @@
     "outDir": "./dist",
     "declaration": true,
     "paths": {
-      "prosemirror-preset-core": ["../../preset-core/src/index.ts"]
+      "prosemirror-preset-core": ["../../preset-core/src/index.ts"],
+      "prosemirror-preset-view": ["../../preset-view/src/index.ts"]
     }
   },
   "include": [
