@@ -1,6 +1,6 @@
 import { PmpButton } from './button';
 import { JSX } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 
 export interface PmpLayerProps {
   top: number;
@@ -60,14 +60,23 @@ export interface PmpLinkFormProps {
 }
 
 export const PmpLinkFormLayer = (props: PmpLinkFormProps) => {
+  const linkRef = useRef<HTMLInputElement>(null);
   const [link, setLink] = useState<string>(props.link || '');
   const [text, setText] = useState<string>(props.text || '');
+
+  useEffect(() => {
+    if (linkRef.current) {
+      linkRef.current.focus();
+    }
+  }, []);
+
   return (
     <div>
       <form onSubmit={() => props.onSubmit?.(link, text)}>
         <div>
           <p>Link</p>
           <input
+            ref={linkRef}
             type="text"
             value={link}
             onInput={(e) => {

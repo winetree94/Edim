@@ -38,6 +38,7 @@ import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/l
 import { h } from 'preact';
 import { PreactRef, usePreactRenderer } from 'src/app/components/preact/preact';
 import { PmpLayer, PmpLinkFormLayer } from 'prosemirror-preset-view';
+import { canAddLink } from 'prosemirror-preset-link';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -123,6 +124,7 @@ export class ProseEditorMenubarComponent
   public canAlign = false;
   public canOrderedList = true;
   public canBulletList = true;
+  public canLink = false;
   public canUndo = false;
   public canRedo = false;
   public canIndent = false;
@@ -227,6 +229,8 @@ export class ProseEditorMenubarComponent
     this.canIndent = this._indent(this._editorView.state);
     this.canDeindent = this._deindent(this._editorView.state);
 
+    this.canLink = canAddLink(this._editorView.state);
+
     this.canUndo = undo(editorView.state);
     this.canRedo = redo(editorView.state);
   }
@@ -285,9 +289,41 @@ export class ProseEditorMenubarComponent
         },
         [
           h(PmpLinkFormLayer, {
+            text: this._editorView.state.doc.textBetween(from, to),
+            link: '',
             onSubmit: (link: string, text: string) => {
-              console.log(link, text);
+              let tr = this._editorView.state.tr;
               this._linkRef?.destroy();
+
+              if (from === to) {
+                tr = this._editorView.state.tr
+                  .insertText(text, from, to)
+                  .addMark(
+                    from,
+                    to + text.length,
+                    this._editorView.state.schema.marks['link'].create({
+                      href: link,
+                    }),
+                  )
+                  .scrollIntoView();
+                this._editorView.dispatch(tr);
+                this._editorView.focus();
+                return;
+              }
+
+              tr = this._editorView.state.tr
+                .delete(from, to)
+                .insertText(text, from)
+                .addMark(
+                  from,
+                  from + text.length,
+                  this._editorView.state.schema.marks['link'].create({
+                    href: link,
+                  }),
+                )
+                .scrollIntoView();
+              this._editorView.dispatch(tr);
+              this._editorView.focus();
             },
             onCancel: () => this._linkRef?.destroy(),
           }),

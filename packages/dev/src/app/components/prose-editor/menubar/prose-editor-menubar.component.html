@@ -180,7 +180,12 @@
   <button prose-button disabled>
     <i class="ri-checkbox-line"></i>
   </button>
-  <button prose-button [class.active]="activeLink" (click)="setLink()">
+  <button
+    prose-button
+    [disabled]="!canLink"
+    [class.active]="activeLink"
+    (click)="setLink()"
+  >
     <i class="ri-links-line"></i>
   </button>
   <button prose-button (click)="onImageClick()">
