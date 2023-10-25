@@ -182,7 +182,7 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
                   return false;
                 }
                 return {
-                  data_id: data_id,
+                  data_id,
                 };
               },
             },

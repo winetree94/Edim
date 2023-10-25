@@ -30,6 +30,7 @@ import { Strikethrough } from 'prosemirror-preset-strikethrough';
 import { BlockQuote } from 'prosemirror-preset-blockquote';
 import { CodeBlock } from 'prosemirror-preset-codeblock';
 import { Text } from 'prosemirror-preset-text';
+import { TextColor } from 'prosemirror-preset-text-color';
 import { Table } from 'prosemirror-preset-tables';
 import { Code } from 'prosemirror-preset-code';
 import { Strong } from 'prosemirror-preset-strong';
@@ -41,6 +42,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Node } from 'prosemirror-model';
 import { MentionView } from 'src/app/components/prose-editor/mention/mention';
 import { CommonModule } from '@angular/common';
+import { Command } from 'prosemirror-preset-command';
 
 @Component({
   selector: 'ng-prose-editor',
@@ -76,6 +78,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
     extensions: [
       Document(),
       Text(),
+      TextColor(),
       Paragraph({
         addListNodes: true,
       }),
@@ -117,6 +120,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
         environmentInjector: this.environmentInjector,
         view: NgMenubarView,
       }),
+      Command({}),
       History(),
     ],
     // nativePlugins: (schema) => [

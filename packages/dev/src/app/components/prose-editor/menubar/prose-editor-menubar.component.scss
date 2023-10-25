@@ -3,6 +3,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  position: relative;
 
   &:not(.scroll-top) {
     box-shadow: 0 2px 0 0 #EBECF0;

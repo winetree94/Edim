@@ -99,6 +99,18 @@
   >
     <i class="ri-code-line"></i>
   </button>
+  <button
+    prose-button
+    [class.active]="false"
+    (click)="onTextColorClick(colorInput)"
+  >
+    <i class="ri-font-color"></i>
+  </button>
+  <input
+    #colorInput
+    type="color"
+    style="width: 0; height: 0; visibility: hidden"
+  />
 
   <prose-separator class="separator" />
 

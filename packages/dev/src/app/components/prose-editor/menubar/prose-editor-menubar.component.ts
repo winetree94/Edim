@@ -443,6 +443,11 @@ export class ProseEditorMenubarComponent
     this._editorView.focus();
   }
 
+  public onTextColorClick(colorInput: HTMLInputElement): void {
+    colorInput.click();
+    // toggleMark(this._editorView.state.schema.marks['textColor']);
+  }
+
   public ngOnInit(): void {
     const scrollbarElement = this._editorView.dom.parentElement!.parentElement!;
     this.isScrollTop = scrollbarElement.scrollTop === 0;

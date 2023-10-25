@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-link",
+  "name": "prosemirror-preset-view",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -11,9 +11,10 @@
   "main": "dist/index.js",
   "private": true,
   "dependencies": {
-    "preact": "*",
-    "prosemirror-state": "*",
+    "prosemirror-view": "*",
     "prosemirror-model": "*",
+    "prosemirror-keymap": "*",
+    "prosemirror-commands": "*",
     "prosemirror-preset-core": "*"
   },
   "devDependencies": {
