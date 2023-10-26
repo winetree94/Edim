@@ -1,0 +1,23 @@
+.pmp-view-command-container {
+  overflow-y: auto;
+}
+
+.pmp-view-command-list-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &.selected {
+    background-color: #EBECF0;
+  }
+}
+
+.pmp-view-command-list-item-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.pmp-view-command-list-item-content {
+  flex: 1 1 auto;
+}

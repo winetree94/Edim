@@ -23,13 +23,16 @@ import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/l
 import { h } from 'preact';
 import { PreactRef, usePreactRenderer } from 'src/app/components/preact/preact';
 import {
+  PMP_DEFAULT_COMMAND_LIST,
   PmpColorPicker,
+  PmpCommand,
   PmpLayer,
   PmpLinkFormLayer,
 } from 'prosemirror-preset-view';
 import { addLink, canAddLink } from 'prosemirror-preset-link';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { addMention } from 'prosemirror-preset-mention';
+import { insertTable } from 'prosemirror-preset-tables';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -53,6 +56,8 @@ export class ProseEditorMenubarComponent
 
   private _linkRef: PreactRef | null = null;
   private _colorPickerRef: PreactRef | null = null;
+  private _commandRef: PreactRef | null = null;
+  private _commandIndex = 0;
 
   private readonly _toggleBold = toggleMark(
     this._editorView.state.schema.marks['strong'],
@@ -355,33 +360,7 @@ export class ProseEditorMenubarComponent
   }
 
   public onTableClick(): void {
-    const offset: number = this._editorView.state.tr.selection.anchor + 1;
-    const transaction = this._editorView.state.tr;
-    const cell: Node = this._editorView.state.schema.nodes[
-      'table_cell'
-    ].createAndFill() as unknown as Node;
-
-    const node: Node = this._editorView.state.schema.nodes['table'].create(
-      null,
-      Fragment.fromArray([
-        this._editorView.state.schema.nodes['table_row'].create(
-          null,
-          Fragment.fromArray([cell, cell, cell]),
-        ),
-        this._editorView.state.schema.nodes['table_row'].create(
-          null,
-          Fragment.fromArray([cell, cell, cell]),
-        ),
-      ]),
-    ) as unknown as Node;
-
-    this._editorView.dispatch(
-      transaction
-        .replaceSelectionWith(node)
-        .scrollIntoView()
-        .setSelection(TextSelection.near(transaction.doc.resolve(offset))),
-    );
-
+    insertTable()(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 
@@ -425,6 +404,45 @@ export class ProseEditorMenubarComponent
         ],
       ),
       this._colorPickerRef?.parent,
+    );
+  }
+
+  public onCommandClick(button: HTMLButtonElement): void {
+    const { left, bottom } = button.getBoundingClientRect();
+    this._commandRef = this._preactRenderer(
+      h(
+        PmpLayer,
+        {
+          top: bottom + 10,
+          left: left,
+          closeOnEsc: true,
+          outerMousedown: () => {
+            this._commandRef?.destroy();
+            this._commandIndex = 0;
+          },
+          onClose: () => {
+            this._commandRef?.destroy();
+            this._commandIndex = 0;
+          },
+        },
+        [
+          h(PmpCommand, {
+            items: PMP_DEFAULT_COMMAND_LIST,
+            keyword: '',
+            selectedIndex: this._commandIndex,
+            onHover: (index) => {
+              this._commandIndex = index;
+              this.onCommandClick(button);
+            },
+            onClick: (index: number) => {
+              this._commandRef?.destroy();
+              PMP_DEFAULT_COMMAND_LIST[index].action(this._editorView);
+              this._editorView.focus();
+            },
+          }),
+        ],
+      ),
+      this._commandRef?.parent,
     );
   }
 

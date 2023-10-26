@@ -17,6 +17,8 @@
     "prosemirror-keymap": "*",
     "prosemirror-commands": "*",
     "prosemirror-preset-core": "*",
+    "prosemirror-preset-mention": "*",
+    "prosemirror-preset-tables": "*",
     "prosemirror-preset-command": "*",
     "preact": "*"
   },

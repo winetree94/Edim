@@ -97,6 +97,9 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
           );
         },
       }),
+      Command({
+        view: (view, plugin) => new PmpCommandView(view, plugin),
+      }),
       FreeList({}),
       BlockQuote(),
       Separator(),
@@ -119,9 +122,6 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
         applicationRef: this.applicationRef,
         environmentInjector: this.environmentInjector,
         view: NgMenubarView,
-      }),
-      Command({
-        view: (view, plugin) => new PmpCommandView(view, plugin),
       }),
       History(),
     ],

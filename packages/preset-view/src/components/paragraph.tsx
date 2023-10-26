@@ -7,7 +7,11 @@ export interface PmpParagraphProps
 export const PmpParagraph = forwardRef<HTMLParagraphElement, PmpParagraphProps>(
   ({ className, children, ...props }, ref) => {
     return (
-      <p ref={ref} className={classes('pmp-paragraph', className)} {...props}>
+      <p
+        ref={ref}
+        className={classes('pmp-view-paragraph', className)}
+        {...props}
+      >
         {children}
       </p>
     );

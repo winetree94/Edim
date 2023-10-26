@@ -6,7 +6,9 @@
     "declaration": true,
     "paths": {
       "prosemirror-preset-core": ["../../preset-core/src/index.ts"],
-      "prosemirror-preset-command": ["../../preset-command/src/index.ts"]
+      "prosemirror-preset-mention": ["../../preset-mention/src/index.ts"],
+      "prosemirror-preset-command": ["../../preset-command/src/index.ts"],
+      "prosemirror-preset-tables": ["../../preset-tables/src/index.ts"]
     }
   },
   "include": [

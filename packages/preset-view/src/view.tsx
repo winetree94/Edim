@@ -5,8 +5,10 @@ export interface PmpLayerProps {
   top: number;
   left: number;
   width?: number;
+  minWidth?: number;
   maxWidth?: number;
   height?: number;
+  minHeight?: number;
   maxHeight?: number;
   children?: JSX.Element;
   closeOnEsc?: boolean;
@@ -37,8 +39,10 @@ export const PmpLayer = (props: PmpLayerProps) => {
         top: `${props.top}px`,
         left: `${props.left}px`,
         width: props.width ? `${props.width}px` : undefined,
+        minWidth: props.minWidth ? `${props.minWidth}px` : undefined,
         maxWidth: props.maxWidth ? `${props.maxWidth}px` : undefined,
         height: props.height ? `${props.height}px` : undefined,
+        minHeight: props.minHeight ? `${props.minHeight}px` : undefined,
         maxHeight: props.maxHeight ? `${props.maxHeight}px` : undefined,
       }}
       onMouseDown={(e) => {

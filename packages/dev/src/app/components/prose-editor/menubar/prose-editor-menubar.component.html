@@ -197,7 +197,11 @@
   <button prose-button disabled>
     <i class="ri-code-s-slash-fill"></i>
   </button>
-  <button prose-button disabled>
+  <button
+    #commandButton
+    prose-button
+    (click)="onCommandClick(commandButton.elementRef.nativeElement)"
+  >
     <i class="ri-slash-commands"></i>
   </button>
 </div>

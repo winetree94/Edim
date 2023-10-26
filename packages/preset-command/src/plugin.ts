@@ -1,5 +1,5 @@
 import { PMPluginsFactory } from 'prosemirror-preset-core';
-import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
+import { Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
 export interface CommandExtensionConfigs {
@@ -9,6 +9,9 @@ export interface CommandExtensionConfigs {
   ) => PluginView;
 }
 
+export interface CommandPluginView extends PluginView {
+  handleKeydown?(view: EditorView, event: KeyboardEvent): boolean | void;
+}
 export interface CommandPluginState {
   active: boolean;
   keyword: string;
@@ -21,6 +24,7 @@ const DefaultCommandPluginState: CommandPluginState = {
 
 export const Command = (config: CommandExtensionConfigs): PMPluginsFactory => {
   const commandPluginKey = new PluginKey<CommandPluginState>('commandPlugin');
+  let pluginView: CommandPluginView | null = null;
   return () => {
     return {
       nodes: {},
@@ -30,7 +34,13 @@ export const Command = (config: CommandExtensionConfigs): PMPluginsFactory => {
           new Plugin<CommandPluginState>({
             key: commandPluginKey,
             view: (editorView) => {
-              return config.view?.(editorView, commandPluginKey) || {};
+              pluginView = config.view?.(editorView, commandPluginKey) || {};
+              return pluginView;
+            },
+            props: {
+              handleKeyDown: (view, event) => {
+                return pluginView?.handleKeydown?.(view, event) || false;
+              },
             },
             state: {
               init: () => {

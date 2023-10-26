@@ -7,4 +7,5 @@ export * from './mention';
 export * from './components/input';
 export * from './components/paragraph';
 export * from './components/label';
+export * from './components/list';
 export * from './command';
