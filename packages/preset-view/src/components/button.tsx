@@ -1,4 +1,4 @@
-import { classes } from './core';
+import { classes } from '../cdk/core';
 import { JSX } from 'preact';
 
 export interface PmpButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {}

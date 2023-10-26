@@ -1,5 +1,5 @@
-import { classes } from './core';
-import { HTMLAttributes } from "preact/compat";
+import { classes } from './cdk/core';
+import { HTMLAttributes } from 'preact/compat';
 
 const COLORS = [
   '#182B4D',

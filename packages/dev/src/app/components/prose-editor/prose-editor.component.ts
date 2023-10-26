@@ -42,6 +42,7 @@ import { Node } from 'prosemirror-model';
 import { MentionView } from 'src/app/components/prose-editor/mention/mention';
 import { CommonModule } from '@angular/common';
 import { Command } from 'prosemirror-preset-command';
+import { PmpCommandView } from "prosemirror-preset-view";
 
 @Component({
   selector: 'ng-prose-editor',
@@ -119,7 +120,9 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
         environmentInjector: this.environmentInjector,
         view: NgMenubarView,
       }),
-      Command({}),
+      Command({
+        view: (view, plugin) => new PmpCommandView(view, plugin),
+      }),
       History(),
     ],
     // nativePlugins: (schema) => [

@@ -182,7 +182,7 @@
   <button prose-button (click)="onImageClick()">
     <i class="ri-image-line"></i>
   </button>
-  <button prose-button (click)="onMentionClick()">
+  <button prose-button [disabled]="!canMention" (click)="onMentionClick()">
     <i class="ri-at-line"></i>
   </button>
   <button prose-button (click)="onBlockQuoteClick()">

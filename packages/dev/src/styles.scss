@@ -17,8 +17,12 @@
 
 // pmp view
 @import 'prosemirror-preset-view/styles/view.scss';
+@import 'prosemirror-preset-view/styles/link.scss';
 @import 'prosemirror-preset-view/styles/button.scss';
 @import 'prosemirror-preset-view/styles/color.scss';
+@import 'prosemirror-preset-view/styles/input.scss';
+@import 'prosemirror-preset-view/styles/paragraph.scss';
+@import 'prosemirror-preset-view/styles/label.scss';
 
 /* You can add global styles to this file, and also import other style files */
 body {

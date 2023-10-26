@@ -11,11 +11,14 @@
   "main": "dist/index.js",
   "private": true,
   "dependencies": {
+    "prosemirror-state": "*",
     "prosemirror-view": "*",
     "prosemirror-model": "*",
     "prosemirror-keymap": "*",
     "prosemirror-commands": "*",
-    "prosemirror-preset-core": "*"
+    "prosemirror-preset-core": "*",
+    "prosemirror-preset-command": "*",
+    "preact": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

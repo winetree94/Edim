@@ -28,6 +28,8 @@ import {
   PmpLinkFormLayer,
 } from 'prosemirror-preset-view';
 import { addLink, canAddLink } from 'prosemirror-preset-link';
+import { toggleBlockquote } from 'prosemirror-preset-blockquote';
+import { addMention } from 'prosemirror-preset-mention';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -70,6 +72,8 @@ export class ProseEditorMenubarComponent
   private readonly _toggleBulletList = toggleList(
     this._editorView.state.schema.nodes['bullet_list'],
   );
+  private readonly _addMention = addMention();
+  private readonly _toggleBlockQuote = toggleBlockquote();
   private readonly _indent = indentListItem(1);
   private readonly _deindent = indentListItem(-1);
 
@@ -102,6 +106,7 @@ export class ProseEditorMenubarComponent
   public canRedo = false;
   public canIndent = false;
   public canDeindent = false;
+  public canMention = false;
 
   public update(editorView: EditorView, prevState: EditorState): void {
     this.activeBold = markActive(
@@ -189,6 +194,7 @@ export class ProseEditorMenubarComponent
     this.canDeindent = this._deindent(this._editorView.state);
 
     this.canLink = canAddLink(this._editorView.state);
+    this.canMention = this._addMention(this._editorView.state);
 
     this.canUndo = undo(editorView.state);
     this.canRedo = redo(editorView.state);
@@ -339,18 +345,12 @@ export class ProseEditorMenubarComponent
   }
 
   public onMentionClick(): void {
-    const tr = this._editorView.state.tr.insertText('@');
-    this._editorView.dispatch(tr);
+    this._addMention(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 
   public onBlockQuoteClick(): void {
-    const tr = wrapIn(
-      this._editorView.state,
-      this._editorView.state.tr,
-      this._editorView.state.schema.nodes['blockquote'],
-    );
-    this._editorView.dispatch(tr);
+    this._toggleBlockQuote(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
   }
 

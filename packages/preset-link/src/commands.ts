@@ -7,11 +7,7 @@ export const canAddLink = (state: EditorState): boolean => {
     return false;
   }
 
-  if (!$from.parent.isTextblock) {
-    return false;
-  }
-
-  return true;
+  return $from.parent.isTextblock;
 };
 
 export const addLink = (
