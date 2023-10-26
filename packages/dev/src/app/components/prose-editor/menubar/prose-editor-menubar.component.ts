@@ -1,25 +1,10 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-  inject,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { EditorState, PluginView, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProseMirrorEditorView } from './menubar';
-import {
-  AppComponent,
-  findParentNode,
-  markActive,
-  wrapIn,
-} from 'prosemirror-preset-utils';
-import { GlobalService } from 'src/app/global.service';
+import { findParentNode, markActive, wrapIn } from 'prosemirror-preset-utils';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -37,7 +22,11 @@ import {
 import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/link/link-layer.component';
 import { h } from 'preact';
 import { PreactRef, usePreactRenderer } from 'src/app/components/preact/preact';
-import { PmpLayer, PmpLinkFormLayer } from 'prosemirror-preset-view';
+import {
+  PmpColorPicker,
+  PmpLayer,
+  PmpLinkFormLayer,
+} from 'prosemirror-preset-view';
 import { addLink, canAddLink } from 'prosemirror-preset-link';
 
 @Component({
@@ -57,15 +46,11 @@ export class ProseEditorMenubarComponent
   implements OnInit, OnDestroy, PluginView
 {
   private readonly _preactRenderer = usePreactRenderer();
-  private readonly _elementRef = inject(ElementRef);
   private readonly _subscriptions: SubscriptionLike[] = [];
   private readonly _editorView = inject(ProseMirrorEditorView);
-  private readonly _globalService = inject(GlobalService);
-  private readonly _cdr = inject(ChangeDetectorRef);
-  private readonly _renderedRoots: HTMLElement[] = [];
 
   private _linkRef: PreactRef | null = null;
-  private _preactRef: PreactRef | null = null;
+  private _colorPickerRef: PreactRef | null = null;
 
   private readonly _toggleBold = toggleMark(
     this._editorView.state.schema.marks['strong'],
@@ -117,15 +102,6 @@ export class ProseEditorMenubarComponent
   public canRedo = false;
   public canIndent = false;
   public canDeindent = false;
-
-  @ViewChild('layerRoot', { static: true, read: ViewContainerRef })
-  public layerRoot!: ViewContainerRef;
-
-  @ViewChild('reactRoot', { static: true })
-  public reactRoot!: ElementRef<HTMLDivElement>;
-
-  @ViewChild('reactRoot2', { static: true })
-  public reactRoot2!: ElementRef<HTMLDivElement>;
 
   public update(editorView: EditorView, prevState: EditorState): void {
     this.activeBold = markActive(
@@ -289,15 +265,6 @@ export class ProseEditorMenubarComponent
     );
   }
 
-  public textPreact(): void {
-    this._preactRef = this._preactRenderer(
-      h(AppComponent, {
-        name: 'hansol',
-      }),
-      this._preactRef?.parent,
-    );
-  }
-
   public onAlignClick(alignment: 'left' | 'center' | 'right'): void {
     setAlignment(alignment)(this._editorView.state, this._editorView.dispatch);
     this._editorView.focus();
@@ -418,9 +385,47 @@ export class ProseEditorMenubarComponent
     this._editorView.focus();
   }
 
-  public onTextColorClick(colorInput: HTMLInputElement): void {
-    colorInput.click();
-    // toggleMark(this._editorView.state.schema.marks['textColor']);
+  public onTextColorClick(colorInput: HTMLButtonElement): void {
+    const { left, bottom } = colorInput.getBoundingClientRect();
+    const { from, to } = this._editorView.state.tr.selection;
+    this._colorPickerRef = this._preactRenderer(
+      h(
+        PmpLayer,
+        {
+          top: bottom + 10,
+          left: left,
+          closeOnEsc: true,
+          outerMousedown: () => this._colorPickerRef?.destroy(),
+          onClose: () => this._colorPickerRef?.destroy(),
+        },
+        [
+          h(PmpColorPicker, {
+            onChange: (color: string) => {
+              if (from === to) {
+                this._colorPickerRef?.destroy();
+                toggleMark(this._editorView.state.schema.marks['textColor'], {
+                  color: color,
+                })(this._editorView.state, this._editorView.dispatch);
+                this._editorView.focus();
+                return;
+              }
+              let tr = this._editorView.state.tr;
+              this._colorPickerRef?.destroy();
+              tr = tr.addMark(
+                from,
+                to,
+                this._editorView.state.schema.marks['textColor'].create({
+                  color,
+                }),
+              );
+              this._editorView.dispatch(tr);
+              this._editorView.focus();
+            },
+          }),
+        ],
+      ),
+      this._colorPickerRef?.parent,
+    );
   }
 
   public ngOnInit(): void {

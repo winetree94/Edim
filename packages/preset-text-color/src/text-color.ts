@@ -19,6 +19,7 @@ const textColor: Record<string, MarkSpec> = {
         'span',
         {
           class: 'pmp-text-color',
+          style: `color: ${attrs.color};`,
           attrs: {
             style: `color: ${attrs.color}`,
           },

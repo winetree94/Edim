@@ -1,0 +1,19 @@
+.pmp-color-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .pmp-color-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+}
+
+.pmp-color {
+  border: 1px solid transparent;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  cursor: pointer;
+}

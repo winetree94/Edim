@@ -100,17 +100,13 @@
     <i class="ri-code-line"></i>
   </button>
   <button
+    #colorButton
     prose-button
     [class.active]="false"
-    (click)="onTextColorClick(colorInput)"
+    (click)="onTextColorClick(colorButton.elementRef.nativeElement)"
   >
     <i class="ri-font-color"></i>
   </button>
-  <input
-    #colorInput
-    type="color"
-    style="width: 0; height: 0; visibility: hidden"
-  />
 
   <prose-separator class="separator" />
 
@@ -203,9 +199,6 @@
   </button>
   <button prose-button disabled>
     <i class="ri-slash-commands"></i>
-  </button>
-  <button prose-button (click)="textPreact()">
-    <i class="ri-reactjs-line"></i>
   </button>
 </div>
 
