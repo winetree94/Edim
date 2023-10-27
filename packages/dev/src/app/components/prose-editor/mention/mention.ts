@@ -5,7 +5,7 @@ import {
   Injector,
   createComponent,
 } from '@angular/core';
-import { MentionState, MentionValue } from 'prosemirror-preset-mention';
+import { MentionPluginState, MentionValue } from 'prosemirror-preset-mention';
 import { MentionExtentionView, MentionPos } from 'prosemirror-preset-mention';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -16,7 +16,7 @@ export class MentionView implements MentionExtentionView {
 
   public constructor(
     private readonly _editorView: EditorView,
-    private readonly _plugin: Plugin<MentionState>,
+    private readonly _plugin: Plugin<MentionPluginState>,
     private readonly environmentInjector: EnvironmentInjector,
     private readonly applicationRef: ApplicationRef,
     private readonly elementInjector: Injector,

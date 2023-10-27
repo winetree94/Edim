@@ -1,6 +1,6 @@
 import { EditorState, Plugin, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { MentionState } from './state';
+import { MentionPluginState } from './state';
 import { MentionExtensionConfigs } from './plugin';
 import { getMentionRange } from './utils';
 
@@ -30,7 +30,7 @@ export class MentionView implements PluginView {
   public constructor(
     private readonly editorView: EditorView,
     private readonly extentionConfigs: MentionExtensionConfigs,
-    private readonly plugin: Plugin<MentionState>,
+    private readonly plugin: Plugin<MentionPluginState>,
     private readonly mentionViewProvider: MentionExtentionView,
   ) {}
 
@@ -39,21 +39,17 @@ export class MentionView implements PluginView {
     const currentPluginState = this.plugin.getState(this.editorView.state);
     const previousPluginState = this.plugin.getState(prevState);
 
-    if (currentPluginState?.actived !== previousPluginState?.actived) {
+    if (currentPluginState?.active !== previousPluginState?.active) {
       this.mentionViewProvider.activeStateChange?.(
-        !!currentPluginState?.actived,
+        !!currentPluginState?.active,
       );
     }
 
-    if (!currentPluginState?.actived) {
+    if (!currentPluginState?.active) {
       return;
     }
 
-    const range = getMentionRange(
-      view.state,
-      this.extentionConfigs.mentionKey,
-      this.extentionConfigs.schemeKey,
-    );
+    const range = getMentionRange(view.state);
 
     if (!range) {
       return;

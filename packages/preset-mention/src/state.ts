@@ -1,4 +1,4 @@
-export interface MentionState {
-  actived: boolean;
+export interface MentionPluginState {
+  active: boolean;
   keyword: string;
 }

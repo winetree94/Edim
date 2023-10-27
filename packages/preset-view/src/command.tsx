@@ -17,7 +17,7 @@ export interface PmpCommandItem {
   icon: string;
   title: string;
   description: string;
-  action: (view: EditorView) => void;
+  action: (view: EditorView, standalone?: boolean) => void;
 }
 
 export const PMP_DEFAULT_COMMAND_LIST: PmpCommandItem[] = [
@@ -25,10 +25,12 @@ export const PMP_DEFAULT_COMMAND_LIST: PmpCommandItem[] = [
     icon: 'ri-at-line',
     title: 'Mention',
     description: 'insert mention',
-    action: (view) => {
+    action: (view, standalone) => {
       const { from } = view.state.tr.selection;
       let tr = view.state.tr;
-      tr = tr.delete(from - 1, from);
+      if (!standalone) {
+        tr = tr.delete(from - 1, from);
+      }
       view.dispatch(tr);
       addMention()(view.state, view.dispatch);
     },
@@ -37,10 +39,12 @@ export const PMP_DEFAULT_COMMAND_LIST: PmpCommandItem[] = [
     icon: 'ri-grid-line',
     title: 'Table',
     description: 'insert table',
-    action: (view) => {
+    action: (view, standalone) => {
       const { from } = view.state.tr.selection;
       let tr = view.state.tr;
-      tr = tr.delete(from - 1, from);
+      if (!standalone) {
+        tr = tr.delete(from - 1, from);
+      }
       view.dispatch(tr);
       insertTable()(view.state, view.dispatch);
     },
@@ -49,7 +53,6 @@ export const PMP_DEFAULT_COMMAND_LIST: PmpCommandItem[] = [
 
 export interface PmpCommandProps {
   items: PmpCommandItem[];
-  keyword: string;
   selectedIndex: number;
   onHover?(index: number): void;
   onClick?(index: number): void;
@@ -144,7 +147,6 @@ export class PmpCommandView implements CommandPluginView {
       >
         <PmpCommand
           items={commands}
-          keyword={pluginState.keyword}
           selectedIndex={this.index}
           onHover={(index) => {
             this.index = index;

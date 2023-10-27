@@ -39,10 +39,10 @@ import { EditorState } from 'prosemirror-state';
 import { NgMenubarView } from './menubar/menubar';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Node } from 'prosemirror-model';
-import { MentionView } from 'src/app/components/prose-editor/mention/mention';
+// import { MentionView } from 'src/app/components/prose-editor/mention/mention';
 import { CommonModule } from '@angular/common';
 import { Command } from 'prosemirror-preset-command';
-import { PmpCommandView } from "prosemirror-preset-view";
+import { PmpCommandView, PmpMentionView } from 'prosemirror-preset-view';
 
 @Component({
   selector: 'ng-prose-editor',
@@ -84,17 +84,23 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       }),
       EmojiExtension({}),
       Mention({
-        schemeKey: 'mention',
-        mentionKey: '@',
-        elementName: 'ng-pmp-mention',
-        view: (editorView, plugin) => {
-          return new MentionView(
-            editorView,
-            plugin,
-            this.environmentInjector,
-            this.applicationRef,
-            this.injector,
-          );
+        // view: (editorView, plugin) => {
+        //   return new MentionView(
+        //     editorView,
+        //     plugin,
+        //     this.environmentInjector,
+        //     this.applicationRef,
+        //     this.injector,
+        //   );
+        // },
+        view: (view, pluginKey) => {
+          return new PmpMentionView(view, pluginKey, [
+            {
+              icon: 'lkaj',
+              id: 'asdklfj',
+              name: 'test',
+            },
+          ]);
         },
       }),
       Command({

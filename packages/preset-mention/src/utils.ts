@@ -7,8 +7,6 @@ export const KEYBOARD_KEY = {
 
 export const getMentionRange = (
   state: EditorState,
-  mentionKey: string,
-  schemaKey: string,
 ): {
   keyword: string;
   rangeStart: number;
@@ -21,18 +19,18 @@ export const getMentionRange = (
   const previousHasMention = state.doc
     .resolve(Math.max(state.tr.selection.$from.pos - 1, 0))
     .marks()
-    .some((mark) => mark.type.name === schemaKey);
+    .some((mark) => mark.type.name === 'mention');
 
   const currentHasMention = state.tr.selection.$from
     .marks()
-    .some((mark) => mark.type.name === schemaKey);
+    .some((mark) => mark.type.name === 'mention');
 
   if (previousHasMention || currentHasMention) {
     return null;
   }
 
   const before = state.tr.selection.$from.nodeBefore?.textContent || '';
-  const lastIndexOfMentionKey = before.lastIndexOf(mentionKey);
+  const lastIndexOfMentionKey = before.lastIndexOf('@');
 
   const charBeforeKeyword = before.slice(
     lastIndexOfMentionKey - 1,
@@ -49,7 +47,7 @@ export const getMentionRange = (
   const keyword = before.slice(lastIndexOfMentionKey);
   const blankCount = keyword.split(' ').length - 1;
 
-  if (keyword.startsWith(mentionKey) && blankCount <= 1) {
+  if (keyword.startsWith('@') && blankCount <= 1) {
     return {
       keyword: keyword.slice(1),
       rangeStart: state.tr.selection.from - keyword.length,

@@ -1,7 +1,5 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
-import { Attrs, MarkSpec, NodeSpec } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
+import { NodeSpec } from 'prosemirror-model';
 
 export interface EmojiAttribute {
   data_id: string;
@@ -26,9 +24,6 @@ const EmojiNodes: Record<string, NodeSpec> = {
 
           const currentEmoji = dom.classList.contains('pmp-emoji');
           const legacyEmoji = dom.classList.contains('emoji-img');
-
-          console.log('currentEmoji', currentEmoji);
-          console.log('legacyEmoji', legacyEmoji);
 
           if (!currentEmoji && !legacyEmoji) {
             return false;

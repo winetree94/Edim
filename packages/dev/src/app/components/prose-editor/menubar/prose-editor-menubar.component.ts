@@ -1,17 +1,16 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { EditorState, PluginView, TextSelection } from 'prosemirror-state';
+import { EditorState, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { ProseMirrorEditorView } from './menubar';
-import { findParentNode, markActive, wrapIn } from 'prosemirror-preset-utils';
+import { findParentNode, markActive } from 'prosemirror-preset-utils';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
-import { Fragment, Node } from 'prosemirror-model';
 import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
 import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
 import {
@@ -436,7 +435,7 @@ export class ProseEditorMenubarComponent
             },
             onClick: (index: number) => {
               this._commandRef?.destroy();
-              PMP_DEFAULT_COMMAND_LIST[index].action(this._editorView);
+              PMP_DEFAULT_COMMAND_LIST[index].action(this._editorView, true);
               this._editorView.focus();
             },
           }),
