@@ -57,7 +57,7 @@ export class PmpMentionView implements MentionPluginView {
   public constructor(
     private readonly view: EditorView,
     private readonly pluginKey: PluginKey<MentionPluginState>,
-    private readonly items: MentionItem[],
+    private readonly items: (keyword: string) => MentionItem[],
   ) {}
 
   public update(view: EditorView) {
@@ -75,14 +75,7 @@ export class PmpMentionView implements MentionPluginView {
     editorState: EditorState,
     pluginState: MentionPluginState,
   ): void {
-    const items = this.items.filter((item) => {
-      if (!pluginState.keyword) {
-        return true;
-      }
-      return item.name
-        .toLowerCase()
-        .includes(pluginState.keyword.toLowerCase());
-    });
+    const items = this.items(pluginState.keyword);
 
     if (items.length === 0) {
       this.unmount();
@@ -142,6 +135,9 @@ export class PmpMentionView implements MentionPluginView {
     }
     if (event.key === 'Enter') {
       // PMP_DEFAULT_COMMAND_LIST[this.index].action(view);
+      return true;
+    }
+    if (event.key === 'Escape') {
       return true;
     }
     return false;

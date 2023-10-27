@@ -42,7 +42,12 @@ import { Node } from 'prosemirror-model';
 // import { MentionView } from 'src/app/components/prose-editor/mention/mention';
 import { CommonModule } from '@angular/common';
 import { Command } from 'prosemirror-preset-command';
-import { PmpCommandView, PmpMentionView } from 'prosemirror-preset-view';
+import {
+  MentionItem,
+  PmpCommandView,
+  PmpMentionView,
+} from 'prosemirror-preset-view';
+import { faker } from '@faker-js/faker';
 
 @Component({
   selector: 'ng-prose-editor',
@@ -62,6 +67,14 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
   private readonly applicationRef = inject(ApplicationRef);
   private readonly environmentInjector = inject(EnvironmentInjector);
   private readonly injector = inject(Injector);
+
+  public readonly items: MentionItem[] = Array.from({ length: 100 }).map(
+    () => ({
+      icon: 'alsdkjf',
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+    }),
+  );
 
   @ViewChild('menubarContentRoot', { static: true, read: ViewContainerRef })
   public menubarContentRoot!: ViewContainerRef;
@@ -94,13 +107,11 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
         //   );
         // },
         view: (view, pluginKey) => {
-          return new PmpMentionView(view, pluginKey, [
-            {
-              icon: 'lkaj',
-              id: 'asdklfj',
-              name: 'test',
-            },
-          ]);
+          return new PmpMentionView(view, pluginKey, (keyword) =>
+            this.items.filter((item) =>
+              item.name.toLowerCase().includes(keyword.toLowerCase()),
+            ),
+          );
         },
       }),
       Command({
