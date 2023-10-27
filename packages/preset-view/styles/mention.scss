@@ -1,3 +1,33 @@
 .pmp-view-mention-container {
   overflow-y: auto;
 }
+
+.pmp-view-mention-list-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &.selected {
+    background-color: #EBECF0;
+  }
+}
+
+.pmp-view-mention-list-item-avatar {
+  flex-shrink: 0;
+  margin-right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.pmp-view-mention-list-item-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pmp-view-mention-item-name {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

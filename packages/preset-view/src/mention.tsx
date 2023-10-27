@@ -9,6 +9,8 @@ import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { render } from 'preact';
 import { PmpLayer } from './view';
+import { getMentionRange } from 'prosemirror-preset-mention/src/utils';
+import { useEffect } from 'preact/hooks';
 
 export interface MentionItem {
   icon: string;
@@ -24,6 +26,14 @@ export interface PmpMentionViewProps {
 }
 
 export const PmpMention = (props: PmpMentionViewProps) => {
+  useEffect(() => {
+    const selected = document.querySelector(
+      '.pmp-view-mention-list-item.selected',
+    );
+    if (selected) {
+      selected.scrollIntoView({ block: 'nearest' });
+    }
+  }, [props.selectedIndex]);
   return (
     <div className={'pmp-view-mention-container'}>
       <PmpUnorderedList>
@@ -37,11 +47,11 @@ export const PmpMention = (props: PmpMentionViewProps) => {
             onMouseMove={() => props.onHover?.(index)}
             onClick={() => props.onClick?.(index)}
           >
-            <i
-              className={classes(item.icon, 'pmp-view-mention-list-item-icon')}
-            />
-            <div className={'pmp-view-mention-item-content'}>
-              <PmpParagraph>{item.name}</PmpParagraph>
+            <img class="pmp-view-mention-list-item-avatar" src={item.icon} />
+            <div className={'pmp-view-mention-list-item-content'}>
+              <PmpParagraph className={'pmp-view-mention-item-name'}>
+                {item.name}
+              </PmpParagraph>
             </div>
           </PmpListItem>
         ))}
@@ -51,6 +61,7 @@ export const PmpMention = (props: PmpMentionViewProps) => {
 };
 
 export class PmpMentionView implements MentionPluginView {
+  public prevKeyword: string = '';
   public wrapper: HTMLDivElement | undefined;
   public index = 0;
 
@@ -91,6 +102,10 @@ export class PmpMentionView implements MentionPluginView {
       this.view.dom.parentElement?.appendChild(this.wrapper);
     }
 
+    if (this.prevKeyword !== pluginState.keyword) {
+      this.index = 0;
+    }
+
     render(
       <PmpLayer
         left={start.left}
@@ -110,11 +125,41 @@ export class PmpMentionView implements MentionPluginView {
           onClick={(index) => {
             this.index = index;
             this.update(view);
-            // items[index].action(view);
+            this.applyMention(items[index]);
           }}
         />
       </PmpLayer>,
       this.wrapper,
+    );
+
+    this.prevKeyword = pluginState.keyword;
+  }
+
+  public applyMention(item: MentionItem) {
+    if (!item.id) {
+      return;
+    }
+
+    const range = getMentionRange(this.view.state);
+
+    if (!range) {
+      return;
+    }
+
+    this.view.dispatch(
+      this.view.state.tr
+        .replaceWith(
+          range.rangeStart,
+          range.rangeEnd,
+          this.view.state.schema.text(`@${item.name}`),
+        )
+        .addMark(
+          range.rangeStart,
+          range.rangeStart + item.name.length + 1,
+          this.view.state.schema.marks['mention'].create({
+            data_id: item.id,
+          }),
+        ),
     );
   }
 
@@ -123,21 +168,23 @@ export class PmpMentionView implements MentionPluginView {
     if (!pluginState || !pluginState.active) {
       return false;
     }
+    const items = this.items(pluginState.keyword);
     if (event.key === 'ArrowUp') {
       this.index = Math.max(0, this.index - 1);
       this.update(view);
       return true;
     }
     if (event.key === 'ArrowDown') {
-      this.index = Math.min(this.items.length - 1, this.index + 1);
+      this.index = Math.min(items.length - 1, this.index + 1);
       this.update(view);
       return true;
     }
     if (event.key === 'Enter') {
-      // PMP_DEFAULT_COMMAND_LIST[this.index].action(view);
+      this.applyMention(items[this.index]);
       return true;
     }
     if (event.key === 'Escape') {
+      this.unmount();
       return true;
     }
     return false;

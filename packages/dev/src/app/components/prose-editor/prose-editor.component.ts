@@ -70,7 +70,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
 
   public readonly items: MentionItem[] = Array.from({ length: 100 }).map(
     () => ({
-      icon: 'alsdkjf',
+      icon: faker.image.avatar(),
       id: faker.string.uuid(),
       name: faker.person.fullName(),
     }),
@@ -97,15 +97,6 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       }),
       EmojiExtension({}),
       Mention({
-        // view: (editorView, plugin) => {
-        //   return new MentionView(
-        //     editorView,
-        //     plugin,
-        //     this.environmentInjector,
-        //     this.applicationRef,
-        //     this.injector,
-        //   );
-        // },
         view: (view, pluginKey) => {
           return new PmpMentionView(view, pluginKey, (keyword) =>
             this.items.filter((item) =>

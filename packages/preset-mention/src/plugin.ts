@@ -15,10 +15,6 @@ export interface MentionPluginView extends PluginView {
 }
 
 export interface MentionExtensionConfigs {
-  // view: (
-  //   view: EditorView,
-  //   plugin: Plugin<MentionPluginState>,
-  // ) => MentionExtentionView;
   view?: (
     view: EditorView,
     plugin: PluginKey<MentionPluginState>,
@@ -100,52 +96,11 @@ export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
         props: {
           handleKeyDown: (view, event) => {
             return mentionPluginView?.handleKeydown?.(view, event) || false;
-            // const range = getMentionRange(view.state);
-
-            // if (!range) {
-            //   return false;
-            // }
-
-            // if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-            //   return extensionView.onArrowKeydown(event);
-            // } else if (event.key === 'Enter') {
-            //   const mentionValue = extensionView.onSubmit(event);
-
-            //   if (!mentionValue) {
-            //     return true;
-            //   }
-
-            //   view.dispatch(
-            //     view.state.tr
-            //       .replaceWith(
-            //         range.rangeStart,
-            //         range.rangeEnd,
-            //         view.state.schema.text(`@${mentionValue.text}`),
-            //       )
-            //       .addMark(
-            //         range.rangeStart,
-            //         range.rangeStart + mentionValue.text.length + 1,
-            //         view.state.schema.marks['mention'].create({
-            //           data_id: mentionValue.dataId,
-            //         }),
-            //       ),
-            //   );
-            //   return true;
-            // }
-
-            // return false;
           },
         },
         view: (editorView) => {
           mentionPluginView =
             configs.view?.(editorView, mentionPluginKey) || null;
-          // const view = new MentionView(
-          //   editorView,
-          //   configs,
-          //   mentionPlugin,
-          //   configs.view(editorView, mentionPlugin),
-          // );
-          // extensionView = view;
           return mentionPluginView || {};
         },
       });
