@@ -31,7 +31,7 @@ const image: Record<string, NodeSpec> = {
         tag: 'img[src]',
         getAttrs(node) {
           const dom = node as HTMLElement;
-          const viewportWidth = dom.dataset['viewportWidth'];
+          const viewportWidth = dom.dataset['viewportWidth'] || 80;
           const textAlign = dom.parentElement?.dataset['textAlign'] || 'center';
 
           if (dom.classList.contains('pmp-emoji')) {

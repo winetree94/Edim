@@ -43,6 +43,7 @@ import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
 import {
+  findPlaceholder,
   imageFileToBase64Url,
   ImagePlaceholderAddAction,
   imagePlaceholderPluginKey,
@@ -385,6 +386,7 @@ export class ProseEditorMenubarComponent
                     return this.fakeProgress().pipe(
                       tap((progress) => {
                         let tr = this._editorView.state.tr;
+
                         tr = tr.setMeta(imagePlaceholderPluginKey, {
                           type: 'update',
                           id: id,
@@ -393,6 +395,13 @@ export class ProseEditorMenubarComponent
                         this._editorView.dispatch(tr);
 
                         if (progress >= 1) {
+                          const pos = findPlaceholder(
+                            this._editorView.state,
+                            id,
+                          );
+                          if (!pos) {
+                            return;
+                          }
                           tr = tr.setMeta(imagePlaceholderPluginKey, {
                             type: 'remove',
                             id: id,
@@ -402,11 +411,7 @@ export class ProseEditorMenubarComponent
                           ].create({
                             src: url,
                           });
-                          tr = tr.replaceWith(
-                            originSelection.from,
-                            originSelection.from,
-                            node,
-                          );
+                          tr = tr.replaceWith(pos, pos, node);
                           this._editorView.dispatch(tr);
                         }
                       }),

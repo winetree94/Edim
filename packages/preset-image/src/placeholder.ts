@@ -69,11 +69,7 @@ export const createImagePlaceholderPlugin = (
     key: imagePlaceholderPluginKey,
     view: (view) => {
       editorView = view;
-      return {
-        destroy: () => {
-          console.log('destroy');
-        },
-      };
+      return {};
     },
     state: {
       init() {
@@ -97,7 +93,8 @@ export const createImagePlaceholderPlugin = (
             text_align: action.text_align,
             width: action.width,
             height: action.height,
-            destroy: () => viewProvider.destroy?.(),
+            // TODO state 업데이트마다 호출됨
+            // destroy: () => viewProvider.destroy?.(),
           };
 
           const deco = Decoration.widget(
