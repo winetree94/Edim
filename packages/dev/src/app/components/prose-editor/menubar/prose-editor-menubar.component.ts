@@ -15,10 +15,7 @@ import {
   SubscriptionLike,
   fromEvent,
   merge,
-  take,
   tap,
-  timeout,
-  timer,
   switchMap,
   from,
   Observable,
@@ -43,7 +40,7 @@ import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
 import {
-  findPlaceholder,
+  findPlaceholderPos,
   imageFileToBase64Url,
   ImagePlaceholderAddAction,
   imagePlaceholderPluginKey,
@@ -395,7 +392,7 @@ export class ProseEditorMenubarComponent
                         this._editorView.dispatch(tr);
 
                         if (progress >= 1) {
-                          const pos = findPlaceholder(
+                          const pos = findPlaceholderPos(
                             this._editorView.state,
                             id,
                           );
@@ -439,7 +436,7 @@ export class ProseEditorMenubarComponent
           clearInterval(interval);
           subscriber.complete();
         }
-      }, 200);
+      }, 500);
     });
   }
 

@@ -44,9 +44,10 @@ import { CommonModule } from '@angular/common';
 import { Command } from 'prosemirror-preset-command';
 import {
   MentionItem,
-  PmpCommandView, PmpImagePlaceholderViewProvider,
-  PmpMentionView
-} from "prosemirror-preset-view";
+  PmpCommandView,
+  PmpImagePlaceholderViewProvider,
+  PmpMentionView,
+} from 'prosemirror-preset-view';
 import { faker } from '@faker-js/faker';
 
 @Component({

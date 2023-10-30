@@ -9,7 +9,6 @@ export interface ImagePlaceholderSpec {
   text_align: 'left' | 'center' | 'right';
   width: number;
   height: number;
-  destroy?: () => void;
 }
 
 export interface ImagePlaceholderAddAction {
@@ -65,17 +64,32 @@ export const createImagePlaceholderPlugin = (
   configs: ImagePlaceholderPluginConfigs = {},
 ): Plugin<DecorationSet> => {
   let editorView: EditorView;
+  let latestDecorations: Decoration[] = [];
   const plugin: Plugin<DecorationSet> = new Plugin({
     key: imagePlaceholderPluginKey,
     view: (view) => {
       editorView = view;
-      return {};
+      return {
+        /**
+         * state lifecycle 에서 제거되지 않을 수 있으므로, destroy 를 호출해야 함
+         */
+        destroy: () => {
+          latestDecorations.forEach((deco) => {
+            const spec = deco.spec as ImagePlaceholderSpec;
+            spec.viewProvider.destroy?.();
+          });
+        },
+      };
     },
     state: {
       init() {
         return DecorationSet.empty;
       },
-      apply(tr, set) {
+      apply(tr, set, oldState) {
+        const previousSet =
+          plugin.getState(oldState)?.find(undefined, undefined, () => true) ||
+          [];
+
         set = set.map(tr.mapping, tr.doc);
         const action = tr.getMeta(plugin) as ImagePlaceholderActions;
 
@@ -93,8 +107,6 @@ export const createImagePlaceholderPlugin = (
             text_align: action.text_align,
             width: action.width,
             height: action.height,
-            // TODO state 업데이트마다 호출됨
-            // destroy: () => viewProvider.destroy?.(),
           };
 
           const deco = Decoration.widget(
@@ -123,6 +135,24 @@ export const createImagePlaceholderPlugin = (
           );
           set = set.remove(decorations);
         }
+
+        latestDecorations = set.find(undefined, undefined, () => true);
+        const currentDecoMap = latestDecorations.reduce((map, deco) => {
+          const spec = deco.spec as ImagePlaceholderSpec;
+          map.set(spec.id, deco);
+          return map;
+        }, new Map<string, Decoration>());
+
+        /**
+         * 제거된 모든 decoration 의 viewProvider 를 destroy 한다.
+         * Decoration Spec 에서 제공하는 destroy 함수는 사용할 수 없음
+         */
+        previousSet.forEach((deco) => {
+          const spec = deco.spec as ImagePlaceholderSpec;
+          if (!currentDecoMap.has(spec.id)) {
+            spec.viewProvider.destroy?.();
+          }
+        });
 
         return set;
       },
