@@ -47,6 +47,7 @@ import {
   PmpCommandView,
   PmpImagePlaceholderViewProvider,
   PmpMentionView,
+  PmpMenubarPlugin,
 } from 'prosemirror-preset-view';
 import { faker } from '@faker-js/faker';
 
@@ -136,11 +137,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       }),
       History(),
     ],
-    // nativePlugins: (schema) => [
-    //   menuBar({
-    //     content: buildMenuItems(schema).fullMenu,
-    //   }),
-    // ],
+    nativePlugins: (schema) => [PmpMenubarPlugin],
   }).configure();
 
   public attributes: EditorProps['attributes'] = {

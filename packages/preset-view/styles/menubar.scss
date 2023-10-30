@@ -1,0 +1,15 @@
+.pmp-view-menubar-wrapper {
+  padding: 8px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  position: relative;
+
+  &:not(.scroll-top) {
+    box-shadow: 0 2px 0 0 #EBECF0;
+  }
+}
+
+.pmp-view-menubar-separator {
+  margin: 4px 8px;
+}

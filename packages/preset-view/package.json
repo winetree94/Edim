@@ -16,11 +16,17 @@
     "prosemirror-model": "*",
     "prosemirror-keymap": "*",
     "prosemirror-commands": "*",
+    "prosemirror-history": "*",
+    "prosemirror-preset-free-list": "*",
+    "prosemirror-preset-paragraph": "*",
     "prosemirror-preset-core": "*",
+    "prosemirror-preset-utils": "*",
     "prosemirror-preset-mention": "*",
     "prosemirror-preset-image": "*",
+    "prosemirror-preset-link": "*",
     "prosemirror-preset-tables": "*",
     "prosemirror-preset-command": "*",
+    "prosemirror-preset-blockquote": "*",
     "preact": "*"
   },
   "devDependencies": {

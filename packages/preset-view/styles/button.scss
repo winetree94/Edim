@@ -11,6 +11,12 @@
   height: 28px;
   color: #172b4d;
 
+  &.selected {
+    font-weight: bold;
+    color: #0c66e4;
+    background: #e9f2ff;
+  }
+
   &:disabled {
     cursor: not-allowed;
     color: #b9c0c9;
