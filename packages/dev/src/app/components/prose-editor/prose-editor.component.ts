@@ -44,7 +44,7 @@ import { CommonModule } from '@angular/common';
 import { Command } from 'prosemirror-preset-command';
 import {
   MentionItem,
-  PmpCommandView, PmpImagePlaceholderProvider,
+  PmpCommandView, PmpImagePlaceholderViewProvider,
   PmpMentionView
 } from "prosemirror-preset-view";
 import { faker } from '@faker-js/faker';
@@ -117,7 +117,7 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
       CodeBlock(),
       // HardBreak(),
       Image({
-        placeholderViewProvider: () => new PmpImagePlaceholderProvider(),
+        placeholderViewProvider: () => new PmpImagePlaceholderViewProvider(),
       }),
       Link(),
       Italic(),

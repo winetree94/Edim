@@ -48,6 +48,7 @@ import {
   imagePlaceholderPluginKey,
   ImagePlaceholderRemoveAction,
   ImagePlaceholderUpdateAction,
+  parseImageMeta,
 } from 'prosemirror-preset-image';
 
 @Component({
@@ -346,61 +347,73 @@ export class ProseEditorMenubarComponent
                 (event.target as HTMLInputElement).files![0],
               ),
             ).pipe(
-              switchMap((url) => {
-                const id = Math.random().toString();
-                let tr = this._editorView.state.tr;
-
-                const adjacentInsertableParent = findParentNode(
-                  this._editorView.state,
-                  originSelection.from,
-                  (node, parent) => {
-                    return parent?.type.spec.group?.includes('block-container') || false;
-                  },
-                );
-
-                const insertPos = adjacentInsertableParent
-                  ? adjacentInsertableParent.pos +
-                    adjacentInsertableParent.node.nodeSize
-                  : 0;
-
-                tr = tr.setMeta(imagePlaceholderPluginKey, {
-                  type: 'add',
-                  id: id,
-                  pos: insertPos,
-                  progress: 0,
-                } as ImagePlaceholderAddAction);
-                this._editorView.dispatch(tr);
-
-                return this.fakeProgress().pipe(
-                  tap((progress) => {
+              switchMap((url) =>
+                from(parseImageMeta(url)).pipe(
+                  switchMap((image) => {
+                    const id = Math.random().toString();
                     let tr = this._editorView.state.tr;
+
+                    const adjacentInsertableParent = findParentNode(
+                      this._editorView.state,
+                      originSelection.from,
+                      (node, parent) => {
+                        return (
+                          parent?.type.spec.group?.includes(
+                            'block-container',
+                          ) || false
+                        );
+                      },
+                    );
+
+                    const insertPos = adjacentInsertableParent
+                      ? adjacentInsertableParent.pos +
+                        adjacentInsertableParent.node.nodeSize
+                      : 0;
+
                     tr = tr.setMeta(imagePlaceholderPluginKey, {
-                      type: 'update',
+                      type: 'add',
                       id: id,
-                      progress: progress,
-                    } as ImagePlaceholderUpdateAction);
+                      pos: insertPos,
+                      progress: 0,
+                      text_align: 'center',
+                      width: image.width,
+                      height: image.height,
+                      viewport_width: 80,
+                    } as ImagePlaceholderAddAction);
                     this._editorView.dispatch(tr);
 
-                    if (progress >= 1) {
-                      tr = tr.setMeta(imagePlaceholderPluginKey, {
-                        type: 'remove',
-                        id: id,
-                      } as ImagePlaceholderRemoveAction);
-                      const node = this._editorView.state.schema.nodes[
-                        'image'
-                      ].create({
-                        src: url,
-                      });
-                      tr = tr.replaceWith(
-                        originSelection.from,
-                        originSelection.from,
-                        node,
-                      );
-                      this._editorView.dispatch(tr.scrollIntoView());
-                    }
+                    return this.fakeProgress().pipe(
+                      tap((progress) => {
+                        let tr = this._editorView.state.tr;
+                        tr = tr.setMeta(imagePlaceholderPluginKey, {
+                          type: 'update',
+                          id: id,
+                          progress: progress,
+                        } as ImagePlaceholderUpdateAction);
+                        this._editorView.dispatch(tr);
+
+                        if (progress >= 1) {
+                          tr = tr.setMeta(imagePlaceholderPluginKey, {
+                            type: 'remove',
+                            id: id,
+                          } as ImagePlaceholderRemoveAction);
+                          const node = this._editorView.state.schema.nodes[
+                            'image'
+                          ].create({
+                            src: url,
+                          });
+                          tr = tr.replaceWith(
+                            originSelection.from,
+                            originSelection.from,
+                            node,
+                          );
+                          this._editorView.dispatch(tr);
+                        }
+                      }),
+                    );
                   }),
-                );
-              }),
+                ),
+              ),
             );
           }),
         ),

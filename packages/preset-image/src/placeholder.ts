@@ -5,15 +5,21 @@ export interface ImagePlaceholderSpec {
   id: string;
   progress: number;
   viewProvider: ImagePlaceholderViewProvider;
-  // viewport_width: number;
-  // width: number;
-  // height: number;
+  viewport_width: number;
+  text_align: 'left' | 'center' | 'right';
+  width: number;
+  height: number;
+  destroy?: () => void;
 }
 
 export interface ImagePlaceholderAddAction {
   type: 'add';
   id: string;
   pos: number;
+  viewport_width: number;
+  text_align: 'left' | 'center' | 'right';
+  width: number;
+  height: number;
   progress: number;
 }
 
@@ -38,8 +44,8 @@ export const imagePlaceholderPluginKey = new PluginKey<DecorationSet>(
 );
 
 export interface ImagePlaceholderViewProvider {
-  init: () => HTMLElement;
-  update?: (progress: number) => void;
+  init: (spec: ImagePlaceholderSpec) => HTMLElement;
+  update?: (spec: ImagePlaceholderSpec) => void;
   destroy?: () => void;
 }
 
@@ -83,12 +89,22 @@ export const createImagePlaceholderPlugin = (
               ? configs.placeholderViewProvider(editorView)
               : new DefaultViewProvider();
 
-          const deco = Decoration.widget(action.pos, viewProvider.init(), {
+          const spec: ImagePlaceholderSpec = {
             id: action.id,
             progress: action.progress,
             viewProvider,
+            viewport_width: action.viewport_width,
+            text_align: action.text_align,
+            width: action.width,
+            height: action.height,
             destroy: () => viewProvider.destroy?.(),
-          } as ImagePlaceholderSpec);
+          };
+
+          const deco = Decoration.widget(
+            action.pos,
+            viewProvider.init(spec),
+            spec,
+          );
 
           set = set.add(tr.doc, [deco]);
         } else if (action?.type === 'update') {
@@ -100,7 +116,7 @@ export const createImagePlaceholderPlugin = (
           decorations.forEach((deco) => {
             const spec = deco.spec as ImagePlaceholderSpec;
             spec.progress = action.progress;
-            spec.viewProvider.update?.(action.progress);
+            spec.viewProvider.update?.(spec);
           });
         } else if (action?.type === 'remove') {
           const decorations = set.find(
