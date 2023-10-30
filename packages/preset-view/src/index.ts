@@ -9,3 +9,4 @@ export * from './components/paragraph';
 export * from './components/label';
 export * from './components/list';
 export * from './command';
+export * from './image';

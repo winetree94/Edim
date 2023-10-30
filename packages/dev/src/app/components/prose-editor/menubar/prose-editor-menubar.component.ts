@@ -11,14 +11,24 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ProseButtonComponent } from 'src/app/components/button/prose-button.component';
 import { ProseSeparatorComponent } from 'src/app/components/separator/prose-separator.component';
 import { redo, undo } from 'prosemirror-history';
-import { SubscriptionLike, fromEvent, merge, take, tap } from 'rxjs';
+import {
+  SubscriptionLike,
+  fromEvent,
+  merge,
+  take,
+  tap,
+  timeout,
+  timer,
+  switchMap,
+  from,
+  Observable,
+} from 'rxjs';
 import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
 import {
   getRangeFirstAlignment,
   getRangeIsText,
   setAlignment,
 } from 'prosemirror-preset-paragraph';
-import { ProseEditorLinkLayerComponent } from 'src/app/components/prose-editor/link/link-layer.component';
 import { h } from 'preact';
 import { PreactRef, usePreactRenderer } from 'src/app/components/preact/preact';
 import {
@@ -32,6 +42,13 @@ import { addLink, canAddLink } from 'prosemirror-preset-link';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
+import {
+  imageFileToBase64Url,
+  ImagePlaceholderAddAction,
+  imagePlaceholderPluginKey,
+  ImagePlaceholderRemoveAction,
+  ImagePlaceholderUpdateAction,
+} from 'prosemirror-preset-image';
 
 @Component({
   selector: 'ng-prose-editor-menubar',
@@ -43,7 +60,6 @@ import { insertTable } from 'prosemirror-preset-tables';
     ProseSeparatorComponent,
     CommonModule,
     ReactiveFormsModule,
-    ProseEditorLinkLayerComponent,
   ],
 })
 export class ProseEditorMenubarComponent
@@ -141,7 +157,7 @@ export class ProseEditorMenubarComponent
       !!findParentNode(
         editorView.state,
         editorView.state.selection.from,
-        editorView.state.schema.nodes['ordered_list'],
+        (node) => node.type === editorView.state.schema.nodes['ordered_list'],
       );
 
     this.activeUnorderedList =
@@ -149,7 +165,7 @@ export class ProseEditorMenubarComponent
       !!findParentNode(
         editorView.state,
         editorView.state.selection.from,
-        editorView.state.schema.nodes['bullet_list'],
+        (node) => node.type === editorView.state.schema.nodes['bullet_list'],
       );
 
     this.canNormalText = getRangeIsText(this._editorView.state);
@@ -319,33 +335,94 @@ export class ProseEditorMenubarComponent
     input.value = '';
     document.body.appendChild(input);
 
+    const originSelection = this._editorView.state.selection;
+
     this._subscriptions.push(
       merge(
         fromEvent(input, 'change').pipe(
-          tap((event) => {
-            const reader = new FileReader();
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            reader.readAsDataURL((event.target as HTMLInputElement).files![0]);
-            reader.onload = () => {
-              const tr = this._editorView.state.tr;
-              const node = this._editorView.state.schema.nodes['image'].create({
-                src: reader.result as string,
-              });
-              this._editorView.dispatch(tr.replaceSelectionWith(node));
-            };
+          switchMap((event) => {
+            return from(
+              imageFileToBase64Url(
+                (event.target as HTMLInputElement).files![0],
+              ),
+            ).pipe(
+              switchMap((url) => {
+                const id = Math.random().toString();
+                let tr = this._editorView.state.tr;
+
+                const adjacentInsertableParent = findParentNode(
+                  this._editorView.state,
+                  originSelection.from,
+                  (node, parent) => {
+                    return parent?.type.spec.group?.includes('block-container') || false;
+                  },
+                );
+
+                const insertPos = adjacentInsertableParent
+                  ? adjacentInsertableParent.pos +
+                    adjacentInsertableParent.node.nodeSize
+                  : 0;
+
+                tr = tr.setMeta(imagePlaceholderPluginKey, {
+                  type: 'add',
+                  id: id,
+                  pos: insertPos,
+                  progress: 0,
+                } as ImagePlaceholderAddAction);
+                this._editorView.dispatch(tr);
+
+                return this.fakeProgress().pipe(
+                  tap((progress) => {
+                    let tr = this._editorView.state.tr;
+                    tr = tr.setMeta(imagePlaceholderPluginKey, {
+                      type: 'update',
+                      id: id,
+                      progress: progress,
+                    } as ImagePlaceholderUpdateAction);
+                    this._editorView.dispatch(tr);
+
+                    if (progress >= 1) {
+                      tr = tr.setMeta(imagePlaceholderPluginKey, {
+                        type: 'remove',
+                        id: id,
+                      } as ImagePlaceholderRemoveAction);
+                      const node = this._editorView.state.schema.nodes[
+                        'image'
+                      ].create({
+                        src: url,
+                      });
+                      tr = tr.replaceWith(
+                        originSelection.from,
+                        originSelection.from,
+                        node,
+                      );
+                      this._editorView.dispatch(tr.scrollIntoView());
+                    }
+                  }),
+                );
+              }),
+            );
           }),
         ),
-        fromEvent(input, 'blur').pipe(),
-      )
-        .pipe(
-          take(1),
-          tap(() => input.parentElement?.removeChild(input)),
-        )
-        .subscribe(),
+      ).subscribe(),
     );
     input.click();
 
     return;
+  }
+
+  public fakeProgress(): Observable<number> {
+    return new Observable((subscriber) => {
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 0.1;
+        subscriber.next(progress);
+        if (progress >= 1) {
+          clearInterval(interval);
+          subscriber.complete();
+        }
+      }, 200);
+    });
   }
 
   public onMentionClick(): void {

@@ -20,6 +20,9 @@ module.exports = {
     rules: {
       "prettier/prettier": "error",
       "no-unused-vars": "off",
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
       quotes: ['error', 'single'],
     }
   };

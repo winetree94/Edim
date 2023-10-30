@@ -1,7 +1,10 @@
 import { NodeSpec } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { Decoration, DecorationSet } from 'prosemirror-view';
+import {
+  createImagePlaceholderPlugin,
+  ImagePlaceholderViewProvider,
+} from './placeholder';
+import { EditorView } from 'prosemirror-view';
 
 export interface ImageAttrs {
   src: string;
@@ -75,54 +78,24 @@ const image: Record<string, NodeSpec> = {
   },
 };
 
-export const Image = (): PMPluginsFactory => () => {
-  return {
-    nodes: {
-      ...image,
-    },
-    marks: {},
-    plugins: () => {
-      const decorationPluginKey = new PluginKey<DecorationSet>(
-        'decorationPlugin',
-      );
-      return [
-        new Plugin({
-          key: decorationPluginKey,
-          state: {
-            init() {
-              return DecorationSet.empty;
-            },
-            apply(tr, set) {
-              // Adjust decoration positions to changes made by the transaction
-              set = set.map(tr.mapping, tr.doc);
-              // See if the transaction adds or removes any placeholders
-              const action = tr.getMeta(this as any);
-              if (action && action.add) {
-                const widget = document.createElement('placeholder');
-                const deco = Decoration.widget(action.add.pos, widget, {
-                  id: action.add.id,
-                });
-                set = set.add(tr.doc, [deco]);
-              } else if (action && action.remove) {
-                set = set.remove(
-                  set.find(
-                    undefined,
-                    undefined,
-                    (spec) => spec.id == action.remove.id,
-                  ),
-                );
-              }
-              console.log(set);
-              return set;
-            },
-          },
-          props: {
-            decorations(state) {
-              return this.getState(state);
-            },
-          },
-        }),
-      ];
-    },
+export interface ImageExtensionConfigs {
+  placeholderViewProvider?: (view: EditorView) => ImagePlaceholderViewProvider;
+}
+
+export const Image =
+  (configs: ImageExtensionConfigs): PMPluginsFactory =>
+  () => {
+    return {
+      nodes: {
+        ...image,
+      },
+      marks: {},
+      plugins: () => {
+        return [
+          createImagePlaceholderPlugin({
+            placeholderViewProvider: configs.placeholderViewProvider,
+          }),
+        ];
+      },
+    };
   };
-};

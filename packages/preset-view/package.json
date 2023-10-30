@@ -18,6 +18,7 @@
     "prosemirror-commands": "*",
     "prosemirror-preset-core": "*",
     "prosemirror-preset-mention": "*",
+    "prosemirror-preset-image": "*",
     "prosemirror-preset-tables": "*",
     "prosemirror-preset-command": "*",
     "preact": "*"
