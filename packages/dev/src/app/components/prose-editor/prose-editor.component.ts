@@ -12,9 +12,7 @@ import {
 import { EditorProps, EditorView } from 'prosemirror-view';
 import { ProseMirrorModule } from '../prose-mirror/prose-mirror.module';
 import { ProseMirrorComponent } from '../prose-mirror/prose-mirror.component';
-import { ProseEditorMenubarComponent } from './menubar/prose-editor-menubar.component';
 import { PMEditor } from 'prosemirror-preset-core';
-import { AngularAdapter } from 'prosemirror-preset-angular';
 import { Document } from 'prosemirror-preset-document';
 import { Heading } from 'prosemirror-preset-heading';
 import { Paragraph } from 'prosemirror-preset-paragraph';
@@ -36,10 +34,8 @@ import { Code } from 'prosemirror-preset-code';
 import { Strong } from 'prosemirror-preset-strong';
 import { EmojiExtension } from 'prosemirror-preset-emoji';
 import { EditorState } from 'prosemirror-state';
-import { NgMenubarView } from './menubar/menubar';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Node } from 'prosemirror-model';
-// import { MentionView } from 'src/app/components/prose-editor/mention/mention';
 import { CommonModule } from '@angular/common';
 import { Command } from 'prosemirror-preset-command';
 import {
@@ -56,7 +52,7 @@ import { faker } from '@faker-js/faker';
   templateUrl: './prose-editor.component.html',
   styleUrls: ['./prose-editor.component.scss'],
   standalone: true,
-  imports: [CommonModule, ProseMirrorModule, ProseEditorMenubarComponent],
+  imports: [CommonModule, ProseMirrorModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -80,9 +76,6 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
 
   @ViewChild('menubarContentRoot', { static: true, read: ViewContainerRef })
   public menubarContentRoot!: ViewContainerRef;
-
-  @ViewChild('menubar', { static: true })
-  public menubar!: ProseEditorMenubarComponent;
 
   @ViewChild('proseMirror', { static: true })
   public proseMirror!: ProseMirrorComponent;
@@ -130,11 +123,6 @@ export class ProseEditorComponent implements ControlValueAccessor, OnInit {
         resizing: true,
       }),
       BasicKeymap(),
-      AngularAdapter({
-        applicationRef: this.applicationRef,
-        environmentInjector: this.environmentInjector,
-        view: NgMenubarView,
-      }),
       History(),
     ],
     nativePlugins: (schema) => [PmpMenubarPlugin],

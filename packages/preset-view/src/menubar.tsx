@@ -17,222 +17,27 @@ import {
 import { addLink, canAddLink } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
-
-{
-  /* <div class="wrapper" [class.scroll-top]="isScrollTop">
-  <button prose-button (click)="onUndoClick()" [disabled]="!canUndo">
-    <i class="ri-arrow-go-back-line"></i>
-  </button>
-  <button prose-button (click)="onRedoClick()" [disabled]="!canRedo">
-    <i class="ri-arrow-go-forward-line"></i>
-  </button>
-
-  <prose-separator class="separator" />
-
-  <button
-    prose-button
-    [disabled]="!canNormalText"
-    [class.active]="activeParagraph"
-    (click)="onParagraphClick()"
-  >
-    <i class="ri-text"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canNormalText"
-    [class.active]="activeH1"
-    (click)="onHeadingClick(1)"
-  >
-    <i class="ri-h-1"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canNormalText"
-    [class.active]="activeH2"
-    (click)="onHeadingClick(2)"
-  >
-    <i class="ri-h-2"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canNormalText"
-    [class.active]="activeH3"
-    (click)="onHeadingClick(3)"
-  >
-    <i class="ri-h-3"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canNormalText"
-    [class.active]="activeH4"
-    (click)="onHeadingClick(4)"
-  >
-    <i class="ri-h-4"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canNormalText"
-    [class.active]="activeH5"
-    (click)="onHeadingClick(5)"
-  >
-    <i class="ri-h-5"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canNormalText"
-    [class.active]="activeH6"
-    (click)="onHeadingClick(6)"
-  >
-    <i class="ri-h-6"></i>
-  </button>
-
-  <prose-separator class="separator" />
-
-  <button
-    prose-button
-    [class.active]="activeBold"
-    (click)="toggleBold()"
-    title="toggle bold"
-  >
-    <i class="ri-bold"></i>
-  </button>
-  <button
-    prose-button
-    [class.active]="activeItalic"
-    (click)="toggleItalic()"
-    title="toggle italic"
-  >
-    <i class="ri-italic"></i>
-  </button>
-  <button
-    prose-button
-    [class.active]="activeStrikethrough"
-    (click)="toggleStrikethrough()"
-    title="toggle strikethrough"
-  >
-    <i class="ri-strikethrough-2"></i>
-  </button>
-  <button
-    prose-button
-    [class.active]="activeInlineCode"
-    (click)="toggleInlineCode()"
-    title="toggle code"
-  >
-    <i class="ri-code-line"></i>
-  </button>
-  <button
-    #colorButton
-    prose-button
-    [class.active]="false"
-    (click)="onTextColorClick(colorButton.elementRef.nativeElement)"
-  >
-    <i class="ri-font-color"></i>
-  </button>
-
-  <prose-separator class="separator" />
-
-  <button
-    prose-button
-    title="toggle code"
-    [disabled]="!canAlign"
-    [class.active]="activeAlignLeft"
-    (click)="onAlignClick('left')"
-  >
-    <i class="ri-align-left"></i>
-  </button>
-  <button
-    prose-button
-    title="toggle code"
-    [disabled]="!canAlign"
-    [class.active]="activeAlignCenter"
-    (click)="onAlignClick('center')"
-  >
-    <i class="ri-align-center"></i>
-  </button>
-  <button
-    prose-button
-    title="toggle code"
-    [disabled]="!canAlign"
-    [class.active]="activeAlignRight"
-    (click)="onAlignClick('right')"
-  >
-    <i class="ri-align-right"></i>
-  </button>
-
-  <prose-separator class="separator" />
-
-  <button
-    prose-button
-    [class.active]="activeOrderedList"
-    [disabled]="!canOrderedList"
-    (click)="onOrderedListClick()"
-  >
-    <i class="ri-list-ordered"></i>
-  </button>
-  <button
-    prose-button
-    [class.active]="activeUnorderedList"
-    [disabled]="!canBulletList"
-    (click)="onUnorderedListClick()"
-  >
-    <i class="ri-list-unordered"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canDeindent"
-    (click)="onDecreaseIndentClick()"
-  >
-    <i class="ri-indent-decrease"></i>
-  </button>
-  <button
-    prose-button
-    [disabled]="!canIndent"
-    (click)="onIncreaseIndentClick()"
-  >
-    <i class="ri-indent-increase"></i>
-  </button>
-
-  <prose-separator class="separator" />
-
-  <button prose-button disabled>
-    <i class="ri-checkbox-line"></i>
-  </button>
-  <button prose-button [disabled]="!canLink" (click)="setLink()">
-    <i class="ri-links-line"></i>
-  </button>
-  <button prose-button (click)="onImageClick()">
-    <i class="ri-image-line"></i>
-  </button>
-  <button prose-button [disabled]="!canMention" (click)="onMentionClick()">
-    <i class="ri-at-line"></i>
-  </button>
-  <button prose-button (click)="onBlockQuoteClick()">
-    <i class="ri-double-quotes-l"></i>
-  </button>
-  <button prose-button disabled>
-    <i class="ri-emoji-sticker-line"></i>
-  </button>
-  <button prose-button (click)="onTableClick()">
-    <i class="ri-table-2"></i>
-  </button>
-  <button prose-button disabled>
-    <i class="ri-code-s-slash-fill"></i>
-  </button>
-  <button
-    #commandButton
-    prose-button
-    (click)="onCommandClick(commandButton.elementRef.nativeElement)"
-  >
-    <i class="ri-slash-commands"></i>
-  </button>
-</div>
-
-<div #reactRoot></div>
-<div #reactRoot2></div>
-<ng-container #layerRoot></ng-container> */
-}
+import { PmpLayer } from './view';
+import { useRef, useState } from 'preact/hooks';
+import { PmpColorPicker } from './color-picker';
+import { PmpLinkFormLayer } from './link';
+import { PMP_DEFAULT_COMMAND_LIST, PmpCommand } from './command';
+import { PmpInput } from './components/input';
+import { TargetedEvent } from 'preact/compat';
+import {
+  ImagePlaceholderAddAction,
+  ImagePlaceholderRemoveAction,
+  ImagePlaceholderUpdateAction,
+  findPlaceholderPos,
+  imageFileToBase64Url,
+  imagePlaceholderPluginKey,
+  parseImageMeta,
+} from 'prosemirror-preset-image';
+import { classes } from './cdk/core';
 
 export interface PmpMenubarProps {
+  editorView: EditorView;
+  editorState: EditorState;
   isScrolltop: boolean;
   activeBold: boolean;
   activeItalic: boolean;
@@ -269,22 +74,141 @@ export interface PmpMenubarProps {
   toggleItalic(): void;
   toggleStrikethrough(): void;
   toggleInlineCode(): void;
-  setLink(): void;
+  onTextColorClick(color: string): void;
+  setLink(from: number, to: number, text: string, link: string): void;
   onAlignClick(alignment: 'left' | 'center' | 'right'): void;
   onOrderedListClick(): void;
   onUnorderedListClick(): void;
   onIncreaseIndentClick(): void;
   onDecreaseIndentClick(): void;
-  onImageClick(): void;
   onMentionClick(): void;
   onBlockQuoteClick(): void;
   onTableClick(): void;
-  onCommandClick(commandInput: HTMLButtonElement): void;
 }
 
+const createFakeProgress = (
+  progressChange: (progress: number) => void,
+): Promise<void> => {
+  return new Promise((resolve) => {
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += 0.1;
+      progressChange(progress);
+      if (progress >= 1) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 100);
+  });
+};
+
 export const PmpMenubar = (props: PmpMenubarProps) => {
+  const [textColorLayerRef, setTextColorLayerRef] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  const [linkLayerRef, setLinkLayerRef] = useState<{
+    top: number;
+    left: number;
+    from: number;
+    to: number;
+    link: string;
+    text: string;
+  } | null>(null);
+
+  const [commandLayerRef, setCommandLayerRef] = useState<{
+    top: number;
+    left: number;
+    selectedIndex: number;
+  } | null>(null);
+
+  const textColorButtonRef = useRef<HTMLButtonElement>(null);
+  const linkButtonRef = useRef<HTMLButtonElement>(null);
+  const commandButtonRef = useRef<HTMLButtonElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const onImageChange = async (e: TargetedEvent<HTMLInputElement, Event>) => {
+    const target = e.target as HTMLInputElement;
+    const imageFiles = await Promise.all(
+      Array.from(target.files || []).map((file) =>
+        imageFileToBase64Url(file).then((url) =>
+          parseImageMeta(url).then((image) => ({
+            url,
+            image,
+          })),
+        ),
+      ),
+    );
+
+    await Promise.all(
+      imageFiles.map(async (file) => {
+        const id = Math.random().toString();
+        let tr = props.editorView.state.tr;
+
+        const adjacentInsertableParent = findParentNode(
+          props.editorView.state,
+          props.editorView.state.selection.from,
+          (node, parent) => {
+            return (
+              parent?.type.spec.group?.includes('block-container') || false
+            );
+          },
+        );
+
+        const insertPos = adjacentInsertableParent
+          ? adjacentInsertableParent.pos +
+            adjacentInsertableParent.node.nodeSize
+          : 0;
+
+        tr.setMeta(imagePlaceholderPluginKey, {
+          type: 'add',
+          id,
+          pos: insertPos,
+          progress: 0,
+          text_align: 'center',
+          width: file.image.width,
+          height: file.image.height,
+          viewport_width: 80,
+        } as ImagePlaceholderAddAction);
+
+        props.editorView.dispatch(tr);
+
+        await createFakeProgress((progress) => {
+          let tr = props.editorView.state.tr;
+          tr = tr.setMeta(imagePlaceholderPluginKey, {
+            type: 'update',
+            id,
+            progress,
+          } as ImagePlaceholderUpdateAction);
+          props.editorView.dispatch(tr);
+        });
+
+        const pos = findPlaceholderPos(props.editorView.state, id);
+        tr = props.editorView.state.tr;
+        if (!pos) {
+          return;
+        }
+        tr = tr.setMeta(imagePlaceholderPluginKey, {
+          type: 'remove',
+          id,
+        } as ImagePlaceholderRemoveAction);
+        const node = props.editorView.state.schema.nodes['image'].create({
+          src: file.url,
+        });
+        tr = tr.replaceWith(pos, pos, node);
+        props.editorView.dispatch(tr);
+      }),
+    );
+  };
+
   return (
-    <div className="pmp-view-menubar-wrapper">
+    <div
+      className={classes(
+        'pmp-view-menubar-wrapper',
+        props.isScrolltop ? 'scroll-top' : '',
+      )}
+    >
       <PmpButton disabled={!props.canUndo} onClick={() => props.onUndoClick()}>
         <i className="ri-arrow-go-back-line" />
       </PmpButton>
@@ -368,9 +292,34 @@ export const PmpMenubar = (props: PmpMenubarProps) => {
       >
         <i className="ri-code-line" />
       </PmpButton>
-      <PmpButton>
+      <PmpButton
+        ref={textColorButtonRef}
+        onClick={() => {
+          const rect = textColorButtonRef.current!.getBoundingClientRect();
+          setTextColorLayerRef({
+            top: rect.top + rect.height + 10,
+            left: rect.left,
+          });
+        }}
+      >
         <i className="ri-font-color" />
       </PmpButton>
+      {textColorLayerRef && (
+        <PmpLayer
+          top={textColorLayerRef.top}
+          left={textColorLayerRef.left}
+          closeOnEsc={true}
+          outerMousedown={() => setTextColorLayerRef(null)}
+          onClose={() => setTextColorLayerRef(null)}
+        >
+          <PmpColorPicker
+            onChange={(color: string) => {
+              setTextColorLayerRef(null);
+              props.onTextColorClick(color);
+            }}
+          />
+        </PmpLayer>
+      )}
       <PmpSeparator className="pmp-view-menubar-separator" />
 
       <PmpButton
@@ -427,12 +376,58 @@ export const PmpMenubar = (props: PmpMenubarProps) => {
       <PmpButton disabled={true}>
         <i className="ri-checkbox-line" />
       </PmpButton>
-      <PmpButton disabled={!props.canLink} onClick={() => props.setLink()}>
+      <PmpButton
+        ref={linkButtonRef}
+        disabled={!props.canLink}
+        onClick={() => {
+          const { from, to } = props.editorView.state.selection;
+          const start = props.editorView.coordsAtPos(from);
+          const end = props.editorView.coordsAtPos(to);
+          setLinkLayerRef({
+            top: end.bottom + 10,
+            left: start.left,
+            from,
+            to,
+            link: '',
+            text: props.editorView.state.doc.textBetween(from, to),
+          });
+        }}
+      >
         <i className="ri-links-line" />
       </PmpButton>
+      {linkLayerRef && (
+        <PmpLayer
+          top={linkLayerRef.top}
+          left={linkLayerRef.left}
+          closeOnEsc={true}
+          outerMousedown={() => setLinkLayerRef(null)}
+          onClose={() => setLinkLayerRef(null)}
+        >
+          <PmpLinkFormLayer
+            text={linkLayerRef.text}
+            link={linkLayerRef.link}
+            onSubmit={(link: string, text: string) => {
+              setLinkLayerRef(null);
+              props.setLink(linkLayerRef.from, linkLayerRef.to, text, link);
+              // props.setLink();
+            }}
+            onCancel={() => setLinkLayerRef(null)}
+          />
+        </PmpLayer>
+      )}
+      <PmpInput
+        ref={imageInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        hidden
+        onChange={(e) => {
+          void onImageChange(e);
+        }}
+      />
       <PmpButton
         onClick={() => {
-          props.onImageClick();
+          imageInputRef.current!.click();
         }}
       >
         <i className="ri-image-line" />
@@ -466,12 +461,43 @@ export const PmpMenubar = (props: PmpMenubarProps) => {
         <i className="ri-code-s-slash-fill" />
       </PmpButton>
       <PmpButton
+        ref={commandButtonRef}
         onClick={() => {
-          // props.onCommandClick();
+          const rect = commandButtonRef.current!.getBoundingClientRect();
+          setCommandLayerRef({
+            top: rect.top + rect.height + 10,
+            left: rect.left,
+            selectedIndex: 0,
+          });
         }}
       >
         <i className="ri-slash-commands" />
       </PmpButton>
+      {commandLayerRef && (
+        <PmpLayer
+          top={commandLayerRef.top}
+          left={commandLayerRef.left}
+          closeOnEsc={true}
+          outerMousedown={() => setCommandLayerRef(null)}
+          onClose={() => setCommandLayerRef(null)}
+        >
+          <PmpCommand
+            items={PMP_DEFAULT_COMMAND_LIST}
+            selectedIndex={commandLayerRef.selectedIndex}
+            onHover={(index) => {
+              setCommandLayerRef({
+                ...commandLayerRef,
+                selectedIndex: index,
+              });
+            }}
+            onClick={(index: number) => {
+              PMP_DEFAULT_COMMAND_LIST[index].action(props.editorView, true);
+              props.editorView.focus();
+              setCommandLayerRef(null);
+            }}
+          />
+        </PmpLayer>
+      )}
     </div>
   );
 };
@@ -501,6 +527,8 @@ export class PmpMenubarView implements PluginView {
   private readonly _toggleBlockQuote = toggleBlockquote();
   private readonly _indent = indentListItem(1);
   private readonly _deindent = indentListItem(-1);
+
+  public textColorLayerRef: HTMLElement | null = null;
 
   public isScrollTop = false;
 
@@ -543,6 +571,7 @@ export class PmpMenubarView implements PluginView {
     this.isScrollTop = scrollbarElement.scrollTop === 0;
     scrollbarElement?.addEventListener('scroll', () => {
       this.isScrollTop = scrollbarElement.scrollTop === 0;
+      this.render();
     });
   }
 
@@ -642,6 +671,8 @@ export class PmpMenubarView implements PluginView {
   public render() {
     render(
       <PmpMenubar
+        editorView={this.editorView}
+        editorState={this.editorView.state}
         isScrolltop={this.isScrollTop}
         activeBold={this.activeBold}
         activeItalic={this.activeItalic}
@@ -677,17 +708,16 @@ export class PmpMenubarView implements PluginView {
         toggleItalic={() => this.toggleItalic()}
         toggleStrikethrough={() => this.toggleStrikethrough()}
         toggleInlineCode={() => this.toggleInlineCode()}
+        onTextColorClick={(color) => this.onTextColorClick(color)}
         onAlignClick={(alignment) => this.onAlignClick(alignment)}
         onOrderedListClick={() => this.onOrderedListClick()}
         onUnorderedListClick={() => this.onUnorderedListClick()}
         onIncreaseIndentClick={() => this.onIncreaseIndentClick()}
         onDecreaseIndentClick={() => this.onDecreaseIndentClick()}
-        setLink={() => this.setLink()}
-        onImageClick={() => this.onImageClick()}
+        setLink={(from, to, text, link) => this.setLink(from, to, text, link)}
         onMentionClick={() => this.onMentionClick()}
         onBlockQuoteClick={() => this.onBlockQuoteClick()}
         onTableClick={() => this.onTableClick()}
-        onCommandClick={(commandInput) => this.onCommandClick(commandInput)}
       />,
       this.wrapper,
     );
@@ -728,37 +758,11 @@ export class PmpMenubarView implements PluginView {
     this.editorView.focus();
   }
 
-  public setLink(): void {
-    const { from, to } = this.editorView.state.selection;
-    const start = this.editorView.coordsAtPos(from);
-    const end = this.editorView.coordsAtPos(to);
-    // this._linkRef = this._preactRenderer(
-    //   h(
-    //     PmpLayer,
-    //     {
-    //       top: end.bottom + 10,
-    //       left: start.left,
-    //       closeOnEsc: true,
-    //       outerMousedown: () => this._linkRef?.destroy(),
-    //       onClose: () => this._linkRef?.destroy(),
-    //     },
-    //     [
-    //       h(PmpLinkFormLayer, {
-    //         text: this._editorView.state.doc.textBetween(from, to),
-    //         link: '',
-    //         onSubmit: (link: string, text: string) => {
-    //           let tr = this._editorView.state.tr;
-    //           this._linkRef?.destroy();
-    //           tr = addLink(tr, from, to, text, link);
-    //           this._editorView.dispatch(tr);
-    //           this._editorView.focus();
-    //         },
-    //         onCancel: () => this._linkRef?.destroy(),
-    //       }),
-    //     ],
-    //   ),
-    //   this._linkRef?.parent,
-    // );
+  public setLink(from: number, to: number, text: string, link: string): void {
+    let tr = this.editorView.state.tr;
+    tr = addLink(tr, from, to, text, link);
+    this.editorView.dispatch(tr);
+    this.editorView.focus();
   }
 
   public onAlignClick(alignment: 'left' | 'center' | 'right'): void {
@@ -796,120 +800,6 @@ export class PmpMenubarView implements PluginView {
     this.editorView.focus();
   }
 
-  public onImageClick(): void {
-    // const input = document.createElement('input');
-    // input.type = 'file';
-    // input.accept = 'image/*';
-    // input.multiple = true;
-    // input.hidden = true;
-    // input.value = '';
-    // document.body.appendChild(input);
-
-    // const originSelection = this._editorView.state.selection;
-
-    // this._subscriptions.push(
-    //   merge(
-    //     fromEvent(input, 'change').pipe(
-    //       switchMap((event) => {
-    //         return from(
-    //           imageFileToBase64Url(
-    //             (event.target as HTMLInputElement).files![0],
-    //           ),
-    //         ).pipe(
-    //           switchMap((url) =>
-    //             from(parseImageMeta(url)).pipe(
-    //               switchMap((image) => {
-    //                 const id = Math.random().toString();
-    //                 let tr = this._editorView.state.tr;
-
-    //                 const adjacentInsertableParent = findParentNode(
-    //                   this._editorView.state,
-    //                   originSelection.from,
-    //                   (node, parent) => {
-    //                     return (
-    //                       parent?.type.spec.group?.includes(
-    //                         'block-container',
-    //                       ) || false
-    //                     );
-    //                   },
-    //                 );
-
-    //                 const insertPos = adjacentInsertableParent
-    //                   ? adjacentInsertableParent.pos +
-    //                     adjacentInsertableParent.node.nodeSize
-    //                   : 0;
-
-    //                 tr = tr.setMeta(imagePlaceholderPluginKey, {
-    //                   type: 'add',
-    //                   id: id,
-    //                   pos: insertPos,
-    //                   progress: 0,
-    //                   text_align: 'center',
-    //                   width: image.width,
-    //                   height: image.height,
-    //                   viewport_width: 80,
-    //                 } as ImagePlaceholderAddAction);
-    //                 this._editorView.dispatch(tr);
-
-    //                 return this.fakeProgress().pipe(
-    //                   tap((progress) => {
-    //                     let tr = this._editorView.state.tr;
-
-    //                     tr = tr.setMeta(imagePlaceholderPluginKey, {
-    //                       type: 'update',
-    //                       id: id,
-    //                       progress: progress,
-    //                     } as ImagePlaceholderUpdateAction);
-    //                     this._editorView.dispatch(tr);
-
-    //                     if (progress >= 1) {
-    //                       const pos = findPlaceholderPos(
-    //                         this._editorView.state,
-    //                         id,
-    //                       );
-    //                       if (!pos) {
-    //                         return;
-    //                       }
-    //                       tr = tr.setMeta(imagePlaceholderPluginKey, {
-    //                         type: 'remove',
-    //                         id: id,
-    //                       } as ImagePlaceholderRemoveAction);
-    //                       const node = this._editorView.state.schema.nodes[
-    //                         'image'
-    //                       ].create({
-    //                         src: url,
-    //                       });
-    //                       tr = tr.replaceWith(pos, pos, node);
-    //                       this._editorView.dispatch(tr);
-    //                     }
-    //                   }),
-    //                 );
-    //               }),
-    //             ),
-    //           ),
-    //         );
-    //       }),
-    //     ),
-    //   ).subscribe(),
-    // );
-    // input.click();
-    return;
-  }
-
-  // public fakeProgress(): Observable<number> {
-  //   return new Observable((subscriber) => {
-  //     let progress = 0;
-  //     const interval = setInterval(() => {
-  //       progress += 0.1;
-  //       subscriber.next(progress);
-  //       if (progress >= 1) {
-  //         clearInterval(interval);
-  //         subscriber.complete();
-  //       }
-  //     }, 500);
-  //   });
-  // }
-
   public onMentionClick(): void {
     this._addMention(this.editorView.state, this.editorView.dispatch);
     this.editorView.focus();
@@ -925,86 +815,25 @@ export class PmpMenubarView implements PluginView {
     this.editorView.focus();
   }
 
-  public onTextColorClick(colorInput: HTMLButtonElement): void {
-    const { left, bottom } = colorInput.getBoundingClientRect();
+  public onTextColorClick(color: string): void {
     const { from, to } = this.editorView.state.tr.selection;
-    // this._colorPickerRef = this._preactRenderer(
-    //   h(
-    //     PmpLayer,
-    //     {
-    //       top: bottom + 10,
-    //       left: left,
-    //       closeOnEsc: true,
-    //       outerMousedown: () => this._colorPickerRef?.destroy(),
-    //       onClose: () => this._colorPickerRef?.destroy(),
-    //     },
-    //     [
-    //       h(PmpColorPicker, {
-    //         onChange: (color: string) => {
-    //           if (from === to) {
-    //             this._colorPickerRef?.destroy();
-    //             toggleMark(this._editorView.state.schema.marks['textColor'], {
-    //               color: color,
-    //             })(this._editorView.state, this._editorView.dispatch);
-    //             this._editorView.focus();
-    //             return;
-    //           }
-    //           let tr = this._editorView.state.tr;
-    //           this._colorPickerRef?.destroy();
-    //           tr = tr.addMark(
-    //             from,
-    //             to,
-    //             this._editorView.state.schema.marks['textColor'].create({
-    //               color,
-    //             }),
-    //           );
-    //           this._editorView.dispatch(tr);
-    //           this._editorView.focus();
-    //         },
-    //       }),
-    //     ],
-    //   ),
-    //   this._colorPickerRef?.parent,
-    // );
-  }
-
-  public onCommandClick(button: HTMLButtonElement): void {
-    const { left, bottom } = button.getBoundingClientRect();
-    // this._commandRef = this._preactRenderer(
-    //   h(
-    //     PmpLayer,
-    //     {
-    //       top: bottom + 10,
-    //       left: left,
-    //       closeOnEsc: true,
-    //       outerMousedown: () => {
-    //         this._commandRef?.destroy();
-    //         this._commandIndex = 0;
-    //       },
-    //       onClose: () => {
-    //         this._commandRef?.destroy();
-    //         this._commandIndex = 0;
-    //       },
-    //     },
-    //     [
-    //       h(PmpCommand, {
-    //         items: PMP_DEFAULT_COMMAND_LIST,
-    //         keyword: '',
-    //         selectedIndex: this._commandIndex,
-    //         onHover: (index) => {
-    //           this._commandIndex = index;
-    //           this.onCommandClick(button);
-    //         },
-    //         onClick: (index: number) => {
-    //           this._commandRef?.destroy();
-    //           PMP_DEFAULT_COMMAND_LIST[index].action(this._editorView, true);
-    //           this._editorView.focus();
-    //         },
-    //       }),
-    //     ],
-    //   ),
-    //   this._commandRef?.parent,
-    // );
+    if (from === to) {
+      toggleMark(this.editorView.state.schema.marks['textColor'], {
+        color,
+      })(this.editorView.state, this.editorView.dispatch);
+      this.editorView.focus();
+      return;
+    }
+    let tr = this.editorView.state.tr;
+    tr = tr.addMark(
+      from,
+      to,
+      this.editorView.state.schema.marks['textColor'].create({
+        color,
+      }),
+    );
+    this.editorView.dispatch(tr);
+    this.editorView.focus();
   }
 
   public destroy() {
