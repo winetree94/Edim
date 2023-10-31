@@ -1,20 +1,13 @@
-.layer-wrapper {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-}
-
-.layer-root {
-  position: fixed;
-  top: 0;
-  left: 0;
-  border: #dfe1e6 1px solid;
-  border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  background: white;
-  z-index: 10;
-  overflow-y: auto;
-}
+@import './button.scss';
+@import './color.scss';
+@import './command.scss';
+@import './image.scss';
+@import './input.scss';
+@import './label.scss';
+@import './layer.scss';
+@import './link.scss';
+@import './list.scss';
+@import './mention.scss';
+@import './menubar.scss';
+@import './paragraph.scss';
+@import './separator.scss';

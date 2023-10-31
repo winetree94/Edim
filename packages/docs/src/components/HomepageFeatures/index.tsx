@@ -1,70 +1,103 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './styles.module.css';
+import React, { useEffect, useRef, useState } from 'react';
+import { PMEditor } from 'prosemirror-preset-core';
+import { Document } from 'prosemirror-preset-document';
+import { Heading } from 'prosemirror-preset-heading';
+import { Paragraph } from 'prosemirror-preset-paragraph';
+import { FreeList } from 'prosemirror-preset-free-list';
+import { Separator } from 'prosemirror-preset-hr';
+import { Italic } from 'prosemirror-preset-italic';
+import { Image } from 'prosemirror-preset-image';
+import { BasicKeymap } from 'prosemirror-preset-keymap';
+import { History } from 'prosemirror-preset-history';
+import { Mention } from 'prosemirror-preset-mention';
+import { Link as PmpLink } from 'prosemirror-preset-link';
+import { Strikethrough } from 'prosemirror-preset-strikethrough';
+import { BlockQuote } from 'prosemirror-preset-blockquote';
+import { CodeBlock } from 'prosemirror-preset-codeblock';
+import { Text } from 'prosemirror-preset-text';
+import { TextColor } from 'prosemirror-preset-text-color';
+import { Table } from 'prosemirror-preset-tables';
+import { Code } from 'prosemirror-preset-code';
+import { Strong } from 'prosemirror-preset-strong';
+import { EmojiExtension } from 'prosemirror-preset-emoji';
+import { Command } from 'prosemirror-preset-command';
+import { EditorState } from 'prosemirror-state';
+import {
+  MentionItem,
+  PmpCommandView,
+  PmpImagePlaceholderViewProvider,
+  PmpMentionView,
+  PmpMenubarPlugin,
+} from 'prosemirror-preset-view';
+import { faker } from '@faker-js/faker';
+import { EditorView } from 'prosemirror-view';
 
-type FeatureItem = {
-  title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
-  description: JSX.Element;
-};
+const items: MentionItem[] = Array.from({ length: 100 }).map(() => ({
+  icon: faker.image.avatar(),
+  id: faker.string.uuid(),
+  name: faker.person.fullName(),
+}));
 
-const FeatureList: FeatureItem[] = [
-  {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
-    ),
-  },
-  {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
-    ),
-  },
-];
-
-function Feature({title, Svg, description}: FeatureItem) {
-  return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-}
+const state: EditorState = new PMEditor({
+  extensions: [
+    Document(),
+    Text(),
+    TextColor(),
+    Paragraph({
+      addListNodes: true,
+    }),
+    EmojiExtension({}),
+    Mention({
+      view: (view, pluginKey) => {
+        return new PmpMentionView(view, pluginKey, (keyword) =>
+          items.filter((item) =>
+            item.name.toLowerCase().includes(keyword.toLowerCase()),
+          ),
+        );
+      },
+    }),
+    Command({
+      view: (view, plugin) => new PmpCommandView(view, plugin),
+    }),
+    FreeList({}),
+    BlockQuote(),
+    Separator(),
+    Heading({
+      level: 6,
+    }),
+    CodeBlock(),
+    // HardBreak(),
+    Image({
+      placeholderViewProvider: () => new PmpImagePlaceholderViewProvider(),
+    }),
+    PmpLink(),
+    Italic(),
+    Strong(),
+    Code(),
+    Strikethrough(),
+    Table({
+      resizing: true,
+    }),
+    BasicKeymap(),
+    History(),
+  ],
+  nativePlugins: (schema) => [PmpMenubarPlugin],
+}).configure();
 
 export default function HomepageFeatures(): JSX.Element {
-  return (
-    <section className={styles.features}>
-      <div className="container">
-        <div className="row">
-          {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
-          ))}
-        </div>
-      </div>
-    </section>
+  const editorRef = useRef<HTMLDivElement>(null);
+  const [editorState, setEditorState] = useState<EditorState>(
+    EditorState.create({
+      schema: state.schema,
+      plugins: state.plugins,
+    }),
   );
+
+  useEffect(() => {
+    new EditorView(editorRef.current, {
+      state: editorState,
+    });
+  }, []);
+
+  return <div ref={editorRef} />;
 }

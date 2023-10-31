@@ -8,10 +8,12 @@ import {
 } from 'prosemirror-preset-command';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpLayer } from './view';
+import { PmpLayer } from './layer';
 import { PmpListItem, PmpUnorderedList } from './components/list';
 import { PmpParagraph } from './components/paragraph';
 import { classes } from './cdk/core';
+import { html } from './cdk/html';
+import { forwardRef } from 'preact/compat';
 
 export interface PmpCommandItem {
   icon: string;
@@ -58,33 +60,38 @@ export interface PmpCommandProps {
   onClick?(index: number): void;
 }
 
-export const PmpCommand = (props: PmpCommandProps) => {
-  return (
-    <div className={'pmp-view-command-container'}>
-      <PmpUnorderedList>
-        {props.items.map((item, index) => (
-          <PmpListItem
-            key={index}
-            className={classes(
-              'pmp-view-command-list-item',
-              props.selectedIndex === index ? 'selected' : '',
-            )}
-            onMouseMove={() => props.onHover?.(index)}
-            onClick={() => props.onClick?.(index)}
-          >
-            <i
-              className={classes(item.icon, 'pmp-view-command-list-item-icon')}
-            />
-            <div className={'pmp-view-command-item-content'}>
-              <PmpParagraph>{item.title}</PmpParagraph>
-              <PmpParagraph>{item.description}</PmpParagraph>
-            </div>
-          </PmpListItem>
-        ))}
-      </PmpUnorderedList>
+export const PmpCommand = forwardRef((props: PmpCommandProps) => {
+  return html`
+    <div class="pmp-view-command-container">
+      <${PmpUnorderedList}>
+        ${props.items.map(
+          (item, index) => html`
+            <${PmpListItem}
+              key=${index}
+              className=${classes(
+                'pmp-view-command-list-item',
+                props.selectedIndex === index ? 'selected' : '',
+              )}
+              onMouseMove=${() => props.onHover?.(index)}
+              onClick=${() => props.onClick?.(index)}
+            >
+              <i
+                className=${classes(
+                  item.icon,
+                  'pmp-view-command-list-item-icon',
+                )}
+              />
+              <div className="pmp-view-command-item-content">
+                <${PmpParagraph}>${item.title}</${PmpParagraph}>
+                <${PmpParagraph}>${item.description}</${PmpParagraph}>
+              </div>
+            </${PmpListItem}>
+          `,
+        )}
+      </${PmpUnorderedList}>
     </div>
-  );
-};
+  `;
+});
 
 export class PmpCommandView implements CommandPluginView {
   public wrapper: HTMLDivElement | undefined;
@@ -137,28 +144,30 @@ export class PmpCommandView implements CommandPluginView {
     }
 
     render(
-      <PmpLayer
-        left={start.left}
-        top={end.bottom}
-        disableBackdrop={true}
-        maxWidth={200}
-        minWidth={200}
-        maxHeight={300}
-      >
-        <PmpCommand
-          items={commands}
-          selectedIndex={this.index}
-          onHover={(index) => {
-            this.index = index;
-            this.update(view);
-          }}
-          onClick={(index) => {
-            this.index = index;
-            this.update(view);
-            commands[index].action(view);
-          }}
-        />
-      </PmpLayer>,
+      html`
+        <${PmpLayer}
+          left=${start.left}
+          top=${end.bottom}
+          disableBackdrop=${true}
+          maxWidth=${200}
+          minWidth=${200}
+          maxHeight=${300}
+        >
+          <${PmpCommand}
+            items=${commands}
+            selectedIndex=${this.index}
+            onHover=${(index: number) => {
+              this.index = index;
+              this.update(view);
+            }}
+            onClick=${(index: number) => {
+              this.index = index;
+              this.update(view);
+              commands[index].action(view);
+            }}
+          />
+        </${PmpLayer}>
+      `,
       this.wrapper,
     );
   }

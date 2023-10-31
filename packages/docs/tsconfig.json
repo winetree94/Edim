@@ -7,9 +7,9 @@
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM"],
-    "moduleResolution": "Node16",
+    "moduleResolution": "node",
     "noEmit": true,
-    "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
+    "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic", "docusaurus-plugin-sass"],
     "baseUrl": ".",
     "paths": {
       "@site/*": ["./*"],

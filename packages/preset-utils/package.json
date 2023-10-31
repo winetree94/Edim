@@ -13,7 +13,6 @@
   "dependencies": {
     "prosemirror-transform": "*",
     "prosemirror-model": "*",
-    "prosemirror-state": "*",
-    "preact": "*"
+    "prosemirror-state": "*"
   }
 }

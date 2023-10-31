@@ -1,5 +1,7 @@
 import { JSX } from 'preact';
 import { useEffect } from 'preact/hooks';
+import { html } from './cdk/html';
+import { forwardRef } from 'preact/compat';
 
 export interface PmpLayerProps {
   top: number;
@@ -17,7 +19,7 @@ export interface PmpLayerProps {
   outerMousedown?: (e: MouseEvent) => void;
 }
 
-export const PmpLayer = (props: PmpLayerProps) => {
+export const PmpLayer = forwardRef((props: PmpLayerProps) => {
   useEffect(() => {
     if (!props.closeOnEsc) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -32,10 +34,10 @@ export const PmpLayer = (props: PmpLayerProps) => {
     // eslint-disable-next-line @typescript-eslint/unbound-method
   }, [props, props.onClose, props.closeOnEsc]);
 
-  const layer = (
+  const layer = html`
     <div
       className="layer-root"
-      style={{
+      style=${{
         top: `${props.top}px`,
         left: `${props.left}px`,
         width: props.width ? `${props.width}px` : undefined,
@@ -45,19 +47,19 @@ export const PmpLayer = (props: PmpLayerProps) => {
         minHeight: props.minHeight ? `${props.minHeight}px` : undefined,
         maxHeight: props.maxHeight ? `${props.maxHeight}px` : undefined,
       }}
-      onMouseDown={(e) => {
+      onMouseDown=${(e: MouseEvent) => {
         e.stopPropagation();
       }}
     >
-      {props.children}
+      ${props.children}
     </div>
-  );
+  `;
 
-  return props.disableBackdrop ? (
-    layer
-  ) : (
-    <div className="layer-wrapper" onMouseDown={props.outerMousedown}>
-      {layer}
-    </div>
-  );
-};
+  return props.disableBackdrop
+    ? layer
+    : html`
+        <div className="layer-wrapper" onMouseDown=${props.outerMousedown}>
+          ${layer}
+        </div>
+      `;
+});

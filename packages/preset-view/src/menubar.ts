@@ -2,7 +2,13 @@
 import { PmpSeparator } from './components/separator';
 import { PmpButton } from './components/button';
 import { render } from 'preact';
-import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
+import {
+  Command,
+  EditorState,
+  Plugin,
+  PluginKey,
+  PluginView,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
@@ -17,13 +23,13 @@ import {
 import { addLink, canAddLink } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpLayer } from './view';
+import { PmpLayer } from './layer';
 import { useRef, useState } from 'preact/hooks';
 import { PmpColorPicker } from './color-picker';
 import { PmpLinkFormLayer } from './link';
 import { PMP_DEFAULT_COMMAND_LIST, PmpCommand } from './command';
 import { PmpInput } from './components/input';
-import { TargetedEvent } from 'preact/compat';
+import { TargetedEvent, forwardRef } from 'preact/compat';
 import {
   ImagePlaceholderAddAction,
   ImagePlaceholderRemoveAction,
@@ -34,6 +40,7 @@ import {
   parseImageMeta,
 } from 'prosemirror-preset-image';
 import { classes } from './cdk/core';
+import { html } from './cdk/html';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
@@ -102,7 +109,7 @@ const createFakeProgress = (
   });
 };
 
-export const PmpMenubar = (props: PmpMenubarProps) => {
+export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const [textColorLayerRef, setTextColorLayerRef] = useState<{
     top: number;
     left: number;
@@ -202,184 +209,193 @@ export const PmpMenubar = (props: PmpMenubarProps) => {
     );
   };
 
-  return (
+  return html`
     <div
-      className={classes(
+      className=${classes(
         'pmp-view-menubar-wrapper',
         props.isScrolltop ? 'scroll-top' : '',
       )}
-    >
-      <PmpButton disabled={!props.canUndo} onClick={() => props.onUndoClick()}>
+      >
+      <${PmpButton}
+        disabled=${!props.canUndo}
+        onClick=${() => props.onUndoClick()}
+        >
         <i className="ri-arrow-go-back-line" />
       </PmpButton>
-      <PmpButton disabled={!props.canRedo} onClick={() => props.onRedoClick()}>
+      <${PmpButton}
+        disabled=${!props.canRedo}
+        onClick=${() => props.onRedoClick()}
+        >
         <i className="ri-arrow-go-forward-line" />
       </PmpButton>
-      <PmpSeparator className="pmp-view-menubar-separator" />
-
-      <PmpButton
-        disabled={!props.canNormalText}
-        className={props.activeParagraph ? 'selected' : ''}
-        onClick={() => props.onParagraphClick()}
-      >
+      <${PmpSeparator} className="pmp-view-menubar-separator" />
+      
+      <${PmpButton}
+        disabled=${!props.canNormalText}
+        className=${props.activeParagraph ? 'selected' : ''}
+        onClick=${() => props.onParagraphClick()}
+        >
         <i className="ri-text" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canNormalText}
-        className={props.activeH1 ? 'selected' : ''}
-        onClick={() => props.onHeadingClick(1)}
-      >
+      <${PmpButton}
+        disabled=${!props.canNormalText}
+        className=${props.activeH1 ? 'selected' : ''}
+        onClick=${() => props.onHeadingClick(1)}
+        >
         <i className="ri-h-1" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canNormalText}
-        className={props.activeH2 ? 'selected' : ''}
-        onClick={() => props.onHeadingClick(2)}
-      >
+      <${PmpButton}
+        disabled=${!props.canNormalText}
+        className=${props.activeH2 ? 'selected' : ''}
+        onClick=${() => props.onHeadingClick(2)}
+        >
         <i className="ri-h-2" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canNormalText}
-        className={props.activeH3 ? 'selected' : ''}
-        onClick={() => props.onHeadingClick(3)}
-      >
+      <${PmpButton}
+        disabled=${!props.canNormalText}
+        className=${props.activeH3 ? 'selected' : ''}
+        onClick=${() => props.onHeadingClick(3)}
+        >
         <i className="ri-h-3" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canNormalText}
-        className={props.activeH4 ? 'selected' : ''}
-        onClick={() => props.onHeadingClick(4)}
-      >
+      <${PmpButton}
+        disabled=${!props.canNormalText}
+        className=${props.activeH4 ? 'selected' : ''}
+        onClick=${() => props.onHeadingClick(4)}
+        >
         <i className="ri-h-4" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canNormalText}
-        className={props.activeH5 ? 'selected' : ''}
-        onClick={() => props.onHeadingClick(5)}
-      >
+      <${PmpButton}
+        disabled=${!props.canNormalText}
+        className=${props.activeH5 ? 'selected' : ''}
+        onClick=${() => props.onHeadingClick(5)}
+        >
         <i className="ri-h-5" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canNormalText}
-        className={props.activeH6 ? 'selected' : ''}
-        onClick={() => props.onHeadingClick(6)}
-      >
+      <${PmpButton}
+        disabled=${!props.canNormalText}
+        className=${props.activeH6 ? 'selected' : ''}
+        onClick=${() => props.onHeadingClick(6)}
+        >
         <i className="ri-h-6" />
       </PmpButton>
-      <PmpSeparator className="pmp-view-menubar-separator" />
+      <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <PmpButton
-        className={props.activeBold ? 'selected' : ''}
-        onClick={() => props.toggleBold()}
-      >
+      <${PmpButton}
+        className=${props.activeBold ? 'selected' : ''}
+        onClick=${() => props.toggleBold()}
+        >
         <i className="ri-bold" />
       </PmpButton>
-      <PmpButton
-        className={props.activeItalic ? 'selected' : ''}
-        onClick={() => props.toggleItalic()}
-      >
+      <${PmpButton}
+        className=${props.activeItalic ? 'selected' : ''}
+        onClick=${() => props.toggleItalic()}
+        >
         <i className="ri-italic" />
       </PmpButton>
-      <PmpButton
-        className={props.activeStrikethrough ? 'selected' : ''}
-        onClick={() => props.toggleStrikethrough()}
-      >
+      <${PmpButton}
+        className=${props.activeStrikethrough ? 'selected' : ''}
+        onClick=${() => props.toggleStrikethrough()}
+        >
         <i className="ri-strikethrough-2" />
       </PmpButton>
-      <PmpButton
-        className={props.activeInlineCode ? 'selected' : ''}
-        onClick={() => props.toggleInlineCode()}
-      >
+      <${PmpButton}
+        className=${props.activeInlineCode ? 'selected' : ''}
+        onClick=${() => props.toggleInlineCode()}
+        >
         <i className="ri-code-line" />
       </PmpButton>
-      <PmpButton
-        ref={textColorButtonRef}
-        onClick={() => {
+      <${PmpButton}
+        ref=${textColorButtonRef}
+        onClick=${() => {
           const rect = textColorButtonRef.current!.getBoundingClientRect();
           setTextColorLayerRef({
             top: rect.top + rect.height + 10,
             left: rect.left,
           });
         }}
-      >
+        >
         <i className="ri-font-color" />
       </PmpButton>
-      {textColorLayerRef && (
-        <PmpLayer
-          top={textColorLayerRef.top}
-          left={textColorLayerRef.left}
-          closeOnEsc={true}
-          outerMousedown={() => setTextColorLayerRef(null)}
-          onClose={() => setTextColorLayerRef(null)}
-        >
-          <PmpColorPicker
-            onChange={(color: string) => {
+      ${
+        textColorLayerRef &&
+        html`
+        <${PmpLayer}
+          top=${textColorLayerRef.top}
+          left=${textColorLayerRef.left}
+          closeOnEsc=${true}
+          outerMousedown=${() => setTextColorLayerRef(null)}
+          onClose=${() => setTextColorLayerRef(null)}
+          >
+          <${PmpColorPicker}
+            onChange=${(color: string) => {
               setTextColorLayerRef(null);
               props.onTextColorClick(color);
             }}
-          />
+            />
         </PmpLayer>
-      )}
-      <PmpSeparator className="pmp-view-menubar-separator" />
+      `
+      }
+      <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <PmpButton
-        disabled={!props.canAlign}
-        className={props.activeAlignLeft ? 'selected' : ''}
-        onClick={() => props.onAlignClick('left')}
-      >
+      <${PmpButton}
+        disabled=${!props.canAlign}
+        className=${props.activeAlignLeft ? 'selected' : ''}
+        onClick=${() => props.onAlignClick('left')}
+        >
         <i className="ri-align-left" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canAlign}
-        className={props.activeAlignCenter ? 'selected' : ''}
-        onClick={() => props.onAlignClick('center')}
-      >
+      <${PmpButton}
+        disabled=${!props.canAlign}
+        className=${props.activeAlignCenter ? 'selected' : ''}
+        onClick=${() => props.onAlignClick('center')}
+        >
         <i className="ri-align-center" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canAlign}
-        className={props.activeAlignRight ? 'selected' : ''}
-        onClick={() => props.onAlignClick('right')}
-      >
+      <${PmpButton}
+        disabled=${!props.canAlign}
+        className=${props.activeAlignRight ? 'selected' : ''}
+        onClick=${() => props.onAlignClick('right')}
+        >
         <i className="ri-align-right" />
       </PmpButton>
-      <PmpSeparator className="pmp-view-menubar-separator" />
+      <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <PmpButton
-        className={props.activeOrderedList ? 'selected' : ''}
-        disabled={!props.canOrderedList}
-        onClick={() => props.onOrderedListClick()}
-      >
+      <${PmpButton}
+        className=${props.activeOrderedList ? 'selected' : ''}
+        disabled=${!props.canOrderedList}
+        onClick=${() => props.onOrderedListClick()}
+        >
         <i className="ri-list-ordered" />
       </PmpButton>
-      <PmpButton
-        className={props.activeUnorderedList ? 'selected' : ''}
-        disabled={!props.canBulletList}
-        onClick={() => props.onUnorderedListClick()}
-      >
+      <${PmpButton}
+        className=${props.activeUnorderedList ? 'selected' : ''}
+        disabled=${!props.canBulletList}
+        onClick=${() => props.onUnorderedListClick()}
+        >
         <i className="ri-list-unordered" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canDeindent}
-        onClick={() => props.onDecreaseIndentClick()}
-      >
+      <${PmpButton}
+        disabled=${!props.canDeindent}
+        onClick=${() => props.onDecreaseIndentClick()}
+        >
         <i className="ri-indent-decrease" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canIndent}
-        onClick={() => props.onIncreaseIndentClick()}
-      >
+      <${PmpButton}
+        disabled=${!props.canIndent}
+        onClick=${() => props.onIncreaseIndentClick()}
+        >
         <i className="ri-indent-increase" />
       </PmpButton>
-      <PmpSeparator className="pmp-view-menubar-separator" />
+      <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <PmpButton disabled={true}>
+      <${PmpButton} disabled=${true}>
         <i className="ri-checkbox-line" />
       </PmpButton>
-      <PmpButton
-        ref={linkButtonRef}
-        disabled={!props.canLink}
-        onClick={() => {
+      <${PmpButton}
+        ref=${linkButtonRef}
+        disabled=${!props.canLink}
+        onClick=${() => {
           const { from, to } = props.editorView.state.selection;
           const start = props.editorView.coordsAtPos(from);
           const end = props.editorView.coordsAtPos(to);
@@ -392,77 +408,80 @@ export const PmpMenubar = (props: PmpMenubarProps) => {
             text: props.editorView.state.doc.textBetween(from, to),
           });
         }}
-      >
+        >
         <i className="ri-links-line" />
       </PmpButton>
-      {linkLayerRef && (
-        <PmpLayer
-          top={linkLayerRef.top}
-          left={linkLayerRef.left}
-          closeOnEsc={true}
-          outerMousedown={() => setLinkLayerRef(null)}
-          onClose={() => setLinkLayerRef(null)}
-        >
-          <PmpLinkFormLayer
-            text={linkLayerRef.text}
-            link={linkLayerRef.link}
-            onSubmit={(link: string, text: string) => {
+      ${
+        linkLayerRef &&
+        html`
+        <${PmpLayer}
+          top=${linkLayerRef.top}
+          left=${linkLayerRef.left}
+          closeOnEsc=${true}
+          outerMousedown=${() => setLinkLayerRef(null)}
+          onClose=${() => setLinkLayerRef(null)}
+          >
+          <${PmpLinkFormLayer}
+            text=${linkLayerRef.text}
+            link=${linkLayerRef.link}
+            onSubmit=${(link: string, text: string) => {
               setLinkLayerRef(null);
               props.setLink(linkLayerRef.from, linkLayerRef.to, text, link);
               // props.setLink();
             }}
-            onCancel={() => setLinkLayerRef(null)}
-          />
+            onCancel=${() => setLinkLayerRef(null)}
+            />
         </PmpLayer>
-      )}
-      <PmpInput
-        ref={imageInputRef}
+      `
+      }
+      <${PmpInput}
+        ref=${imageInputRef}
         type="file"
         accept="image/*"
         multiple
         hidden
-        onChange={(e) => {
+        onChange=${(e: TargetedEvent<HTMLInputElement, Event>) => {
           void onImageChange(e);
         }}
-      />
-      <PmpButton
-        onClick={() => {
+        />
+      <${PmpButton}
+        onClick=${() => {
           imageInputRef.current!.click();
         }}
-      >
+        >
         <i className="ri-image-line" />
       </PmpButton>
-      <PmpButton
-        disabled={!props.canMention}
-        onClick={() => {
+      <${PmpButton}
+        disabled=${!props.canMention}
+        onClick=${() => {
           props.onMentionClick();
         }}
-      >
+        >
         <i className="ri-at-line" />
       </PmpButton>
-      <PmpButton
-        onClick={() => {
+      <${PmpButton}
+        onClick=${() => {
           props.onBlockQuoteClick();
         }}
-      >
+        >
         <i className="ri-double-quotes-l" />
       </PmpButton>
-      <PmpButton disabled={true}>
+      <${PmpButton} disabled=${true}>
         <i className="ri-emoji-sticker-line" />
       </PmpButton>
-      <PmpButton
-        onClick={() => {
+      <${PmpButton}
+        onClick=${() => {
           props.onTableClick();
         }}
-      >
+        >
         <i className="ri-table-2" />
       </PmpButton>
-      <PmpButton disabled={true}>
+      <${PmpButton} disabled=${true}>
         <i className="ri-code-s-slash-fill" />
       </PmpButton>
-      <PmpButton
-        ref={commandButtonRef}
-        onClick={() => {
+      <${PmpButton}
+        ref=${commandButtonRef}
+        onClick=${() => {
           const rect = commandButtonRef.current!.getBoundingClientRect();
           setCommandLayerRef({
             top: rect.top + rect.height + 10,
@@ -470,75 +489,53 @@ export const PmpMenubar = (props: PmpMenubarProps) => {
             selectedIndex: 0,
           });
         }}
-      >
+        >
         <i className="ri-slash-commands" />
       </PmpButton>
-      {commandLayerRef && (
-        <PmpLayer
-          top={commandLayerRef.top}
-          left={commandLayerRef.left}
-          closeOnEsc={true}
-          outerMousedown={() => setCommandLayerRef(null)}
-          onClose={() => setCommandLayerRef(null)}
-        >
-          <PmpCommand
-            items={PMP_DEFAULT_COMMAND_LIST}
-            selectedIndex={commandLayerRef.selectedIndex}
-            onHover={(index) => {
+      ${
+        commandLayerRef &&
+        html`
+        <${PmpLayer}
+          top=${commandLayerRef.top}
+          left=${commandLayerRef.left}
+          closeOnEsc=${true}
+          outerMousedown=${() => setCommandLayerRef(null)}
+          onClose=${() => setCommandLayerRef(null)}
+          >
+          <${PmpCommand}
+            items=${PMP_DEFAULT_COMMAND_LIST}
+            selectedIndex=${commandLayerRef.selectedIndex}
+            onHover=${(index: number) => {
               setCommandLayerRef({
                 ...commandLayerRef,
                 selectedIndex: index,
               });
             }}
-            onClick={(index: number) => {
+            onClick=${(index: number) => {
               PMP_DEFAULT_COMMAND_LIST[index].action(props.editorView, true);
               props.editorView.focus();
               setCommandLayerRef(null);
             }}
-          />
+            />
         </PmpLayer>
-      )}
+      `
+      }
     </div>
-  );
-};
+  `;
+});
 
 export class PmpMenubarView implements PluginView {
-  public readonly editorRoot = (() => {
-    const div = document.createElement('div');
-    div.classList.add('pmp-view-editor-root');
-    return div;
-  })();
+  public readonly editorRoot: HTMLDivElement;
+  public readonly editorWrapper: HTMLDivElement;
+  public readonly menubarWrapper: HTMLDivElement;
+  public readonly editorView: EditorView;
 
-  public readonly editorWrapper = (() => {
-    const div = document.createElement('div');
-    div.classList.add('pmp-view-editor-scroll');
-    return div;
-  })();
-
-  public readonly menubarWrapper = (() => {
-    const div = document.createElement('div');
-    div.classList.add('pmp-view-editor-menubar-root');
-    return div;
-  })();
-
-  private readonly _toggleBold = toggleMark(
-    this.editorView.state.schema.marks['strong'],
-  );
-  private readonly _toggleItalic = toggleMark(
-    this.editorView.state.schema.marks['em'],
-  );
-  private readonly _toggleStrikethrough = toggleMark(
-    this.editorView.state.schema.marks['strikethrough'],
-  );
-  private readonly _toggleInlineCode = toggleMark(
-    this.editorView.state.schema.marks['code'],
-  );
-  private readonly _toggleOrderedList = toggleList(
-    this.editorView.state.schema.nodes['ordered_list'],
-  );
-  private readonly _toggleBulletList = toggleList(
-    this.editorView.state.schema.nodes['bullet_list'],
-  );
+  private readonly _toggleBold: Command;
+  private readonly _toggleItalic: Command;
+  private readonly _toggleStrikethrough: Command;
+  private readonly _toggleInlineCode: Command;
+  private readonly _toggleOrderedList: Command;
+  private readonly _toggleBulletList: Command;
   private readonly _addMention = addMention();
   private readonly _toggleBlockQuote = toggleBlockquote();
   private readonly _indent = indentListItem(1);
@@ -577,7 +574,37 @@ export class PmpMenubarView implements PluginView {
   public canDeindent = false;
   public canMention = false;
 
-  public constructor(private readonly editorView: EditorView) {
+  public constructor(editorView: EditorView) {
+    console.log('constructor');
+    this.editorView = editorView;
+
+    const editorRoot = document.createElement('div');
+    editorRoot.classList.add('pmp-view-editor-root');
+    this.editorRoot = editorRoot;
+
+    const editorWrapper = document.createElement('div');
+    editorWrapper.classList.add('pmp-view-editor-scroll');
+    this.editorWrapper = editorWrapper;
+
+    const menubarWrapper = document.createElement('div');
+    menubarWrapper.classList.add('pmp-view-editor-menubar-root');
+    this.menubarWrapper = menubarWrapper;
+
+    this._toggleBold = toggleMark(this.editorView.state.schema.marks['strong']);
+    this._toggleItalic = toggleMark(this.editorView.state.schema.marks['em']);
+    this._toggleStrikethrough = toggleMark(
+      this.editorView.state.schema.marks['strikethrough'],
+    );
+    this._toggleInlineCode = toggleMark(
+      this.editorView.state.schema.marks['code'],
+    );
+    this._toggleOrderedList = toggleList(
+      this.editorView.state.schema.nodes['ordered_list'],
+    );
+    this._toggleBulletList = toggleList(
+      this.editorView.state.schema.nodes['bullet_list'],
+    );
+
     editorView.dom.classList.add('pmp-view-editor');
     const originParent = editorView.dom.parentElement!;
     const originIndex = Array.from(originParent.children).indexOf(
@@ -693,55 +720,59 @@ export class PmpMenubarView implements PluginView {
 
   public render() {
     render(
-      <PmpMenubar
-        editorView={this.editorView}
-        editorState={this.editorView.state}
-        isScrolltop={this.isScrollTop}
-        activeBold={this.activeBold}
-        activeItalic={this.activeItalic}
-        activeStrikethrough={this.activeStrikethrough}
-        activeInlineCode={this.activeInlineCode}
-        activeOrderedList={this.activeOrderedList}
-        activeUnorderedList={this.activeUnorderedList}
-        activeParagraph={this.activeParagraph}
-        activeH1={this.activeH1}
-        activeH2={this.activeH2}
-        activeH3={this.activeH3}
-        activeH4={this.activeH4}
-        activeH5={this.activeH5}
-        activeH6={this.activeH6}
-        activeAlignLeft={this.activeAlignLeft}
-        activeAlignCenter={this.activeAlignCenter}
-        activeAlignRight={this.activeAlignRight}
-        canNormalText={this.canNormalText}
-        canAlign={this.canAlign}
-        canOrderedList={this.canOrderedList}
-        canBulletList={this.canBulletList}
-        canLink={this.canLink}
-        canUndo={this.canUndo}
-        canRedo={this.canRedo}
-        canIndent={this.canIndent}
-        canDeindent={this.canDeindent}
-        canMention={this.canMention}
-        onUndoClick={() => this.onUndoClick()}
-        onRedoClick={() => this.onRedoClick()}
-        onParagraphClick={() => this.onParagraphClick()}
-        onHeadingClick={(level) => this.onHeadingClick(level)}
-        toggleBold={() => this.toggleBold()}
-        toggleItalic={() => this.toggleItalic()}
-        toggleStrikethrough={() => this.toggleStrikethrough()}
-        toggleInlineCode={() => this.toggleInlineCode()}
-        onTextColorClick={(color) => this.onTextColorClick(color)}
-        onAlignClick={(alignment) => this.onAlignClick(alignment)}
-        onOrderedListClick={() => this.onOrderedListClick()}
-        onUnorderedListClick={() => this.onUnorderedListClick()}
-        onIncreaseIndentClick={() => this.onIncreaseIndentClick()}
-        onDecreaseIndentClick={() => this.onDecreaseIndentClick()}
-        setLink={(from, to, text, link) => this.setLink(from, to, text, link)}
-        onMentionClick={() => this.onMentionClick()}
-        onBlockQuoteClick={() => this.onBlockQuoteClick()}
-        onTableClick={() => this.onTableClick()}
-      />,
+      html`
+        <${PmpMenubar}
+          editorView=${this.editorView}
+          editorState=${this.editorView.state}
+          isScrolltop=${this.isScrollTop}
+          activeBold=${this.activeBold}
+          activeItalic=${this.activeItalic}
+          activeStrikethrough=${this.activeStrikethrough}
+          activeInlineCode=${this.activeInlineCode}
+          activeOrderedList=${this.activeOrderedList}
+          activeUnorderedList=${this.activeUnorderedList}
+          activeParagraph=${this.activeParagraph}
+          activeH1=${this.activeH1}
+          activeH2=${this.activeH2}
+          activeH3=${this.activeH3}
+          activeH4=${this.activeH4}
+          activeH5=${this.activeH5}
+          activeH6=${this.activeH6}
+          activeAlignLeft=${this.activeAlignLeft}
+          activeAlignCenter=${this.activeAlignCenter}
+          activeAlignRight=${this.activeAlignRight}
+          canNormalText=${this.canNormalText}
+          canAlign=${this.canAlign}
+          canOrderedList=${this.canOrderedList}
+          canBulletList=${this.canBulletList}
+          canLink=${this.canLink}
+          canUndo=${this.canUndo}
+          canRedo=${this.canRedo}
+          canIndent=${this.canIndent}
+          canDeindent=${this.canDeindent}
+          canMention=${this.canMention}
+          onUndoClick=${() => this.onUndoClick()}
+          onRedoClick=${() => this.onRedoClick()}
+          onParagraphClick=${() => this.onParagraphClick()}
+          onHeadingClick=${(level: number) => this.onHeadingClick(level)}
+          toggleBold=${() => this.toggleBold()}
+          toggleItalic=${() => this.toggleItalic()}
+          toggleStrikethrough=${() => this.toggleStrikethrough()}
+          toggleInlineCode=${() => this.toggleInlineCode()}
+          onTextColorClick=${(color: string) => this.onTextColorClick(color)}
+          onAlignClick=${(alignment: 'left' | 'center' | 'right') =>
+            this.onAlignClick(alignment)}
+          onOrderedListClick=${() => this.onOrderedListClick()}
+          onUnorderedListClick=${() => this.onUnorderedListClick()}
+          onIncreaseIndentClick=${() => this.onIncreaseIndentClick()}
+          onDecreaseIndentClick=${() => this.onDecreaseIndentClick()}
+          setLink=${(from: number, to: number, text: string, link: string) =>
+            this.setLink(from, to, text, link)}
+          onMentionClick=${() => this.onMentionClick()}
+          onBlockQuoteClick=${() => this.onBlockQuoteClick()}
+          onTableClick=${() => this.onTableClick()}
+        />
+      `,
       this.menubarWrapper,
     );
   }
@@ -866,5 +897,7 @@ export class PmpMenubarView implements PluginView {
 
 export const PmpMenubarPlugin = new Plugin({
   key: new PluginKey('pmp-menubar'),
-  view: (editorView) => new PmpMenubarView(editorView),
+  view: (editorView) => {
+    return new PmpMenubarView(editorView);
+  },
 });

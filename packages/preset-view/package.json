@@ -27,7 +27,8 @@
     "prosemirror-preset-tables": "*",
     "prosemirror-preset-command": "*",
     "prosemirror-preset-blockquote": "*",
-    "preact": "*"
+    "preact": "*",
+    "htm": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

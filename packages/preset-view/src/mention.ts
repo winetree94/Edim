@@ -8,9 +8,11 @@ import {
 import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { render } from 'preact';
-import { PmpLayer } from './view';
+import { PmpLayer } from './layer';
 import { getMentionRange } from 'prosemirror-preset-mention/src/utils';
 import { useEffect } from 'preact/hooks';
+import { html } from './cdk/html';
+import { forwardRef } from 'preact/compat';
 
 export interface MentionItem {
   icon: string;
@@ -25,7 +27,7 @@ export interface PmpMentionViewProps {
   onClick?(index: number): void;
 }
 
-export const PmpMention = (props: PmpMentionViewProps) => {
+export const PmpMention = forwardRef((props: PmpMentionViewProps) => {
   useEffect(() => {
     const selected = document.querySelector(
       '.pmp-view-mention-list-item.selected',
@@ -34,31 +36,37 @@ export const PmpMention = (props: PmpMentionViewProps) => {
       selected.scrollIntoView({ block: 'nearest' });
     }
   }, [props.selectedIndex]);
-  return (
-    <div className={'pmp-view-mention-container'}>
-      <PmpUnorderedList>
-        {props.items.map((item, index) => (
-          <PmpListItem
-            key={index}
-            className={classes(
-              'pmp-view-mention-list-item',
-              props.selectedIndex === index ? 'selected' : '',
-            )}
-            onMouseMove={() => props.onHover?.(index)}
-            onClick={() => props.onClick?.(index)}
-          >
-            <img class="pmp-view-mention-list-item-avatar" src={item.icon} />
-            <div className={'pmp-view-mention-list-item-content'}>
-              <PmpParagraph className={'pmp-view-mention-item-name'}>
-                {item.name}
-              </PmpParagraph>
-            </div>
-          </PmpListItem>
-        ))}
-      </PmpUnorderedList>
+
+  return html`
+    <div className="pmp-view-mention-container">
+      <${PmpUnorderedList}>
+        ${props.items.map(
+          (item, index) => html`
+            <${PmpListItem}
+              key=${index}
+              className=${classes(
+                'pmp-view-mention-list-item',
+                props.selectedIndex === index ? 'selected' : '',
+              )}
+              onMouseMove=${() => props.onHover?.(index)}
+              onClick=${() => props.onClick?.(index)}
+            >
+              <img
+                class="pmp-view-mention-list-item-avatar"
+                src=${item.icon}
+              />
+              <div className="pmp-view-mention-list-item-content">
+                <${PmpParagraph} className="pmp-view-mention-item-name">
+                  ${item.name}
+                </${PmpParagraph}>
+              </div>
+            </${PmpListItem}>
+          `,
+        )}
+      </${PmpUnorderedList}>
     </div>
-  );
-};
+  `;
+});
 
 export class PmpMentionView implements MentionPluginView {
   public prevKeyword: string = '';
@@ -107,28 +115,30 @@ export class PmpMentionView implements MentionPluginView {
     }
 
     render(
-      <PmpLayer
-        left={start.left}
-        top={end.bottom}
-        disableBackdrop={true}
-        maxWidth={200}
-        minWidth={200}
-        maxHeight={300}
+      html`
+      <${PmpLayer}
+        left=${start.left}
+        top=${end.bottom}
+        disableBackdrop=${true}
+        maxWidth=${200}
+        minWidth=${200}
+        maxHeight=${300}
       >
-        <PmpMention
-          items={items}
-          selectedIndex={this.index}
-          onHover={(index) => {
+        <${PmpMention}
+          items=${items}
+          selectedIndex=${this.index}
+          onHover=${(index: number) => {
             this.index = index;
             this.update(view);
           }}
-          onClick={(index) => {
+          onClick=${(index: number) => {
             this.index = index;
             this.update(view);
             this.applyMention(items[index]);
           }}
         />
-      </PmpLayer>,
+      </${PmpLayer}>
+      `,
       this.wrapper,
     );
 
