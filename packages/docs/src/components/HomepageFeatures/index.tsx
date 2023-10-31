@@ -84,7 +84,7 @@ const state: EditorState = new PMEditor({
   nativePlugins: (schema) => [PmpMenubarPlugin],
 }).configure();
 
-export default function HomepageFeatures(): JSX.Element {
+export default function Edim(): JSX.Element {
   const editorRef = useRef<HTMLDivElement>(null);
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.create({
