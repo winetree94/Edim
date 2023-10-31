@@ -503,7 +503,23 @@ export const PmpMenubar = (props: PmpMenubarProps) => {
 };
 
 export class PmpMenubarView implements PluginView {
-  public readonly wrapper = document.createElement('div');
+  public readonly editorRoot = (() => {
+    const div = document.createElement('div');
+    div.classList.add('pmp-view-editor-root');
+    return div;
+  })();
+
+  public readonly editorWrapper = (() => {
+    const div = document.createElement('div');
+    div.classList.add('pmp-view-editor-scroll');
+    return div;
+  })();
+
+  public readonly menubarWrapper = (() => {
+    const div = document.createElement('div');
+    div.classList.add('pmp-view-editor-menubar-root');
+    return div;
+  })();
 
   private readonly _toggleBold = toggleMark(
     this.editorView.state.schema.marks['strong'],
@@ -562,17 +578,24 @@ export class PmpMenubarView implements PluginView {
   public canMention = false;
 
   public constructor(private readonly editorView: EditorView) {
-    this.render();
-    this.editorView.dom.parentNode?.parentNode?.parentNode?.insertBefore(
-      this.wrapper,
-      this.editorView.dom.parentNode.parentNode,
+    editorView.dom.classList.add('pmp-view-editor');
+    const originParent = editorView.dom.parentElement!;
+    const originIndex = Array.from(originParent.children).indexOf(
+      editorView.dom,
     );
-    const scrollbarElement = editorView.dom.parentElement!.parentElement!;
-    this.isScrollTop = scrollbarElement.scrollTop === 0;
-    scrollbarElement?.addEventListener('scroll', () => {
-      this.isScrollTop = scrollbarElement.scrollTop === 0;
+    this.editorRoot.appendChild(this.menubarWrapper);
+    this.editorRoot.appendChild(this.editorWrapper);
+    this.editorWrapper.appendChild(editorView.dom);
+    originParent.insertBefore(
+      this.editorRoot,
+      originParent.children[originIndex],
+    );
+    this.isScrollTop = this.editorWrapper.scrollTop === 0;
+    this.editorWrapper.addEventListener('scroll', () => {
+      this.isScrollTop = this.editorWrapper.scrollTop === 0;
       this.render();
     });
+    this.render();
   }
 
   public update(editorView: EditorView, prevState: EditorState) {
@@ -719,7 +742,7 @@ export class PmpMenubarView implements PluginView {
         onBlockQuoteClick={() => this.onBlockQuoteClick()}
         onTableClick={() => this.onTableClick()}
       />,
-      this.wrapper,
+      this.menubarWrapper,
     );
   }
 
@@ -837,7 +860,7 @@ export class PmpMenubarView implements PluginView {
   }
 
   public destroy() {
-    render(null, this.wrapper);
+    render(null, this.menubarWrapper);
   }
 }
 

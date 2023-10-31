@@ -1,3 +1,28 @@
+.pmp-view-editor-root {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pmp-view-editor-scroll {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.pmp-view-editor {
+  max-width: 760px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: inherit;
+  height: 500px;
+  min-height: 0;
+}
+
 .pmp-view-menubar-wrapper {
   padding: 8px 8px;
   display: flex;

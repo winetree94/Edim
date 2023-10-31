@@ -6,646 +6,61 @@ import {
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProseEditorModule } from 'src/app/components/prose-editor/prose-editor.module';
 import { GlobalService } from 'src/app/global.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { data2 } from 'src/app/data';
 import { debounceTime, map, startWith, tap } from 'rxjs';
-import { EditorView, basicSetup } from 'codemirror';
+import { EditorView as CodeMirrorEditorView, basicSetup } from 'codemirror';
 import { json } from '@codemirror/lang-json';
+import { EditorProps, EditorView } from 'prosemirror-view';
+import { PMEditor } from 'prosemirror-preset-core';
+import { Document } from 'prosemirror-preset-document';
+import { Heading } from 'prosemirror-preset-heading';
+import { Paragraph } from 'prosemirror-preset-paragraph';
+import { FreeList } from 'prosemirror-preset-free-list';
+import { Separator } from 'prosemirror-preset-hr';
+import { Italic } from 'prosemirror-preset-italic';
+import { Image } from 'prosemirror-preset-image';
+import { BasicKeymap } from 'prosemirror-preset-keymap';
+import { History } from 'prosemirror-preset-history';
+import { Mention } from 'prosemirror-preset-mention';
+import { Link } from 'prosemirror-preset-link';
+import { Strikethrough } from 'prosemirror-preset-strikethrough';
+import { BlockQuote } from 'prosemirror-preset-blockquote';
+import { CodeBlock } from 'prosemirror-preset-codeblock';
+import { Text } from 'prosemirror-preset-text';
+import { TextColor } from 'prosemirror-preset-text-color';
+import { Table } from 'prosemirror-preset-tables';
+import { Code } from 'prosemirror-preset-code';
+import { Strong } from 'prosemirror-preset-strong';
+import { EmojiExtension } from 'prosemirror-preset-emoji';
+import { EditorState } from 'prosemirror-state';
+import { Command } from 'prosemirror-preset-command';
+import {
+  MentionItem,
+  PmpCommandView,
+  PmpImagePlaceholderViewProvider,
+  PmpMentionView,
+  PmpMenubarPlugin,
+} from 'prosemirror-preset-view';
+import { faker } from '@faker-js/faker';
+import { ProseMirrorModule } from 'src/app/components/prose-mirror/prose-mirror.module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ProseEditorModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProseMirrorModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  public globalService = inject(GlobalService);
   public layout: 'vertical' | 'horizontal' = 'horizontal';
   public enable = true;
 
   public readonly formGroup = new FormGroup({
-    content: new FormControl<string>(
-      `
-      {
-        "type": "doc",
-        "content": [
-            {
-                "type": "heading",
-                "attrs": {
-                    "level": 1,
-                    "indent": 0,
-                    "textAlign": "left"
-                },
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "Heading"
-                    }
-                ]
-            },
-            {
-                "type": "paragraph",
-                "attrs": {
-                    "textAlign": "left",
-                    "indent": 0
-                },
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "lkjasdf"
-                    }
-                ]
-            },
-            {
-                "type": "bullet_list",
-                "content": [
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 1
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "laksdjflk"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 3
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "asdfasdfasdf"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 2
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "aslkdfjalksdf"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 1
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "aalskdfjasldkfjasldkfjalskdjfslkdfjalksdf"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 2
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "asdfasdfasdfasdf"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 3
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "asdfasdfasdf"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "type": "paragraph",
-                "attrs": {
-                    "textAlign": "left",
-                    "indent": 0
-                },
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "asdfasdfasdf"
-                    }
-                ]
-            },
-            {
-                "type": "paragraph",
-                "attrs": {
-                    "textAlign": "left",
-                    "indent": 0
-                },
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "asdfasdfasdfasdf"
-                    }
-                ]
-            },
-            {
-                "type": "paragraph",
-                "attrs": {
-                    "textAlign": "left",
-                    "indent": 0
-                },
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "asdfasdffdasasdfafsd"
-                    }
-                ]
-            },
-            {
-                "type": "ordered_list",
-                "content": [
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 1
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "alksdfjlaskdfj"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 1
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "aslkdfjalskdjf"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "list_item",
-                        "attrs": {
-                            "indent": 1
-                        },
-                        "content": [
-                            {
-                                "type": "paragraph",
-                                "attrs": {
-                                    "textAlign": "left",
-                                    "indent": 0
-                                },
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": "asdlkfjasdf"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "type": "paragraph",
-                "attrs": {
-                    "textAlign": "left",
-                    "indent": 0
-                },
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "asdfasdfasdfasdf"
-                    }
-                ]
-            },
-            {
-                "type": "table",
-                "content": [
-                    {
-                        "type": "table_row",
-                        "content": [
-                            {
-                                "type": "table_cell",
-                                "attrs": {
-                                    "colspan": 1,
-                                    "rowspan": 1,
-                                    "colwidth": null,
-                                    "background": null
-                                },
-                                "content": [
-                                    {
-                                        "type": "ordered_list",
-                                        "content": [
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "alskdjflk"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "asdf"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "asdf"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "asd"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "f"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "table_cell",
-                                "attrs": {
-                                    "colspan": 1,
-                                    "rowspan": 1,
-                                    "colwidth": null,
-                                    "background": null
-                                },
-                                "content": [
-                                    {
-                                        "type": "bullet_list",
-                                        "content": [
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "asldkfjsad"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "fas"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "df"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "asdf"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "type": "list_item",
-                                                "attrs": {
-                                                    "indent": 1
-                                                },
-                                                "content": [
-                                                    {
-                                                        "type": "paragraph",
-                                                        "attrs": {
-                                                            "textAlign": "left",
-                                                            "indent": 0
-                                                        },
-                                                        "content": [
-                                                            {
-                                                                "type": "text",
-                                                                "text": "sadf"
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "table_cell",
-                                "attrs": {
-                                    "colspan": 1,
-                                    "rowspan": 1,
-                                    "colwidth": null,
-                                    "background": null
-                                },
-                                "content": [
-                                    {
-                                        "type": "paragraph",
-                                        "attrs": {
-                                            "textAlign": "left",
-                                            "indent": 0
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "type": "table_row",
-                        "content": [
-                            {
-                                "type": "table_cell",
-                                "attrs": {
-                                    "colspan": 1,
-                                    "rowspan": 1,
-                                    "colwidth": null,
-                                    "background": null
-                                },
-                                "content": [
-                                    {
-                                        "type": "paragraph",
-                                        "attrs": {
-                                            "textAlign": "left",
-                                            "indent": 0
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "table_cell",
-                                "attrs": {
-                                    "colspan": 1,
-                                    "rowspan": 1,
-                                    "colwidth": null,
-                                    "background": null
-                                },
-                                "content": [
-                                    {
-                                        "type": "paragraph",
-                                        "attrs": {
-                                            "textAlign": "left",
-                                            "indent": 0
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "type": "table_cell",
-                                "attrs": {
-                                    "colspan": 1,
-                                    "rowspan": 1,
-                                    "colwidth": null,
-                                    "background": null
-                                },
-                                "content": [
-                                    {
-                                        "type": "paragraph",
-                                        "attrs": {
-                                            "textAlign": "left",
-                                            "indent": 0
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-`,
-      {
-        nonNullable: true,
-      },
-    ),
+    content: new FormControl<string>(``, {
+      nonNullable: true,
+    }),
   });
 
   public values$ = this.formGroup.controls.content.valueChanges.pipe(
@@ -658,10 +73,118 @@ export class AppComponent implements OnInit {
     }),
   );
 
+  public readonly items: MentionItem[] = Array.from({ length: 100 }).map(
+    () => ({
+      icon: faker.image.avatar(),
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+    }),
+  );
+
+  public state: EditorState = new PMEditor({
+    extensions: [
+      Document(),
+      Text(),
+      TextColor(),
+      Paragraph({
+        addListNodes: true,
+      }),
+      EmojiExtension({}),
+      Mention({
+        view: (view, pluginKey) => {
+          return new PmpMentionView(view, pluginKey, (keyword) =>
+            this.items.filter((item) =>
+              item.name.toLowerCase().includes(keyword.toLowerCase()),
+            ),
+          );
+        },
+      }),
+      Command({
+        view: (view, plugin) => new PmpCommandView(view, plugin),
+      }),
+      FreeList({}),
+      BlockQuote(),
+      Separator(),
+      Heading({
+        level: 6,
+      }),
+      CodeBlock(),
+      // HardBreak(),
+      Image({
+        placeholderViewProvider: () => new PmpImagePlaceholderViewProvider(),
+      }),
+      Link(),
+      Italic(),
+      Strong(),
+      Code(),
+      Strikethrough(),
+      Table({
+        resizing: true,
+      }),
+      BasicKeymap(),
+      History(),
+    ],
+    nativePlugins: (schema) => [PmpMenubarPlugin],
+  }).configure();
+
+  public attributes: EditorProps['attributes'] = {
+    spellcheck: 'false',
+  };
+
   @ViewChild('codeMirrorRoot', { static: true })
   public readonly codeMirrorRoot!: ElementRef<HTMLDivElement>;
 
-  public editor!: EditorView;
+  public editor!: CodeMirrorEditorView;
+
+  public transformPastedHTML(htmlString: string, view: EditorView) {
+    const html = new DOMParser().parseFromString(htmlString, 'text/html');
+    console.log(htmlString);
+
+    // p 요소별로 마지막 br 제거 (p 에서 개행이 한번 되므로 필요 없음)
+    Array.from(html.querySelectorAll('p')).forEach((p) => {
+      const last = p.children[p.children.length - 1];
+      if (last?.tagName !== 'BR') return;
+      last.remove();
+    });
+
+    // blockquote 내부 요소를 p 로 감싼다.
+    Array.from(html.querySelectorAll('blockquote')).forEach((blockquote) => {
+      const child = blockquote.children[0];
+      if (child?.tagName === 'P') return;
+      const p = document.createElement('p');
+      while (blockquote.childNodes.length > 0) {
+        p.appendChild(blockquote.childNodes[0]);
+      }
+      blockquote.append(p);
+    });
+
+    // p 요소 내부의 br 을 p 로 분리
+    Array.from(html.querySelectorAll('p > br'))
+      .filter((br) => br.parentElement?.innerHTML !== '<br>')
+      .forEach((br) => {
+        const parent = br.parentElement!;
+        const grandParent = parent.parentElement!;
+        const index = Array.from(parent.childNodes).indexOf(br);
+
+        const p = document.createElement(parent.tagName.toLowerCase());
+        while (parent.childNodes.length > index) {
+          p.appendChild(parent.childNodes[index]);
+        }
+        grandParent.insertBefore(p, parent.nextSibling);
+      });
+
+    // 단순 개행 목적인 <p><br></p> 은 제거
+    // <p>...<br>...</p> 처럼 내부 개행은 <p></p><p></p> 로 분리
+
+    // Array.from(html.querySelectorAll('p'))
+    //   .filter((p) => p.innerHTML === '<br>')
+    //   .forEach((p) => {
+    //     p.remove();
+    //   });
+
+    console.log(html.documentElement.innerHTML);
+    return html.documentElement.innerHTML;
+  }
 
   public updateValue(): void {
     this.formGroup.controls.content.patchValue(JSON.stringify(data2));
@@ -672,7 +195,7 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.editor = new EditorView({
+    this.editor = new CodeMirrorEditorView({
       extensions: [basicSetup, json()],
       parent: this.codeMirrorRoot.nativeElement,
     });

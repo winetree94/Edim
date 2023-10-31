@@ -1,7 +1,13 @@
 <div class="root" [class.horizontal]="layout === 'horizontal'">
   <form class="form" [formGroup]="formGroup">
-    <ng-prose-editor *ngIf="enable" class="editor" formControlName="content">
-    </ng-prose-editor>
+    <div
+      *ngIf="enable"
+      ngProseMirror
+      formControlName="content"
+      [state]="state"
+      [attributes]="attributes"
+      [transformPastedHTML]="transformPastedHTML"
+    ></div>
   </form>
 
   <div class="toolbar">

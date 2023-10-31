@@ -8,11 +8,7 @@ import {
   forwardRef,
   inject,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  NgControl,
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Node } from 'prosemirror-model';
 import { EditorState, Plugin } from 'prosemirror-state';
 import { DirectEditorProps, EditorView } from 'prosemirror-view';
@@ -33,7 +29,6 @@ import { DirectEditorProps, EditorView } from 'prosemirror-view';
 export class ProseMirrorComponent
   implements ControlValueAccessor, OnInit, OnDestroy
 {
-  public readonly ngControl = inject(NgControl, { optional: true, self: true });
   public readonly elementRef = inject<ElementRef<HTMLDivElement>>(ElementRef);
   public editorView!: EditorView;
 
@@ -84,7 +79,7 @@ export class ProseMirrorComponent
   }
 
   public writeValue(value: string): void {
-    if (!this.editorView) {
+    if (!this.editorView || !value) {
       return;
     }
     const node = Node.fromJSON(this.editorView.state.schema, JSON.parse(value));
