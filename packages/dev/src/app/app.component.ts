@@ -22,7 +22,7 @@ import { Separator } from 'prosemirror-preset-hr';
 import { Italic } from 'prosemirror-preset-italic';
 import { Image } from 'prosemirror-preset-image';
 import { BasicKeymap } from 'prosemirror-preset-keymap';
-import { History } from 'prosemirror-preset-history';
+import { HistoryExtension } from 'prosemirror-preset-history';
 import { Mention } from 'prosemirror-preset-mention';
 import { Link } from 'prosemirror-preset-link';
 import { Strikethrough } from 'prosemirror-preset-strikethrough';
@@ -122,7 +122,7 @@ export class AppComponent implements OnInit {
         resizing: true,
       }),
       BasicKeymap(),
-      History(),
+      HistoryExtension(),
     ],
     nativePlugins: (schema) => [PmpMenubarPlugin],
   }).configure();

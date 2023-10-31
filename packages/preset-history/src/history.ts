@@ -2,7 +2,7 @@ import { history, redo, undo } from 'prosemirror-history';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { keymap } from 'prosemirror-keymap';
 
-export const History = (): PMPluginsFactory => () => {
+export const HistoryExtension = (): PMPluginsFactory => () => {
   return {
     nodes: {},
     marks: {},

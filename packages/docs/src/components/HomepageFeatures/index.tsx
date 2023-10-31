@@ -8,7 +8,7 @@ import { Separator } from 'prosemirror-preset-hr';
 import { Italic } from 'prosemirror-preset-italic';
 import { Image } from 'prosemirror-preset-image';
 import { BasicKeymap } from 'prosemirror-preset-keymap';
-import { History } from 'prosemirror-preset-history';
+import { HistoryExtension } from 'prosemirror-preset-history';
 import { Mention } from 'prosemirror-preset-mention';
 import { Link as PmpLink } from 'prosemirror-preset-link';
 import { Strikethrough } from 'prosemirror-preset-strikethrough';
@@ -79,7 +79,7 @@ const state: EditorState = new PMEditor({
       resizing: true,
     }),
     BasicKeymap(),
-    History(),
+    HistoryExtension(),
   ],
   nativePlugins: (schema) => [PmpMenubarPlugin],
 }).configure();

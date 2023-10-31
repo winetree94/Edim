@@ -42,7 +42,7 @@ jobs:
         run: npm ci
 
       - name: Build App
-        run: npm run build:docs
+        run: cd packages/docs && npm run build:docs
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
