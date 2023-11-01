@@ -27,6 +27,7 @@
     "prosemirror-preset-tables": "*",
     "prosemirror-preset-command": "*",
     "prosemirror-preset-blockquote": "*",
+    "emoji-datasource": "15.0.1",
     "preact": "*",
     "htm": "*",
     "remixicon": "^3.5.0"

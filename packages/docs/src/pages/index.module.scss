@@ -1,6 +1,7 @@
 .EditorContainer {
   background-color: rgba(0, 0, 0, 0.1);
   padding: 30px;
+  align-items: center;
 }
 
 .Header {
@@ -12,4 +13,5 @@
   display: flex;
   flex: 1 1 auto;
   width: 100%;
+  max-width: 1080px;
 }
