@@ -1,12 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GlobalService } from 'src/app/global.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { data2 } from 'src/app/data';
 import { debounceTime, map, startWith, tap } from 'rxjs';
