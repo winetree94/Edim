@@ -28,7 +28,22 @@ export interface PmpEmoji {
 }
 
 const emojis = emojiDataJson as PmpEmoji[];
-console.log(emojis);
+
+const categories = Object.entries(
+  emojis.reduce<{
+    [key: string]: PmpEmoji[];
+  }>((result, emoji) => {
+    if (!result[emoji.category]) {
+      result[emoji.category] = [];
+    }
+    result[emoji.category].push(emoji);
+    return result;
+  }, {}),
+);
+
+console.log(categories);
+
+const size = 32;
 
 export interface PmpEmojiPickerProps {}
 
