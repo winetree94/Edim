@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx start prosemirror-preset-angular-dev",
-    "start:docs": "nx start docs",
+    "start": "nx start docs",
     "clean:dist": "nx run-many -t clean:dist --all --maxParallel=10",
     "clean:dependency": "nx run-many -t clean:dependency --all --maxParallel=10 && rimraf node_modules",
     "build": "nx run-many -t build --all --maxParallel=10",
