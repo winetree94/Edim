@@ -13,3 +13,4 @@ export * from './command';
 export * from './image';
 export * from './cdk/html';
 export * from './menubar';
+export * from './emoji';
