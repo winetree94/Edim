@@ -174,24 +174,35 @@ export class PmpCommandView implements CommandPluginView {
 
   public handleKeydown(view: EditorView, event: KeyboardEvent): boolean {
     const pluginState = this.pluginKey.getState(view.state);
+
     if (!pluginState || !pluginState.active) {
       return false;
     }
+
+    const commands = PMP_DEFAULT_COMMAND_LIST.filter((item) => {
+      if (!pluginState.keyword) {
+        return true;
+      }
+      return (
+        item.title.toLowerCase().includes(pluginState.keyword.toLowerCase()) ||
+        item.description
+          .toLowerCase()
+          .includes(pluginState.keyword.toLowerCase())
+      );
+    });
+
     if (event.key === 'ArrowUp') {
       this.index = Math.max(0, this.index - 1);
       this.update(view);
       return true;
     }
     if (event.key === 'ArrowDown') {
-      this.index = Math.min(
-        PMP_DEFAULT_COMMAND_LIST.length - 1,
-        this.index + 1,
-      );
+      this.index = Math.min(commands.length - 1, this.index + 1);
       this.update(view);
       return true;
     }
     if (event.key === 'Enter') {
-      PMP_DEFAULT_COMMAND_LIST[this.index].action(view);
+      commands[this.index]?.action(view, false);
       return true;
     }
     return false;

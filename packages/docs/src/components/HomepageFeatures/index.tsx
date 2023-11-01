@@ -71,30 +71,32 @@ const items: MentionItem[] = Array.from({ length: 100 }).map(() => ({
 }));
 
 const editorSchema = new Schema({
-  nodes: {
-    ...PMP_DOC_NODE,
-    ...PMP_TEXT_NODE,
-    ...PMP_PARAGRAPH_NODE,
-    ...PMP_EMOJI_NODE,
-    ...PMP_BULLET_FREE_LIST_NODE,
-    ...PMP_FREE_LIST_ITEM_NODE,
-    ...PMP_ORDERED_FREE_LIST_NODE,
-    ...PMP_BLOCKQUOTE_NODE,
-    ...PMP_HORIZONTAL_RULE_NODE,
-    ...PMP_HEADING_NODE,
-    ...PMP_CODE_BLOCK_NODE,
-    ...PMP_IMAGE_NODE,
-    ...PMP_TABLE_NODES,
-  },
-  marks: {
-    ...PMP_TEXT_COLOR_MARK,
-    ...PMP_MENTION_MARK,
-    ...PMP_LINK_MARK,
-    ...PMP_ITALIC_MARK,
-    ...PMP_STRONG_MARK,
-    ...PMP_CODE_MARK,
-    ...PMP_STRIKETHROUGH_MARK,
-  },
+  nodes: Object.assign(
+    {},
+    PMP_DOC_NODE,
+    PMP_TEXT_NODE,
+    PMP_PARAGRAPH_NODE,
+    PMP_EMOJI_NODE,
+    PMP_BULLET_FREE_LIST_NODE,
+    PMP_FREE_LIST_ITEM_NODE,
+    PMP_ORDERED_FREE_LIST_NODE,
+    PMP_BLOCKQUOTE_NODE,
+    PMP_HORIZONTAL_RULE_NODE,
+    PMP_HEADING_NODE,
+    PMP_CODE_BLOCK_NODE,
+    PMP_IMAGE_NODE,
+    PMP_TABLE_NODES,
+  ),
+  marks: Object.assign(
+    {},
+    PMP_TEXT_COLOR_MARK,
+    PMP_MENTION_MARK,
+    PMP_LINK_MARK,
+    PMP_ITALIC_MARK,
+    PMP_STRONG_MARK,
+    PMP_CODE_MARK,
+    PMP_STRIKETHROUGH_MARK,
+  ),
 });
 
 const editorPlugins: Plugin[] = [].concat(
