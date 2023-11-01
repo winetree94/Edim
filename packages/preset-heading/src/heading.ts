@@ -15,7 +15,7 @@ export interface HeadingAttributes {
 
 const indentAllowedParents = ['doc'];
 
-const heading: Record<string, NodeSpec> = {
+export const PMP_HEADING_NODE: Record<string, NodeSpec> = {
   heading: {
     attrs: {
       level: { default: 1 },
@@ -133,138 +133,149 @@ export interface HeadingConfig {
   level: HeadingLevel;
 }
 
+export interface CreatePmpHeadingPluginConfigs {
+  nodeType: NodeType;
+  level: number;
+}
+
+export const createPmpHeadingPlugins = (
+  configs: CreatePmpHeadingPluginConfigs,
+) => {
+  const headingKeymaps: Record<string, Command> = {};
+  for (let i = 1; i <= configs.level; i++) {
+    headingKeymaps['Ctrl-Alt-' + i] = setBlockType(configs.nodeType, {
+      level: i,
+    });
+  }
+  return [
+    inputRules({
+      rules: [headingRule(configs.nodeType, configs.level)],
+    }),
+    keymap(headingKeymaps),
+    new Plugin({
+      key: new PluginKey('headingBackspacePlugin'),
+      props: {
+        handleKeyDown: (view, event) => {
+          const backspacePressed = event.key === 'Backspace';
+          const metaPressed = event.metaKey;
+          const selection = view.state.selection;
+
+          if (
+            metaPressed ||
+            !backspacePressed ||
+            !selection.empty ||
+            selection.from !== selection.to
+          ) {
+            return false;
+          }
+
+          const resolvedPos = view.state.doc.resolve(selection.from);
+          const node = resolvedPos.node();
+
+          if (node.type.name !== 'heading' || resolvedPos.nodeBefore) {
+            return false;
+          }
+
+          const attrs = node.attrs as HeadingAttributes;
+          const targetIndent = Math.max(0, attrs.indent - 1);
+
+          if (targetIndent === attrs.indent) {
+            return false;
+          }
+
+          const tr = view.state.tr.setNodeMarkup(
+            resolvedPos.pos - 1,
+            undefined,
+            {
+              ...attrs,
+              indent: targetIndent,
+            },
+          );
+
+          if (!tr.docChanged) {
+            return false;
+          }
+
+          view.dispatch(tr);
+          return true;
+        },
+      },
+    }),
+    new Plugin({
+      key: new PluginKey('headingPlugin'),
+      props: {
+        handleKeyDown: (view, event) => {
+          const tabPressed = event.key === 'Tab';
+          const shiftPressed = event.shiftKey;
+
+          if (!tabPressed) {
+            return false;
+          }
+
+          const nodes: {
+            node: Node;
+            pos: number;
+            parent: Node | null;
+          }[] = [];
+
+          view.state.doc.nodesBetween(
+            view.state.selection.from,
+            view.state.selection.to,
+            (node, pos, parent) => {
+              if (
+                node.type.name === 'heading' &&
+                indentAllowedParents.includes(parent?.type.name || '')
+              ) {
+                nodes.push({ node, pos, parent });
+              }
+            },
+          );
+
+          if (nodes.length === 0) {
+            return false;
+          }
+
+          const tr = nodes.reduce<Transaction>((tr, node) => {
+            const attrs = node.node.attrs as HeadingAttributes;
+            const targetIndent = Math.max(
+              0,
+              Math.min(attrs.indent + (shiftPressed ? -1 : 1), 6),
+            );
+            return tr.setNodeMarkup(
+              node.pos,
+              view.state.schema.nodes['heading'],
+              {
+                ...attrs,
+                indent: targetIndent,
+              },
+            );
+          }, view.state.tr);
+
+          if (!tr.docChanged) {
+            return false;
+          }
+
+          event.preventDefault();
+          view.dispatch(tr);
+          return false;
+        },
+      },
+    }),
+  ];
+};
+
 export const Heading = (config: HeadingConfig): PMPluginsFactory => {
   return () => {
     return {
       nodes: {
-        ...heading,
+        ...PMP_HEADING_NODE,
       },
       marks: {},
       plugins: (schema: Schema) => {
-        const headingKeymaps: Record<string, Command> = {};
-        for (let i = 1; i <= config.level; i++) {
-          headingKeymaps['Ctrl-Alt-' + i] = setBlockType(
-            schema.nodes['heading'],
-            {
-              level: i,
-            },
-          );
-        }
-        return [
-          inputRules({
-            rules: [headingRule(schema.nodes['heading'], config.level)],
-          }),
-          keymap(headingKeymaps),
-          new Plugin({
-            key: new PluginKey('headingBackspacePlugin'),
-            props: {
-              handleKeyDown: (view, event) => {
-                const backspacePressed = event.key === 'Backspace';
-                const metaPressed = event.metaKey;
-                const selection = view.state.selection;
-
-                if (
-                  metaPressed ||
-                  !backspacePressed ||
-                  !selection.empty ||
-                  selection.from !== selection.to
-                ) {
-                  return false;
-                }
-
-                const resolvedPos = view.state.doc.resolve(selection.from);
-                const node = resolvedPos.node();
-
-                if (node.type.name !== 'heading' || resolvedPos.nodeBefore) {
-                  return false;
-                }
-
-                const attrs = node.attrs as HeadingAttributes;
-                const targetIndent = Math.max(0, attrs.indent - 1);
-
-                if (targetIndent === attrs.indent) {
-                  return false;
-                }
-
-                const tr = view.state.tr.setNodeMarkup(
-                  resolvedPos.pos - 1,
-                  undefined,
-                  {
-                    ...attrs,
-                    indent: targetIndent,
-                  },
-                );
-
-                if (!tr.docChanged) {
-                  return false;
-                }
-
-                view.dispatch(tr);
-                return true;
-              },
-            },
-          }),
-          new Plugin({
-            key: new PluginKey('headingPlugin'),
-            props: {
-              handleKeyDown: (view, event) => {
-                const tabPressed = event.key === 'Tab';
-                const shiftPressed = event.shiftKey;
-
-                if (!tabPressed) {
-                  return false;
-                }
-
-                const nodes: {
-                  node: Node;
-                  pos: number;
-                  parent: Node | null;
-                }[] = [];
-
-                view.state.doc.nodesBetween(
-                  view.state.selection.from,
-                  view.state.selection.to,
-                  (node, pos, parent) => {
-                    if (
-                      node.type.name === 'heading' &&
-                      indentAllowedParents.includes(parent?.type.name || '')
-                    ) {
-                      nodes.push({ node, pos, parent });
-                    }
-                  },
-                );
-
-                if (nodes.length === 0) {
-                  return false;
-                }
-
-                const tr = nodes.reduce<Transaction>((tr, node) => {
-                  const attrs = node.node.attrs as HeadingAttributes;
-                  const targetIndent = Math.max(
-                    0,
-                    Math.min(attrs.indent + (shiftPressed ? -1 : 1), 6),
-                  );
-                  return tr.setNodeMarkup(
-                    node.pos,
-                    view.state.schema.nodes['heading'],
-                    {
-                      ...attrs,
-                      indent: targetIndent,
-                    },
-                  );
-                }, view.state.tr);
-
-                if (!tr.docChanged) {
-                  return false;
-                }
-
-                event.preventDefault();
-                view.dispatch(tr);
-                return false;
-              },
-            },
-          }),
-        ];
+        return createPmpHeadingPlugins({
+          nodeType: schema.nodes['heading'],
+          level: config.level,
+        });
       },
     };
   };

@@ -1,10 +1,10 @@
-import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
+import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { keymap } from 'prosemirror-keymap';
 import { toggleMark } from 'prosemirror-commands';
 
 const strongDOM: DOMOutputSpec = ['strong', 0];
-const strong: Record<string, MarkSpec> = {
+export const PMP_STRONG_MARK: Record<string, MarkSpec> = {
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
   strong: {
@@ -35,17 +35,30 @@ const strong: Record<string, MarkSpec> = {
   },
 };
 
+export interface CreatePmpStrongPluginConfigs {
+  markType: MarkType;
+}
+
+export const createPmpStrongPlugins = (
+  configs: CreatePmpStrongPluginConfigs,
+) => {
+  return [
+    keymap({
+      'Mod-b': toggleMark(configs.markType),
+      'Mod-B': toggleMark(configs.markType),
+    }),
+  ];
+};
+
 export const Strong = (): PMPluginsFactory => () => {
   return {
     nodes: {},
     marks: {
-      ...strong,
+      ...PMP_STRONG_MARK,
     },
-    plugins: (schema) => [
-      keymap({
-        'Mod-b': toggleMark(schema.marks['strong']),
-        'Mod-B': toggleMark(schema.marks['strong']),
+    plugins: (schema) =>
+      createPmpStrongPlugins({
+        markType: schema.marks['strong'],
       }),
-    ],
   };
 };

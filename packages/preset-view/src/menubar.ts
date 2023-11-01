@@ -105,7 +105,7 @@ const createFakeProgress = (
         clearInterval(interval);
         resolve();
       }
-    }, 100);
+    }, 300);
   });
 };
 

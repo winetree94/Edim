@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "prosemirror-history": "*",
+    "prosemirror-state": "*",
     "prosemirror-keymap": "*",
     "prosemirror-preset-core": "*"
   },

@@ -51,6 +51,7 @@
     "prosemirror-preset-list": "*",
     "prosemirror-preset-mention": "*",
     "prosemirror-preset-paragraph": "*",
+    "prosemirror-preset-react": "*",
     "prosemirror-preset-strikethrough": "*",
     "prosemirror-preset-strong": "*",
     "prosemirror-preset-tables": "*",

@@ -22,7 +22,7 @@ const ulDOM: DOMOutputSpec = [
   0,
 ];
 
-export const orderedList: Record<string, NodeSpec> = {
+export const PMP_ORDERED_FREE_LIST_NODE: Record<string, NodeSpec> = {
   ordered_list: {
     parseDOM: [
       {
@@ -40,7 +40,7 @@ export const orderedList: Record<string, NodeSpec> = {
   },
 };
 
-export const bulletList: Record<string, NodeSpec> = {
+export const PMP_BULLET_FREE_LIST_NODE: Record<string, NodeSpec> = {
   bullet_list: {
     parseDOM: [{ tag: 'ul' }],
     content: 'list_item*',
@@ -55,7 +55,7 @@ export interface ListItemAttrs {
   indent: number;
 }
 
-export const listItem: Record<string, NodeSpec> = {
+export const PMP_FREE_LIST_ITEM_NODE: Record<string, NodeSpec> = {
   list_item: {
     content: 'paragraph*',
     group: 'disable-paragraph-attributes',
@@ -118,62 +118,59 @@ export const bulletListRule = (nodeType: NodeType) => {
   });
 };
 
-export interface FreeListPluginConfigs {}
+export interface FreeListPluginConfigs { }
+
+export interface createPmpFreeListPluginsConfig {
+  orderListNodeType: NodeType;
+  bulletListNodeType: NodeType;
+  listItemNodeType: NodeType;
+}
+
+export const createPmpFreeListPlugins = (
+  configs: createPmpFreeListPluginsConfig,
+) => {
+  return [
+    inputRules({
+      rules: [
+        orderedListRule(configs.orderListNodeType),
+        bulletListRule(configs.bulletListNodeType),
+      ],
+    }),
+    keymap({
+      Enter: splitListItem(configs.listItemNodeType),
+      'Shift-Enter': splitListItem(configs.listItemNodeType),
+      Tab: indentListItem(1),
+      'Shift-Tab': indentListItem(-1),
+    }),
+    // TODO to flat list
+    new Plugin({
+      key: new PluginKey('freelist'),
+      props: {
+        transformPastedHTML(html, view) {
+          const dom = new DOMParser().parseFromString(html, 'text/html');
+          return dom.documentElement.innerHTML;
+        },
+      },
+    }),
+  ];
+};
 
 export const FreeList =
   (pluginConfig: FreeListPluginConfigs): PMPluginsFactory =>
   () => {
     return {
       nodes: {
-        ...orderedList,
-        ...bulletList,
-        ...listItem,
+        ...PMP_ORDERED_FREE_LIST_NODE,
+        ...PMP_BULLET_FREE_LIST_NODE,
+        ...PMP_FREE_LIST_ITEM_NODE,
       },
       marks: {},
       plugins: (schema: Schema) => {
-        return [
-          inputRules({
-            rules: [
-              orderedListRule(schema.nodes['ordered_list']),
-              bulletListRule(schema.nodes['bullet_list']),
-            ],
-          }),
-          keymap({
-            Enter: splitListItem(schema.nodes['list_item']),
-            'Shift-Enter': splitListItem(schema.nodes['list_item']),
-            Tab: indentListItem(1),
-            'Shift-Tab': indentListItem(-1),
-          }),
-          // TODO to flat list
-          new Plugin({
-            key: new PluginKey('freelist'),
-            props: {
-              transformPastedHTML(html, view) {
-                const dom = new DOMParser().parseFromString(html, 'text/html');
-                return dom.documentElement.innerHTML;
-              },
-            },
-          }),
-          // new Plugin({
-          //   state: {
-          //     init(config, instance) {
-          //       return {};
-          //     },
-          //     apply(tr, value, oldState, newState) {
-          //       const { $from, from, $to, to } = tr.selection;
-          //       console.log('position: ', from, to);
-          //       // const range = $from.blockRange($to, (node) => {
-          //       //   return (
-          //       //     node.childCount > 0 &&
-          //       //     node.firstChild!.type.name === 'list_item'
-          //       //   );
-          //       // });
-          //       // console.log(range);
-          //       return newState;
-          //     },
-          //   },
-          // }),
-        ];
+        return createPmpFreeListPlugins({
+          orderListNodeType: schema.nodes['ordered_list'],
+          bulletListNodeType: schema.nodes['bullet_list'],
+          listItemNodeType: schema.nodes['list_item'],
+        });
       },
     };
   };

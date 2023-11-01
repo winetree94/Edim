@@ -5,7 +5,7 @@ export interface EmojiAttribute {
   data_id: string;
 }
 
-const EmojiNodes: Record<string, NodeSpec> = {
+export const PMP_EMOJI_NODE: Record<string, NodeSpec> = {
   emoji: {
     inclusive: false,
     inline: true,
@@ -61,7 +61,7 @@ export const EmojiExtension = (
   return () => {
     return {
       nodes: {
-        ...EmojiNodes,
+        ...PMP_EMOJI_NODE,
       },
       marks: {},
       plugins: () => [],

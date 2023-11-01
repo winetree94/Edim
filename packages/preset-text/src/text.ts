@@ -1,7 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 
-const text: Record<string, NodeSpec> = {
+export const PMP_TEXT_NODE: Record<string, NodeSpec> = {
   text: {
     group: 'inline',
   },
@@ -10,7 +10,7 @@ const text: Record<string, NodeSpec> = {
 export const Text = (): PMPluginsFactory => () => {
   return {
     nodes: {
-      ...text,
+      ...PMP_TEXT_NODE,
     },
     marks: {},
     plugins: () => [],

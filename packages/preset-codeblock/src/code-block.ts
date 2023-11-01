@@ -15,7 +15,8 @@ const preDOM: DOMOutputSpec = [
     0,
   ],
 ];
-const code_block: Record<string, NodeSpec> = {
+
+export const PMP_CODE_BLOCK_NODE: Record<string, NodeSpec> = {
   code_block: {
     content: 'text*',
     marks: '',
@@ -35,19 +36,32 @@ export function codeBlockRule(nodeType: NodeType) {
   return textblockTypeInputRule(/^```$/, nodeType);
 }
 
+export interface CreateCodeBlockPluginConfigs {
+  nodeType: NodeType;
+}
+
+export const createCodeBlockPlugins = (
+  configs: CreateCodeBlockPluginConfigs,
+) => {
+  return [
+    inputRules({
+      rules: [codeBlockRule(configs.nodeType)],
+    }),
+    keymap({
+      'Shift-Ctrl-\\': setBlockType(configs.nodeType),
+    }),
+  ];
+};
+
 export const CodeBlock = (): PMPluginsFactory => () => {
   return {
     nodes: {
-      ...code_block,
+      ...PMP_CODE_BLOCK_NODE,
     },
     marks: {},
-    plugins: (schema) => [
-      inputRules({
-        rules: [codeBlockRule(schema.nodes['code_block'])],
+    plugins: (schema) =>
+      createCodeBlockPlugins({
+        nodeType: schema.nodes['code_block'],
       }),
-      keymap({
-        'Shift-Ctrl-\\': setBlockType(schema.nodes['code_block']),
-      }),
-    ],
   };
 };

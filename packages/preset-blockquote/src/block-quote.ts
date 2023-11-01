@@ -6,7 +6,7 @@ import { wrappingInputRuleWithJoin } from 'prosemirror-preset-utils';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 const blockquoteDOM: DOMOutputSpec = ['blockquote', 0];
-const blockquote: Record<string, NodeSpec> = {
+export const PMP_BLOCKQUOTE_NODE: Record<string, NodeSpec> = {
   blockquote: {
     content: 'paragraph+',
     group: 'block disable-paragraph-attributes',
@@ -24,19 +24,32 @@ export function blockQuoteRule(nodeType: NodeType) {
   return wrappingInputRuleWithJoin(/^\s*>\s$/, nodeType, { indent: 0 });
 }
 
+export interface CreateBlockQuotePluginConfigs {
+  nodeType: NodeType;
+}
+
+export const createPmpBlockQuotePlugins = (
+  configs: CreateBlockQuotePluginConfigs,
+) => {
+  return [
+    inputRules({
+      rules: [blockQuoteRule(configs.nodeType)],
+    }),
+    keymap({
+      'Ctrl->': wrapIn(configs.nodeType),
+    }),
+  ];
+};
+
 export const BlockQuote = (): PMPluginsFactory => () => {
   return {
     nodes: {
-      ...blockquote,
+      ...PMP_BLOCKQUOTE_NODE,
     },
     marks: {},
-    plugins: (schema: Schema) => [
-      inputRules({
-        rules: [blockQuoteRule(schema.nodes['blockquote'])],
+    plugins: (schema: Schema) =>
+      createPmpBlockQuotePlugins({
+        nodeType: schema.nodes['blockquote'],
       }),
-      keymap({
-        'Ctrl->': wrapIn(schema.nodes['blockquote']),
-      }),
-    ],
   };
 };

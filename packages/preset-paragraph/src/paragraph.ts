@@ -1,19 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Node, NodeSpec, NodeType, Schema } from 'prosemirror-model';
+import { NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
-import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
-import { Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { Plugin, PluginKey } from 'prosemirror-state';
 
 export interface ParagraphAttributes {
   textAlign: 'left' | 'right' | 'center' | null;
   indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-const paragraph: Record<string, NodeSpec> = {
+export const PMP_PARAGRAPH_NODE: Record<string, NodeSpec> = {
   paragraph: {
     content: 'inline*',
     attrs: {
@@ -56,95 +52,76 @@ const paragraph: Record<string, NodeSpec> = {
   },
 };
 
-const indentAllowedParents = ['doc'];
+export interface ParagraphPluginConfigs {}
 
-// const paragraphWithList = addListNodes(
-//   OrderedMap.from(paragraph),
-//   'paragraph block*',
-//   'block',
-// ).toObject() as Record<string, NodeSpec>;
+export const createPmpParagraphPlugins = (nodeType: NodeType) => {
+  return [
+    keymap({
+      'Ctrl-Alt-0': setBlockType(nodeType),
+    }),
+    new Plugin({
+      key: new PluginKey('paragraphBackspacePlugin'),
+      props: {
+        handleKeyDown: (view, event) => {
+          const backspacePressed = event.key === 'Backspace';
+          const metaPressed = event.metaKey;
+          const selection = view.state.selection;
 
-/// Given a list node type, returns an input rule that turns a number
-/// followed by a dot at the start of a textblock into an ordered list.
-export function orderedListRule(nodeType: NodeType) {
-  return wrappingInputRule(
-    /^(\d+)\.\s$/,
-    nodeType,
-    (match) => ({ order: +match[1] }),
-    (match, node) => node.childCount + node.attrs['order'] == +match[1],
-  );
-}
+          if (
+            metaPressed ||
+            !backspacePressed ||
+            !selection.empty ||
+            selection.from !== selection.to
+          ) {
+            return false;
+          }
 
-/// Given a list node type, returns an input rule that turns a bullet
-/// (dash, plush, or asterisk) at the start of a textblock into a
-/// bullet list.
-export function bulletListRule(nodeType: NodeType) {
-  return wrappingInputRule(/^\s*([-+*])\s$/, nodeType);
-}
+          const resolvedPos = view.state.doc.resolve(selection.from);
+          const node = resolvedPos.node();
 
-export interface ParagraphPluginConfigs {
-  addListNodes: boolean;
-}
+          if (node.type.name !== 'paragraph' || resolvedPos.nodeBefore) {
+            return false;
+          }
+
+          const attrs = node.attrs as ParagraphAttributes;
+          const targetIndent = Math.max(0, attrs.indent - 1);
+
+          if (targetIndent === attrs.indent) {
+            return false;
+          }
+
+          const tr = view.state.tr.setNodeMarkup(
+            resolvedPos.pos - 1,
+            undefined,
+            {
+              ...attrs,
+              indent: targetIndent,
+            },
+          );
+
+          if (!tr.docChanged) {
+            return false;
+          }
+
+          view.dispatch(tr);
+          return true;
+        },
+      },
+    }),
+  ];
+};
 
 export const Paragraph =
   (pluginConfig: ParagraphPluginConfigs): PMPluginsFactory =>
   () => {
-    // const nodes = pluginConfig.addListNodes ? paragraphWithList : paragraph;
-    // console.log(nodes);
-    const nodes = paragraph;
+    const nodes = PMP_PARAGRAPH_NODE;
     return {
       nodes: nodes,
       marks: {},
       plugins: (schema: Schema) => {
-        if (!pluginConfig.addListNodes) {
-          return [
-            keymap({
-              'Shift-Ctrl-0': setBlockType(schema.nodes['paragraph']),
-            }),
-          ];
-        }
         return [
-          inputRules({
-            rules: [
-              // orderedListRule(schema.nodes['ordered_list']),
-              // bulletListRule(schema.nodes['bullet_list']),
-            ],
-          }),
           keymap({
             'Ctrl-Alt-0': setBlockType(schema.nodes['paragraph']),
-            // 'Shift-Ctrl-7': (state, dispatch) => {
-            //   const tr = wrapInList(
-            //     state,
-            //     state.tr,
-            //     schema.nodes['ordered_list'],
-            //   );
-            //   if (tr === null) {
-            //     return false;
-            //   }
-            //   if (dispatch) {
-            //     dispatch(tr);
-            //     return true;
-            //   }
-            //   return false;
-            // },
-            // 'Shift-Ctrl-8': (state, dispatch) => {
-            //   const tr = wrapInList(
-            //     state,
-            //     state.tr,
-            //     schema.nodes['bullet_list'],
-            //   );
-            //   if (tr === null) {
-            //     return false;
-            //   }
-            //   if (dispatch) {
-            //     dispatch(tr);
-            //     return true;
-            //   }
-            //   return false;
-            // },
-            // Enter: splitListItem(schema.nodes['list_item']),
-            // 'Mod-[': liftListItem(schema.nodes['list_item']),
-            // 'Mod-]': sinkListItem(schema.nodes['list_item']),
           }),
           new Plugin({
             key: new PluginKey('paragraphBackspacePlugin'),
@@ -195,66 +172,6 @@ export const Paragraph =
               },
             },
           }),
-          // new Plugin({
-          //   key: new PluginKey('paragraphPlugin'),
-          //   props: {
-          //     handleKeyDown: (view, event) => {
-          //       const tabPressed = event.key === 'Tab';
-          //       const shiftPressed = event.shiftKey;
-
-          //       if (!tabPressed) {
-          //         return false;
-          //       }
-
-          //       const nodes: {
-          //         node: Node;
-          //         pos: number;
-          //         parent: Node | null;
-          //       }[] = [];
-
-          //       view.state.doc.nodesBetween(
-          //         view.state.selection.from,
-          //         view.state.selection.to,
-          //         (node, pos, parent) => {
-          //           if (
-          //             node.type.name === 'paragraph' &&
-          //             indentAllowedParents.includes(parent?.type.name || '')
-          //           ) {
-          //             nodes.push({ node, pos, parent });
-          //           }
-          //         },
-          //       );
-
-          //       if (nodes.length === 0) {
-          //         return false;
-          //       }
-
-          //       const tr = nodes.reduce<Transaction>((tr, node) => {
-          //         const attrs = node.node.attrs as ParagraphAttributes;
-          //         const targetIndent = Math.max(
-          //           0,
-          //           Math.min(attrs.indent + (shiftPressed ? -1 : 1), 6),
-          //         );
-          //         return tr.setNodeMarkup(
-          //           node.pos,
-          //           view.state.schema.nodes['paragraph'],
-          //           {
-          //             ...attrs,
-          //             indent: targetIndent,
-          //           },
-          //         );
-          //       }, view.state.tr);
-
-          //       if (!tr.docChanged) {
-          //         return false;
-          //       }
-
-          //       event.preventDefault();
-          //       view.dispatch(tr);
-          //       return false;
-          //     },
-          //   },
-          // }),
         ];
       },
     };

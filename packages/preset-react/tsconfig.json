@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "declaration": true,
     "jsx": "react",
+    "jsxImportSource": "react",
     "paths": {
       "prosemirror-preset-core": ["../../preset-core/src/index.ts"]
     }

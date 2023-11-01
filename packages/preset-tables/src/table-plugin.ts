@@ -2,8 +2,9 @@ import { NodeSpec } from 'prosemirror-model';
 import { columnResizing, goToNextCell, tableEditing, tableNodes } from '.';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { keymap } from 'prosemirror-keymap';
+import { Plugin } from 'prosemirror-state';
 
-const tables: Record<string, NodeSpec> = {
+export const PMP_TABLE_NODES: Record<string, NodeSpec> = {
   ...tableNodes({
     tableGroup: 'block',
     cellContent: 'block+',
@@ -24,24 +25,33 @@ const tables: Record<string, NodeSpec> = {
 };
 
 export interface TableConfigs {
-  resizing?: boolean;
+}
+
+export interface CreatePmpTablePluginConfigs {
+
+}
+
+export const createPmpTablePlugins = (
+  configs: CreatePmpTablePluginConfigs,
+): Plugin[] => {
+  return [
+    columnResizing(),
+    tableEditing(),
+    keymap({
+      Tab: goToNextCell(1),
+      'Shift-Tab': goToNextCell(-1),
+    }),
+  ];
 }
 
 export const Table = (configs?: TableConfigs): PMPluginsFactory => {
   return () => {
     return {
       nodes: {
-        ...tables,
+        ...PMP_TABLE_NODES,
       },
       marks: {},
-      plugins: () => [
-        ...(configs?.resizing ? [columnResizing()] : []),
-        tableEditing(),
-        keymap({
-          Tab: goToNextCell(1),
-          'Shift-Tab': goToNextCell(-1),
-        }),
-      ],
+      plugins: () => createPmpTablePlugins({}),
     };
   };
 };

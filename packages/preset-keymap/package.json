@@ -11,6 +11,7 @@
   "main": "dist/index.js",
   "private": true,
   "dependencies": {
+    "prosemirror-state": "*",
     "prosemirror-keymap": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-preset-core": "*"

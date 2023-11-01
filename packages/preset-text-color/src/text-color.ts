@@ -5,7 +5,7 @@ export interface TextColorAttributes {
   color: string;
 }
 
-const textColor: Record<string, MarkSpec> = {
+export const PMP_TEXT_COLOR_MARK: Record<string, MarkSpec> = {
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
   textColor: {
@@ -34,7 +34,7 @@ export const TextColor = (): PMPluginsFactory => () => {
   return {
     nodes: {},
     marks: {
-      ...textColor,
+      ...PMP_TEXT_COLOR_MARK,
     },
     plugins: (schema) => [],
   };

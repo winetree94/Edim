@@ -14,7 +14,7 @@ export interface ImageAttrs {
   viewportWidth: number;
 }
 
-const image: Record<string, NodeSpec> = {
+export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
   image: {
     // inline: true,
     attrs: {
@@ -82,12 +82,24 @@ export interface ImageExtensionConfigs {
   placeholderViewProvider?: (view: EditorView) => ImagePlaceholderViewProvider;
 }
 
+export interface CreatePmpImagePluginConfigs {
+  placeholderViewProvider?: (view: EditorView) => ImagePlaceholderViewProvider;
+}
+
+export const creatPmpImagePlugins = (configs: CreatePmpImagePluginConfigs) => {
+  return [
+    createImagePlaceholderPlugin({
+      placeholderViewProvider: configs.placeholderViewProvider,
+    }),
+  ];
+};
+
 export const Image =
   (configs: ImageExtensionConfigs): PMPluginsFactory =>
   () => {
     return {
       nodes: {
-        ...image,
+        ...PMP_IMAGE_NODE,
       },
       marks: {},
       plugins: () => {

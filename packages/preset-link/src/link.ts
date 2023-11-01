@@ -2,7 +2,7 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { MarkSpec, Node } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 
-const link: Record<string, MarkSpec> = {
+export const PMP_LINK_MARK: Record<string, MarkSpec> = {
   link: {
     attrs: {
       href: { default: null },
@@ -33,7 +33,7 @@ export const Link = (): PMPluginsFactory => () => {
   return {
     nodes: {},
     marks: {
-      ...link,
+      ...PMP_LINK_MARK,
     },
     plugins: () => [],
   };

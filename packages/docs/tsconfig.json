@@ -34,6 +34,7 @@
       "prosemirror-preset-strong": ["../preset-strong/src/index.ts"],
       "prosemirror-preset-keymap": ["../preset-keymap/src/index.ts"],
       "prosemirror-preset-text": ["../preset-text/src/index.ts"],
+      "prosemirror-preset-react": ["../preset-react/src/index.ts"],
       "prosemirror-preset-text-color": ["../preset-text-color/src/index.ts"],
       "prosemirror-preset-angular": ["../preset-angular/src/index.ts"],
       "prosemirror-preset-utils": ["../preset-utils/src/index.ts"],

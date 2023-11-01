@@ -1,10 +1,10 @@
-import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
+import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { keymap } from 'prosemirror-keymap';
 import { toggleMark } from 'prosemirror-commands';
 
 const codeDOM: DOMOutputSpec = ['code', { class: 'pmp-code' }, 0];
-const code: Record<string, MarkSpec> = {
+export const PMP_CODE_MARK: Record<string, MarkSpec> = {
   code: {
     parseDOM: [{ tag: 'code' }],
     toDOM() {
@@ -13,17 +13,27 @@ const code: Record<string, MarkSpec> = {
   },
 };
 
+export interface CreatePmpCodePluginConfigs {
+  markType: MarkType;
+}
+
+export const createPmpCodePlugins = (configs: CreatePmpCodePluginConfigs) => {
+  return [
+    keymap({
+      'Mod-C': toggleMark(configs.markType),
+    }),
+  ];
+};
+
 export const Code = (): PMPluginsFactory => () => {
   return {
     nodes: {},
     marks: {
-      ...code,
+      ...PMP_CODE_MARK,
     },
-    plugins: (schema) => [
-      // ...codemark({ markType: schema.marks['code'] }),
-      keymap({
-        'Mod-C': toggleMark(schema.marks['code']),
+    plugins: (schema) =>
+      createPmpCodePlugins({
+        markType: schema.marks['code'],
       }),
-    ],
   };
 };

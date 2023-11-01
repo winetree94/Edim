@@ -13,6 +13,7 @@
   "dependencies": {
     "prosemirror-state": "*",
     "prosemirror-model": "*",
+    "prosemirror-view": "*",
     "react": "*",
     "react-dom": "*",
     "rimraf": "*"
