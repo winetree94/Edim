@@ -1,0 +1,20 @@
+{
+  "name": "prosemirror-preset-react",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc --watch",
+    "clean:dist": "rimraf dist",
+    "clean:dependency": "rimraf node_modules",
+    "build": "tsc -p ./tsconfig.build.json"
+  },
+  "main": "dist/index.js",
+  "private": true,
+  "dependencies": {
+    "prosemirror-state": "*",
+    "prosemirror-model": "*",
+    "react": "*",
+    "react-dom": "*",
+    "rimraf": "*"
+  }
+}

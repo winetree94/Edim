@@ -96,6 +96,9 @@ export default function Edim(): JSX.Element {
   useEffect(() => {
     new EditorView(editorRef.current, {
       state: editorState,
+      attributes: {
+        spellCheck: 'false',
+      },
     });
   }, []);
 
