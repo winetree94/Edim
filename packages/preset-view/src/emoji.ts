@@ -1,6 +1,8 @@
 import { classes } from './cdk/core';
 import { html } from './cdk/html';
 import emojiDataJson from 'emoji-datasource/emoji.json';
+import { PmpButton } from './components/button';
+import { useState } from 'preact/hooks';
 
 export interface PmpEmoji {
   name: string;
@@ -41,16 +43,58 @@ const categories = Object.entries(
   }, {}),
 );
 
-console.log(categories);
+const categoryMap = categories.reduce<{
+  [key: string]: PmpEmoji[];
+}>((result, [category, emojis]) => {
+  result[category] = emojis;
+  return result;
+}, {});
 
-const size = 32;
-
-export interface PmpEmojiPickerProps {}
+export interface PmpEmojiPickerProps {
+  size: number;
+  gap: number;
+}
 
 export const PmpEmojiPicker = (props: PmpEmojiPickerProps) => {
+  const [currentCategory, setCurrentCategory] = useState<string>(
+    categories[0][0],
+  );
+
   return html`
-    <div class=${classes('pmp-view-emoji-picker')}>
-      <div>emoji</div>
+    <div
+      className=${classes('pmp-view-emoji-picker')}
+      style=${{ width: (props.size + props.gap + props.gap) * 8 + 1 }}
+    >
+      <div className=${classes('pmp-view-emoji-category-group')}>
+        ${categories.map(([category]) => {
+          return html`
+            <${PmpButton}
+              className=${classes('pmp-view-emoji-category-button')}
+              onClick=${() => setCurrentCategory(category)}
+              >${category}
+            </${PmpButton}>
+          `;
+        })}
+      </div>
+      <div className=${classes('pmp-view-emoji-view')}>
+        ${categoryMap[currentCategory].map((emoji) => {
+          return html`
+            <${PmpButton} 
+              className=${classes('pmp-view-emoji-picker-emoji')}
+              style=${{
+                width: props.size,
+                height: props.size,
+                backgroundImage: 'url(/img/emoji/apple/sheets/32.png)',
+                backgroundPosition: `${
+                  emoji.sheet_x * -(props.size + props.gap + props.gap)
+                }px ${emoji.sheet_y * -(props.size + props.gap + props.gap)}px`,
+              }}
+              data-emoji-name=${emoji.name}  
+            >
+            </${PmpButton}>
+          `;
+        })}
+      </div>
     </div>
   `;
 };

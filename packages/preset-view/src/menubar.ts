@@ -492,7 +492,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           outerMousedown=${() => setEmojiLayerRef(null)}
           onClose=${() => setEmojiLayerRef(null)}
           >
-          <${PmpEmojiPicker}>emoji</${PmpEmojiPicker}>
+          <${PmpEmojiPicker} size=${32} gap=${1}>emoji</${PmpEmojiPicker}>
         </${PmpLayer}>
       `
       }
