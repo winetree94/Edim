@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-color: white;
+  color: black;
+  width: 100%;
 }
 
 .pmp-view-editor-scroll {
@@ -21,6 +24,8 @@
   height: inherit;
   height: 500px;
   min-height: 0;
+  background-color: white;
+  color: black;
 }
 
 .pmp-view-menubar-wrapper {

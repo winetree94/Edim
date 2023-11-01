@@ -5,11 +5,12 @@ export interface ProseMirrorRef {
   view: EditorView;
 }
 export interface ProseMirrorProps extends DirectEditorProps {
+  className?: string;
   onStateChange?: (doc: any) => void;
 }
 
 export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
-  ({ onStateChange, state, ...props }, ref) => {
+  ({ className, onStateChange, state, ...props }, ref) => {
     const editorDomRef = useRef<HTMLDivElement>(null);
     const editorViewRef = useRef<EditorView | null>(null);
 
@@ -43,6 +44,6 @@ export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
       }
     }, [state]);
 
-    return <div ref={editorDomRef}></div>;
+    return <div ref={editorDomRef} className={className}></div>;
   },
 );

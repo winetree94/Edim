@@ -1,29 +1,15 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
+.EditorContainer {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
 
-.heroBanner {
-  padding: 24px 0;
+.Header {
   text-align: center;
-  position: relative;
-  overflow: hidden;
+  margin-bottom: 30px;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
-}
-
-.Main {
+.EditorWrapper {
   display: flex;
-  justify-content: center;
-  padding: 20px 10px;
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1 1 auto;
+  width: 100%;
 }
