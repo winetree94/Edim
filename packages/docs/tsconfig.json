@@ -11,6 +11,8 @@
     "noEmit": true,
     "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic", "docusaurus-plugin-sass"],
     "baseUrl": ".",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@site/*": ["./*"],
       "prosemirror-preset-document": ["../preset-document/src/index.ts"],
