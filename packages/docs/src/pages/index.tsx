@@ -25,7 +25,9 @@ export default function Home(): JSX.Element {
       description="Description will go into a meta tag in <head />"
       wrapperClassName={styles.EditorContainer}
     >
-      <h1 className={styles.Header}>Edim</h1>
+      <h1 className={styles.Header}>
+        Fully customizable headless rich text editor
+      </h1>
       <ProseMirror
         state={editorState}
         onStateChange={(state) => setEditorState(state)}

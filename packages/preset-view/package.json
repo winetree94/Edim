@@ -28,7 +28,8 @@
     "prosemirror-preset-command": "*",
     "prosemirror-preset-blockquote": "*",
     "preact": "*",
-    "htm": "*"
+    "htm": "*",
+    "remixicon": "^3.5.0"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
