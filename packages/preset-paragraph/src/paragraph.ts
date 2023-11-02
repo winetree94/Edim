@@ -54,7 +54,7 @@ export const PMP_PARAGRAPH_NODE: Record<string, NodeSpec> = {
 
 export interface ParagraphPluginConfigs {}
 
-export const createPmpParagraphPlugins = (nodeType: NodeType) => {
+export const createPmpParagraphPlugins = (nodeType: NodeType): Plugin[] => {
   return [
     keymap({
       'Ctrl-Alt-0': setBlockType(nodeType),

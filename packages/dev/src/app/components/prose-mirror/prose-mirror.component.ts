@@ -59,6 +59,9 @@ export class ProseMirrorComponent
   @Input()
   public transformPastedHTML: DirectEditorProps['transformPastedHTML'];
 
+  @Input()
+  public editable: (() => boolean) | undefined;
+
   public ngOnInit(): void {
     this.editorView = new EditorView(this.elementRef.nativeElement, {
       state: this.state,
@@ -75,6 +78,7 @@ export class ProseMirrorComponent
       },
       transformPastedHTML: this.transformPastedHTML,
       handleKeyDown: this.handleKeydown,
+      editable: this.editable,
     });
   }
 

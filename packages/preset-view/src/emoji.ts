@@ -84,7 +84,6 @@ export const PmpEmojiPicker = (props: PmpEmojiPickerProps) => {
             <${PmpButton}
               className=${classes('pmp-view-emoji-category-button')}
               onClick=${() => setCurrentCategory(category)}>
-              <i className=${classes(CategoryIcons[category])}></i>
               ${category}
             </${PmpButton}>
           `;
