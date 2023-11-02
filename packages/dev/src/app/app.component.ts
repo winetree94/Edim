@@ -231,6 +231,9 @@ export class AppComponent implements OnInit {
 
   public editor!: CodeMirrorEditorView;
 
+  /**
+   * Quill 에서 복붙 대응
+   */
   public transformPastedHTML(htmlString: string, view: EditorView) {
     const html = new DOMParser().parseFromString(htmlString, 'text/html');
     console.log(htmlString);
@@ -282,7 +285,7 @@ export class AppComponent implements OnInit {
   }
 
   public editable(): boolean {
-    return false;
+    return true;
   }
 
   public updateValue(): void {
