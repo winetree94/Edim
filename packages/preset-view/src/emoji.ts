@@ -55,6 +55,19 @@ export interface PmpEmojiPickerProps {
   gap: number;
 }
 
+const CategoryIcons = {
+  Symbols: 'ri-character-recognition-fill',
+  Activities: 'ri-basketball-line',
+  Flags: 'ri-flag-line',
+  'Travel & Places': 'ri-plane-fill',
+  'Food & Drink': 'ri-restaurant-2-fill',
+  'Animals & Nature': 'ri-bug-fill',
+  'People & Body': 'ri-user-fill',
+  Objects: 'ri-umbrella-fill',
+  Components: 'ri-cpu-fill',
+  'Smileys & Emotion': 'ri-smile-2-fill',
+};
+
 export const PmpEmojiPicker = (props: PmpEmojiPickerProps) => {
   const [currentCategory, setCurrentCategory] = useState<string>(
     categories[0][0],
@@ -70,8 +83,9 @@ export const PmpEmojiPicker = (props: PmpEmojiPickerProps) => {
           return html`
             <${PmpButton}
               className=${classes('pmp-view-emoji-category-button')}
-              onClick=${() => setCurrentCategory(category)}
-              >${category}
+              onClick=${() => setCurrentCategory(category)}>
+              <i className=${classes(CategoryIcons[category])}></i>
+              ${category}
             </${PmpButton}>
           `;
         })}
