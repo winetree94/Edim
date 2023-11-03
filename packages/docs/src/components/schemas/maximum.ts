@@ -61,6 +61,8 @@ import {
 } from 'prosemirror-preset-view';
 import { faker } from '@faker-js/faker';
 import { Schema } from 'prosemirror-model';
+import { dropCursor } from 'prosemirror-dropcursor';
+import { gapCursor } from 'prosemirror-gapcursor';
 
 const items: MentionItem[] = Array.from({ length: 100 }).map(() => ({
   icon: faker.image.avatar(),
@@ -144,5 +146,5 @@ export const maximumPlugins: Plugin[] = [].concat(
   createPmpTablePlugins({}),
   createPmpBasicKeymapPlugins({}),
   createPmpHistoryPlugins({}),
-  [PmpMenubarPlugin],
+  [PmpMenubarPlugin, dropCursor(), gapCursor()],
 );
