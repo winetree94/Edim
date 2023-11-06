@@ -62,6 +62,12 @@ export class ProseMirrorComponent
   @Input()
   public editable: (() => boolean) | undefined;
 
+  /**
+   * FormControl 로 값을 제어하는 경우, View 가 생성되기 이전에 값이 들어올 수 있어서,
+   * 필드에 보관했다가 View 생성된 이후 값을 적용한다.
+   */
+  private initDoc: any;
+
   public ngOnInit(): void {
     this.editorView = new EditorView(this.elementRef.nativeElement, {
       state: this.state,
@@ -72,7 +78,7 @@ export class ProseMirrorComponent
         this.dispatchTransaction?.(tr);
         this.editorView.updateState(this.editorView.state.apply(tr));
         if (this._onChange) {
-          const json = JSON.stringify(tr.doc.toJSON(), null, 4);
+          const json = tr.doc.toJSON();
           this._onChange(json);
         }
       },
@@ -80,18 +86,25 @@ export class ProseMirrorComponent
       handleKeyDown: this.handleKeydown,
       editable: this.editable,
     });
+    if (this.initDoc) {
+      this.writeValue(this.initDoc);
+      this.initDoc = null;
+    }
   }
 
-  public writeValue(value: string): void {
-    if (!this.editorView || !value) {
+  public writeValue(value: any): void {
+    if (!this.editorView) {
+      this.initDoc = value;
       return;
     }
-    const node = Node.fromJSON(this.editorView.state.schema, JSON.parse(value));
-    const state = EditorState.create({
-      doc: node,
-      schema: this.editorView.state.schema,
-      plugins: this.editorView.state.plugins,
-    });
+    const node = Node.fromJSON(this.editorView.state.schema, value);
+    const state = this.editorView.state.apply(
+      this.editorView.state.tr.replaceWith(
+        0,
+        this.editorView.state.doc.content.size,
+        node,
+      ),
+    );
     this.editorView.updateState(state);
   }
 

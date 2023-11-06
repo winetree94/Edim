@@ -194,16 +194,30 @@ export class AppComponent implements OnInit {
   public enable = true;
 
   public readonly formGroup = new FormGroup({
-    content: new FormControl<string>(JSON.stringify(data2), {
-      nonNullable: true,
-    }),
+    content: new FormControl<any>(
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left',
+              indent: 0,
+            },
+          },
+        ],
+      },
+      {
+        nonNullable: true,
+      },
+    ),
   });
 
   public values$ = this.formGroup.controls.content.valueChanges.pipe(
     startWith(this.formGroup.controls.content.value),
     map((value) => {
       if (value) {
-        return JSON.stringify(JSON.parse(value), null, 4);
+        return JSON.stringify(value, null, 4);
       }
       return '';
     }),
