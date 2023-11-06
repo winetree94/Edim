@@ -7,7 +7,7 @@
     "clean:dist": "nx run-many -t clean:dist --all --maxParallel=10",
     "clean:dependency": "nx run-many -t clean:dependency --all --maxParallel=10 && rimraf node_modules",
     "build": "nx run-many -t build --all --maxParallel=10",
-    "build:docs": "nx build docs"
+    "build:docs": "nx build prosemirror-preset-angular-dev"
   },
   "private": true,
   "devDependencies": {
