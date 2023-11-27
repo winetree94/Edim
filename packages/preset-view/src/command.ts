@@ -8,6 +8,7 @@ import {
 } from 'prosemirror-preset-command';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
+import { PmpOverlay } from './components/overlay';
 import { PmpLayer } from './layer';
 import { PmpListItem, PmpUnorderedList } from './components/list';
 import { PmpParagraph } from './components/paragraph';
@@ -145,6 +146,7 @@ export class PmpCommandView implements CommandPluginView {
 
     render(
       html`
+        <${PmpOverlay}>asdfasdf</${PmpOverlay}>
         <${PmpLayer}
           left=${start.left}
           top=${end.bottom}
