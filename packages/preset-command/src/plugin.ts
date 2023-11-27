@@ -12,6 +12,7 @@ export interface CommandExtensionConfigs {
 export interface CommandPluginView extends PluginView {
   handleKeydown?(view: EditorView, event: KeyboardEvent): boolean | void;
 }
+
 export interface CommandPluginState {
   active: boolean;
   keyword: string;
