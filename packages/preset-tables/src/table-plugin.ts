@@ -1,8 +1,6 @@
 import { NodeSpec } from 'prosemirror-model';
-import { columnResizing, goToNextCell, tableEditing, tableNodes } from '.';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
-import { keymap } from 'prosemirror-keymap';
 import { Plugin } from 'prosemirror-state';
+import { columnResizing, tableEditing, tableNodes } from 'prosemirror-tables';
 
 export const PMP_TABLE_NODES: Record<string, NodeSpec> = {
   ...tableNodes({
@@ -37,21 +35,5 @@ export const createPmpTablePlugins = (
   return [
     columnResizing(),
     tableEditing(),
-    keymap({
-      Tab: goToNextCell(1),
-      'Shift-Tab': goToNextCell(-1),
-    }),
   ];
 }
-
-export const Table = (configs?: TableConfigs): PMPluginsFactory => {
-  return () => {
-    return {
-      nodes: {
-        ...PMP_TABLE_NODES,
-      },
-      marks: {},
-      plugins: () => createPmpTablePlugins({}),
-    };
-  };
-};
