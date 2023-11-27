@@ -16,6 +16,7 @@
     "prosemirror-model": "*",
     "prosemirror-state": "*",
     "prosemirror-transform": "*",
+    "prosemirror-tables": ">=1.0.0",
     "prosemirror-view": "*"
   },
   "devDependencies": {

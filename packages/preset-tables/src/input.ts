@@ -128,6 +128,7 @@ function deleteCellSelection(
     const tr = state.tr;
     const baseContent = tableNodeTypes(state.schema).cell.createAndFill()!
       .content;
+    console.log(baseContent);
     sel.forEachCell((cell, pos) => {
       if (!cell.content.eq(baseContent))
         tr.replace(

@@ -6,29 +6,7 @@ import { debounceTime, map, startWith, tap } from 'rxjs';
 import { EditorView as CodeMirrorEditorView, basicSetup } from 'codemirror';
 import { json } from '@codemirror/lang-json';
 import { EditorProps, EditorView } from 'prosemirror-view';
-import { PMEditor } from 'prosemirror-preset-core';
-import { Document } from 'prosemirror-preset-document';
-import { Heading } from 'prosemirror-preset-heading';
-import { Paragraph } from 'prosemirror-preset-paragraph';
-import { FreeList } from 'prosemirror-preset-free-list';
-import { Separator } from 'prosemirror-preset-hr';
-import { Italic } from 'prosemirror-preset-italic';
-import { Image } from 'prosemirror-preset-image';
-import { BasicKeymap } from 'prosemirror-preset-keymap';
-import { HistoryExtension } from 'prosemirror-preset-history';
-import { Mention } from 'prosemirror-preset-mention';
-import { Link } from 'prosemirror-preset-link';
-import { Strikethrough } from 'prosemirror-preset-strikethrough';
-import { BlockQuote } from 'prosemirror-preset-blockquote';
-import { CodeBlock } from 'prosemirror-preset-codeblock';
-import { Text } from 'prosemirror-preset-text';
-import { TextColor } from 'prosemirror-preset-text-color';
-import { Table } from 'prosemirror-preset-tables';
-import { Code } from 'prosemirror-preset-code';
-import { Strong } from 'prosemirror-preset-strong';
-import { EmojiExtension } from 'prosemirror-preset-emoji';
 import { EditorState } from 'prosemirror-state';
-import { Command } from 'prosemirror-preset-command';
 import {
   MentionItem,
   PmpCommandView,
