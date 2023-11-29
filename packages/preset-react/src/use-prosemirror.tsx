@@ -25,11 +25,12 @@ export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
         state: state,
         ...props,
         dispatchTransaction: (transaction) => {
-          if (props.dispatchTransaction) {
-            props.dispatchTransaction(transaction);
-          } else if (onStateChange && editorViewRef.current) {
-            onStateChange(editorViewRef.current.state.apply(transaction));
-          }
+          view.updateState(view.state.apply(transaction));
+          // if (props.dispatchTransaction) {
+          //   props.dispatchTransaction(transaction);
+          // } else if (onStateChange && editorViewRef.current) {
+          //   onStateChange(view.state.apply(transaction));
+          // }
         },
       });
       editorViewRef.current = view;
@@ -38,11 +39,11 @@ export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
       };
     }, []);
 
-    useEffect(() => {
-      if (editorViewRef.current && state) {
-        editorViewRef.current.updateState(state);
-      }
-    }, [state]);
+    // useEffect(() => {
+    //   if (editorViewRef.current && state) {
+    //     editorViewRef.current.updateState(state);
+    //   }
+    // }, [state]);
 
     return <div ref={editorDomRef} className={className}></div>;
   },
