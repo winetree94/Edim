@@ -19,11 +19,10 @@
 .pmp-view-editor {
   max-width: 760px;
   width: 100%;
-  display: flex;
+  display: block;
   flex-direction: column;
   flex: 1 1 auto;
   height: inherit;
-  height: 500px;
   min-height: 0;
   background-color: white;
   color: black;
