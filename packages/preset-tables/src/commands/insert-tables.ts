@@ -1,28 +1,5 @@
 import { Fragment, Node } from 'prosemirror-model';
-import { Command, EditorState, TextSelection, Transaction } from 'prosemirror-state';
-
-/**
- * Deletes the table around the selection, if any.
- *
- * @public
- */
-export function deleteTable(
-  state: EditorState,
-  dispatch?: (tr: Transaction) => void,
-): boolean {
-  const $pos = state.selection.$anchor;
-  for (let d = $pos.depth; d > 0; d--) {
-    const node = $pos.node(d);
-    if (node.type.spec['tableRole'] == 'table') {
-      if (dispatch)
-        dispatch(
-          state.tr.delete($pos.before(d), $pos.after(d)).scrollIntoView(),
-        );
-      return true;
-    }
-  }
-  return false;
-}
+import { Command, TextSelection } from 'prosemirror-state';
 
 export const insertTable = (): Command => {
   return (state, dispatch) => {

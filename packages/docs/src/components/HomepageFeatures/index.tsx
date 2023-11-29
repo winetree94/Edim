@@ -43,6 +43,7 @@ import { PMP_TEXT_NODE } from 'prosemirror-preset-text';
 import { PMP_TEXT_COLOR_MARK } from 'prosemirror-preset-text-color';
 import {
   PMP_TABLE_NODES,
+  createPmpTableEditingPlugins,
   createPmpTablePlugins,
 } from 'prosemirror-preset-tables';
 import { PMP_CODE_MARK, createPmpCodePlugins } from 'prosemirror-preset-code';
@@ -144,6 +145,7 @@ const editorPlugins: Plugin[] = [].concat(
     markType: editorSchema.marks['code'],
   }),
   createPmpTablePlugins({}),
+  createPmpTableEditingPlugins(),
   createPmpBasicKeymapPlugins({}),
   createPmpHistoryPlugins({}),
   [PmpMenubarPlugin],

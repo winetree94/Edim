@@ -17,7 +17,8 @@
     "prosemirror-state": "*",
     "prosemirror-transform": "*",
     "prosemirror-tables": ">=1.0.0",
-    "prosemirror-view": "*"
+    "prosemirror-view": "*",
+    "prosemirror-utils": ">=1.0.0"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
