@@ -2,7 +2,9 @@ import { Plugin as PMPlugin, PluginKey } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { findCellClosestToPos } from '../utils';
 
-export const focusedCellPluginKey = new PluginKey<DecorationSet>('focusedCellPlugin');
+export const focusedCellPluginKey = new PluginKey<DecorationSet>(
+  'focusedCellPlugin',
+);
 
 export const createPmpFocusedCellDecorationPlugins = (): PMPlugin[] => {
   const plugin: PMPlugin<DecorationSet> = new PMPlugin<DecorationSet>({
@@ -17,9 +19,13 @@ export const createPmpFocusedCellDecorationPlugins = (): PMPlugin[] => {
         if (!cell) {
           return DecorationSet.empty;
         }
-        const classDeco = Decoration.node(cell.pos, cell.pos + cell.node.nodeSize, {
-          class: 'pmp-focused-cell'
-        });
+        const classDeco = Decoration.node(
+          cell.pos,
+          cell.pos + cell.node.nodeSize,
+          {
+            class: 'pmp-focused-cell',
+          },
+        );
         return DecorationSet.create(tr.doc, [classDeco]);
       },
     },
