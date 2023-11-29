@@ -2,42 +2,44 @@
   overflow-x: auto;
   height: auto;
 
-  table {
+  table.pmp-table {
     display: table;
     border-collapse: collapse;
     table-layout: fixed;
     width: 100%;
     overflow: hidden;
     margin: 0;
-  }
 
-  colgroup {
-    display: table-column-group;
-
-    col {
-      display: table-column;
+    colgroup.pmp-colgroup {
+      display: table-column-group;
+      col {
+        display: table-column;
+      }
     }
-  }
 
-  tbody {
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
-  }
+    tbody.pmp-tbody {
+      display: table-row-group;
+      vertical-align: middle;
+      border-color: inherit;
 
-  td,
-  th {
-    vertical-align: top;
-    box-sizing: border-box;
-    position: relative;
-    min-width: 1em;
-    border: 1px solid #ddd;
-    padding: 3px 5px;
-  }
+      tr {
+        background-color: unset;
+      }
+      td,
+      th {
+        vertical-align: top;
+        box-sizing: border-box;
+        position: relative;
+        min-width: 1em;
+        border: 1px solid #ddd;
+        padding: 3px 5px;
+      }
 
-  th {
-    font-weight: bold;
-    text-align: left;
+      th {
+        font-weight: bold;
+        text-align: left;
+      }
+    }
   }
 
   &.resize-cursor {
