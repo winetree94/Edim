@@ -8,9 +8,8 @@ export interface PmpListKeymapPluginConfigs {
   listItemNodeType: NodeType;
 }
 
-
 export const createPmpListKeymapPlugins = (
-  configs: PmpListKeymapPluginConfigs
+  configs: PmpListKeymapPluginConfigs,
 ): PMPlugin[] => {
   return [
     keymap({
@@ -53,5 +52,5 @@ export const createPmpListKeymapPlugins = (
         return false;
       },
     }),
-  ]
-}
+  ];
+};

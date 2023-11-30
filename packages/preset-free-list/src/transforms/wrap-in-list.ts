@@ -6,9 +6,11 @@ import {
   ResolvedPos,
   Slice,
 } from 'prosemirror-model';
-import { Transaction } from 'prosemirror-state';
+import { NodePair } from 'prosemirror-preset-utils';
+import { EditorState, Transaction } from 'prosemirror-state';
 import {
   ReplaceAroundStep,
+  ReplaceStep,
   canSplit,
   findWrapping,
 } from 'prosemirror-transform';
@@ -60,6 +62,63 @@ export const doWrapInFreeList = (
     }
     splitPos += parent.child(i).nodeSize;
   }
+  return tr;
+};
+
+export const wrapInList = (
+  tr: Transaction,
+  state: EditorState,
+  listType: NodeType,
+  listItemType: NodeType,
+  $from: ResolvedPos,
+  $to: ResolvedPos,
+): Transaction | null => {
+  const range = $from.blockRange($to);
+  if (!range) {
+    return null;
+  }
+  const containerNode = $from.node(range.depth - 1) || range.parent;
+  if (!containerNode) {
+    return null;
+  }
+  const targets: NodePair[] = [];
+
+  let notCompatible = false;
+  containerNode.nodesBetween($from.pos, $to.pos, (node, pos, parent) => {
+    if (parent !== containerNode) {
+      return false;
+    }
+    if (!listItemType.validContent(Fragment.from([node]))) {
+      notCompatible = true;
+    }
+    targets.push({ node, pos, parent });
+    return false;
+  });
+
+  if (notCompatible) {
+    return null;
+  }
+
+  tr = targets
+    .slice()
+    .reverse()
+    .reduce((tr, target, index, self) => {
+      const list = listType.create(null, [
+        state.schema.nodes['list_item'].create(null, [target.node]),
+      ]);
+      let newTr = tr.step(
+        new ReplaceStep(
+          target.pos,
+          target.pos + target.node.nodeSize,
+          new Slice(Fragment.from(list), 0, 0),
+        ),
+      );
+      // if (index !== self.length - 1) {
+      //   newTr = newTr.delete(target.pos - 1, target.pos + 1);
+      // }
+      return newTr;
+    }, tr);
+
   return tr;
 };
 

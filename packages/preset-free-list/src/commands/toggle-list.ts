@@ -1,7 +1,7 @@
 import { Node, NodeType } from 'prosemirror-model';
 import { Command } from 'prosemirror-state';
 import { liftOutOfFreeList } from '../transforms';
-import { wrapInFreeList } from '../transforms/wrap-in-list';
+import { wrapInFreeList, wrapInList } from '../transforms/wrap-in-list';
 
 export const toggleList =
   (nodeType: NodeType): Command =>
@@ -101,7 +101,7 @@ export const toggleList =
     // lifting
     tr = rangeNodes
       .slice()
-      .reverse() // 좌표 영향을 주지 않기 때문에 뒤에서부터 처리
+      .reverse()
       .filter(({ node }) => node.type.name !== 'paragraph')
       .reduce((tr, { start, end }) => {
         const range = tr.doc
@@ -122,7 +122,16 @@ export const toggleList =
     selection = state.selection.map(tr.doc, tr.mapping);
 
     // wrapping
-    tr = wrapInFreeList(nodeType)(tr, selection.$from, selection.$to) || tr;
+    // tr = wrapInFreeList(nodeType)(tr, selection.$from, selection.$to) || tr;
+    tr =
+      wrapInList(
+        tr,
+        state,
+        nodeType,
+        state.schema.nodes['list_item'],
+        selection.$from,
+        selection.$to,
+      ) || tr;
     selection = state.selection.map(tr.doc, tr.mapping);
 
     // apply memoized indents
@@ -146,37 +155,37 @@ export const toggleList =
     }
 
     // merge with adjacent list
-    const range = selection.$from.blockRange(
-      selection.$to,
-      (node) => node.type.spec.group?.includes('block-container') || false,
-    )!;
-    const adjacentsNodes: {
-      node: Node;
-      pos: number;
-    }[] = [];
-    tr.doc.nodesBetween(
-      Math.max(range.start - 2, 0),
-      Math.min(range.end + 2, tr.doc.nodeSize - 2),
-      (node, pos) => {
-        if (node.type !== nodeType) {
-          return true;
-        }
-        adjacentsNodes.push({
-          node,
-          pos,
-        });
-        return true;
-      },
-    );
-    tr = adjacentsNodes
-      .slice()
-      .reverse()
-      .reduce((tr, { pos }, index, self) => {
-        if (index === self.length - 1) {
-          return tr;
-        }
-        return tr.delete(pos - 1, pos + 1);
-      }, tr);
+    // const range = selection.$from.blockRange(
+    //   selection.$to,
+    //   (node) => node.type.spec.group?.includes('block-container') || false,
+    // )!;
+    // const adjacentsNodes: {
+    //   node: Node;
+    //   pos: number;
+    // }[] = [];
+    // tr.doc.nodesBetween(
+    //   Math.max(range.start - 2, 0),
+    //   Math.min(range.end + 2, tr.doc.nodeSize - 2),
+    //   (node, pos) => {
+    //     if (node.type !== nodeType) {
+    //       return true;
+    //     }
+    //     adjacentsNodes.push({
+    //       node,
+    //       pos,
+    //     });
+    //     return true;
+    //   },
+    // );
+    // tr = adjacentsNodes
+    //   .slice()
+    //   .reverse()
+    //   .reduce((tr, { pos }, index, self) => {
+    //     if (index === self.length - 1) {
+    //       return tr;
+    //     }
+    //     return tr.delete(pos - 1, pos + 1);
+    //   }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
 
     dispatch?.(tr.setSelection(selection).scrollIntoView());
