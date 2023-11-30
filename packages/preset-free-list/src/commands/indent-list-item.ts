@@ -1,9 +1,5 @@
 import { Node } from 'prosemirror-model';
-import {
-  Command,
-  EditorState,
-  Transaction,
-} from 'prosemirror-state';
+import { Command, EditorState, Transaction } from 'prosemirror-state';
 import { liftOutOfFreeList } from '../transforms';
 
 export const indentListItem = (reduce: number): Command => {

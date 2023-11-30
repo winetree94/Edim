@@ -1,11 +1,5 @@
-import {
-  Fragment,
-  NodeRange,
-  Slice,
-} from 'prosemirror-model';
-import {
-  Transaction,
-} from 'prosemirror-state';
+import { Fragment, NodeRange, Slice } from 'prosemirror-model';
+import { Transaction } from 'prosemirror-state';
 import { ReplaceAroundStep } from 'prosemirror-transform';
 
 export const liftOutOfFreeList = (

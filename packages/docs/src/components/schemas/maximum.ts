@@ -11,7 +11,7 @@ import {
   PMP_BULLET_FREE_LIST_NODE,
   PMP_FREE_LIST_ITEM_NODE,
   PMP_ORDERED_FREE_LIST_NODE,
-  createPmpFreeListPlugins,
+  createPmpListPlugins,
 } from 'prosemirror-preset-free-list';
 import {
   PMP_HORIZONTAL_RULE_NODE,
@@ -114,7 +114,7 @@ export const maximumPlugins: Plugin[] = [].concat(
   createPmpCommandPlugins({
     view: (view, plugin) => new PmpCommandView(view, plugin),
   }),
-  createPmpFreeListPlugins({
+  createPmpListPlugins({
     orderListNodeType: maximumSchema.nodes['ordered_list'],
     bulletListNodeType: maximumSchema.nodes['bullet_list'],
     listItemNodeType: maximumSchema.nodes['list_item'],

@@ -18,6 +18,7 @@
     "prosemirror-preset-core": "*",
     "prosemirror-preset-utils": "*",
     "prosemirror-commands": "*",
+    "prosemirror-utils": "*",
     "orderedmap": "*"
   },
   "devDependencies": {

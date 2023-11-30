@@ -1,21 +1,18 @@
 import { Node, NodeType } from 'prosemirror-model';
-import {
-  Command,
-  TextSelection,
-} from 'prosemirror-state';
-import { wrapInFreeList, liftOutOfFreeList } from '../transforms';
+import { Command } from 'prosemirror-state';
+import { liftOutOfFreeList } from '../transforms';
+import { wrapInFreeList } from '../transforms/wrap-in-list';
 
-export const toggleList = (nodeType: NodeType): Command => {
-  return (state, dispatch) => {
+export const toggleList =
+  (nodeType: NodeType): Command =>
+  (state, dispatch) => {
     let tr = state.tr;
     let selection = state.selection;
 
-    const minPos = TextSelection.atStart(tr.doc).from;
-    const maxPos = TextSelection.atEnd(tr.doc).to;
-
-    const originRange = selection.$from.blockRange(selection.$to, (node) => {
-      return node.type.spec.group?.includes('block-container') || false;
-    });
+    const originRange = selection.$from.blockRange(
+      selection.$to,
+      (node) => node.type.spec.group?.includes('block-container') || false,
+    );
 
     if (!originRange) {
       return false;
@@ -35,9 +32,17 @@ export const toggleList = (nodeType: NodeType): Command => {
         }
         rangeNodes.push({
           node,
-          pos: pos,
-          start: Math.max(selection.$from.pos, pos + 1, minPos + 1),
-          end: Math.min(selection.$to.pos, pos + node.nodeSize - 1, maxPos - 1),
+          pos,
+          start: Math.max(
+            selection.$from.pos,
+            pos + 1,
+            tr.doc.nodeSize - tr.doc.content.size,
+          ),
+          end: Math.min(
+            selection.$to.pos,
+            pos + node.nodeSize - 1,
+            tr.doc.content.size,
+          ),
         });
         return true;
       });
@@ -76,17 +81,18 @@ export const toggleList = (nodeType: NodeType): Command => {
 
     // memoize indents
     const indents: number[] = [];
-    rangeNodes.slice().forEach(({ node, pos, start, end }) => {
+    rangeNodes.slice().forEach(({ node, start, end }) => {
       const isParagraph = node.type.name === 'paragraph';
       if (isParagraph) {
-        indents.push(0);
+        indents.push(1);
         return;
       }
       const range = tr.doc
         .resolve(start)
-        .blockRange(tr.doc.resolve(end), (node) => {
-          return node.type.spec.group?.includes('list') || false;
-        })!;
+        .blockRange(
+          tr.doc.resolve(end),
+          (node) => node.type.spec.group?.includes('list') || false,
+        )!;
       for (let i = range.startIndex; i < range.endIndex; i++) {
         indents.push(range.parent.child(i).attrs['indent'] as number);
       }
@@ -95,14 +101,15 @@ export const toggleList = (nodeType: NodeType): Command => {
     // lifting
     tr = rangeNodes
       .slice()
-      .reverse()
+      .reverse() // 좌표 영향을 주지 않기 때문에 뒤에서부터 처리
       .filter(({ node }) => node.type.name !== 'paragraph')
       .reduce((tr, { start, end }) => {
         const range = tr.doc
           .resolve(start)
-          .blockRange(tr.doc.resolve(end), (node) => {
-            return node.type.spec.group?.includes('list') || false;
-          })!;
+          .blockRange(
+            tr.doc.resolve(end),
+            (node) => node.type.spec.group?.includes('list') || false,
+          )!;
         return liftOutOfFreeList(tr, range) || tr;
       }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
@@ -111,9 +118,7 @@ export const toggleList = (nodeType: NodeType): Command => {
     tr = getRangeNodes(tr.doc, selection.from, selection.to)
       .slice()
       .reverse()
-      .reduce((tr, { pos }) => {
-        return tr.setNodeAttribute(pos, 'indent', 0);
-      }, tr);
+      .reduce((tr, { pos }) => tr.setNodeAttribute(pos, 'indent', 0), tr);
     selection = state.selection.map(tr.doc, tr.mapping);
 
     // wrapping
@@ -121,9 +126,10 @@ export const toggleList = (nodeType: NodeType): Command => {
     selection = state.selection.map(tr.doc, tr.mapping);
 
     // apply memoized indents
-    const listRange = selection.$from.blockRange(selection.$to, (node) => {
-      return node.type === nodeType;
-    });
+    const listRange = selection.$from.blockRange(
+      selection.$to,
+      (node) => node.type === nodeType,
+    );
     if (listRange) {
       for (
         let pos = listRange.end,
@@ -140,10 +146,14 @@ export const toggleList = (nodeType: NodeType): Command => {
     }
 
     // merge with adjacent list
-    const range = selection.$from.blockRange(selection.$to, (node) => {
-      return node.type.spec.group?.includes('block-container') || false;
-    })!;
-    const adjacentsNodes: { node: Node; pos: number }[] = [];
+    const range = selection.$from.blockRange(
+      selection.$to,
+      (node) => node.type.spec.group?.includes('block-container') || false,
+    )!;
+    const adjacentsNodes: {
+      node: Node;
+      pos: number;
+    }[] = [];
     tr.doc.nodesBetween(
       Math.max(range.start - 2, 0),
       Math.min(range.end + 2, tr.doc.nodeSize - 2),
@@ -172,4 +182,3 @@ export const toggleList = (nodeType: NodeType): Command => {
     dispatch?.(tr.setSelection(selection).scrollIntoView());
     return true;
   };
-};

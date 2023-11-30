@@ -49,7 +49,7 @@ export const wrappingInputRuleWithJoin = (
       tr = tr.join(beforePos);
     }
 
-    const afterNode = tr.doc.resolve(start).nodeAfter;
+    const afterNode = tr.doc.resolve(start + 1).nodeBefore;
 
     if (!afterNode) {
       return tr;

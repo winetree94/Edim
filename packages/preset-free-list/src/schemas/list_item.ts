@@ -1,4 +1,4 @@
-import { DOMOutputSpec, NodeSpec } from 'prosemirror-model';
+import { NodeSpec } from 'prosemirror-model';
 
 export interface ListItemAttrs {
   indent: number;
@@ -6,8 +6,9 @@ export interface ListItemAttrs {
 
 export const PMP_FREE_LIST_ITEM_NODE: Record<string, NodeSpec> = {
   list_item: {
-    content: 'paragraph*',
+    content: 'paragraph',
     group: 'disable-paragraph-attributes',
+    selectable: false,
     attrs: {
       indent: {
         default: 1,
@@ -18,9 +19,11 @@ export const PMP_FREE_LIST_ITEM_NODE: Record<string, NodeSpec> = {
         tag: 'li',
         getAttrs(node) {
           const dom = node as HTMLElement;
-          const indent = dom.dataset['indent'];
+          let indent = dom.dataset['indent'];
+          const googleDocIndent = dom.getAttribute('aria-level');
+          indent = googleDocIndent || indent;
 
-          let legacyIndent: number = 0;
+          let legacyIndent = 0;
           for (let i = 1; i <= 4; i++) {
             legacyIndent = dom.classList.contains(`ql-indent-${i}`)
               ? i + 1
