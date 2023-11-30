@@ -2,7 +2,7 @@ import { NodeType, Schema } from 'prosemirror-model';
 import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { keymap } from 'prosemirror-keymap';
 import { indentListItem, splitListItem } from './commands';
-import { Plugin, PluginKey } from 'prosemirror-state';
+import { Plugin as PMPlugin } from 'prosemirror-state';
 import {
   PMP_BULLET_FREE_LIST_NODE,
   PMP_FREE_LIST_ITEM_NODE,
@@ -20,24 +20,17 @@ export interface createPmpFreeListPluginsConfig {
 
 export const createPmpFreeListPlugins = (
   configs: createPmpFreeListPluginsConfig,
-) => {
+): PMPlugin[] => {
   return [
-    createPmpListInputRulePlugins({}),
+    ...createPmpListInputRulePlugins({
+      bulletListNodeType: configs.bulletListNodeType,
+      orderListNodeType: configs.orderListNodeType,
+    }),
     keymap({
       Enter: splitListItem(configs.listItemNodeType),
       'Shift-Enter': splitListItem(configs.listItemNodeType),
       Tab: indentListItem(1),
       'Shift-Tab': indentListItem(-1),
-    }),
-    // TODO to flat list
-    new Plugin({
-      key: new PluginKey('freelist'),
-      props: {
-        transformPastedHTML(html, view) {
-          const dom = new DOMParser().parseFromString(html, 'text/html');
-          return dom.documentElement.innerHTML;
-        },
-      },
     }),
   ];
 };

@@ -1,6 +1,7 @@
 import { inputRules } from 'prosemirror-inputrules';
 import { NodeType } from 'prosemirror-model';
 import { wrappingInputRuleWithJoin } from 'prosemirror-preset-utils';
+import { Plugin } from 'prosemirror-state';
 
 /// Given a list node type, returns an input rule that turns a number
 /// followed by a dot at the start of a textblock into an ordered list.
@@ -28,11 +29,11 @@ export interface createPmpListInputRulePluginsConfig {
 
 export const createPmpListInputRulePlugins = (
   configs: createPmpListInputRulePluginsConfig,
-) => [
+): Plugin[] => [
   inputRules({
     rules: [
       orderedListRule(configs.orderListNodeType),
       bulletListRule(configs.bulletListNodeType),
     ],
   }),
-]
+];
