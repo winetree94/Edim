@@ -3,16 +3,16 @@ import { NodePair } from 'prosemirror-preset-utils';
 import { Plugin as PMPlugin } from 'prosemirror-state';
 import { canJoin } from 'prosemirror-transform';
 
-export interface PmpListMergePluginConfigs {
+export interface PmpMergeAdjacentNodePluginConfigs {
   listTypes: NodeSpec[];
 }
 
 /**
  * @description
- * 인접 리스트는 자동 병합
+ * 인접한 동일한 타입의 Node 가 Join 가능한 경우 자동 Join
  */
-export const createPmpListMergePlugins = (
-  configs: PmpListMergePluginConfigs,
+export const createPmpMergeAdjacentNodePlugins = (
+  configs: PmpMergeAdjacentNodePluginConfigs,
 ): PMPlugin[] => {
   const plugin = new PMPlugin({
     appendTransaction: (transactions, oldState, newState) => {

@@ -5,7 +5,7 @@ import {
   createPmpHeadingPlugins,
 } from 'prosemirror-preset-heading';
 import {
-  createPmpParagraphPlugins,
+  createPmpParagraphKeymapPlugins,
   PMP_PARAGRAPH_NODE,
 } from 'prosemirror-preset-paragraph';
 import {
@@ -101,7 +101,7 @@ const editorSchema = new Schema({
 });
 
 const editorPlugins: Plugin[] = [].concat(
-  createPmpParagraphPlugins(editorSchema.nodes['paragraph']),
+  createPmpParagraphKeymapPlugins(editorSchema.nodes['paragraph']),
   createPmpMentionPlugins({
     view: (view, pluginKey) => {
       return new PmpMentionView(view, pluginKey, (keyword) =>

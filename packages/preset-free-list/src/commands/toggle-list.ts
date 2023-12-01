@@ -1,7 +1,6 @@
 import { Node, NodeType } from 'prosemirror-model';
 import { Command } from 'prosemirror-state';
-import { liftOutOfFreeList } from '../transforms';
-import { wrapInFreeList, wrapInList } from '../transforms/wrap-in-list';
+import { liftOutOfFreeList, wrapInFreeList } from '../transforms';
 
 export const toggleList =
   (nodeType: NodeType): Command =>
@@ -80,28 +79,28 @@ export const toggleList =
     }
 
     // memoize indents
-    const indents: number[] = [];
-    rangeNodes.slice().forEach(({ node, start, end }) => {
-      const isParagraph = node.type.name === 'paragraph';
-      if (isParagraph) {
-        indents.push(1);
-        return;
-      }
-      const range = tr.doc
-        .resolve(start)
-        .blockRange(
-          tr.doc.resolve(end),
-          (node) => node.type.spec.group?.includes('list') || false,
-        )!;
-      for (let i = range.startIndex; i < range.endIndex; i++) {
-        indents.push(range.parent.child(i).attrs['indent'] as number);
-      }
-    });
+    // const indents: number[] = [];
+    // rangeNodes.slice().forEach(({ node, pos, start, end }) => {
+    //   const isParagraph = node.type.name === 'paragraph';
+    //   if (isParagraph) {
+    //     indents.push(1);
+    //     return;
+    //   }
+    //   const range = tr.doc
+    //     .resolve(start)
+    //     .blockRange(
+    //       tr.doc.resolve(end),
+    //       (node) => node.type.spec.group?.includes('list') || false,
+    //     )!;
+    //   for (let i = range.startIndex; i < range.endIndex; i++) {
+    //     indents.push(range.parent.child(i).attrs['indent'] as number);
+    //   }
+    // });
 
     // lifting
     tr = rangeNodes
       .slice()
-      .reverse()
+      .reverse() // 좌표 영향을 주지 않기 때문에 뒤에서부터 처리
       .filter(({ node }) => node.type.name !== 'paragraph')
       .reduce((tr, { start, end }) => {
         const range = tr.doc
@@ -114,80 +113,46 @@ export const toggleList =
       }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
 
+    const nodes = getRangeNodes(tr.doc, selection.from, selection.to);
     // remove indent attribute of paragraph
-    tr = getRangeNodes(tr.doc, selection.from, selection.to)
-      .slice()
-      .reverse()
-      .reduce((tr, { pos }) => tr.setNodeAttribute(pos, 'indent', 0), tr);
-    selection = state.selection.map(tr.doc, tr.mapping);
+    // tr = nodes
+    //   .slice()
+    //   .reverse()
+    //   .reduce((tr, { pos }) => tr.setNodeAttribute(pos, 'indent', 0), tr);
+    // selection = state.selection.map(tr.doc, tr.mapping);
 
     // wrapping
-    // tr = wrapInFreeList(nodeType)(tr, selection.$from, selection.$to) || tr;
-    tr =
-      wrapInList(
-        tr,
-        state,
-        nodeType,
-        state.schema.nodes['list_item'],
-        selection.$from,
-        selection.$to,
-      ) || tr;
+    tr = nodes
+      .slice()
+      .reverse()
+      .reduce((tr, { node, pos }) => {
+        const nodePos = tr.doc.resolve(pos);
+        const nodeEndPos = tr.doc.resolve(pos + node.nodeSize);
+        return wrapInFreeList(nodeType)(tr, nodePos, nodeEndPos) || tr;
+      }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
 
     // apply memoized indents
-    const listRange = selection.$from.blockRange(
-      selection.$to,
-      (node) => node.type === nodeType,
-    );
-    if (listRange) {
-      for (
-        let pos = listRange.end,
-          i = listRange.endIndex - 1,
-          e = listRange.startIndex;
-        i >= e;
-        i--
-      ) {
-        pos -= listRange.parent.child(i).nodeSize;
-        tr = tr.setNodeMarkup(pos, state.schema.nodes['list_item'], {
-          indent: indents.pop(),
-        });
-      }
-    }
-
-    // merge with adjacent list
-    // const range = selection.$from.blockRange(
+    // const listRange = selection.$from.blockRange(
     //   selection.$to,
-    //   (node) => node.type.spec.group?.includes('block-container') || false,
-    // )!;
-    // const adjacentsNodes: {
-    //   node: Node;
-    //   pos: number;
-    // }[] = [];
-    // tr.doc.nodesBetween(
-    //   Math.max(range.start - 2, 0),
-    //   Math.min(range.end + 2, tr.doc.nodeSize - 2),
-    //   (node, pos) => {
-    //     if (node.type !== nodeType) {
-    //       return true;
-    //     }
-    //     adjacentsNodes.push({
-    //       node,
-    //       pos,
-    //     });
-    //     return true;
-    //   },
+    //   (node) => node.type === nodeType,
     // );
-    // tr = adjacentsNodes
-    //   .slice()
-    //   .reverse()
-    //   .reduce((tr, { pos }, index, self) => {
-    //     if (index === self.length - 1) {
-    //       return tr;
-    //     }
-    //     return tr.delete(pos - 1, pos + 1);
-    //   }, tr);
-    selection = state.selection.map(tr.doc, tr.mapping);
+    // if (listRange) {
+    //   for (
+    //     let pos = listRange.end,
+    //       i = listRange.endIndex - 1,
+    //       e = listRange.startIndex;
+    //     i >= e;
+    //     i--
+    //   ) {
+    //     pos -= listRange.parent.child(i).nodeSize;
+    //     tr = tr.setNodeMarkup(pos, state.schema.nodes['list_item'], {
+    //       indent: indents.pop(),
+    //     });
+    //   }
+    // }
 
+    selection = state.selection.map(tr.doc, tr.mapping);
     dispatch?.(tr.setSelection(selection).scrollIntoView());
     return true;
   };

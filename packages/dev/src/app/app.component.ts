@@ -23,7 +23,7 @@ import {
   createPmpHeadingPlugins,
 } from 'prosemirror-preset-heading';
 import {
-  createPmpParagraphPlugins,
+  createPmpParagraphKeymapPlugins,
   PMP_PARAGRAPH_NODE,
 } from 'prosemirror-preset-paragraph';
 import {
@@ -112,7 +112,7 @@ export const maximumSchema = new Schema({
 });
 
 export const maximumPlugins: Plugin[] = ([] as Plugin[]).concat(
-  createPmpParagraphPlugins(maximumSchema.nodes['paragraph']),
+  createPmpParagraphKeymapPlugins(maximumSchema.nodes['paragraph']),
   createPmpMentionPlugins({
     view: (view, pluginKey) => {
       return new PmpMentionView(view, pluginKey, (keyword) =>

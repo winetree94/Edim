@@ -3,8 +3,8 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import {
   createPmpListInputRulePlugins,
   createPmpListKeymapPlugins,
-  createPmpListMergePlugins,
 } from './plugins';
+import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-utils';
 
 export interface PmpListPluginsConfig {
   orderListNodeType: NodeType;
@@ -23,7 +23,7 @@ export const createPmpListPlugins = (
     ...createPmpListKeymapPlugins({
       listItemNodeType: configs.listItemNodeType,
     }),
-    ...createPmpListMergePlugins({
+    ...createPmpMergeAdjacentNodePlugins({
       listTypes: [configs.bulletListNodeType, configs.orderListNodeType],
     }),
   ];
