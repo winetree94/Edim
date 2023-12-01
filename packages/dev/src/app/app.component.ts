@@ -30,7 +30,7 @@ import {
   PMP_BULLET_FREE_LIST_NODE,
   PMP_FREE_LIST_ITEM_NODE,
   PMP_ORDERED_FREE_LIST_NODE,
-  createPmpFreePlugins,
+  createPmpListPlugins,
 } from 'prosemirror-preset-free-list';
 import {
   PMP_HORIZONTAL_RULE_NODE,
@@ -112,7 +112,9 @@ export const maximumSchema = new Schema({
 });
 
 export const maximumPlugins: Plugin[] = ([] as Plugin[]).concat(
-  createPmpParagraphKeymapPlugins(maximumSchema.nodes['paragraph']),
+  createPmpParagraphKeymapPlugins({
+    nodeType: maximumSchema.nodes['paragraph'],
+  }),
   createPmpMentionPlugins({
     view: (view, pluginKey) => {
       return new PmpMentionView(view, pluginKey, (keyword) =>
@@ -179,11 +181,435 @@ export class AppComponent implements OnInit {
         type: 'doc',
         content: [
           {
+            type: 'ordered_list',
+            content: [
+              {
+                type: 'list_item',
+                attrs: {
+                  indent: 1,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      textAlign: 'left',
+                      indent: 0,
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asldkfjalskdfj',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'list_item',
+                attrs: {
+                  indent: 1,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      textAlign: 'left',
+                      indent: 0,
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asdfalsdfkjasdfjlkasdf',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
             type: 'paragraph',
             attrs: {
               textAlign: 'left',
               indent: 0,
             },
+          },
+          {
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left',
+              indent: 0,
+            },
+            content: [
+              {
+                type: 'text',
+                text: 'asdlfkjasdf',
+              },
+            ],
+          },
+          {
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left',
+              indent: 0,
+            },
+          },
+          {
+            type: 'blockquote',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: {
+                  textAlign: 'left',
+                  indent: 0,
+                },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'asldkfjasdf',
+                  },
+                ],
+              },
+              {
+                type: 'paragraph',
+                attrs: {
+                  textAlign: 'left',
+                  indent: 0,
+                },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'asdflaskdjfa',
+                  },
+                ],
+              },
+              {
+                type: 'paragraph',
+                attrs: {
+                  textAlign: 'left',
+                  indent: 0,
+                },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'sdfasdlkf',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left',
+              indent: 0,
+            },
+          },
+          {
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left',
+              indent: 0,
+            },
+            content: [
+              {
+                type: 'text',
+                text: 'asdfasdf',
+              },
+            ],
+          },
+          {
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left',
+              indent: 0,
+            },
+          },
+          {
+            type: 'code_block',
+            content: [
+              {
+                type: 'text',
+                text: 'aslkdfjasdf\nasdfasdfasdf',
+              },
+            ],
+          },
+          {
+            type: 'paragraph',
+            attrs: {
+              textAlign: 'left',
+              indent: 0,
+            },
+          },
+          {
+            type: 'table',
+            content: [
+              {
+                type: 'table_row',
+                content: [
+                  {
+                    type: 'table_cell',
+                    attrs: {
+                      colspan: 1,
+                      rowspan: 1,
+                      colwidth: null,
+                      background: null,
+                    },
+                    content: [
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    type: 'table_cell',
+                    attrs: {
+                      colspan: 1,
+                      rowspan: 1,
+                      colwidth: null,
+                      background: null,
+                    },
+                    content: [
+                      {
+                        type: 'ordered_list',
+                        content: [
+                          {
+                            type: 'list_item',
+                            attrs: {
+                              indent: '1',
+                            },
+                            content: [
+                              {
+                                type: 'paragraph',
+                                attrs: {
+                                  textAlign: 'left',
+                                  indent: '0',
+                                },
+                                content: [
+                                  {
+                                    type: 'text',
+                                    text: 'asldkfjalskdfj',
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                          {
+                            type: 'list_item',
+                            attrs: {
+                              indent: '1',
+                            },
+                            content: [
+                              {
+                                type: 'paragraph',
+                                attrs: {
+                                  textAlign: 'left',
+                                  indent: '0',
+                                },
+                                content: [
+                                  {
+                                    type: 'text',
+                                    text: 'asdfalsdfkjasdfjlkasdf',
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: '0',
+                        },
+                      },
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: '0',
+                        },
+                        content: [
+                          {
+                            type: 'text',
+                            text: 'asdlfkjasdf',
+                          },
+                        ],
+                      },
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: '0',
+                        },
+                      },
+                      {
+                        type: 'blockquote',
+                        content: [
+                          {
+                            type: 'paragraph',
+                            attrs: {
+                              textAlign: 'left',
+                              indent: '0',
+                            },
+                            content: [
+                              {
+                                type: 'text',
+                                text: 'asldkfjasdf',
+                              },
+                            ],
+                          },
+                          {
+                            type: 'paragraph',
+                            attrs: {
+                              textAlign: 'left',
+                              indent: '0',
+                            },
+                            content: [
+                              {
+                                type: 'text',
+                                text: 'asdflaskdjfa',
+                              },
+                            ],
+                          },
+                          {
+                            type: 'paragraph',
+                            attrs: {
+                              textAlign: 'left',
+                              indent: '0',
+                            },
+                            content: [
+                              {
+                                type: 'text',
+                                text: 'sdfasdlkf',
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: '0',
+                        },
+                      },
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: '0',
+                        },
+                        content: [
+                          {
+                            type: 'text',
+                            text: 'asdfasdf',
+                          },
+                        ],
+                      },
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: '0',
+                        },
+                      },
+                      {
+                        type: 'code_block',
+                        content: [
+                          {
+                            type: 'text',
+                            text: 'aslkdfjasdf\nasdfasdfasdf',
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  {
+                    type: 'table_cell',
+                    attrs: {
+                      colspan: 1,
+                      rowspan: 1,
+                      colwidth: null,
+                      background: null,
+                    },
+                    content: [
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: 0,
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'table_row',
+                content: [
+                  {
+                    type: 'table_cell',
+                    attrs: {
+                      colspan: 1,
+                      rowspan: 1,
+                      colwidth: null,
+                      background: null,
+                    },
+                    content: [
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    type: 'table_cell',
+                    attrs: {
+                      colspan: 1,
+                      rowspan: 1,
+                      colwidth: null,
+                      background: null,
+                    },
+                    content: [
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    type: 'table_cell',
+                    attrs: {
+                      colspan: 1,
+                      rowspan: 1,
+                      colwidth: null,
+                      background: null,
+                    },
+                    content: [
+                      {
+                        type: 'paragraph',
+                        attrs: {
+                          textAlign: 'left',
+                          indent: 0,
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
         ],
       },

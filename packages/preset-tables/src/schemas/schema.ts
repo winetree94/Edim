@@ -1,5 +1,5 @@
-import { AttributeSpec, Attrs, NodeSpec } from 'prosemirror-model';
-import { MutableAttrs, TableRole, tableNodes } from 'prosemirror-tables';
+import { AttributeSpec, Attrs, Node, NodeSpec } from 'prosemirror-model';
+import { MutableAttrs, TableRole } from 'prosemirror-tables';
 
 export interface TableNodeSpec extends NodeSpec {
   tableRole: TableRole;
@@ -67,14 +67,14 @@ function getCellAttrs(dom: HTMLElement | string, extraAttrs: Attrs): Attrs {
 
 function setCellAttrs(node: Node, extraAttrs: Attrs): Attrs {
   const attrs: MutableAttrs = {};
-  if (node.attrs.colspan != 1) {
-    attrs.colspan = node.attrs.colspan;
+  if (node.attrs['colspan'] != 1) {
+    attrs['colspan'] = node.attrs['colspan'];
   }
-  if (node.attrs.rowspan != 1) {
-    attrs.rowspan = node.attrs.rowspan;
+  if (node.attrs['rowspan'] != 1) {
+    attrs['rowspan'] = node.attrs['rowspan'];
   }
-  if (node.attrs.colwidth) {
-    attrs['data-colwidth'] = node.attrs.colwidth.join(',');
+  if (node.attrs['colwidth']) {
+    attrs['data-colwidth'] = node.attrs['colwidth'].join(',');
   }
   for (const prop in extraAttrs) {
     const setter = extraAttrs[prop].setDOMAttr;
@@ -85,7 +85,7 @@ function setCellAttrs(node: Node, extraAttrs: Attrs): Attrs {
   return attrs;
 }
 
-const extraAttrs = {};
+const extraAttrs: any = {};
 const cellAttrs: Record<string, AttributeSpec> = {
   colspan: { default: 1 },
   rowspan: { default: 1 },
@@ -124,6 +124,7 @@ export const PMP_TABLE_NODES = {
   },
   table_cell: {
     content: 'block+',
+    group: 'block-container',
     attrs: {
       colspan: {
         default: 1,
@@ -140,8 +141,13 @@ export const PMP_TABLE_NODES = {
     },
     tableRole: 'cell',
     isolating: true,
-    parseDOM: [{ tag: 'td', getAttrs: (dom) => getCellAttrs(dom, extraAttrs) }],
-    toDOM(node) {
+    parseDOM: [
+      {
+        tag: 'td',
+        getAttrs: (dom: HTMLElement) => getCellAttrs(dom, extraAttrs),
+      },
+    ],
+    toDOM(node: Node) {
       return ['td', setCellAttrs(node, extraAttrs), 0];
     },
   },
@@ -163,8 +169,13 @@ export const PMP_TABLE_NODES = {
     },
     tableRole: 'header_cell',
     isolating: true,
-    parseDOM: [{ tag: 'th', getAttrs: (dom) => getCellAttrs(dom, extraAttrs) }],
-    toDOM(node) {
+    parseDOM: [
+      {
+        tag: 'th',
+        getAttrs: (dom: HTMLElement) => getCellAttrs(dom, extraAttrs),
+      },
+    ],
+    toDOM(node: Node) {
       return ['th', setCellAttrs(node, extraAttrs), 0];
     },
   },

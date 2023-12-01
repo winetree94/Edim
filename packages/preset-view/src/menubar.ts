@@ -11,7 +11,7 @@ import {
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
-import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
+import { indentListItem, toggleList, toggleList2 } from 'prosemirror-preset-free-list';
 import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { findParentNode, markActive } from 'prosemirror-preset-utils';
@@ -19,6 +19,7 @@ import {
   getRangeFirstAlignment,
   getRangeIsText,
   setAlignment,
+  setToParagraph,
 } from 'prosemirror-preset-paragraph';
 import { addLink, canAddLink } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
@@ -238,7 +239,6 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       <${PmpSeparator} className="pmp-view-menubar-separator" />
       
       <${PmpButton}
-        disabled=${!props.canNormalText}
         className=${props.activeParagraph ? 'selected' : ''}
         onClick=${() => props.onParagraphClick()}
         >
@@ -625,10 +625,10 @@ export class PmpMenubarView implements PluginView {
     this._toggleInlineCode = toggleMark(
       this.editorView.state.schema.marks['code'],
     );
-    this._toggleOrderedList = toggleList(
+    this._toggleOrderedList = toggleList2(
       this.editorView.state.schema.nodes['ordered_list'],
     );
-    this._toggleBulletList = toggleList(
+    this._toggleBulletList = toggleList2(
       this.editorView.state.schema.nodes['bullet_list'],
     );
 
@@ -805,10 +805,14 @@ export class PmpMenubarView implements PluginView {
   }
 
   public onParagraphClick(): void {
-    setBlockType(this.editorView.state.schema.nodes['paragraph'])(
+    setToParagraph(this.editorView.state.schema.nodes['paragraph'])(
       this.editorView.state,
       this.editorView.dispatch,
     );
+    // setBlockType(this.editorView.state.schema.nodes['paragraph'])(
+    //   this.editorView.state,
+    //   this.editorView.dispatch,
+    // );
     this.editorView.focus();
   }
 

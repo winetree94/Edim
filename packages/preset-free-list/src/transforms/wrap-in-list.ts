@@ -78,7 +78,6 @@ export const wrapInFreeList =
     let range = $from.blockRange($to);
     let doJoin = false;
     let outerRange = range;
-    console.log('wrap', range);
 
     if (!range) {
       return null;

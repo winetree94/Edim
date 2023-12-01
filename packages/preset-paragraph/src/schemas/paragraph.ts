@@ -1,4 +1,4 @@
-import { NodeSpec } from "prosemirror-model";
+import { NodeSpec } from 'prosemirror-model';
 
 export interface ParagraphAttributes {
   textAlign: 'left' | 'right' | 'center' | null;
