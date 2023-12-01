@@ -11,7 +11,7 @@ import {
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
-import { indentListItem, toggleList, toggleList2 } from 'prosemirror-preset-free-list';
+import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
 import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { findParentNode, markActive } from 'prosemirror-preset-utils';
@@ -625,10 +625,10 @@ export class PmpMenubarView implements PluginView {
     this._toggleInlineCode = toggleMark(
       this.editorView.state.schema.marks['code'],
     );
-    this._toggleOrderedList = toggleList2(
+    this._toggleOrderedList = toggleList(
       this.editorView.state.schema.nodes['ordered_list'],
     );
-    this._toggleBulletList = toggleList2(
+    this._toggleBulletList = toggleList(
       this.editorView.state.schema.nodes['bullet_list'],
     );
 
