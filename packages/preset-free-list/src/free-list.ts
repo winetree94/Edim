@@ -24,7 +24,14 @@ export const createPmpListPlugins = (
       listItemNodeType: configs.listItemNodeType,
     }),
     ...createPmpMergeAdjacentNodePlugins({
-      listTypes: [configs.bulletListNodeType, configs.orderListNodeType],
+      specs: [
+        {
+          nodeType: configs.bulletListNodeType,
+        },
+        {
+          nodeType: configs.orderListNodeType,
+        },
+      ],
     }),
   ];
 };

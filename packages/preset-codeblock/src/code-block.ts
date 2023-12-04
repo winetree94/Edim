@@ -1,8 +1,8 @@
 import { DOMOutputSpec, NodeSpec, NodeType } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
+import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-utils';
 
 const preDOM: DOMOutputSpec = [
   'pre',
@@ -50,18 +50,14 @@ export const createCodeBlockPlugins = (
     keymap({
       'Shift-Ctrl-\\': setBlockType(configs.nodeType),
     }),
+    ...createPmpMergeAdjacentNodePlugins({
+      specs: [
+        {
+          nodeType: configs.nodeType,
+          beforeMergeTransaction: (tr, joinPos) =>
+            tr.insertText('\n', joinPos, joinPos + 1),
+        },
+      ],
+    }),
   ];
-};
-
-export const CodeBlock = (): PMPluginsFactory => () => {
-  return {
-    nodes: {
-      ...PMP_CODE_BLOCK_NODE,
-    },
-    marks: {},
-    plugins: (schema) =>
-      createCodeBlockPlugins({
-        nodeType: schema.nodes['code_block'],
-      }),
-  };
 };

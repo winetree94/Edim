@@ -1,10 +1,15 @@
 import { NodeSpec } from 'prosemirror-model';
-import { NodePair } from 'prosemirror-preset-utils';
-import { Plugin as PMPlugin } from 'prosemirror-state';
+import { Plugin as PMPlugin, Transaction } from 'prosemirror-state';
 import { canJoin } from 'prosemirror-transform';
+import { NodePair } from '../types';
+
+export interface PmpMergeAdjacentNodeOption {
+  nodeType: NodeSpec;
+  beforeMergeTransaction?: (tr: Transaction, joinPos: number) => Transaction;
+}
 
 export interface PmpMergeAdjacentNodePluginConfigs {
-  listTypes: NodeSpec[];
+  specs: PmpMergeAdjacentNodeOption[];
 }
 
 /**
@@ -14,6 +19,7 @@ export interface PmpMergeAdjacentNodePluginConfigs {
 export const createPmpMergeAdjacentNodePlugins = (
   configs: PmpMergeAdjacentNodePluginConfigs,
 ): PMPlugin[] => {
+  const types = configs.specs.map((spec) => spec.nodeType);
   const plugin = new PMPlugin({
     appendTransaction: (transactions, oldState, newState) => {
       if (!transactions.length) {
@@ -22,16 +28,24 @@ export const createPmpMergeAdjacentNodePlugins = (
       let selection = newState.selection;
       let tr = newState.tr;
 
-      const listNodes: NodePair[] = [];
+      const nodeTypes: NodePair[] = [];
       tr.doc.descendants((node, pos, parent) => {
-        if (configs.listTypes.includes(node.type)) {
-          listNodes.push({ node, pos, parent });
+        if (types.includes(node.type)) {
+          nodeTypes.push({ node, pos, parent });
         }
       });
 
-      listNodes.reverse().reduce((tr, { pos }, index, self) => {
-        if (self[index + 1] && canJoin(tr.doc, pos)) {
-          tr.join(pos);
+      nodeTypes.reverse().reduce((tr, { pos }, index, self) => {
+        if (
+          self[index + 1] &&
+          canJoin(tr.doc, pos) &&
+          self[index + 1].node.type === self[index].node.type
+        ) {
+          const joinPredicate = configs.specs.find(
+            (spec) => spec.nodeType === self[index].node.type,
+          )?.beforeMergeTransaction;
+          tr = joinPredicate?.(tr, pos) || tr;
+          tr = tr.join(pos);
         }
         return tr;
       }, tr);

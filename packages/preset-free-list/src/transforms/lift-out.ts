@@ -1,7 +1,6 @@
-import { NodePair } from 'prosemirror-preset-utils';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { liftTarget } from 'prosemirror-transform';
-import { getBlockContainerChildren } from 'prosemirror-preset-utils';
+import { getBlockContainerChildren, NodePair } from 'prosemirror-preset-utils';
 
 export interface LiftOutResult {
   tr: Transaction;
@@ -31,7 +30,7 @@ export const liftOut = (
               pos,
               state.schema.nodes['paragraph'].create(
                 {},
-                state.schema.text(text),
+                text ? state.schema.text(text) : null,
               ),
             );
             indents.push(1);

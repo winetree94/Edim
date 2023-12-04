@@ -9,12 +9,13 @@ import {
   PluginKey,
   PluginView,
 } from 'prosemirror-state';
+import { findParentNode } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
 import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
-import { findParentNode, markActive } from 'prosemirror-preset-utils';
+import { markActive } from 'prosemirror-preset-utils';
 import {
   getRangeFirstAlignment,
   getRangeIsText,
@@ -161,15 +162,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         const id = Math.random().toString();
         let tr = props.editorView.state.tr;
 
-        const adjacentInsertableParent = findParentNode(
-          props.editorView.state,
-          props.editorView.state.selection.from,
-          (node, parent) => {
-            return (
-              parent?.type.spec.group?.includes('block-container') || false
-            );
-          },
-        );
+        const adjacentInsertableParent = findParentNode((node) => {
+          return node?.type.spec.group?.includes('block-container') || false;
+        })(props.editorView.state.selection);
 
         const insertPos = adjacentInsertableParent
           ? adjacentInsertableParent.pos +
@@ -679,18 +674,14 @@ export class PmpMenubarView implements PluginView {
     this.activeOrderedList =
       this.canOrderedList &&
       !!findParentNode(
-        editorView.state,
-        editorView.state.selection.from,
         (node) => node.type === editorView.state.schema.nodes['ordered_list'],
-      );
+      )(editorView.state.selection);
 
     this.activeUnorderedList =
       this.canBulletList &&
       !!findParentNode(
-        editorView.state,
-        editorView.state.selection.from,
         (node) => node.type === editorView.state.schema.nodes['bullet_list'],
-      );
+      )(editorView.state.selection);
 
     this.canNormalText = getRangeIsText(editorView.state);
     const rangeFromNode = editorView.state.selection.$from.parent;
