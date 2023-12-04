@@ -2,13 +2,7 @@
 import { PmpSeparator } from './components/separator';
 import { PmpButton } from './components/button';
 import { render } from 'preact';
-import {
-  Command,
-  EditorState,
-  Plugin,
-  PluginKey,
-  PluginView,
-} from 'prosemirror-state';
+import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { findParentNode } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
@@ -22,7 +16,7 @@ import {
   setAlignment,
   setToParagraph,
 } from 'prosemirror-preset-paragraph';
-import { addLink, canAddLink } from 'prosemirror-preset-link';
+import { addLink } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
 import { PmpLayer } from './layer';
@@ -49,51 +43,6 @@ export interface PmpMenubarProps {
   editorView: EditorView;
   editorState: EditorState;
   isScrolltop: boolean;
-  activeBold: boolean;
-  activeItalic: boolean;
-  activeStrikethrough: boolean;
-  activeInlineCode: boolean;
-  activeOrderedList: boolean;
-  activeUnorderedList: boolean;
-  activeParagraph: boolean;
-  activeH1: boolean;
-  activeH2: boolean;
-  activeH3: boolean;
-  activeH4: boolean;
-  activeH5: boolean;
-  activeH6: boolean;
-  activeAlignLeft: boolean;
-  activeAlignCenter: boolean;
-  activeAlignRight: boolean;
-  canNormalText: boolean;
-  canAlign: boolean;
-  canOrderedList: boolean;
-  canBulletList: boolean;
-  canLink: boolean;
-  canUndo: boolean;
-  canRedo: boolean;
-  canIndent: boolean;
-  canDeindent: boolean;
-  canMention: boolean;
-
-  onUndoClick(): void;
-  onRedoClick(): void;
-  onParagraphClick(): void;
-  onHeadingClick(level: number): void;
-  toggleBold(): void;
-  toggleItalic(): void;
-  toggleStrikethrough(): void;
-  toggleInlineCode(): void;
-  onTextColorClick(color: string): void;
-  setLink(from: number, to: number, text: string, link: string): void;
-  onAlignClick(alignment: 'left' | 'center' | 'right'): void;
-  onOrderedListClick(): void;
-  onUnorderedListClick(): void;
-  onIncreaseIndentClick(): void;
-  onDecreaseIndentClick(): void;
-  onMentionClick(): void;
-  onBlockQuoteClick(): void;
-  onTableClick(): void;
 }
 
 const createFakeProgress = (
@@ -143,6 +92,102 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const commandButtonRef = useRef<HTMLButtonElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const emojiButtonRef = useRef<HTMLButtonElement>(null);
+
+  const canUndo = undo(props.editorView.state);
+  const canRedo = redo(props.editorView.state);
+
+  const canNormalText = getRangeIsText(props.editorView.state);
+  const rangeFromNode = props.editorView.state.selection.$from.parent;
+
+  // text node
+  const activeParagraph =
+    canNormalText && rangeFromNode.type.name === 'paragraph';
+  const activeH1 =
+    canNormalText &&
+    rangeFromNode.type.name === 'heading' &&
+    rangeFromNode.attrs['level'] === 1;
+  const activeH2 =
+    canNormalText &&
+    rangeFromNode.type.name === 'heading' &&
+    rangeFromNode.attrs['level'] === 2;
+  const activeH3 =
+    canNormalText &&
+    rangeFromNode.type.name === 'heading' &&
+    rangeFromNode.attrs['level'] === 3;
+  const activeH4 =
+    canNormalText &&
+    rangeFromNode.type.name === 'heading' &&
+    rangeFromNode.attrs['level'] === 4;
+  const activeH5 =
+    canNormalText &&
+    rangeFromNode.type.name === 'heading' &&
+    rangeFromNode.attrs['level'] === 5;
+  const activeH6 =
+    canNormalText &&
+    rangeFromNode.type.name === 'heading' &&
+    rangeFromNode.attrs['level'] === 6;
+
+  // marks
+  const activeBold = markActive(
+    props.editorView.state,
+    props.editorView.state.schema.marks['strong'],
+  );
+  const activeItalic = markActive(
+    props.editorView.state,
+    props.editorView.state.schema.marks['em'],
+  );
+  const activeStrikethrough = markActive(
+    props.editorView.state,
+    props.editorView.state.schema.marks['strikethrough'],
+  );
+  const activeInlineCode = markActive(
+    props.editorView.state,
+    props.editorView.state.schema.marks['code'],
+  );
+
+  const firstAlignment = getRangeFirstAlignment(props.editorView.state);
+  const activeAlignLeft = firstAlignment === 'left';
+  const activeAlignCenter = firstAlignment === 'center';
+  const activeAlignRight = firstAlignment === 'right';
+
+  const onIncreaseIndentClick = (): void => {
+    indentListItem(1)(props.editorView.state, props.editorView.dispatch);
+    props.editorView.focus();
+  };
+
+  const onDecreaseIndentClick = (): void => {
+    indentListItem(-1)(props.editorView.state, props.editorView.dispatch);
+    props.editorView.focus();
+  };
+
+  const canOrderedList = toggleList(
+    props.editorView.state.schema.nodes['ordered_list'],
+  )(props.editorView.state);
+  const canBulletList = toggleList(
+    props.editorView.state.schema.nodes['bullet_list'],
+  )(props.editorView.state);
+  const activeOrderedList = !!findParentNode(
+    (node) => node.type === props.editorView.state.schema.nodes['ordered_list'],
+  )(props.editorView.state.selection);
+  const activeUnorderedList = !!findParentNode(
+    (node) => node.type === props.editorView.state.schema.nodes['bullet_list'],
+  )(props.editorView.state.selection);
+
+  const onOrderedListClick = (): void => {
+    toggleList(props.editorView.state.schema.nodes['ordered_list'])(
+      props.editorView.state,
+      props.editorView.dispatch,
+    );
+    props.editorView.focus();
+  };
+
+  const onUnorderedListClick = (): void => {
+    toggleList(props.editorView.state.schema.nodes['bullet_list'])(
+      props.editorView.state,
+      props.editorView.dispatch,
+    );
+    props.editorView.focus();
+  };
 
   const onImageChange = async (e: TargetedEvent<HTMLInputElement, Event>) => {
     const target = e.target as HTMLInputElement;
@@ -220,90 +265,156 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       )}
       >
       <${PmpButton}
-        disabled=${!props.canUndo}
-        onClick=${() => props.onUndoClick()}
+        disabled=${!canUndo}
+        onClick=${() => {
+          undo(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-arrow-go-back-line" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canRedo}
-        onClick=${() => props.onRedoClick()}
+        disabled=${!canRedo}
+        onClick=${() => {
+          redo(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-arrow-go-forward-line" />
       </${PmpButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
       
       <${PmpButton}
-        className=${props.activeParagraph ? 'selected' : ''}
-        onClick=${() => props.onParagraphClick()}
+        className=${activeParagraph ? 'selected' : ''}
+        onClick=${() => {
+          setToParagraph(props.editorView.state.schema.nodes['paragraph'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-text" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canNormalText}
-        className=${props.activeH1 ? 'selected' : ''}
-        onClick=${() => props.onHeadingClick(1)}
+        disabled=${!canNormalText}
+        className=${activeH1 ? 'selected' : ''}
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['heading'], {
+            level: 1,
+          })(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-h-1" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canNormalText}
-        className=${props.activeH2 ? 'selected' : ''}
-        onClick=${() => props.onHeadingClick(2)}
+        disabled=${!canNormalText}
+        className=${activeH2 ? 'selected' : ''}
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['heading'], {
+            level: 2,
+          })(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-h-2" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canNormalText}
-        className=${props.activeH3 ? 'selected' : ''}
-        onClick=${() => props.onHeadingClick(3)}
+        disabled=${!canNormalText}
+        className=${activeH3 ? 'selected' : ''}
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['heading'], {
+            level: 3,
+          })(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-h-3" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canNormalText}
-        className=${props.activeH4 ? 'selected' : ''}
-        onClick=${() => props.onHeadingClick(4)}
+        disabled=${!canNormalText}
+        className=${activeH4 ? 'selected' : ''}
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['heading'], {
+            level: 4,
+          })(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-h-4" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canNormalText}
-        className=${props.activeH5 ? 'selected' : ''}
-        onClick=${() => props.onHeadingClick(5)}
+        disabled=${!canNormalText}
+        className=${activeH5 ? 'selected' : ''}
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['heading'], {
+            level: 5,
+          })(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-h-5" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canNormalText}
-        className=${props.activeH6 ? 'selected' : ''}
-        onClick=${() => props.onHeadingClick(6)}
+        disabled=${!canNormalText}
+        className=${activeH6 ? 'selected' : ''}
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['heading'], {
+            level: 6,
+          })(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}
         >
         <i className="ri-h-6" />
       </${PmpButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpButton}
-        className=${props.activeBold ? 'selected' : ''}
-        onClick=${() => props.toggleBold()}
+        className=${activeBold ? 'selected' : ''}
+        onClick=${() => {
+          toggleMark(props.editorView.state.schema.marks['strong'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-bold" />
       </${PmpButton}>
       <${PmpButton}
-        className=${props.activeItalic ? 'selected' : ''}
-        onClick=${() => props.toggleItalic()}
+        className=${activeItalic ? 'selected' : ''}
+        onClick=${() => {
+          toggleMark(props.editorView.state.schema.marks['em'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-italic" />
       </${PmpButton}>
       <${PmpButton}
-        className=${props.activeStrikethrough ? 'selected' : ''}
-        onClick=${() => props.toggleStrikethrough()}
+        className=${activeStrikethrough ? 'selected' : ''}
+        onClick=${() => {
+          toggleMark(props.editorView.state.schema.marks['strikethrough'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-strikethrough-2" />
       </${PmpButton}>
       <${PmpButton}
-        className=${props.activeInlineCode ? 'selected' : ''}
-        onClick=${() => props.toggleInlineCode()}
+        className=${activeInlineCode ? 'selected' : ''}
+        onClick=${() => {
+          toggleMark(props.editorView.state.schema.marks['code'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-code-line" />
       </${PmpButton}>
@@ -332,7 +443,24 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           <${PmpColorPicker}
             onChange=${(color: string) => {
               setTextColorLayerRef(null);
-              props.onTextColorClick(color);
+              const { from, to } = props.editorView.state.tr.selection;
+              if (from === to) {
+                toggleMark(props.editorView.state.schema.marks['textColor'], {
+                  color,
+                })(props.editorView.state, props.editorView.dispatch);
+                props.editorView.focus();
+                return;
+              }
+              let tr = props.editorView.state.tr;
+              tr = tr.addMark(
+                from,
+                to,
+                props.editorView.state.schema.marks['textColor'].create({
+                  color,
+                }),
+              );
+              props.editorView.dispatch(tr);
+              props.editorView.focus();
             }}
             />
         </${PmpLayer}>
@@ -341,51 +469,64 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpButton}
-        disabled=${!props.canAlign}
-        className=${props.activeAlignLeft ? 'selected' : ''}
-        onClick=${() => props.onAlignClick('left')}
+        className=${activeAlignLeft ? 'selected' : ''}
+        onClick=${() => {
+          setAlignment('left')(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-align-left" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canAlign}
-        className=${props.activeAlignCenter ? 'selected' : ''}
-        onClick=${() => props.onAlignClick('center')}
+        className=${activeAlignCenter ? 'selected' : ''}
+        onClick=${() => {
+          setAlignment('center')(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-align-center" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canAlign}
-        className=${props.activeAlignRight ? 'selected' : ''}
-        onClick=${() => props.onAlignClick('right')}
+        className=${activeAlignRight ? 'selected' : ''}
+        onClick=${() => {
+          setAlignment('right')(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
         >
         <i className="ri-align-right" />
       </${PmpButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpButton}
-        className=${props.activeOrderedList ? 'selected' : ''}
-        disabled=${!props.canOrderedList}
-        onClick=${() => props.onOrderedListClick()}
+        className=${activeOrderedList ? 'selected' : ''}
+        disabled=${!canOrderedList}
+        onClick=${() => onOrderedListClick()}
         >
         <i className="ri-list-ordered" />
       </${PmpButton}>
       <${PmpButton}
-        className=${props.activeUnorderedList ? 'selected' : ''}
-        disabled=${!props.canBulletList}
-        onClick=${() => props.onUnorderedListClick()}
+        className=${activeUnorderedList ? 'selected' : ''}
+        disabled=${!canBulletList}
+        onClick=${() => onUnorderedListClick()}
         >
         <i className="ri-list-unordered" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canDeindent}
-        onClick=${() => props.onDecreaseIndentClick()}
+        onClick=${() => onDecreaseIndentClick()}
         >
         <i className="ri-indent-decrease" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canIndent}
-        onClick=${() => props.onIncreaseIndentClick()}
+        onClick=${() => onIncreaseIndentClick()}
         >
         <i className="ri-indent-increase" />
       </${PmpButton}>
@@ -396,7 +537,6 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       </${PmpButton}>
       <${PmpButton}
         ref=${linkButtonRef}
-        disabled=${!props.canLink}
         onClick=${() => {
           const { from, to } = props.editorView.state.selection;
           const start = props.editorView.coordsAtPos(from);
@@ -428,8 +568,11 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
             link=${linkLayerRef.link}
             onSubmit=${(link: string, text: string) => {
               setLinkLayerRef(null);
-              props.setLink(linkLayerRef.from, linkLayerRef.to, text, link);
-              // props.setLink();
+              const { from, to } = props.editorView.state.selection;
+              let tr = props.editorView.state.tr;
+              tr = addLink(tr, from, to, text, link);
+              props.editorView.dispatch(tr);
+              props.editorView.focus();
             }}
             onCancel=${() => setLinkLayerRef(null)}
             />
@@ -454,16 +597,17 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         <i className="ri-image-line" />
       </${PmpButton}>
       <${PmpButton}
-        disabled=${!props.canMention}
         onClick=${() => {
-          props.onMentionClick();
+          addMention()(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
         }}
         >
         <i className="ri-at-line" />
       </${PmpButton}>
       <${PmpButton}
         onClick=${() => {
-          props.onBlockQuoteClick();
+          toggleBlockquote()(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
         }}
         >
         <i className="ri-double-quotes-l" />
@@ -493,7 +637,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       }
       <${PmpButton}
         onClick=${() => {
-          props.onTableClick();
+          insertTable()(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
         }}
         >
         <i className="ri-table-2" />
@@ -552,52 +697,9 @@ export class PmpMenubarView implements PluginView {
   public readonly menubarWrapper: HTMLDivElement;
   public readonly editorView: EditorView;
 
-  private readonly _toggleBold: Command;
-  private readonly _toggleItalic: Command;
-  private readonly _toggleStrikethrough: Command;
-  private readonly _toggleInlineCode: Command;
-  private readonly _toggleOrderedList: Command;
-  private readonly _toggleBulletList: Command;
-  private readonly _addMention = addMention();
-  private readonly _toggleBlockQuote = toggleBlockquote();
-  private readonly _indent = indentListItem(1);
-  private readonly _deindent = indentListItem(-1);
-
-  public textColorLayerRef: HTMLElement | null = null;
-
   public isScrollTop = false;
 
-  public activeBold = false;
-  public activeItalic = false;
-  public activeStrikethrough = false;
-  public activeInlineCode = false;
-  public activeOrderedList = false;
-  public activeUnorderedList = false;
-  public activeParagraph = false;
-  public activeH1 = false;
-  public activeH2 = false;
-  public activeH3 = false;
-  public activeH4 = false;
-  public activeH5 = false;
-  public activeH6 = false;
-
-  public activeAlignLeft = false;
-  public activeAlignCenter = false;
-  public activeAlignRight = false;
-
-  public canNormalText = false;
-  public canAlign = false;
-  public canOrderedList = true;
-  public canBulletList = true;
-  public canLink = false;
-  public canUndo = false;
-  public canRedo = false;
-  public canIndent = false;
-  public canDeindent = false;
-  public canMention = false;
-
   public constructor(editorView: EditorView) {
-    console.log('constructor');
     this.editorView = editorView;
 
     const editorRoot = document.createElement('div');
@@ -611,21 +713,6 @@ export class PmpMenubarView implements PluginView {
     const menubarWrapper = document.createElement('div');
     menubarWrapper.classList.add('pmp-view-editor-menubar-root');
     this.menubarWrapper = menubarWrapper;
-
-    this._toggleBold = toggleMark(this.editorView.state.schema.marks['strong']);
-    this._toggleItalic = toggleMark(this.editorView.state.schema.marks['em']);
-    this._toggleStrikethrough = toggleMark(
-      this.editorView.state.schema.marks['strikethrough'],
-    );
-    this._toggleInlineCode = toggleMark(
-      this.editorView.state.schema.marks['code'],
-    );
-    this._toggleOrderedList = toggleList(
-      this.editorView.state.schema.nodes['ordered_list'],
-    );
-    this._toggleBulletList = toggleList(
-      this.editorView.state.schema.nodes['bullet_list'],
-    );
 
     editorView.dom.classList.add('pmp-view-editor');
     const originParent = editorView.dom.parentElement!;
@@ -648,91 +735,6 @@ export class PmpMenubarView implements PluginView {
   }
 
   public update(editorView: EditorView, prevState: EditorState) {
-    this.activeBold = markActive(
-      editorView.state,
-      editorView.state.schema.marks['strong'],
-    );
-
-    this.activeItalic = markActive(
-      editorView.state,
-      editorView.state.schema.marks['em'],
-    );
-
-    this.activeStrikethrough = markActive(
-      editorView.state,
-      editorView.state.schema.marks['strikethrough'],
-    );
-
-    this.activeInlineCode = markActive(
-      editorView.state,
-      editorView.state.schema.marks['code'],
-    );
-
-    this.canOrderedList = this._toggleOrderedList(editorView.state);
-    this.canBulletList = this._toggleBulletList(editorView.state);
-
-    this.activeOrderedList =
-      this.canOrderedList &&
-      !!findParentNode(
-        (node) => node.type === editorView.state.schema.nodes['ordered_list'],
-      )(editorView.state.selection);
-
-    this.activeUnorderedList =
-      this.canBulletList &&
-      !!findParentNode(
-        (node) => node.type === editorView.state.schema.nodes['bullet_list'],
-      )(editorView.state.selection);
-
-    this.canNormalText = getRangeIsText(editorView.state);
-    const rangeFromNode = editorView.state.selection.$from.parent;
-
-    this.activeParagraph =
-      this.canNormalText && rangeFromNode.type.name === 'paragraph';
-
-    this.activeH1 =
-      this.canNormalText &&
-      rangeFromNode.type.name === 'heading' &&
-      rangeFromNode.attrs['level'] === 1;
-
-    this.activeH2 =
-      this.canNormalText &&
-      rangeFromNode.type.name === 'heading' &&
-      rangeFromNode.attrs['level'] === 2;
-
-    this.activeH3 =
-      this.canNormalText &&
-      rangeFromNode.type.name === 'heading' &&
-      rangeFromNode.attrs['level'] === 3;
-
-    this.activeH4 =
-      this.canNormalText &&
-      rangeFromNode.type.name === 'heading' &&
-      rangeFromNode.attrs['level'] === 4;
-
-    this.activeH5 =
-      this.canNormalText &&
-      rangeFromNode.type.name === 'heading' &&
-      rangeFromNode.attrs['level'] === 5;
-
-    this.activeH6 =
-      this.canNormalText &&
-      rangeFromNode.type.name === 'heading' &&
-      rangeFromNode.attrs['level'] === 6;
-
-    const firstAlignment = getRangeFirstAlignment(editorView.state);
-    this.activeAlignLeft = firstAlignment === 'left';
-    this.activeAlignCenter = firstAlignment === 'center';
-    this.activeAlignRight = firstAlignment === 'right';
-    this.canAlign = firstAlignment !== null;
-
-    this.canIndent = this._indent(editorView.state);
-    this.canDeindent = this._deindent(editorView.state);
-
-    this.canLink = canAddLink(editorView.state);
-    this.canMention = this._addMention(editorView.state);
-
-    this.canUndo = undo(editorView.state);
-    this.canRedo = redo(editorView.state);
     this.render();
   }
 
@@ -743,173 +745,10 @@ export class PmpMenubarView implements PluginView {
           editorView=${this.editorView}
           editorState=${this.editorView.state}
           isScrolltop=${this.isScrollTop}
-          activeBold=${this.activeBold}
-          activeItalic=${this.activeItalic}
-          activeStrikethrough=${this.activeStrikethrough}
-          activeInlineCode=${this.activeInlineCode}
-          activeOrderedList=${this.activeOrderedList}
-          activeUnorderedList=${this.activeUnorderedList}
-          activeParagraph=${this.activeParagraph}
-          activeH1=${this.activeH1}
-          activeH2=${this.activeH2}
-          activeH3=${this.activeH3}
-          activeH4=${this.activeH4}
-          activeH5=${this.activeH5}
-          activeH6=${this.activeH6}
-          activeAlignLeft=${this.activeAlignLeft}
-          activeAlignCenter=${this.activeAlignCenter}
-          activeAlignRight=${this.activeAlignRight}
-          canNormalText=${this.canNormalText}
-          canAlign=${this.canAlign}
-          canOrderedList=${this.canOrderedList}
-          canBulletList=${this.canBulletList}
-          canLink=${this.canLink}
-          canUndo=${this.canUndo}
-          canRedo=${this.canRedo}
-          canIndent=${this.canIndent}
-          canDeindent=${this.canDeindent}
-          canMention=${this.canMention}
-          onUndoClick=${() => this.onUndoClick()}
-          onRedoClick=${() => this.onRedoClick()}
-          onParagraphClick=${() => this.onParagraphClick()}
-          onHeadingClick=${(level: number) => this.onHeadingClick(level)}
-          toggleBold=${() => this.toggleBold()}
-          toggleItalic=${() => this.toggleItalic()}
-          toggleStrikethrough=${() => this.toggleStrikethrough()}
-          toggleInlineCode=${() => this.toggleInlineCode()}
-          onTextColorClick=${(color: string) => this.onTextColorClick(color)}
-          onAlignClick=${(alignment: 'left' | 'center' | 'right') =>
-            this.onAlignClick(alignment)}
-          onOrderedListClick=${() => this.onOrderedListClick()}
-          onUnorderedListClick=${() => this.onUnorderedListClick()}
-          onIncreaseIndentClick=${() => this.onIncreaseIndentClick()}
-          onDecreaseIndentClick=${() => this.onDecreaseIndentClick()}
-          setLink=${(from: number, to: number, text: string, link: string) =>
-            this.setLink(from, to, text, link)}
-          onMentionClick=${() => this.onMentionClick()}
-          onBlockQuoteClick=${() => this.onBlockQuoteClick()}
-          onTableClick=${() => this.onTableClick()}
         />
       `,
       this.menubarWrapper,
     );
-  }
-
-  public onParagraphClick(): void {
-    setToParagraph(this.editorView.state.schema.nodes['paragraph'])(
-      this.editorView.state,
-      this.editorView.dispatch,
-    );
-    // setBlockType(this.editorView.state.schema.nodes['paragraph'])(
-    //   this.editorView.state,
-    //   this.editorView.dispatch,
-    // );
-    this.editorView.focus();
-  }
-
-  public onHeadingClick(level: number): void {
-    setBlockType(this.editorView.state.schema.nodes['heading'], {
-      level,
-    })(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public toggleBold(): void {
-    this._toggleBold(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public toggleItalic(): void {
-    this._toggleItalic(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public toggleStrikethrough(): void {
-    this._toggleStrikethrough(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public toggleInlineCode(): void {
-    this._toggleInlineCode(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public setLink(from: number, to: number, text: string, link: string): void {
-    let tr = this.editorView.state.tr;
-    tr = addLink(tr, from, to, text, link);
-    this.editorView.dispatch(tr);
-    this.editorView.focus();
-  }
-
-  public onAlignClick(alignment: 'left' | 'center' | 'right'): void {
-    setAlignment(alignment)(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onUndoClick(): void {
-    undo(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onRedoClick(): void {
-    redo(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onOrderedListClick(): void {
-    this._toggleOrderedList(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onUnorderedListClick(): void {
-    this._toggleBulletList(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onIncreaseIndentClick(): void {
-    this._indent(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onDecreaseIndentClick(): void {
-    this._deindent(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onMentionClick(): void {
-    this._addMention(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onBlockQuoteClick(): void {
-    this._toggleBlockQuote(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onTableClick(): void {
-    insertTable()(this.editorView.state, this.editorView.dispatch);
-    this.editorView.focus();
-  }
-
-  public onTextColorClick(color: string): void {
-    const { from, to } = this.editorView.state.tr.selection;
-    if (from === to) {
-      toggleMark(this.editorView.state.schema.marks['textColor'], {
-        color,
-      })(this.editorView.state, this.editorView.dispatch);
-      this.editorView.focus();
-      return;
-    }
-    let tr = this.editorView.state.tr;
-    tr = tr.addMark(
-      from,
-      to,
-      this.editorView.state.schema.marks['textColor'].create({
-        color,
-      }),
-    );
-    this.editorView.dispatch(tr);
-    this.editorView.focus();
   }
 
   public destroy() {

@@ -45,31 +45,53 @@
 
   ol.pmp-ordered-list {
     counter-reset: list-1 list-2 list-3 list-4 list-5 list-6;
+    counter-increment: list-0;
+
 
     li.pmp-list-item {
-      &.pmp-list-item-indent-1::before {
-        content: counter(list-1, decimal) '. ';
+      &.pmp-list-item-indent-1 {
+        counter-reset: list-2 list-3 list-4 list-5 list-6 list-7;
         counter-increment: list-1;
+
+        &::before {
+          content: counter(list-1, decimal) '. ';
+        }
       }
-      &.pmp-list-item-indent-2::before {
-        content: counter(list-2, lower-alpha) '. ';
+
+      &.pmp-list-item-indent-2 {
+        counter-reset: list-3 list-4 list-5 list-6 list-7;
         counter-increment: list-2;
+
+        &::before {
+          content: counter(list-2, lower-alpha) '. ';
+        }
       }
-      &.pmp-list-item-indent-3::before {
-        content: counter(list-3, lower-roman) '. ';
+
+      &.pmp-list-item-indent-3 {
+        counter-reset: list-4 list-5 list-6 list-7;
         counter-increment: list-3;
+
+        &::before {
+          content: counter(list-3, lower-roman) '. ';
+        }
       }
-      &.pmp-list-item-indent-4::before {
-        content: counter(list-4, decimal) '. ';
+
+      &.pmp-list-item-indent-4 {
+        counter-reset: list-5 list-6 list-7;
         counter-increment: list-4;
+
+        &::before {
+          content: counter(list-4, decimal) '. ';
+        }
       }
-      &.pmp-list-item-indent-5::before {
-        content: counter(list-5, lower-alpha) '. ';
+
+      &.pmp-list-item-indent-5 {
+        counter-reset: list-6 list-7;
         counter-increment: list-5;
-      }
-      &.pmp-list-item-indent-6::before {
-        content: counter(list-6, lower-roman) '. ';
-        counter-increment: list-6;
+
+        &::before {
+          content: counter(list-5, lower-alpha) '. ';
+        }
       }
     }
   }
