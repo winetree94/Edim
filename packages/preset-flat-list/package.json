@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-angular",
+  "name": "prosemirror-preset-flat-list",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -11,10 +11,15 @@
   "main": "dist/index.js",
   "private": true,
   "dependencies": {
-    "@angular/core": "^16.2.0",
+    "prosemirror-model": "*",
     "prosemirror-state": "*",
-    "prosemirror-view": "*",
-    "prosemirror-preset-core": "*"
+    "prosemirror-transform": "*",
+    "prosemirror-inputrules": "*",
+    "prosemirror-preset-core": "*",
+    "prosemirror-preset-utils": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-utils": "*",
+    "orderedmap": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

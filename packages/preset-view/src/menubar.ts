@@ -6,7 +6,7 @@ import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { findParentNode } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
 import { setBlockType, toggleMark } from 'prosemirror-commands';
-import { indentListItem, toggleList } from 'prosemirror-preset-free-list';
+import { indentListItem, toggleList } from 'prosemirror-preset-flat-list';
 import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { markActive } from 'prosemirror-preset-utils';

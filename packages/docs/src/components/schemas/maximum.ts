@@ -12,7 +12,7 @@ import {
   PMP_FREE_LIST_ITEM_NODE,
   PMP_ORDERED_FREE_LIST_NODE,
   createPmpListPlugins,
-} from 'prosemirror-preset-free-list';
+} from 'prosemirror-preset-flat-list';
 import {
   PMP_HORIZONTAL_RULE_NODE,
   createPmpHorizontalRulePlugins,
@@ -101,7 +101,9 @@ export const maximumSchema = new Schema({
 });
 
 export const maximumPlugins: Plugin[] = [].concat(
-  createPmpParagraphKeymapPlugins(maximumSchema.nodes['paragraph']),
+  createPmpParagraphKeymapPlugins({
+    nodeType: maximumSchema.nodes['paragraph'],
+  }),
   createPmpMentionPlugins({
     view: (view, pluginKey) => {
       return new PmpMentionView(view, pluginKey, (keyword) =>

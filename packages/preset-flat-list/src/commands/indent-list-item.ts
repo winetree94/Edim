@@ -1,6 +1,6 @@
 import { Node } from 'prosemirror-model';
 import { Command, EditorState, Transaction } from 'prosemirror-state';
-import { liftOutOfFreeList } from '../transforms';
+import { liftOutOfFlatList } from '../transforms';
 
 export const indentListItem = (reduce: number): Command => {
   return (
@@ -53,7 +53,7 @@ export const indentListItem = (reduce: number): Command => {
             .blockRange(tr.doc.resolve(pos + node.nodeSize), (node) => {
               return ['ordered_list', 'bullet_list'].includes(node.type.name);
             });
-          return liftOutOfFreeList(tr, range!)!;
+          return liftOutOfFlatList(tr, range!)!;
         }
 
         if (originIndent === expectedIndent) {

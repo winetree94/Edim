@@ -31,7 +31,7 @@ import {
   PMP_FREE_LIST_ITEM_NODE,
   PMP_ORDERED_FREE_LIST_NODE,
   createPmpListPlugins,
-} from 'prosemirror-preset-free-list';
+} from 'prosemirror-preset-flat-list';
 import {
   PMP_HORIZONTAL_RULE_NODE,
   createPmpHorizontalRulePlugins,

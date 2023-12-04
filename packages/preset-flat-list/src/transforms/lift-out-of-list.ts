@@ -2,7 +2,7 @@ import { Fragment, NodeRange, Slice } from 'prosemirror-model';
 import { Transaction } from 'prosemirror-state';
 import { ReplaceAroundStep } from 'prosemirror-transform';
 
-export const liftOutOfFreeList = (
+export const liftOutOfFlatList = (
   tr: Transaction,
   range: NodeRange,
 ): Transaction | null => {

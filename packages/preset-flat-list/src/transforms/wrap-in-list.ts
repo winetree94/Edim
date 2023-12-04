@@ -13,7 +13,7 @@ import {
   ReplaceAroundStep,
 } from 'prosemirror-transform';
 
-export const doWrapInFreeList = (
+export const doWrapInFlatList = (
   tr: Transaction,
   range: NodeRange,
   wrappers: {
@@ -68,7 +68,7 @@ export const doWrapInFreeList = (
 };
 
 // list를 감싸는 것
-export const wrapInFreeList =
+export const wrapInFlatList =
   (listType: NodeType, attrs: Attrs | null = null) =>
   (
     tr: Transaction,
@@ -109,5 +109,5 @@ export const wrapInFreeList =
     if (!wrap) {
       return null;
     }
-    return doWrapInFreeList(tr, range, wrap, doJoin, listType);
+    return doWrapInFlatList(tr, range, wrap, doJoin, listType);
   };

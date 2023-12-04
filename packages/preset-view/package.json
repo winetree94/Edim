@@ -18,7 +18,7 @@
     "prosemirror-commands": "*",
     "prosemirror-history": "*",
     "prosemirror-utils": "*",
-    "prosemirror-preset-free-list": "*",
+    "prosemirror-preset-flat-list": "*",
     "prosemirror-preset-paragraph": "*",
     "prosemirror-preset-core": "*",
     "prosemirror-preset-utils": "*",
