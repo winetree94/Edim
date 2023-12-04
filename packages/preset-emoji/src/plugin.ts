@@ -1,4 +1,3 @@
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { NodeSpec } from 'prosemirror-model';
 
 export interface EmojiAttribute {
@@ -51,20 +50,4 @@ export const PMP_EMOJI_NODE: Record<string, NodeSpec> = {
       ];
     },
   },
-};
-
-export interface EmojiExtensionConfigs {}
-
-export const EmojiExtension = (
-  configs: EmojiExtensionConfigs,
-): PMPluginsFactory => {
-  return () => {
-    return {
-      nodes: {
-        ...PMP_EMOJI_NODE,
-      },
-      marks: {},
-      plugins: () => [],
-    };
-  };
 };

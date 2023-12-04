@@ -1,5 +1,4 @@
 import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { emDash, inputRules } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
 import { toggleMark } from 'prosemirror-commands';
@@ -38,17 +37,4 @@ export const createPmpItalicPlugins = (
       'Mod-I': toggleMark(configs.markType),
     }),
   ];
-};
-
-export const Italic = (): PMPluginsFactory => () => {
-  return {
-    nodes: {},
-    marks: {
-      ...PMP_ITALIC_MARK,
-    },
-    plugins: (schema) =>
-      createPmpItalicPlugins({
-        markType: schema.marks['em'],
-      }),
-  };
 };

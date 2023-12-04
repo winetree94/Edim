@@ -1,5 +1,4 @@
 import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { keymap } from 'prosemirror-keymap';
 import { toggleMark } from 'prosemirror-commands';
 
@@ -48,17 +47,4 @@ export const createPmpStrongPlugins = (
       'Mod-B': toggleMark(configs.markType),
     }),
   ];
-};
-
-export const Strong = (): PMPluginsFactory => () => {
-  return {
-    nodes: {},
-    marks: {
-      ...PMP_STRONG_MARK,
-    },
-    plugins: (schema) =>
-      createPmpStrongPlugins({
-        markType: schema.marks['strong'],
-      }),
-  };
 };

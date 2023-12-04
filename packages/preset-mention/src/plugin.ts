@@ -1,5 +1,4 @@
 import { Plugin, PluginKey, PluginView } from 'prosemirror-state';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { MarkSpec } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { getMentionRange } from './utils';
@@ -162,16 +161,4 @@ export const createPmpMentionPlugins = (
     });
 
   return [mentionPlugin];
-};
-
-export const Mention = (configs: MentionExtensionConfigs): PMPluginsFactory => {
-  return () => {
-    return {
-      nodes: {},
-      marks: {
-        ...PMP_MENTION_MARK,
-      },
-      plugins: () => [createPmpMentionPlugins(configs)[0]],
-    };
-  };
 };

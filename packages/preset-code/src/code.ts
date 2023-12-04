@@ -1,5 +1,4 @@
 import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { keymap } from 'prosemirror-keymap';
 import { toggleMark } from 'prosemirror-commands';
 
@@ -23,17 +22,4 @@ export const createPmpCodePlugins = (configs: CreatePmpCodePluginConfigs) => {
       'Mod-C': toggleMark(configs.markType),
     }),
   ];
-};
-
-export const Code = (): PMPluginsFactory => () => {
-  return {
-    nodes: {},
-    marks: {
-      ...PMP_CODE_MARK,
-    },
-    plugins: (schema) =>
-      createPmpCodePlugins({
-        markType: schema.marks['code'],
-      }),
-  };
 };

@@ -1,5 +1,4 @@
 import { keymap } from 'prosemirror-keymap';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { undoInputRule } from 'prosemirror-inputrules';
 import {
   baseKeymap,
@@ -25,12 +24,4 @@ export const createPmpBasicKeymapPlugins = (
     }),
     keymap(baseKeymap),
   ];
-};
-
-export const BasicKeymap = (): PMPluginsFactory => () => {
-  return {
-    nodes: {},
-    marks: {},
-    plugins: () => createPmpBasicKeymapPlugins({}),
-  };
 };

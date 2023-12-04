@@ -1,6 +1,4 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { MarkSpec, Node } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
+import { MarkSpec } from 'prosemirror-model';
 
 export const PMP_LINK_MARK: Record<string, MarkSpec> = {
   link: {
@@ -27,14 +25,4 @@ export const PMP_LINK_MARK: Record<string, MarkSpec> = {
       return ['a', { href, title }, 0];
     },
   },
-};
-
-export const Link = (): PMPluginsFactory => () => {
-  return {
-    nodes: {},
-    marks: {
-      ...PMP_LINK_MARK,
-    },
-    plugins: () => [],
-  };
 };

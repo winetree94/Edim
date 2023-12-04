@@ -3,7 +3,6 @@ import { inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
 import { Node, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { Command, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -262,21 +261,4 @@ export const createPmpHeadingPlugins = (
       },
     }),
   ];
-};
-
-export const Heading = (config: HeadingConfig): PMPluginsFactory => {
-  return () => {
-    return {
-      nodes: {
-        ...PMP_HEADING_NODE,
-      },
-      marks: {},
-      plugins: (schema: Schema) => {
-        return createPmpHeadingPlugins({
-          nodeType: schema.nodes['heading'],
-          level: config.level,
-        });
-      },
-    };
-  };
 };

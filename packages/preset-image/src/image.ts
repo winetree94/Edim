@@ -1,5 +1,4 @@
 import { NodeSpec } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import {
   createImagePlaceholderPlugin,
   ImagePlaceholderViewProvider,
@@ -93,21 +92,3 @@ export const creatPmpImagePlugins = (configs: CreatePmpImagePluginConfigs) => {
     }),
   ];
 };
-
-export const Image =
-  (configs: ImageExtensionConfigs): PMPluginsFactory =>
-  () => {
-    return {
-      nodes: {
-        ...PMP_IMAGE_NODE,
-      },
-      marks: {},
-      plugins: () => {
-        return [
-          createImagePlaceholderPlugin({
-            placeholderViewProvider: configs.placeholderViewProvider,
-          }),
-        ];
-      },
-    };
-  };

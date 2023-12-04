@@ -1,5 +1,4 @@
 import { MarkSpec } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 export interface TextColorAttributes {
   color: string;
@@ -28,14 +27,4 @@ export const PMP_TEXT_COLOR_MARK: Record<string, MarkSpec> = {
       ];
     },
   },
-};
-
-export const TextColor = (): PMPluginsFactory => () => {
-  return {
-    nodes: {},
-    marks: {
-      ...PMP_TEXT_COLOR_MARK,
-    },
-    plugins: (schema) => [],
-  };
 };

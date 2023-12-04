@@ -1,4 +1,3 @@
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 import { Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
@@ -67,16 +66,4 @@ export const createPmpCommandPlugins = (config: CommandExtensionConfigs) => {
       },
     }),
   ];
-};
-
-export const Command = (config: CommandExtensionConfigs): PMPluginsFactory => {
-  return () => {
-    return {
-      nodes: {},
-      marks: {},
-      plugins: () => {
-        return createPmpCommandPlugins(config);
-      },
-    };
-  };
 };

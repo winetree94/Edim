@@ -1,6 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
 import { DOMOutputSpec, NodeSpec, NodeType } from 'prosemirror-model';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
 
 const hrDOM: DOMOutputSpec = ['hr'];
 export const PMP_HORIZONTAL_RULE_NODE: Record<string, NodeSpec> = {
@@ -34,17 +33,4 @@ export const createPmpHorizontalRulePlugins = (
       },
     }),
   ];
-};
-
-export const Separator = (): PMPluginsFactory => () => {
-  return {
-    nodes: {
-      ...PMP_HORIZONTAL_RULE_NODE,
-    },
-    marks: {},
-    plugins: (schema) =>
-      createPmpHorizontalRulePlugins({
-        nodeType: schema.nodes['horizontal_rule'],
-      }),
-  };
 };

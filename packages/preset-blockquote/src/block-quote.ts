@@ -1,9 +1,12 @@
 import { wrapIn } from 'prosemirror-commands';
 import { inputRules } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
-import { DOMOutputSpec, NodeSpec, NodeType, Schema } from 'prosemirror-model';
-import { wrappingInputRuleWithJoin } from 'prosemirror-preset-utils';
-import { PMPluginsFactory } from 'prosemirror-preset-core';
+import { DOMOutputSpec, NodeSpec, NodeType } from 'prosemirror-model';
+import { Plugin as PMPlugin } from 'prosemirror-state';
+import {
+  createPmpMergeAdjacentNodePlugins,
+  wrappingInputRuleWithJoin,
+} from 'prosemirror-preset-utils';
 
 const blockquoteDOM: DOMOutputSpec = ['blockquote', 0];
 export const PMP_BLOCKQUOTE_NODE: Record<string, NodeSpec> = {
@@ -30,7 +33,7 @@ export interface CreateBlockQuotePluginConfigs {
 
 export const createPmpBlockQuotePlugins = (
   configs: CreateBlockQuotePluginConfigs,
-) => {
+): PMPlugin[] => {
   return [
     inputRules({
       rules: [blockQuoteRule(configs.nodeType)],
@@ -38,18 +41,12 @@ export const createPmpBlockQuotePlugins = (
     keymap({
       'Ctrl->': wrapIn(configs.nodeType),
     }),
+    ...createPmpMergeAdjacentNodePlugins({
+      specs: [
+        {
+          nodeType: configs.nodeType,
+        },
+      ],
+    }),
   ];
-};
-
-export const BlockQuote = (): PMPluginsFactory => () => {
-  return {
-    nodes: {
-      ...PMP_BLOCKQUOTE_NODE,
-    },
-    marks: {},
-    plugins: (schema: Schema) =>
-      createPmpBlockQuotePlugins({
-        nodeType: schema.nodes['blockquote'],
-      }),
-  };
 };
