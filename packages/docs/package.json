@@ -17,14 +17,12 @@
     "clean:dependency": "rimraf node_modules"
   },
   "dependencies": {
-    "@docusaurus/core": "3.0.0",
-    "@docusaurus/preset-classic": "3.0.0",
+    "@docusaurus/core": "^3.0.1",
+    "@docusaurus/preset-classic": "^3.0.1",
+    "@faker-js/faker": "^8.1.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^1.2.1",
     "prism-react-renderer": "^2.1.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "@faker-js/faker": "^8.1.0",
     "prosemirror-commands": "*",
     "prosemirror-dropcursor": "*",
     "prosemirror-gapcursor": "*",
@@ -61,16 +59,18 @@
     "prosemirror-state": "*",
     "prosemirror-transform": "*",
     "prosemirror-view": "*",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "remixicon": "^3.5.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.0.0",
-    "@docusaurus/tsconfig": "3.0.0",
-    "@docusaurus/types": "3.0.0",
-    "typescript": "~5.2.2",
+    "@docusaurus/module-type-aliases": "^3.0.1",
+    "@docusaurus/tsconfig": "^3.0.1",
+    "@docusaurus/types": "^3.0.1",
     "docusaurus-plugin-sass": "^0.2.5",
     "sass": "^1.69.5",
-    "tsconfig-paths-webpack-plugin": "4.1.0"
+    "tsconfig-paths-webpack-plugin": "4.1.0",
+    "typescript": "~5.2.2"
   },
   "browserslist": {
     "production": [

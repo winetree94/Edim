@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import {
   maximumPlugins,
   maximumSchema,
-} from '@site/src/components/schemas/maximum';
+} from '@site/src/components/editor/schemas/maximum';
 import { EditorState } from 'prosemirror-state';
 import { ProseMirror } from 'prosemirror-preset-react';
 import styles from './index.module.scss';
