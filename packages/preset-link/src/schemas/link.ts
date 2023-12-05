@@ -22,7 +22,7 @@ export const PMP_LINK_MARK: Record<string, MarkSpec> = {
     toDOM(node) {
       const href = node.attrs['href'] as string;
       const title = node.attrs['title'] as string;
-      return ['a', { href, title }, 0];
+      return ['a', { href, title, class: 'pmp-link' }, 0];
     },
   },
 };

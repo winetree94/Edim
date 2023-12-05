@@ -1,6 +1,11 @@
-import { PmpParagraph } from './components/paragraph/paragraph';
-import { classes } from './cdk/utils/core';
-import { PmpListItem, PmpUnorderedList } from './components/list/list';
+import {
+  PmpLayer,
+  PmpListItem,
+  PmpUnorderedList,
+  PmpParagraph,
+  classes,
+  html,
+} from 'prosemirror-preset-ui';
 import {
   MentionPluginState,
   MentionPluginView,
@@ -8,10 +13,8 @@ import {
 import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { render } from 'preact';
-import { PmpLayer } from './components/layer';
 import { getMentionRange } from 'prosemirror-preset-mention/src/utils';
 import { useEffect } from 'preact/hooks';
-import { html } from './cdk/render';
 import { forwardRef } from 'preact/compat';
 
 export interface MentionItem {

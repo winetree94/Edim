@@ -1,8 +1,5 @@
-import { PmpButton } from './components/button/button';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { PmpInput } from './components/input/input';
-import { PmpLabel } from './components/label/label';
-import { html } from './cdk/render';
+import { PmpButton, PmpInput, PmpLabel, html } from 'prosemirror-preset-ui';
 import { forwardRef } from 'preact/compat';
 
 export interface PmpLinkFormProps {

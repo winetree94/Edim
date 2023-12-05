@@ -14,7 +14,7 @@ import {
   setAlignment,
   setToParagraph,
 } from 'prosemirror-preset-paragraph';
-import { addLink } from 'prosemirror-preset-link';
+import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
 import { PmpLayer } from 'prosemirror-preset-ui';
@@ -22,8 +22,7 @@ import { PmpSeparator } from 'prosemirror-preset-ui';
 import { PmpButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
 import { PmpColorPicker } from 'prosemirror-preset-ui';
-import { PmpLinkFormLayer } from 'prosemirror-preset-ui';
-import { PMP_DEFAULT_COMMAND_LIST, PmpCommand } from 'prosemirror-preset-ui';
+import { PMP_DEFAULT_COMMAND_LIST, PmpCommand } from 'prosemirror-preset-command';
 import { PmpInput } from 'prosemirror-preset-ui';
 import { TargetedEvent, forwardRef } from 'preact/compat';
 import {

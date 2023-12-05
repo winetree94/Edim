@@ -15,7 +15,8 @@
     "prosemirror-model": "*",
     "prosemirror-preset-core": "*",
     "prosemirror-keymap": "*",
-    "prosemirror-inputrules": "*"
+    "prosemirror-inputrules": "*",
+    "prosemirror-preset-ui": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

@@ -1,5 +1,6 @@
-@import 'remixicon/fonts/remixicon.css';
+@import './icons.scss';
 @import './color.scss';
+
 @import '../src/components/button/button.scss';
 @import '../src/components/input/input.scss';
 @import '../src/components/label/label.scss';
@@ -9,7 +10,3 @@
 @import '../src/components/color-picker/color-picker.scss';
 @import '../src/components/layer/layer.scss';
 @import '../src/components/emoji/emoji.scss';
-@import './command.scss';
-@import './image.scss';
-@import './link.scss';
-@import './mention.scss';

@@ -7,12 +7,6 @@ import { EditorView as CodeMirrorEditorView, basicSetup } from 'codemirror';
 import { json } from '@codemirror/lang-json';
 import { EditorProps, EditorView } from 'prosemirror-view';
 import { EditorState } from 'prosemirror-state';
-import {
-  MentionItem,
-  PmpCommandView,
-  PmpImagePlaceholderViewProvider,
-  PmpMentionView,
-} from 'prosemirror-preset-ui';
 import { PmpMenubarPlugin } from 'prosemirror-preset-menubar';
 import { faker } from '@faker-js/faker';
 import { ProseMirrorModule } from 'src/app/components/prose-mirror/prose-mirror.module';
@@ -40,12 +34,18 @@ import {
   PMP_ITALIC_MARK,
   createPmpItalicPlugins,
 } from 'prosemirror-preset-italic';
-import { PMP_IMAGE_NODE, creatPmpImagePlugins } from 'prosemirror-preset-image';
+import {
+  PMP_IMAGE_NODE,
+  creatPmpImagePlugins,
+  PmpImagePlaceholderViewProvider,
+} from 'prosemirror-preset-image';
 import { createPmpBasicKeymapPlugins } from 'prosemirror-preset-keymap';
 import { createPmpHistoryPlugins } from 'prosemirror-preset-history';
 import {
   PMP_MENTION_MARK,
   createPmpMentionPlugins,
+  MentionItem,
+  PmpMentionView,
 } from 'prosemirror-preset-mention';
 import { PMP_LINK_MARK } from 'prosemirror-preset-link';
 import { PMP_STRIKETHROUGH_MARK } from 'prosemirror-preset-strikethrough';
@@ -70,7 +70,10 @@ import {
   createPmpStrongPlugins,
 } from 'prosemirror-preset-strong';
 import { PMP_EMOJI_NODE } from 'prosemirror-preset-emoji';
-import { createPmpCommandPlugins } from 'prosemirror-preset-command';
+import {
+  createPmpCommandPlugins,
+  PmpCommandView,
+} from 'prosemirror-preset-command';
 import { Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { dropCursor } from 'prosemirror-dropcursor';

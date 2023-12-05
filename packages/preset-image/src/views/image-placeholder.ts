@@ -1,11 +1,7 @@
-import {
-  ImagePlaceholderSpec,
-  ImagePlaceholderViewProvider,
-} from 'prosemirror-preset-image';
 import { render } from 'preact';
-import { classes } from './cdk/utils/core';
-import { html } from './cdk/render';
+import { html, classes } from 'prosemirror-preset-ui';
 import { forwardRef } from 'preact/compat';
+import { ImagePlaceholderViewProvider, ImagePlaceholderSpec } from '../placeholder';
 
 export interface PmpImagePlaceholderProps {
   progress: number;
