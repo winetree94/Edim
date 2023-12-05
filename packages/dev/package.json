@@ -58,6 +58,7 @@
     "prosemirror-preset-text": "*",
     "prosemirror-preset-text-color": "*",
     "prosemirror-preset-ui": "*",
+    "prosemirror-preset-menubar": "*",
     "prosemirror-schema-basic": "*",
     "prosemirror-state": "*",
     "prosemirror-transform": "*",

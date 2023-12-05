@@ -58,8 +58,8 @@ import {
   PmpCommandView,
   PmpImagePlaceholderViewProvider,
   PmpMentionView,
-  PmpMenubarPlugin,
 } from 'prosemirror-preset-ui';
+import { PmpMenubarPlugin } from 'prosemirror-preset-menubar';
 import { faker } from '@faker-js/faker';
 import { Schema } from 'prosemirror-model';
 import { dropCursor } from 'prosemirror-dropcursor';

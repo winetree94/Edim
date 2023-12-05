@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { PmpSeparator } from './components/separator/separator';
-import { PmpButton } from './components/button/button';
 import { render } from 'preact';
 import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { findParentNode } from 'prosemirror-utils';
@@ -19,12 +17,14 @@ import {
 import { addLink } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpLayer } from './components/layer';
+import { PmpLayer } from 'prosemirror-preset-ui';
+import { PmpSeparator } from 'prosemirror-preset-ui';
+import { PmpButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
-import { PmpColorPicker } from './components/color-picker';
-import { PmpLinkFormLayer } from './link';
-import { PMP_DEFAULT_COMMAND_LIST, PmpCommand } from './command';
-import { PmpInput } from './components/input/input';
+import { PmpColorPicker } from 'prosemirror-preset-ui';
+import { PmpLinkFormLayer } from 'prosemirror-preset-ui';
+import { PMP_DEFAULT_COMMAND_LIST, PmpCommand } from 'prosemirror-preset-ui';
+import { PmpInput } from 'prosemirror-preset-ui';
 import { TargetedEvent, forwardRef } from 'preact/compat';
 import {
   ImagePlaceholderAddAction,
@@ -35,9 +35,9 @@ import {
   imagePlaceholderPluginKey,
   parseImageMeta,
 } from 'prosemirror-preset-image';
-import { classes } from './cdk/utils/core';
-import { html } from './cdk/render';
-import { PmpEmojiPicker } from './components/emoji';
+import { classes } from 'prosemirror-preset-ui';
+import { html } from 'prosemirror-preset-ui';
+import { PmpEmojiPicker } from 'prosemirror-preset-ui';
 
 export interface PmpMenubarProps {
   editorView: EditorView;

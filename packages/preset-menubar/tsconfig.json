@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "prosemirror-preset-core": ["../../preset-core/src/index.ts"],
+      "prosemirror-preset-mention": ["../../preset-mention/src/index.ts"],
+      "prosemirror-preset-paragraph": ["../../preset-paragraph/src/index.ts"],
+      "prosemirror-preset-flat-list": ["../../preset-flat-list/src/index.ts"],
+      "prosemirror-preset-image": ["../../preset-image/src/index.ts"],
+      "prosemirror-preset-link": ["../../preset-link/src/index.ts"],
+      "prosemirror-preset-command": ["../../preset-command/src/index.ts"],
+      "prosemirror-preset-tables": ["../../preset-tables/src/index.ts"],
+      "prosemirror-preset-blockquote": ["../../preset-blockquote/src/index.ts"],
+      "prosemirror-preset-ui": ["../../preset-ui/src/index.ts"]
+    }
+  },
+  "include": [
+    "src/*"
+  ],
+  "files": [
+    "src/index.ts"
+  ],
+}

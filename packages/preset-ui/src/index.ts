@@ -5,4 +5,3 @@ export * from './mention';
 export * from './command';
 export * from './image';
 export * from './cdk/render';
-export * from './menubar';

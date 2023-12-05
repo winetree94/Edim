@@ -1,0 +1,40 @@
+{
+  "name": "prosemirror-preset-menubar",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc --watch",
+    "clean:dist": "rimraf dist",
+    "clean:dependency": "rimraf node_modules",
+    "build": "tsc -p ./tsconfig.build.json"
+  },
+  "main": "dist/index.js",
+  "private": true,
+  "dependencies": {
+    "prosemirror-state": "*",
+    "prosemirror-view": "*",
+    "prosemirror-model": "*",
+    "prosemirror-keymap": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-history": "*",
+    "prosemirror-utils": "*",
+    "prosemirror-preset-flat-list": "*",
+    "prosemirror-preset-paragraph": "*",
+    "prosemirror-preset-core": "*",
+    "prosemirror-preset-mention": "*",
+    "prosemirror-preset-image": "*",
+    "prosemirror-preset-link": "*",
+    "prosemirror-preset-tables": "*",
+    "prosemirror-preset-command": "*",
+    "prosemirror-preset-blockquote": "*",
+    "prosemirror-preset-ui": "*",
+    "emoji-datasource": "15.0.1",
+    "preact": "*",
+    "htm": "*",
+    "remixicon": "^3.5.0"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
+  }
+}
