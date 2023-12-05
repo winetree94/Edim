@@ -2,14 +2,10 @@
 import { render } from 'preact';
 import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import {
-  CommandPluginState,
-  CommandPluginView,
-} from 'prosemirror-preset-command';
+import { CommandPluginState, CommandPluginView } from '../plugin';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
-import { 
-  PmpOverlay,
+import {
   PmpLayer,
   PmpListItem,
   PmpUnorderedList,
@@ -149,7 +145,6 @@ export class PmpCommandView implements CommandPluginView {
 
     render(
       html`
-        <${PmpOverlay}>asdfasdf</${PmpOverlay}>
         <${PmpLayer}
           left=${start.left}
           top=${end.bottom}

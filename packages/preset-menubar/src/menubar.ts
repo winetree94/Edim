@@ -17,12 +17,15 @@ import {
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpLayer } from 'prosemirror-preset-ui';
+import { PmpLayer, PmpSelect } from 'prosemirror-preset-ui';
 import { PmpSeparator } from 'prosemirror-preset-ui';
-import { PmpButton } from 'prosemirror-preset-ui';
+import { PmpIconButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
 import { PmpColorPicker } from 'prosemirror-preset-ui';
-import { PMP_DEFAULT_COMMAND_LIST, PmpCommand } from 'prosemirror-preset-command';
+import {
+  PMP_DEFAULT_COMMAND_LIST,
+  PmpCommand,
+} from 'prosemirror-preset-command';
 import { PmpInput } from 'prosemirror-preset-ui';
 import { TargetedEvent, forwardRef } from 'preact/compat';
 import {
@@ -263,7 +266,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         props.isScrolltop ? 'scroll-top' : '',
       )}
       >
-      <${PmpButton}
+      <${PmpIconButton}
         disabled=${!canUndo}
         onClick=${() => {
           undo(props.editorView.state, props.editorView.dispatch);
@@ -271,8 +274,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-arrow-go-back-line" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         disabled=${!canRedo}
         onClick=${() => {
           redo(props.editorView.state, props.editorView.dispatch);
@@ -280,10 +283,10 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-arrow-go-forward-line" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
       
-      <${PmpButton}
+      <${PmpIconButton}
         className=${activeParagraph ? 'selected' : ''}
         onClick=${() => {
           setToParagraph(props.editorView.state.schema.nodes['paragraph'])(
@@ -294,8 +297,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-text" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         disabled=${!canNormalText}
         className=${activeH1 ? 'selected' : ''}
         onClick=${() => {
@@ -306,8 +309,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-h-1" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         disabled=${!canNormalText}
         className=${activeH2 ? 'selected' : ''}
         onClick=${() => {
@@ -318,8 +321,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-h-2" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         disabled=${!canNormalText}
         className=${activeH3 ? 'selected' : ''}
         onClick=${() => {
@@ -330,8 +333,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-h-3" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         disabled=${!canNormalText}
         className=${activeH4 ? 'selected' : ''}
         onClick=${() => {
@@ -342,8 +345,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-h-4" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         disabled=${!canNormalText}
         className=${activeH5 ? 'selected' : ''}
         onClick=${() => {
@@ -354,8 +357,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-h-5" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         disabled=${!canNormalText}
         className=${activeH6 ? 'selected' : ''}
         onClick=${() => {
@@ -366,10 +369,10 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-h-6" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <${PmpButton}
+      <${PmpIconButton}
         className=${activeBold ? 'selected' : ''}
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['strong'])(
@@ -380,8 +383,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-bold" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         className=${activeItalic ? 'selected' : ''}
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['em'])(
@@ -392,8 +395,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-italic" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         className=${activeStrikethrough ? 'selected' : ''}
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['strikethrough'])(
@@ -404,8 +407,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-strikethrough-2" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         className=${activeInlineCode ? 'selected' : ''}
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['code'])(
@@ -416,8 +419,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-code-line" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         ref=${textColorButtonRef}
         onClick=${() => {
           const rect = textColorButtonRef.current!.getBoundingClientRect();
@@ -428,7 +431,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-font-color" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       ${
         textColorLayerRef &&
         html`
@@ -467,7 +470,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       }
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <${PmpButton}
+      <${PmpIconButton}
         className=${activeAlignLeft ? 'selected' : ''}
         onClick=${() => {
           setAlignment('left')(
@@ -478,8 +481,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-align-left" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         className=${activeAlignCenter ? 'selected' : ''}
         onClick=${() => {
           setAlignment('center')(
@@ -490,8 +493,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-align-center" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         className=${activeAlignRight ? 'selected' : ''}
         onClick=${() => {
           setAlignment('right')(
@@ -502,39 +505,39 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-align-right" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <${PmpButton}
+      <${PmpIconButton}
         className=${activeOrderedList ? 'selected' : ''}
         disabled=${!canOrderedList}
         onClick=${() => onOrderedListClick()}
         >
         <i className="ri-list-ordered" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         className=${activeUnorderedList ? 'selected' : ''}
         disabled=${!canBulletList}
         onClick=${() => onUnorderedListClick()}
         >
         <i className="ri-list-unordered" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         onClick=${() => onDecreaseIndentClick()}
         >
         <i className="ri-indent-decrease" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         onClick=${() => onIncreaseIndentClick()}
         >
         <i className="ri-indent-increase" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <${PmpButton} disabled=${true}>
+      <${PmpIconButton} disabled=${true}>
         <i className="ri-checkbox-line" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         ref=${linkButtonRef}
         onClick=${() => {
           const { from, to } = props.editorView.state.selection;
@@ -551,7 +554,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-links-line" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       ${
         linkLayerRef &&
         html`
@@ -588,30 +591,30 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           void onImageChange(e);
         }}
         />
-      <${PmpButton}
+      <${PmpIconButton}
         onClick=${() => {
           imageInputRef.current!.click();
         }}
         >
         <i className="ri-image-line" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         onClick=${() => {
           addMention()(props.editorView.state, props.editorView.dispatch);
           props.editorView.focus();
         }}
         >
         <i className="ri-at-line" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         onClick=${() => {
           toggleBlockquote()(props.editorView.state, props.editorView.dispatch);
           props.editorView.focus();
         }}
         >
         <i className="ri-double-quotes-l" />
-      </${PmpButton}>
-      <${PmpButton} ref=${emojiButtonRef} onClick=${() => {
+      </${PmpIconButton}>
+      <${PmpIconButton} ref=${emojiButtonRef} onClick=${() => {
         const rect = emojiButtonRef.current!.getBoundingClientRect();
         setEmojiLayerRef({
           top: rect.top + rect.height + 10,
@@ -619,7 +622,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         });
       }}>
         <i className="ri-emoji-sticker-line" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       ${
         emojiLayerRef &&
         html`
@@ -634,18 +637,18 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         </${PmpLayer}>
       `
       }
-      <${PmpButton}
+      <${PmpIconButton}
         onClick=${() => {
           insertTable()(props.editorView.state, props.editorView.dispatch);
           props.editorView.focus();
         }}
         >
         <i className="ri-table-2" />
-      </${PmpButton}>
-      <${PmpButton} disabled=${true}>
+      </${PmpIconButton}>
+      <${PmpIconButton} disabled=${true}>
         <i className="ri-code-s-slash-fill" />
-      </${PmpButton}>
-      <${PmpButton}
+      </${PmpIconButton}>
+      <${PmpIconButton}
         ref=${commandButtonRef}
         onClick=${() => {
           const rect = commandButtonRef.current!.getBoundingClientRect();
@@ -657,7 +660,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-slash-commands" />
-      </${PmpButton}>
+      </${PmpIconButton}>
       ${
         commandLayerRef &&
         html`
@@ -686,6 +689,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         </${PmpLayer}>
       `
       }
+      <${PmpSelect.Root}>
+        <${PmpSelect.Text}>Selection</${PmpSelect.Text}>
+      </${PmpSelect.Root}>
     </div>
   `;
 });
