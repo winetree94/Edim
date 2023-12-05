@@ -1,4 +1,9 @@
 .ProseMirror {
+
+  li.pmp-list-item {
+    position: relative;
+  }
+
   ul.pmp-bullet-list,
   ol.pmp-ordered-list {
     padding-left: 0;
@@ -15,7 +20,8 @@
         position: absolute;
         font-family: Arial, sans-serif;
         text-align: center;
-        left: -20px;
+        left: -2em;
+        width: 2em;
       }
     }
   }
@@ -46,7 +52,6 @@
   ol.pmp-ordered-list {
     counter-reset: list-1 list-2 list-3 list-4 list-5 list-6;
     counter-increment: list-0;
-
 
     li.pmp-list-item {
       &.pmp-list-item-indent-1 {
