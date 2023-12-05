@@ -1,5 +1,5 @@
 import { Command } from 'prosemirror-state';
-import { NodePair } from 'prosemirror-preset-utils';
+import { NodePair } from 'prosemirror-preset-core';
 
 export const toggleBlockquote = (): Command => {
   return (state, dispatch) => {

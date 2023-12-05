@@ -4,7 +4,7 @@ import {
   createPmpListInputRulePlugins,
   createPmpListKeymapPlugins,
 } from './plugins';
-import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-utils';
+import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
 
 export interface PmpListPluginsConfig {
   orderListNodeType: NodeType;

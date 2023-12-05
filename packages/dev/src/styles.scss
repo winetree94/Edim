@@ -7,7 +7,6 @@
 @import 'prosemirror-preset-blockquote/styles/blockquote.scss';
 @import 'prosemirror-preset-paragraph/styles/paragraph.scss';
 @import 'prosemirror-preset-mention/styles/mention.scss';
-@import 'prosemirror-preset-list/styles/list.scss';
 @import 'prosemirror-preset-flat-list/styles/flat-list.scss';
 @import 'prosemirror-preset-image/styles/image.scss';
 @import 'prosemirror-preset-emoji/styles/emoji.scss';
@@ -15,19 +14,7 @@
 @import 'prosemirror-preset-command/styles/command.scss';
 
 // pmp view
-@import 'prosemirror-preset-view/styles/layer.scss';
-@import 'prosemirror-preset-view/styles/link.scss';
-@import 'prosemirror-preset-view/styles/button.scss';
-@import 'prosemirror-preset-view/styles/separator.scss';
-@import 'prosemirror-preset-view/styles/color.scss';
-@import 'prosemirror-preset-view/styles/input.scss';
-@import 'prosemirror-preset-view/styles/paragraph.scss';
-@import 'prosemirror-preset-view/styles/label.scss';
-@import 'prosemirror-preset-view/styles/list.scss';
-@import 'prosemirror-preset-view/styles/command.scss';
-@import 'prosemirror-preset-view/styles/mention.scss';
-@import 'prosemirror-preset-view/styles/image.scss';
-@import 'prosemirror-preset-view/styles/menubar.scss';
+@import 'prosemirror-preset-ui/styles/ui.scss';
 
 /* You can add global styles to this file, and also import other style files */
 body {

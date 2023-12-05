@@ -1,6 +1,6 @@
-import { Command, EditorState, Transaction } from 'prosemirror-state';
-import { NodePair } from 'prosemirror-preset-utils';
-import { Attrs, Node } from 'prosemirror-model';
+import { Command, Transaction } from 'prosemirror-state';
+import { NodePair } from 'prosemirror-preset-core';
+import { Attrs } from 'prosemirror-model';
 
 export const setAlignment = (align: 'left' | 'right' | 'center'): Command => {
   return (state, dispatch) => {

@@ -48,10 +48,8 @@
       "prosemirror-preset-keymap": ["../preset-keymap/src/index.ts"],
       "prosemirror-preset-text": ["../preset-text/src/index.ts"],
       "prosemirror-preset-text-color": ["../preset-text-color/src/index.ts"],
-      "prosemirror-preset-utils": ["../preset-utils/src/index.ts"],
       "prosemirror-preset-code": ["../preset-code/src/index.ts"],
-      "prosemirror-preset-list": ["../preset-list/src/index.ts"],
-      "prosemirror-preset-view": ["../preset-view/src/index.ts"],
+      "prosemirror-preset-ui": ["../preset-ui/src/index.ts"],
     }
   },
   "angularCompilerOptions": {

@@ -6,7 +6,7 @@
     "declaration": true,
     "paths": {
       "prosemirror-preset-core": ["../../preset-core/src/index.ts"],
-      "prosemirror-preset-view": ["../../preset-view/src/index.ts"]
+      "prosemirror-preset-ui": ["../../preset-ui/src/index.ts"]
     }
   },
   "include": [

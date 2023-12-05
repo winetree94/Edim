@@ -1,6 +1,6 @@
 import { inputRules } from 'prosemirror-inputrules';
 import { NodeType } from 'prosemirror-model';
-import { wrappingInputRuleWithJoin } from 'prosemirror-preset-utils';
+import { wrappingInputRuleWithJoin } from 'prosemirror-preset-core';
 import { Plugin } from 'prosemirror-state';
 
 /// Given a list node type, returns an input rule that turns a number

@@ -11,12 +11,10 @@
   "main": "dist/index.js",
   "private": true,
   "dependencies": {
-    "preact": "*",
-    "htm": "*",
     "prosemirror-state": "*",
     "prosemirror-model": "*",
-    "prosemirror-dropcursor": "*",
-    "prosemirror-gapcursor": "*"
+    "prosemirror-transform": "*",
+    "prosemirror-inputrules": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

@@ -6,7 +6,7 @@ import {
   maximumSchema,
 } from '@site/src/components/editor/schemas/maximum';
 import { EditorState } from 'prosemirror-state';
-import { ProseMirror } from 'prosemirror-preset-react';
+import { ProseMirror } from '@site/src/components/editor/prose-mirror';
 import styles from './index.module.scss';
 
 export default function Home(): JSX.Element {

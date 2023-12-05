@@ -16,7 +16,7 @@
     "prosemirror-transform": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-preset-core": "*",
-    "prosemirror-preset-utils": "*",
+    "prosemirror-preset-core": "*",
     "prosemirror-commands": "*",
     "prosemirror-utils": "*",
     "orderedmap": "*"

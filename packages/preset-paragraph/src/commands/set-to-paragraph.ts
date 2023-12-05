@@ -1,5 +1,5 @@
 import { NodeType } from 'prosemirror-model';
-import { NodePair } from 'prosemirror-preset-utils';
+import { NodePair } from 'prosemirror-preset-core';
 import { Command } from 'prosemirror-state';
 
 export const setToParagraph =

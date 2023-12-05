@@ -1,4 +1,4 @@
-import { html } from 'prosemirror-preset-core';
+import { html } from 'prosemirror-preset-ui';
 
 export const PmpTableCellButtonWrapper = () => {
   return html` <button>laksdjf</button> `;

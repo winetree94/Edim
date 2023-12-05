@@ -3,7 +3,7 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import { findCellClosestToPos } from '../utils';
 import { PmpTableCellButtonWrapper } from '../components';
 import { render } from 'preact';
-import { html } from 'prosemirror-preset-core';
+import { html } from 'prosemirror-preset-ui';
 
 export const tableCellButtonPluginKey = new PluginKey('tableCellButtonPlugin');
 

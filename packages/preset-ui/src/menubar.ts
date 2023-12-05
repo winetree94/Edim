@@ -9,7 +9,7 @@ import { setBlockType, toggleMark } from 'prosemirror-commands';
 import { indentListItem, toggleList } from 'prosemirror-preset-flat-list';
 import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
-import { markActive } from 'prosemirror-preset-utils';
+import { markActive } from 'prosemirror-preset-core';
 import {
   getRangeFirstAlignment,
   getRangeIsText,

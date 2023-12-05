@@ -1,7 +1,7 @@
 import { Fragment, NodeType } from 'prosemirror-model';
 import { Command } from 'prosemirror-state';
 import { liftOut } from '../transforms';
-import { getBlockContainerChildren } from 'prosemirror-preset-utils';
+import { getBlockContainerChildren } from 'prosemirror-preset-core';
 
 const allowedContentTypes = [
   'paragraph',

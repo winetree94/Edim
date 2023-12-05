@@ -13,7 +13,7 @@ import {
   PmpImagePlaceholderViewProvider,
   PmpMentionView,
   PmpMenubarPlugin,
-} from 'prosemirror-preset-view';
+} from 'prosemirror-preset-ui';
 import { faker } from '@faker-js/faker';
 import { ProseMirrorModule } from 'src/app/components/prose-mirror/prose-mirror.module';
 

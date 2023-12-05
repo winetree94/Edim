@@ -2,7 +2,7 @@ import { inputRules } from 'prosemirror-inputrules';
 import { Plugin as PMPlugin } from 'prosemirror-state';
 import {
   wrappingInputRuleWithJoin,
-} from 'prosemirror-preset-utils';
+} from 'prosemirror-preset-core';
 import { NodeType } from 'prosemirror-model';
 
 /// Given a blockquote node type, returns an input rule that turns `"> "`

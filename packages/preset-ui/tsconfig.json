@@ -12,7 +12,6 @@
       "prosemirror-preset-paragraph": ["../../preset-paragraph/src/index.ts"],
       "prosemirror-preset-flat-list": ["../../preset-flat-list/src/index.ts"],
       "prosemirror-preset-image": ["../../preset-image/src/index.ts"],
-      "prosemirror-preset-utils": ["../../preset-utils/src/index.ts"],
       "prosemirror-preset-link": ["../../preset-link/src/index.ts"],
       "prosemirror-preset-command": ["../../preset-command/src/index.ts"],
       "prosemirror-preset-tables": ["../../preset-tables/src/index.ts"],

@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-view",
+  "name": "prosemirror-preset-ui",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -21,7 +21,6 @@
     "prosemirror-preset-flat-list": "*",
     "prosemirror-preset-paragraph": "*",
     "prosemirror-preset-core": "*",
-    "prosemirror-preset-utils": "*",
     "prosemirror-preset-mention": "*",
     "prosemirror-preset-image": "*",
     "prosemirror-preset-link": "*",

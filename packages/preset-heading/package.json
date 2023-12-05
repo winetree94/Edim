@@ -17,7 +17,7 @@
     "prosemirror-inputrules": "*",
     "prosemirror-state": "*",
     "prosemirror-preset-core": "*",
-    "prosemirror-preset-utils": "*"
+    "prosemirror-preset-core": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

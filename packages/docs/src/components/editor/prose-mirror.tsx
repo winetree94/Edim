@@ -10,13 +10,13 @@ export interface ProseMirrorProps extends DirectEditorProps {
 }
 
 export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
-  ({ className, onStateChange, state, ...props }, ref) => {
+  ({ className, state, ...props }, ref) => {
     const editorDomRef = useRef<HTMLDivElement>(null);
     const editorViewRef = useRef<EditorView | null>(null);
 
     useImperativeHandle(ref, () => ({
       get view() {
-        return editorViewRef.current!;
+        return editorViewRef.current;
       },
     }));
 

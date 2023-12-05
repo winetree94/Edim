@@ -17,8 +17,6 @@
     "prosemirror-keymap": "*",
     "prosemirror-model": "*",
     "prosemirror-preset-core": "*",
-    "prosemirror-preset-list": "*",
-    "prosemirror-preset-utils": "*",
     "prosemirror-state": "*",
     "prosemirror-transform": "*"
   },

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { ProseMirror, ProseMirrorRef } from 'prosemirror-preset-react';
+import { ProseMirror, ProseMirrorRef } from './prose-mirror';
 import { EditorState } from 'prosemirror-state';
 import {
   maximumPlugins,

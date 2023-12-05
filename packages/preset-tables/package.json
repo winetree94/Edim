@@ -12,13 +12,14 @@
   },
   "dependencies": {
     "prosemirror-preset-core": "*",
+    "prosemirror-preset-ui": "*",
     "prosemirror-keymap": "*",
     "prosemirror-model": "*",
     "prosemirror-state": "*",
     "prosemirror-transform": "*",
-    "prosemirror-tables": ">=1.0.0",
+    "prosemirror-tables": "*",
     "prosemirror-view": "*",
-    "prosemirror-utils": ">=1.0.0"
+    "prosemirror-utils": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

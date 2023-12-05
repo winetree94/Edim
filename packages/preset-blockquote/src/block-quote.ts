@@ -6,7 +6,7 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import {
   createPmpMergeAdjacentNodePlugins,
   wrappingInputRuleWithJoin,
-} from 'prosemirror-preset-utils';
+} from 'prosemirror-preset-core';
 
 const blockquoteDOM: DOMOutputSpec = ['blockquote', 0];
 export const PMP_BLOCKQUOTE_NODE: Record<string, NodeSpec> = {

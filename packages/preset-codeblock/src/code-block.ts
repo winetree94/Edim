@@ -2,7 +2,7 @@ import { DOMOutputSpec, NodeSpec, NodeType } from 'prosemirror-model';
 import { inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
 import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
-import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-utils';
+import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
 
 const preDOM: DOMOutputSpec = [
   'pre',
