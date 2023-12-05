@@ -10,9 +10,18 @@
 }
 
 .EditorWrapper {
+  margin-top: 100px;
+  padding: 60px 30px;
+  border: 2px solid black;
+  background-color: #c8ccd2;
+  border-radius: 60px;
+}
+
+.Editor {
   display: flex;
   flex: 1 1 auto;
   width: 100%;
   max-width: 1080px;
-  max-height: 500px;
+  height: 500px;
+  border: 2px solid black;
 }

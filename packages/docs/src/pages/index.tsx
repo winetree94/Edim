@@ -25,15 +25,14 @@ export default function Home(): JSX.Element {
       description="Description will go into a meta tag in <head />"
       wrapperClassName={styles.EditorContainer}
     >
-      <h1 className={styles.Header}>
-        Fully customizable headless rich text editor
-      </h1>
-      <ProseMirror
-        state={editorState}
-        onStateChange={(state) => setEditorState(state)}
-        attributes={{ spellCheck: 'false' }}
-        className={styles.EditorWrapper}
-      ></ProseMirror>
+      <div className={styles.EditorWrapper}>
+        <ProseMirror
+          state={editorState}
+          onStateChange={(state) => setEditorState(state)}
+          attributes={{ spellCheck: 'false' }}
+          className={styles.Editor}
+        ></ProseMirror>
+      </div>
     </Layout>
   );
 }
