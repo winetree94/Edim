@@ -1,6 +1,6 @@
 import { JSX } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { html } from '../../cdk/render';
+import { html } from '../../cdk';
 import { forwardRef } from 'preact/compat';
 
 export interface PmpLayerProps {
@@ -21,7 +21,9 @@ export interface PmpLayerProps {
 
 export const PmpLayer = forwardRef((props: PmpLayerProps) => {
   useEffect(() => {
-    if (!props.closeOnEsc) return;
+    if (!props.closeOnEsc) {
+      return;
+    }
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         props.onClose?.();

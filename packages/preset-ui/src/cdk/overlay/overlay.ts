@@ -1,6 +1,6 @@
 import { html } from '../render';
-import { createContext } from 'preact';
-import { createPortal } from 'preact/compat';
+import { createContext, createRef, render } from 'preact';
+import { forwardRef } from 'preact/compat';
 
 export interface OverlayContext {
   elements: JSX.Element[];
@@ -14,25 +14,44 @@ const OverlayContext = createContext<OverlayContext>({
   close: () => {},
 });
 
-export const overlayContainer = document.createElement('div');
-overlayContainer.classList.add('pmp-overlay-container');
-document.body.appendChild(overlayContainer);
+const overlayContainer = ((): HTMLDivElement => {
+  const exist = document.querySelector(
+    'div.pmp-overlay-container',
+  ) as HTMLDivElement;
+  if (exist) {
+    return exist;
+  }
+  const div = document.createElement('div');
+  div.classList.add('pmp-overlay-container');
+  document.body.appendChild(div);
+  return div;
+})();
 
-export const PmpOverlay2 = () => {
+const overlayRendered: JSX.Element[] = [];
+const overlayRef = createRef();
+
+const PmpOverlay2 = forwardRef<void>(() => {
   const open = () => {};
   const close = () => {};
   return html`
-    <div>
-      <${OverlayContext.Provider} value=${{
-        elements: [],
-        open,
-        close,
-      }}>
-      </${OverlayContext.Provider}>
-    </div>
+    <${OverlayContext.Provider} value="${{
+      elements: [],
+      open,
+      close,
+    }}">
+    </${OverlayContext.Provider}>
   `;
+});
+
+export const reRenderOverlay = () => {
+  render(
+    html`
+      <${PmpOverlay2}>
+        ${overlayRendered}
+      </${PmpOverlay2}>
+    `,
+    overlayContainer,
+  );
 };
 
-export const PmpOverlay = (props: { children: JSX.Element }) => {
-  return createPortal(props.children, overlayContainer);
-};
+reRenderOverlay();

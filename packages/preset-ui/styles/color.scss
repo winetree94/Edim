@@ -1,4 +1,31 @@
+
+
+
 :root {
+  --white-50: #ffffff;
+  --white-100: #efefef;
+  --white-200: #dcdcdc;
+  --white-300: #bdbdbd;
+  --white-400: #989898;
+  --white-500: #7c7c7c;
+  --white-600: #656565;
+  --white-700: #525252;
+  --white-800: #464646;
+  --white-900: #3d3d3d;
+  --white-950: #292929;
+
+  --black-50: #f6f6f6;
+  --black-100: #e7e7e7;
+  --black-200: #d1d1d1;
+  --black-300: #b0b0b0;
+  --black-400: #888888;
+  --black-500: #6d6d6d;
+  --black-600: #5d5d5d;
+  --black-700: #4f4f4f;
+  --black-800: #454545;
+  --black-900: #3d3d3d;
+  --black-950: #000000;
+
   --spindle-50: #f1f6fd;
   --spindle-100: #dfebfa;
   --spindle-200: #c7dcf6;

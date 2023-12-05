@@ -8,25 +8,29 @@
   outline: none;
 
   font-size: 16px;
-  height: 28px;
-  color: #172b4d;
+  height: var(--ui-height);
+  color: var(--spindle-950);
+
+  &.pmp-icon-button {
+    width: var(--ui-height);
+  }
 
   &.selected {
     font-weight: bold;
-    color: #0c66e4;
-    background: #e9f2ff;
+    color: var(--spindle-700);
+    background-color: var(--spindle-100);
   }
 
   &:disabled {
     cursor: not-allowed;
-    color: #b9c0c9;
+    color: var(--white-300);
   }
 
   &:hover:not(:disabled) {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--white-100);
   }
 
   &:active:not(:disabled) {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--white-200);
   }
 }

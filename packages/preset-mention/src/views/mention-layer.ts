@@ -6,14 +6,12 @@ import {
   classes,
   html,
 } from 'prosemirror-preset-ui';
-import {
-  MentionPluginState,
-  MentionPluginView,
-} from 'prosemirror-preset-mention';
+import { MentionPluginView } from '../plugin';
+import { MentionPluginState } from '../state';
 import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { render } from 'preact';
-import { getMentionRange } from 'prosemirror-preset-mention/src/utils';
+import { getMentionRange } from '../utils';
 import { useEffect } from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
 

@@ -7,3 +7,4 @@ export * from './layer';
 export * from './paragraph';
 export * from './separator';
 export * from './color-picker';
+export * from './select';
