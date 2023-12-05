@@ -1,20 +1,13 @@
-.pmp-color-picker {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin: 10px;
-
-  .pmp-color-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-}
-
-.pmp-color {
-  border: 1px solid transparent;
-  width: 26px;
-  height: 26px;
-  border-radius: 4px;
-  cursor: pointer;
+:root {
+  --spindle-50: #f1f6fd;
+  --spindle-100: #dfebfa;
+  --spindle-200: #c7dcf6;
+  --spindle-300: #b0cff2;
+  --spindle-400: #74a7e6;
+  --spindle-500: #5388de;
+  --spindle-600: #3e6cd2;
+  --spindle-700: #3559c0;
+  --spindle-800: #314a9c;
+  --spindle-900: #2c417c;
+  --spindle-950: #1f294c;
 }
