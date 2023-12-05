@@ -3,8 +3,8 @@ import {
   ImagePlaceholderViewProvider,
 } from 'prosemirror-preset-image';
 import { render } from 'preact';
-import { classes } from './cdk/core';
-import { html } from './cdk/html';
+import { classes } from './cdk/utils/core';
+import { html } from './cdk/render';
 import { forwardRef } from 'preact/compat';
 
 export interface PmpImagePlaceholderProps {

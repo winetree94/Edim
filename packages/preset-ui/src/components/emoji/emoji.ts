@@ -1,7 +1,7 @@
-import { classes } from './cdk/core';
-import { html } from './cdk/html';
+import { classes } from '../../cdk/utils/core';
+import { html } from '../../cdk/render';
 import emojiDataJson from 'emoji-datasource/emoji.json';
-import { PmpButton } from './components/button';
+import { PmpButton } from '../button';
 import { useState } from 'preact/hooks';
 
 export interface PmpEmoji {

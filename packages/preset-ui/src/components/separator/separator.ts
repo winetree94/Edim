@@ -1,7 +1,7 @@
 import { forwardRef } from 'preact/compat';
-import { classes } from '../cdk/core';
+import { classes } from '../../cdk/utils/core';
 import { JSX } from 'preact';
-import { html } from '../cdk/html';
+import { html } from '../../cdk/render';
 
 export interface PmpSeparatorProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 

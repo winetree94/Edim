@@ -1,8 +1,8 @@
-import { PmpButton } from './components/button';
+import { PmpButton } from './components/button/button';
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { PmpInput } from './components/input';
-import { PmpLabel } from './components/label';
-import { html } from './cdk/html';
+import { PmpInput } from './components/input/input';
+import { PmpLabel } from './components/label/label';
+import { html } from './cdk/render';
 import { forwardRef } from 'preact/compat';
 
 export interface PmpLinkFormProps {

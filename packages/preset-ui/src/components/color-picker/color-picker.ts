@@ -1,5 +1,5 @@
-import { html } from './cdk/html';
-import { classes } from './cdk/core';
+import { html } from '../../cdk/render';
+import { classes } from '../../cdk/utils/core';
 import { HTMLAttributes, forwardRef } from 'preact/compat';
 
 const COLORS = [

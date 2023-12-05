@@ -8,12 +8,12 @@ import {
 } from 'prosemirror-preset-command';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpOverlay } from './components/overlay';
-import { PmpLayer } from './layer';
-import { PmpListItem, PmpUnorderedList } from './components/list';
-import { PmpParagraph } from './components/paragraph';
-import { classes } from './cdk/core';
-import { html } from './cdk/html';
+import { PmpOverlay } from './cdk/overlay/overlay';
+import { PmpLayer } from './components/layer';
+import { PmpListItem, PmpUnorderedList } from './components/list/list';
+import { PmpParagraph } from './components/paragraph/paragraph';
+import { classes } from './cdk/utils/core';
+import { html } from './cdk/render';
 import { forwardRef } from 'preact/compat';
 
 export interface PmpCommandItem {

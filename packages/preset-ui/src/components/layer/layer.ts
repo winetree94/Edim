@@ -1,6 +1,6 @@
 import { JSX } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { html } from './cdk/html';
+import { html } from '../../cdk/render';
 import { forwardRef } from 'preact/compat';
 
 export interface PmpLayerProps {

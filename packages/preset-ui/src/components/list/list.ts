@@ -1,6 +1,6 @@
 import { forwardRef, HTMLAttributes } from 'preact/compat';
-import { classes } from '../cdk/core';
-import { html } from '../cdk/html';
+import { classes } from '../../cdk/utils/core';
+import { html } from '../../cdk/render';
 
 export interface PmpOrderedListProps extends HTMLAttributes<HTMLOListElement> {}
 

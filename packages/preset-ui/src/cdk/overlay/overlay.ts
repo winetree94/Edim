@@ -1,4 +1,4 @@
-import { html } from '../cdk/html';
+import { html } from '../render';
 import { createContext } from 'preact';
 import { createPortal } from 'preact/compat';
 
@@ -20,9 +20,7 @@ document.body.appendChild(overlayContainer);
 
 export const PmpOverlay2 = () => {
   const open = () => {};
-
   const close = () => {};
-
   return html`
     <div>
       <${OverlayContext.Provider} value=${{
