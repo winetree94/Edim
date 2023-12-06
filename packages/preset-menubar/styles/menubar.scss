@@ -42,6 +42,10 @@
 
 .pmp-menubar-text-select {
   width: 110px;
+
+  &.pmp-heading-selected {
+    color: var(--spindle-700);
+  }
 }
 
 .pmp-view-menubar-separator {

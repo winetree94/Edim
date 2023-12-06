@@ -266,7 +266,10 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       >
 
       <${PmpSelect.Root} 
-        className="pmp-menubar-text-select"
+        className="${classes(
+          'pmp-menubar-text-select',
+          textType !== 'p' ? 'pmp-heading-selected' : '',
+        )}"
         value="${textType}" onChange="${(optionName: string) => {
           const option = textTypeOptions.find(
             (option) => option.value === optionName,
