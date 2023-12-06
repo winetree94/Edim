@@ -21,7 +21,7 @@ import {
   PmpSelect,
 } from 'prosemirror-preset-ui';
 import { PmpSeparator } from 'prosemirror-preset-ui';
-import { PmpIconButton } from 'prosemirror-preset-ui';
+import { PmpButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
 import { PmpColorPicker } from 'prosemirror-preset-ui';
 import {
@@ -295,8 +295,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
 
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <${PmpIconButton}
-        className=${activeBold ? 'selected' : ''}
+      <${PmpButton}
+        className="pmp-icon-button ${activeBold ? 'selected' : ''}"
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['strong'])(
             props.editorView.state,
@@ -306,9 +306,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-bold" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        className=${activeItalic ? 'selected' : ''}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button ${activeItalic ? 'selected' : ''}"
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['em'])(
             props.editorView.state,
@@ -318,9 +318,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-italic" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        className=${activeStrikethrough ? 'selected' : ''}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button ${activeStrikethrough ? 'selected' : ''}"
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['strikethrough'])(
             props.editorView.state,
@@ -330,9 +330,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-strikethrough-2" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        className=${activeInlineCode ? 'selected' : ''}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button ${activeInlineCode ? 'selected' : ''}"
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['code'])(
             props.editorView.state,
@@ -342,8 +342,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-code-line" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
         ref=${textColorButtonRef}
         onClick=${() => {
           const rect = textColorButtonRef.current!.getBoundingClientRect();
@@ -354,7 +355,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-font-color" />
-      </${PmpIconButton}>
+      </${PmpButton}>
       ${
         textColorLayerRef &&
         html`
@@ -394,7 +395,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpSelect.Root} 
-        className="${classes('pmp-menubar-align-select')}"
+        className="pmp-icon-button ${classes('pmp-menubar-align-select')}"
         hideArrow="${true}">
       <${PmpSelect.Text}>
         <i className="ri-align-left" />
@@ -412,8 +413,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       </${PmpSelect.OptionGroup}>
     </${PmpSelect.Root}>
 
-      <${PmpIconButton}
-        className=${activeAlignLeft ? 'selected' : ''}
+      <${PmpButton}
+        className="pmp-icon-button ${activeAlignLeft ? 'selected' : ''}"
         onClick=${() => {
           setAlignment('left')(
             props.editorView.state,
@@ -423,9 +424,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-align-left" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        className=${activeAlignCenter ? 'selected' : ''}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button ${activeAlignCenter ? 'selected' : ''}"
         onClick=${() => {
           setAlignment('center')(
             props.editorView.state,
@@ -435,9 +436,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-align-center" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        className=${activeAlignRight ? 'selected' : ''}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button ${activeAlignRight ? 'selected' : ''}"
         onClick=${() => {
           setAlignment('right')(
             props.editorView.state,
@@ -447,39 +448,42 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-align-right" />
-      </${PmpIconButton}>
+      </${PmpButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <${PmpIconButton}
-        className=${activeOrderedList ? 'selected' : ''}
+      <${PmpButton}
+        className="pmp-icon-button ${activeOrderedList ? 'selected' : ''}"
         disabled=${!canOrderedList}
         onClick=${() => onOrderedListClick()}
         >
         <i className="ri-list-ordered" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        className=${activeUnorderedList ? 'selected' : ''}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button ${activeUnorderedList ? 'selected' : ''}"
         disabled=${!canBulletList}
         onClick=${() => onUnorderedListClick()}
         >
         <i className="ri-list-unordered" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
         onClick=${() => onDecreaseIndentClick()}
         >
         <i className="ri-indent-decrease" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
         onClick=${() => onIncreaseIndentClick()}
         >
         <i className="ri-indent-increase" />
-      </${PmpIconButton}>
+      </${PmpButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
-      <${PmpIconButton} disabled=${true}>
+      <${PmpButton} className="pmp-icon-button" disabled=${true}>
         <i className="ri-checkbox-line" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
         ref=${linkButtonRef}
         onClick=${() => {
           const { from, to } = props.editorView.state.selection;
@@ -496,7 +500,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-links-line" />
-      </${PmpIconButton}>
+      </${PmpButton}>
       ${
         linkLayerRef &&
         html`
@@ -533,30 +537,35 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           void onImageChange(e);
         }}
         />
-      <${PmpIconButton}
+      <${PmpButton}
+        className="pmp-icon-button"
         onClick=${() => {
           imageInputRef.current!.click();
         }}
         >
         <i className="ri-image-line" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
         onClick=${() => {
           addMention()(props.editorView.state, props.editorView.dispatch);
           props.editorView.focus();
         }}
         >
         <i className="ri-at-line" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
         onClick=${() => {
           toggleBlockquote()(props.editorView.state, props.editorView.dispatch);
           props.editorView.focus();
         }}
         >
         <i className="ri-double-quotes-l" />
-      </${PmpIconButton}>
-      <${PmpIconButton} ref=${emojiButtonRef} onClick=${() => {
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
+        ref=${emojiButtonRef} onClick=${() => {
         const rect = emojiButtonRef.current!.getBoundingClientRect();
         setEmojiLayerRef({
           top: rect.top + rect.height + 10,
@@ -564,7 +573,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         });
       }}>
         <i className="ri-emoji-sticker-line" />
-      </${PmpIconButton}>
+      </${PmpButton}>
       ${
         emojiLayerRef &&
         html`
@@ -579,18 +588,20 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         </${PmpLayer}>
       `
       }
-      <${PmpIconButton}
+      <${PmpButton}
+        className="pmp-icon-button"
         onClick=${() => {
           insertTable()(props.editorView.state, props.editorView.dispatch);
           props.editorView.focus();
         }}
         >
         <i className="ri-table-2" />
-      </${PmpIconButton}>
-      <${PmpIconButton} disabled=${true}>
+      </${PmpButton}>
+      <${PmpButton} className="pmp-icon-button" disabled=${true}>
         <i className="ri-code-s-slash-fill" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
         ref=${commandButtonRef}
         onClick=${() => {
           const rect = commandButtonRef.current!.getBoundingClientRect();
@@ -602,7 +613,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         }}
         >
         <i className="ri-slash-commands" />
-      </${PmpIconButton}>
+      </${PmpButton}>
       ${
         commandLayerRef &&
         html`

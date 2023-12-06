@@ -17,17 +17,3 @@ export const PmpButton = forwardRef<HTMLButtonElement, PmpButtonProps>(
     `;
   },
 );
-
-export const PmpIconButton = forwardRef<HTMLButtonElement, PmpButtonProps>(
-  ({ className, children, ...props }, ref) => {
-    return html`
-      <button
-        class="${classes('pmp-button pmp-icon-button', className)}"
-        ...${props}
-        ref="${ref}"
-      >
-        ${children}
-      </button>
-    `;
-  },
-);

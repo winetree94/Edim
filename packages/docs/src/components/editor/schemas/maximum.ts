@@ -154,6 +154,6 @@ export const maximumPlugins: Plugin[] = [].concat(
   createPmpTableEditingPlugins(),
   createPmpBasicKeymapPlugins({}),
   createPmpHistoryPlugins({}),
-  createPmpAlignPlugins(),
+  // createPmpAlignPlugins(),
   [PmpMenubarPlugin, dropCursor(), gapCursor()],
 );
