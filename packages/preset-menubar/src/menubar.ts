@@ -277,10 +277,12 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           option.command();
         }}">
         <${PmpSelect.Text}>
+        <${PmpParagraph}>
           ${
             textTypeOptions.find((option) => option.value === textType)
               ?.label || ''
           }
+        </${PmpParagraph}>
         </${PmpSelect.Text}>
         <${PmpSelect.OptionGroup}>
           ${textTypeOptions.map((option) => {
@@ -566,12 +568,12 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       <${PmpButton}
         className="pmp-icon-button"
         ref=${emojiButtonRef} onClick=${() => {
-        const rect = emojiButtonRef.current!.getBoundingClientRect();
-        setEmojiLayerRef({
-          top: rect.top + rect.height + 10,
-          left: rect.left,
-        });
-      }}>
+          const rect = emojiButtonRef.current!.getBoundingClientRect();
+          setEmojiLayerRef({
+            top: rect.top + rect.height + 10,
+            left: rect.left,
+          });
+        }}>
         <i className="ri-emoji-sticker-line" />
       </${PmpButton}>
       ${

@@ -16,6 +16,9 @@
   &.pmp-icon-button {
     padding: 0;
     width: var(--ui-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &.selected {

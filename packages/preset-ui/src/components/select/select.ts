@@ -95,13 +95,9 @@ export interface PmpSelectTextProps {
   children: JSX.Element;
 }
 
-const PmpSelectText = forwardRef<HTMLParagraphElement, PmpSelectTextProps>(
-  ({ children, ...props }, ref) => {
-    return html`
-      <p className="${classes('pmp-select-text')}" ref="${ref}">${children}</p>
-    `;
-  },
-);
+const PmpSelectText = ({ children }: PmpSelectTextProps) => {
+  return children;
+};
 
 export interface PmpSelectOptionProps {
   children: JSX.Element;
