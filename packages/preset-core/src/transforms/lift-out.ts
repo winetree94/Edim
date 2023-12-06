@@ -1,6 +1,7 @@
 import { EditorState, Transaction } from 'prosemirror-state';
 import { liftTarget } from 'prosemirror-transform';
-import { getBlockContainerChildren, NodePair } from 'prosemirror-preset-core';
+import { getBlockContainerChildren } from '../utils';
+import { NodePair } from '../types';
 
 export interface LiftOutResult {
   tr: Transaction;

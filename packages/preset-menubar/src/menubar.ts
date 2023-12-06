@@ -3,7 +3,7 @@ import { render } from 'preact';
 import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { findParentNode } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
-import { setBlockType, toggleMark } from 'prosemirror-commands';
+import { toggleMark } from 'prosemirror-commands';
 import { indentListItem, toggleList } from 'prosemirror-preset-flat-list';
 import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
@@ -16,12 +16,7 @@ import {
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { insertTable } from 'prosemirror-preset-tables';
 import {
-  PmpHeading1,
-  PmpHeading2,
-  PmpHeading3,
-  PmpHeading4,
-  PmpHeading5,
-  PmpHeading6,
+  PmpHeadingByNumber,
   PmpLayer,
   PmpParagraph,
   PmpSelect,
@@ -49,6 +44,10 @@ import { classes } from 'prosemirror-preset-ui';
 import { html } from 'prosemirror-preset-ui';
 import { PmpEmojiPicker } from 'prosemirror-preset-ui';
 import { getTextType } from './utils';
+import {
+  HeadingLevel,
+  transformRangeToHeading,
+} from 'prosemirror-preset-heading';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
@@ -105,74 +104,19 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const emojiButtonRef = useRef<HTMLButtonElement>(null);
 
   const textType = getTextType(props.editorView.state);
-
-  const options = [
-    {
-      value: 'h1',
-      label: 'Heading 1',
-      Element: PmpHeading1,
+  const textTypeOptions = [
+    ...([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((level) => ({
+      value: `h${level}`,
+      label: `Heading ${level}`,
+      Element: PmpHeadingByNumber[level],
       command: () => {
-        setBlockType(props.editorView.state.schema.nodes['heading'], {
-          level: 1,
-        })(props.editorView.state, props.editorView.dispatch);
+        transformRangeToHeading(
+          props.editorView.state.schema.nodes['heading'],
+          level,
+        )(props.editorView.state, props.editorView.dispatch);
         props.editorView.focus();
       },
-    },
-    {
-      value: 'h2',
-      label: 'Heading 2',
-      Element: PmpHeading2,
-      command: () => {
-        setBlockType(props.editorView.state.schema.nodes['heading'], {
-          level: 2,
-        })(props.editorView.state, props.editorView.dispatch);
-        props.editorView.focus();
-      },
-    },
-    {
-      value: 'h3',
-      label: 'Heading 3',
-      Element: PmpHeading3,
-      command: () => {
-        setBlockType(props.editorView.state.schema.nodes['heading'], {
-          level: 3,
-        })(props.editorView.state, props.editorView.dispatch);
-        props.editorView.focus();
-      },
-    },
-    {
-      value: 'h4',
-      label: 'Heading 4',
-      Element: PmpHeading4,
-      command: () => {
-        setBlockType(props.editorView.state.schema.nodes['heading'], {
-          level: 4,
-        })(props.editorView.state, props.editorView.dispatch);
-        props.editorView.focus();
-      },
-    },
-    {
-      value: 'h5',
-      label: 'Heading 5',
-      Element: PmpHeading5,
-      command: () => {
-        setBlockType(props.editorView.state.schema.nodes['heading'], {
-          level: 5,
-        })(props.editorView.state, props.editorView.dispatch);
-        props.editorView.focus();
-      },
-    },
-    {
-      value: 'h6',
-      label: 'Heading 6',
-      Element: PmpHeading6,
-      command: () => {
-        setBlockType(props.editorView.state.schema.nodes['heading'], {
-          level: 6,
-        })(props.editorView.state, props.editorView.dispatch);
-        props.editorView.focus();
-      },
-    },
+    })),
     {
       value: 'p',
       label: 'Normal',
@@ -328,14 +272,19 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       <${PmpSelect.Root} 
         className="pmp-menubar-text-select"
         value="${textType}" onChange="${(optionName: string) => {
-          const option = options.find((option) => option.value === optionName)!;
+          const option = textTypeOptions.find(
+            (option) => option.value === optionName,
+          )!;
           option.command();
         }}">
         <${PmpSelect.Text}>
-          ${options.find((option) => option.value === textType)?.label || ''}
+          ${
+            textTypeOptions.find((option) => option.value === textType)
+              ?.label || ''
+          }
         </${PmpSelect.Text}>
         <${PmpSelect.OptionGroup}>
-          ${options.map((option) => {
+          ${textTypeOptions.map((option) => {
             return html`
               <${PmpSelect.Option} value="${option.value}">
                 <${option.Element}>${option.label}</${option.Element}> 

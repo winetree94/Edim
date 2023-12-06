@@ -16,7 +16,6 @@
     "prosemirror-commands": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-state": "*",
-    "prosemirror-preset-core": "*",
     "prosemirror-preset-core": "*"
   },
   "devDependencies": {

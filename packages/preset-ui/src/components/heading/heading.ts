@@ -66,3 +66,12 @@ export const PmpHeading6 = forwardRef<
     </h6>
   `;
 });
+
+export const PmpHeadingByNumber = {
+  1: PmpHeading1,
+  2: PmpHeading2,
+  3: PmpHeading3,
+  4: PmpHeading4,
+  5: PmpHeading5,
+  6: PmpHeading6,
+};
