@@ -28,6 +28,7 @@
     "prosemirror-preset-tables": "*",
     "prosemirror-preset-command": "*",
     "prosemirror-preset-blockquote": "*",
+    "prosemirror-preset-strikethrough": "*",
     "prosemirror-preset-ui": "*",
     "emoji-datasource": "15.0.1",
     "preact": "*",

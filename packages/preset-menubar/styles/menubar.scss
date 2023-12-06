@@ -28,16 +28,16 @@
   color: black;
 }
 
+.pmp-view-editor-menubar-root {
+  border-bottom: 1px solid var(--black-100);
+}
+
 .pmp-view-menubar-wrapper {
   padding: 8px 8px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
   position: relative;
-
-  &:not(.scroll-top) {
-    box-shadow: 0 2px 0 0 #EBECF0;
-  }
 }
 
 .pmp-menubar-text-select {
@@ -46,6 +46,10 @@
   &.pmp-heading-selected {
     color: var(--spindle-700);
   }
+}
+
+.pmp-menubar-font-select {
+  width: 110px;
 }
 
 .pmp-color-button {

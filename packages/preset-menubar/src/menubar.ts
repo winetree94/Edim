@@ -43,14 +43,17 @@ import {
 import { classes } from 'prosemirror-preset-ui';
 import { html } from 'prosemirror-preset-ui';
 import { PmpEmojiPicker } from 'prosemirror-preset-ui';
-import { getTextType } from './utils';
+import { currentFontFamily, getTextType } from './utils';
 import { HeadingLevel } from 'prosemirror-preset-heading';
+import {
+  PmpFontFamilyAttrs,
+  PmpFontFamilyMarkType,
+} from 'prosemirror-preset-strikethrough';
 import { transformRangeToBlock } from '../../preset-core/src/commands';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
   editorState: EditorState;
-  isScrolltop: boolean;
 }
 
 const createFakeProgress = (
@@ -128,6 +131,38 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
     },
   ];
 
+  const currentFont = currentFontFamily(props.editorView.state);
+
+  const fontFamilyMarkType = props.editorView.state.schema.marks[
+    'font_family'
+  ] as PmpFontFamilyMarkType;
+
+  const fontOptions = [
+    {
+      label: 'Default',
+      value: 'default',
+      command: () => {
+        const tr =
+          props.editorView.state.tr.removeStoredMark(fontFamilyMarkType);
+        props.editorView.dispatch(tr);
+        props.editorView.focus();
+      },
+    },
+    ...fontFamilyMarkType.spec.fonts.map((font) => ({
+      value: font.fontFamily,
+      label: font.label,
+      command: () => {
+        const tr = props.editorView.state.tr.addStoredMark(
+          fontFamilyMarkType.create({
+            fontFamily: font.fontFamily,
+          }),
+        );
+        props.editorView.dispatch(tr);
+        props.editorView.focus();
+      },
+    })),
+  ];
+
   const alignmentOptions = (['left', 'center', 'right'] as TextAlignment[]).map(
     (align) => {
       return {
@@ -152,6 +187,10 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const activeItalic = markActive(
     props.editorView.state,
     props.editorView.state.schema.marks['em'],
+  );
+  const activeUnderline = markActive(
+    props.editorView.state,
+    props.editorView.state.schema.marks['underline'],
   );
   const activeStrikethrough = markActive(
     props.editorView.state,
@@ -273,10 +312,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
 
   return html`
     <div
-      className=${classes(
-        'pmp-view-menubar-wrapper',
-        props.isScrolltop ? 'scroll-top' : '',
-      )}
+      className=${classes('pmp-view-menubar-wrapper')}
       >
 
       <${PmpSelect.Root} 
@@ -304,6 +340,25 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         </${PmpSelect.OptionGroup}>
       </${PmpSelect.Root}>
 
+      <${PmpSelect.Root} 
+        className="${classes('pmp-menubar-font-select')}"
+        value="${currentFont}">
+      <${PmpSelect.Text}>
+      <${PmpParagraph}>
+      ${fontOptions.find((option) => option.value === currentFont)?.label || ''}
+      </${PmpParagraph}>
+      </${PmpSelect.Text}>
+      <${PmpSelect.OptionGroup}>
+        ${fontOptions.map((option) => {
+          return html`
+            <${PmpSelect.Option} value="${option.value}" onClick=${option.command}>
+              <${PmpParagraph} style="font-family:${option.value}">${option.label}</${PmpParagraph}> 
+            </${PmpSelect.Option}>
+          `;
+        })}
+      </${PmpSelect.OptionGroup}>
+    </${PmpSelect.Root}>
+
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpButton}
@@ -318,6 +373,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         >
         <i className="ri-bold" />
       </${PmpButton}>
+
       <${PmpButton}
         className="pmp-icon-button ${activeItalic ? 'selected' : ''}"
         onClick=${() => {
@@ -331,9 +387,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         <i className="ri-italic" />
       </${PmpButton}>
       <${PmpButton}
-      className="pmp-icon-button ${activeItalic ? 'selected' : ''}"
+      className="pmp-icon-button ${activeUnderline ? 'selected' : ''}"
       onClick=${() => {
-        toggleMark(props.editorView.state.schema.marks['em'])(
+        toggleMark(props.editorView.state.schema.marks['underline'])(
           props.editorView.state,
           props.editorView.dispatch,
         );
@@ -677,11 +733,6 @@ export class PmpMenubarView implements PluginView {
       this.editorRoot,
       originParent.children[originIndex],
     );
-    this.isScrollTop = this.editorWrapper.scrollTop === 0;
-    this.editorWrapper.addEventListener('scroll', () => {
-      this.isScrollTop = this.editorWrapper.scrollTop === 0;
-      this.render();
-    });
     this.render();
   }
 
@@ -695,7 +746,6 @@ export class PmpMenubarView implements PluginView {
         <${PmpMenubar}
           editorView=${this.editorView}
           editorState=${this.editorView.state}
-          isScrolltop=${this.isScrollTop}
         />
       `,
       this.menubarWrapper,

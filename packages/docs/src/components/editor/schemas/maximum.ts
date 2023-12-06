@@ -35,7 +35,11 @@ import {
   PmpMentionView,
 } from 'prosemirror-preset-mention';
 import { PMP_LINK_MARK } from 'prosemirror-preset-link';
-import { PMP_STRIKETHROUGH_MARK } from 'prosemirror-preset-strikethrough';
+import {
+  PMP_FONT_FAMILY_MARK,
+  PMP_STRIKETHROUGH_MARK,
+  PMP_UNDERLINE_MARK,
+} from 'prosemirror-preset-strikethrough';
 import {
   PMP_BLOCKQUOTE_NODE,
   createPmpBlockQuotePlugins,
@@ -101,6 +105,8 @@ export const maximumSchema = new Schema({
     PMP_STRONG_MARK,
     PMP_CODE_MARK,
     PMP_STRIKETHROUGH_MARK,
+    PMP_UNDERLINE_MARK,
+    PMP_FONT_FAMILY_MARK,
   ),
 });
 

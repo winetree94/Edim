@@ -1,5 +1,4 @@
 import { EditorState } from 'prosemirror-state';
-import { toggleMark } from 'prosemirror-commands';
 
 export const setTextColor = (state: EditorState, color: string) => {
   let tr = state.tr;
@@ -14,7 +13,4 @@ export const setTextColor = (state: EditorState, color: string) => {
   );
 
   return tr;
-
-  // this._editorView.dispatch(tr);
-  // this._editorView.focus();
 };

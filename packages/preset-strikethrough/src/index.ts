@@ -1,1 +1,1 @@
-export * from './strikethrough';
+export * from './schemas';
