@@ -6,14 +6,18 @@
   border-radius: 3px;
   padding: 0 8px;
 
+  .pmp-select-text {
+    margin: 0;
+    flex: 1 1 auto;
+    text-align: left;
+  }
+
   i.pmp-select-arrow-icon {
+    flex-shrink: 0;
     margin-left: 4px;
   }
 }
 
-.pmp-select-text {
-  margin: 0;
-}
 
 .pmp-select-option {
   cursor: pointer;

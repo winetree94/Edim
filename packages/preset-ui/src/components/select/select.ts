@@ -29,12 +29,13 @@ const PmpSelectContext = createContext<PmpSelectContextValue>({
 export interface PmpSelectProps {
   children: JSX.Element;
   value: string;
+  className: string;
   onChange?: (value: string) => void;
   disabled?: boolean;
 }
 
 const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
-  ({ children, ...props }, ref) => {
+  ({ children, className, ...props }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>();
     const [opened, setOpened] = useState<DOMRect | null>(null);
 
@@ -63,6 +64,7 @@ const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
           'pmp-select',
           opened ? 'pmp-active' : '',
           props.disabled ? 'pmp-disabled' : '',
+          className,
         )}"
         onclick="${() => {
           const rect = wrapperRef.current!.getBoundingClientRect();

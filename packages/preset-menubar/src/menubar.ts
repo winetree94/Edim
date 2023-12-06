@@ -10,12 +10,10 @@ import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { markActive } from 'prosemirror-preset-core';
 import {
   getRangeFirstAlignment,
-  getRangeIsText,
   setAlignment,
   setToParagraph,
 } from 'prosemirror-preset-paragraph';
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
-import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
 import {
   PmpHeading1,
@@ -50,6 +48,7 @@ import {
 import { classes } from 'prosemirror-preset-ui';
 import { html } from 'prosemirror-preset-ui';
 import { PmpEmojiPicker } from 'prosemirror-preset-ui';
+import { getTextType } from './utils';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
@@ -105,13 +104,8 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const imageInputRef = useRef<HTMLInputElement>(null);
   const emojiButtonRef = useRef<HTMLButtonElement>(null);
 
-  const canUndo = undo(props.editorView.state);
-  const canRedo = redo(props.editorView.state);
+  const textType = getTextType(props.editorView.state);
 
-  const canNormalText = getRangeIsText(props.editorView.state);
-  const rangeFromNode = props.editorView.state.selection.$from.parent;
-
-  const [selectedOption, setSelectedOption] = useState('p');
   const options = [
     {
       value: 'h1',
@@ -181,7 +175,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
     },
     {
       value: 'p',
-      label: 'Paragraph',
+      label: 'Normal',
       Element: PmpParagraph,
       command: () => {
         setToParagraph(props.editorView.state.schema.nodes['paragraph'])(
@@ -331,18 +325,14 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       )}
       >
 
-      <${PmpSelect.Root} value="${selectedOption}" onChange="${(
-        optionName: string,
-      ) => {
-        const option = options.find((option) => option.value === selectedOption)!;
-        option.command();
-        setSelectedOption(optionName);
-      }}">
+      <${PmpSelect.Root} 
+        className="pmp-menubar-text-select"
+        value="${textType}" onChange="${(optionName: string) => {
+          const option = options.find((option) => option.value === optionName)!;
+          option.command();
+        }}">
         <${PmpSelect.Text}>
-          ${
-            options.find((option) => option.value === selectedOption)?.label ||
-            ''
-          }
+          ${options.find((option) => option.value === textType)?.label || ''}
         </${PmpSelect.Text}>
         <${PmpSelect.OptionGroup}>
           ${options.map((option) => {

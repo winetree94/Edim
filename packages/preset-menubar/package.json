@@ -20,6 +20,7 @@
     "prosemirror-utils": "*",
     "prosemirror-preset-flat-list": "*",
     "prosemirror-preset-paragraph": "*",
+    "prosemirror-preset-heading": "*",
     "prosemirror-preset-core": "*",
     "prosemirror-preset-mention": "*",
     "prosemirror-preset-image": "*",
