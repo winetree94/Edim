@@ -132,7 +132,7 @@ export const data2 = {
       attrs: {
         level: 1,
         indent: 0,
-        textAlign: 'left',
+        align: 'left',
       },
       content: [
         {
@@ -146,7 +146,7 @@ export const data2 = {
       attrs: {
         level: 2,
         indent: 0,
-        textAlign: 'left',
+        align: 'left',
       },
       content: [
         {
@@ -160,7 +160,7 @@ export const data2 = {
       attrs: {
         level: 3,
         indent: 0,
-        textAlign: 'left',
+        align: 'left',
       },
       content: [
         {
@@ -174,7 +174,7 @@ export const data2 = {
       attrs: {
         level: 4,
         indent: 0,
-        textAlign: 'left',
+        align: 'left',
       },
       content: [
         {
@@ -188,7 +188,7 @@ export const data2 = {
       attrs: {
         level: 5,
         indent: 0,
-        textAlign: 'left',
+        align: 'left',
       },
       content: [
         {
@@ -202,7 +202,7 @@ export const data2 = {
       attrs: {
         level: 6,
         indent: 0,
-        textAlign: 'left',
+        align: 'left',
       },
       content: [
         {
@@ -214,7 +214,7 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
       content: [
@@ -227,14 +227,14 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
     },
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
       content: [
@@ -313,14 +313,14 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
     },
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
       content: [
@@ -333,7 +333,7 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'center',
+        align: 'center',
         indent: 0,
       },
       content: [
@@ -346,7 +346,7 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'right',
+        align: 'right',
         indent: 0,
       },
       content: [
@@ -359,7 +359,7 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
     },
@@ -375,7 +375,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: 0,
               },
               content: [
@@ -396,7 +396,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: 0,
               },
               content: [
@@ -417,7 +417,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: 0,
               },
               content: [
@@ -438,7 +438,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: 0,
               },
               content: [
@@ -459,7 +459,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: 0,
               },
               content: [
@@ -476,7 +476,7 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
     },
@@ -492,7 +492,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: 0,
               },
               content: [
@@ -513,7 +513,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: '0',
               },
               content: [
@@ -534,7 +534,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: '0',
               },
               content: [
@@ -555,7 +555,7 @@ export const data2 = {
             {
               type: 'paragraph',
               attrs: {
-                textAlign: 'left',
+                align: 'left',
                 indent: 0,
               },
               content: [
@@ -572,14 +572,14 @@ export const data2 = {
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
     },
     {
       type: 'paragraph',
       attrs: {
-        textAlign: 'left',
+        align: 'left',
         indent: 0,
       },
     },

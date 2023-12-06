@@ -30,6 +30,7 @@ export interface PmpSelectProps {
   children: JSX.Element;
   value: string;
   className: string;
+  hideArrow?: boolean;
   onChange?: (value: string) => void;
   disabled?: boolean;
 }
@@ -72,12 +73,18 @@ const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
         }}"
       >
         ${children}
-        <i
-          className="${classes(
-            'pmp-select-arrow-icon',
-            opened ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line',
-          )}"
-        ></i>
+        ${
+          !props.hideArrow
+            ? html`
+                <i
+                  className="${classes(
+                    'pmp-select-arrow-icon',
+                    opened ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line',
+                  )}"
+                ></i>
+              `
+            : null
+        }
       </${PmpButton}>
     </${PmpSelectContext.Provider}>
     `;

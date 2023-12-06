@@ -195,7 +195,7 @@ export class AppComponent implements OnInit {
                   {
                     type: 'paragraph',
                     attrs: {
-                      textAlign: 'left',
+                      align: 'left',
                       indent: 0,
                     },
                     content: [
@@ -216,7 +216,7 @@ export class AppComponent implements OnInit {
                   {
                     type: 'paragraph',
                     attrs: {
-                      textAlign: 'left',
+                      align: 'left',
                       indent: 0,
                     },
                     content: [
@@ -233,14 +233,14 @@ export class AppComponent implements OnInit {
           {
             type: 'paragraph',
             attrs: {
-              textAlign: 'left',
+              align: 'left',
               indent: 0,
             },
           },
           {
             type: 'paragraph',
             attrs: {
-              textAlign: 'left',
+              align: 'left',
               indent: 0,
             },
             content: [
@@ -253,7 +253,7 @@ export class AppComponent implements OnInit {
           {
             type: 'paragraph',
             attrs: {
-              textAlign: 'left',
+              align: 'left',
               indent: 0,
             },
           },
@@ -263,7 +263,7 @@ export class AppComponent implements OnInit {
               {
                 type: 'paragraph',
                 attrs: {
-                  textAlign: 'left',
+                  align: 'left',
                   indent: 0,
                 },
                 content: [
@@ -276,7 +276,7 @@ export class AppComponent implements OnInit {
               {
                 type: 'paragraph',
                 attrs: {
-                  textAlign: 'left',
+                  align: 'left',
                   indent: 0,
                 },
                 content: [
@@ -289,7 +289,7 @@ export class AppComponent implements OnInit {
               {
                 type: 'paragraph',
                 attrs: {
-                  textAlign: 'left',
+                  align: 'left',
                   indent: 0,
                 },
                 content: [
@@ -304,14 +304,14 @@ export class AppComponent implements OnInit {
           {
             type: 'paragraph',
             attrs: {
-              textAlign: 'left',
+              align: 'left',
               indent: 0,
             },
           },
           {
             type: 'paragraph',
             attrs: {
-              textAlign: 'left',
+              align: 'left',
               indent: 0,
             },
             content: [
@@ -324,7 +324,7 @@ export class AppComponent implements OnInit {
           {
             type: 'paragraph',
             attrs: {
-              textAlign: 'left',
+              align: 'left',
               indent: 0,
             },
           },
@@ -340,7 +340,7 @@ export class AppComponent implements OnInit {
           {
             type: 'paragraph',
             attrs: {
-              textAlign: 'left',
+              align: 'left',
               indent: 0,
             },
           },
@@ -362,7 +362,7 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: 0,
                         },
                       },
@@ -389,7 +389,7 @@ export class AppComponent implements OnInit {
                               {
                                 type: 'paragraph',
                                 attrs: {
-                                  textAlign: 'left',
+                                  align: 'left',
                                   indent: '0',
                                 },
                                 content: [
@@ -410,7 +410,7 @@ export class AppComponent implements OnInit {
                               {
                                 type: 'paragraph',
                                 attrs: {
-                                  textAlign: 'left',
+                                  align: 'left',
                                   indent: '0',
                                 },
                                 content: [
@@ -427,14 +427,14 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: '0',
                         },
                       },
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: '0',
                         },
                         content: [
@@ -447,7 +447,7 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: '0',
                         },
                       },
@@ -457,7 +457,7 @@ export class AppComponent implements OnInit {
                           {
                             type: 'paragraph',
                             attrs: {
-                              textAlign: 'left',
+                              align: 'left',
                               indent: '0',
                             },
                             content: [
@@ -470,7 +470,7 @@ export class AppComponent implements OnInit {
                           {
                             type: 'paragraph',
                             attrs: {
-                              textAlign: 'left',
+                              align: 'left',
                               indent: '0',
                             },
                             content: [
@@ -483,7 +483,7 @@ export class AppComponent implements OnInit {
                           {
                             type: 'paragraph',
                             attrs: {
-                              textAlign: 'left',
+                              align: 'left',
                               indent: '0',
                             },
                             content: [
@@ -498,14 +498,14 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: '0',
                         },
                       },
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: '0',
                         },
                         content: [
@@ -518,7 +518,7 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: '0',
                         },
                       },
@@ -545,7 +545,7 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: 0,
                         },
                       },
@@ -568,7 +568,7 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: 0,
                         },
                       },
@@ -586,7 +586,7 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: 0,
                         },
                       },
@@ -604,7 +604,7 @@ export class AppComponent implements OnInit {
                       {
                         type: 'paragraph',
                         attrs: {
-                          textAlign: 'left',
+                          align: 'left',
                           indent: 0,
                         },
                       },

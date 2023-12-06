@@ -5,7 +5,7 @@ export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 export interface HeadingAttributes {
   level: HeadingLevel;
   indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  textAlign: 'left' | 'right' | 'center' | null;
+  align: 'left' | 'right' | 'center' | null;
 }
 
 export const PMP_HEADING_NODE: Record<string, NodeSpec> = {
@@ -13,7 +13,7 @@ export const PMP_HEADING_NODE: Record<string, NodeSpec> = {
     attrs: {
       level: { default: 1 },
       indent: { default: 0 },
-      textAlign: { default: 'left' },
+      align: { default: 'left' },
     },
     content: 'inline*',
     group: 'block',
@@ -37,9 +37,9 @@ export const PMP_HEADING_NODE: Record<string, NodeSpec> = {
         'h' + attrs.level,
         {
           class: `pmp-heading pmp-heading-indent-${attrs.indent || 0}${
-            attrs.textAlign ? ` pmp-align-${attrs.textAlign}` : ''
+            attrs.align ? ` pmp-align-${attrs.align}` : ''
           }`,
-          'data-text-align': attrs.textAlign || 'left',
+          'data-text-align': attrs.align || 'left',
         },
         0,
       ];

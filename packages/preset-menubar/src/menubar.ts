@@ -393,6 +393,25 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       }
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
+      <${PmpSelect.Root} 
+        className="${classes('pmp-menubar-align-select')}"
+        hideArrow="${true}">
+      <${PmpSelect.Text}>
+        <i className="ri-align-left" />
+      </${PmpSelect.Text}>
+      <${PmpSelect.OptionGroup}>
+        <${PmpSelect.Option} value="left">
+          <i className="ri-align-left" />
+        </${PmpSelect.Option}>
+        <${PmpSelect.Option} value="center">
+          <i className="ri-align-center" />
+        </${PmpSelect.Option}>
+        <${PmpSelect.Option} value="right">
+          <i className="ri-align-right" />
+        </${PmpSelect.Option}>
+      </${PmpSelect.OptionGroup}>
+    </${PmpSelect.Root}>
+
       <${PmpIconButton}
         className=${activeAlignLeft ? 'selected' : ''}
         onClick=${() => {

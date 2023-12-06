@@ -9,7 +9,7 @@ export interface ImageAttrs {
   src: string;
   alt: string;
   title: string;
-  textAlign: 'left' | 'center' | 'right';
+  align: 'left' | 'center' | 'right';
   viewportWidth: number;
 }
 
@@ -20,7 +20,7 @@ export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
       src: { default: '' },
       alt: { default: null },
       title: { default: null },
-      textAlign: { default: 'center' },
+      align: { default: 'center' },
       viewportWidth: { default: 80 },
     },
     group: 'block',
@@ -31,7 +31,7 @@ export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
         getAttrs(node) {
           const dom = node as HTMLElement;
           const viewportWidth = dom.dataset['viewportWidth'] || 80;
-          const textAlign = dom.parentElement?.dataset['textAlign'] || 'center';
+          const align = dom.parentElement?.dataset['align'] || 'center';
 
           if (dom.classList.contains('pmp-emoji')) {
             return false;
@@ -45,21 +45,21 @@ export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
             src: dom.getAttribute('src'),
             title: dom.getAttribute('title'),
             alt: dom.getAttribute('alt'),
-            textAlign,
+            align,
             viewportWidth,
           };
         },
       },
     ],
     toDOM(node) {
-      const { src, alt, title, textAlign, viewportWidth } =
+      const { src, alt, title, align, viewportWidth } =
         node.attrs as ImageAttrs;
 
       return [
         'div',
         {
-          class: `pmp-image-wrapper pmp-image-align-${textAlign}`,
-          'data-text-align': textAlign,
+          class: `pmp-image-wrapper pmp-image-align-${align}`,
+          'data-text-align': align,
         },
         [
           'img',

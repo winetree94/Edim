@@ -1,7 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 
 export interface ParagraphAttributes {
-  textAlign: 'left' | 'right' | 'center' | null;
+  align: 'left' | 'right' | 'center' | null;
   indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
@@ -9,7 +9,7 @@ export const PMP_PARAGRAPH_NODE: Record<string, NodeSpec> = {
   paragraph: {
     content: 'inline*',
     attrs: {
-      textAlign: {
+      align: {
         default: 'left',
       },
       indent: {
@@ -37,9 +37,9 @@ export const PMP_PARAGRAPH_NODE: Record<string, NodeSpec> = {
         'p',
         {
           class: `pmp-paragraph pmp-paragraph-indent-${attrs.indent || 0}${
-            attrs.textAlign ? ` pmp-align-${attrs.textAlign}` : ''
+            attrs.align ? ` pmp-align-${attrs.align}` : ''
           }`,
-          'data-text-align': attrs.textAlign || 'left',
+          'data-text-align': attrs.align || 'left',
           'data-indent': attrs.indent || 0,
         },
         0,

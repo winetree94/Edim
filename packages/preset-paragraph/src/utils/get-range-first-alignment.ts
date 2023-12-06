@@ -7,8 +7,8 @@ export const getRangeFirstAlignment = (state: EditorState) => {
     if (node.type.spec.group?.includes('disable-paragraph-attributes')) {
       return false;
     }
-    if (node.type.spec.attrs?.['textAlign']) {
-      aligns.push(node.attrs['textAlign'] as 'left' | 'right' | 'center');
+    if (node.type.spec.attrs?.['align']) {
+      aligns.push(node.attrs['align'] as 'left' | 'right' | 'center');
       return false;
     }
     return true;

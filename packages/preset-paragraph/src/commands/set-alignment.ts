@@ -13,7 +13,7 @@ export const setAlignment = (align: 'left' | 'right' | 'center'): Command => {
       if (node.type.spec.group?.includes('disable-paragraph-attributes')) {
         return false;
       }
-      if (node.type.spec.attrs?.['textAlign']) {
+      if (node.type.spec.attrs?.['align']) {
         targetNodes.push({ node, pos, parent });
         return false;
       }
@@ -28,7 +28,7 @@ export const setAlignment = (align: 'left' | 'right' | 'center'): Command => {
       return tr.setNodeMarkup(pos, undefined, <Attrs>{
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         ...(node.attrs || {}),
-        textAlign: align,
+        align: align,
       });
     }, tr);
 
