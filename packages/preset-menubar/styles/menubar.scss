@@ -54,15 +54,15 @@
   .pmp-color-button-icon {
     width: 16px;
     height: 16px;
-    fill: var(--spindle-950);;
+    fill: var(--spindle-950);
   }
 
   .current-font-color {
     position: absolute;
     background-color: var(--spindle-700);
-    height: 3px;
+    height: 2px;
     width: 12px;
-    bottom: 6px;
+    bottom: 7px;
     border-radius: 4px;
   }
 }
@@ -74,6 +74,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.pmp-menubar-align-active {
+  color: var(--spindle-700);
 }
 
 .pmp-view-menubar-separator {

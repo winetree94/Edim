@@ -4,9 +4,6 @@ export const getRangeFirstAlignment = (state: EditorState) => {
   const { from, to } = state.selection;
   const aligns: ('left' | 'right' | 'center')[] = [];
   state.doc.nodesBetween(from, to, (node) => {
-    if (node.type.spec.group?.includes('disable-paragraph-attributes')) {
-      return false;
-    }
     if (node.type.spec.attrs?.['align']) {
       aligns.push(node.attrs['align'] as 'left' | 'right' | 'center');
       return false;

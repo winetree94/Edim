@@ -163,9 +163,6 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   );
 
   const firstAlignment = getRangeFirstAlignment(props.editorView.state);
-  const activeAlignLeft = firstAlignment === 'left';
-  const activeAlignCenter = firstAlignment === 'center';
-  const activeAlignRight = firstAlignment === 'right';
 
   const onIncreaseIndentClick = (): void => {
     indentListItem(1)(props.editorView.state, props.editorView.dispatch);
@@ -334,6 +331,18 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         <i className="ri-italic" />
       </${PmpButton}>
       <${PmpButton}
+      className="pmp-icon-button ${activeItalic ? 'selected' : ''}"
+      onClick=${() => {
+        toggleMark(props.editorView.state.schema.marks['em'])(
+          props.editorView.state,
+          props.editorView.dispatch,
+        );
+        props.editorView.focus();
+      }}
+      >
+      <i class="ri-underline"></i>
+    </${PmpButton}>
+      <${PmpButton}
         className="pmp-icon-button ${activeStrikethrough ? 'selected' : ''}"
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['strikethrough'])(
@@ -415,10 +424,14 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       }
 
       <${PmpSelect.Root} 
-        className="pmp-icon-button ${classes('pmp-menubar-align-select')}"
-        hideArrow="${true}">
+        className="pmp-icon-button ${classes(
+          'pmp-menubar-align-select',
+          firstAlignment !== 'left' ? 'pmp-menubar-align-active' : '',
+        )}"
+        hideArrow="${true}"
+        value="${firstAlignment}">
       <${PmpSelect.Text}>
-        <i className="ri-align-left" />
+        <i className="ri-align-${firstAlignment}" />
       </${PmpSelect.Text}>
       <${PmpSelect.OptionGroup}>
       ${alignmentOptions.map(
