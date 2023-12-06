@@ -17,7 +17,17 @@ import {
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { redo, undo } from 'prosemirror-history';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpLayer, PmpSelect } from 'prosemirror-preset-ui';
+import {
+  PmpHeading1,
+  PmpHeading2,
+  PmpHeading3,
+  PmpHeading4,
+  PmpHeading5,
+  PmpHeading6,
+  PmpLayer,
+  PmpParagraph,
+  PmpSelect,
+} from 'prosemirror-preset-ui';
 import { PmpSeparator } from 'prosemirror-preset-ui';
 import { PmpIconButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
@@ -101,33 +111,87 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const canNormalText = getRangeIsText(props.editorView.state);
   const rangeFromNode = props.editorView.state.selection.$from.parent;
 
-  // text node
-  const activeParagraph =
-    canNormalText && rangeFromNode.type.name === 'paragraph';
-  const activeH1 =
-    canNormalText &&
-    rangeFromNode.type.name === 'heading' &&
-    rangeFromNode.attrs['level'] === 1;
-  const activeH2 =
-    canNormalText &&
-    rangeFromNode.type.name === 'heading' &&
-    rangeFromNode.attrs['level'] === 2;
-  const activeH3 =
-    canNormalText &&
-    rangeFromNode.type.name === 'heading' &&
-    rangeFromNode.attrs['level'] === 3;
-  const activeH4 =
-    canNormalText &&
-    rangeFromNode.type.name === 'heading' &&
-    rangeFromNode.attrs['level'] === 4;
-  const activeH5 =
-    canNormalText &&
-    rangeFromNode.type.name === 'heading' &&
-    rangeFromNode.attrs['level'] === 5;
-  const activeH6 =
-    canNormalText &&
-    rangeFromNode.type.name === 'heading' &&
-    rangeFromNode.attrs['level'] === 6;
+  const [selectedOption, setSelectedOption] = useState('p');
+  const options = [
+    {
+      value: 'h1',
+      label: 'Heading 1',
+      Element: PmpHeading1,
+      command: () => {
+        setBlockType(props.editorView.state.schema.nodes['heading'], {
+          level: 1,
+        })(props.editorView.state, props.editorView.dispatch);
+        props.editorView.focus();
+      },
+    },
+    {
+      value: 'h2',
+      label: 'Heading 2',
+      Element: PmpHeading2,
+      command: () => {
+        setBlockType(props.editorView.state.schema.nodes['heading'], {
+          level: 2,
+        })(props.editorView.state, props.editorView.dispatch);
+        props.editorView.focus();
+      },
+    },
+    {
+      value: 'h3',
+      label: 'Heading 3',
+      Element: PmpHeading3,
+      command: () => {
+        setBlockType(props.editorView.state.schema.nodes['heading'], {
+          level: 3,
+        })(props.editorView.state, props.editorView.dispatch);
+        props.editorView.focus();
+      },
+    },
+    {
+      value: 'h4',
+      label: 'Heading 4',
+      Element: PmpHeading4,
+      command: () => {
+        setBlockType(props.editorView.state.schema.nodes['heading'], {
+          level: 4,
+        })(props.editorView.state, props.editorView.dispatch);
+        props.editorView.focus();
+      },
+    },
+    {
+      value: 'h5',
+      label: 'Heading 5',
+      Element: PmpHeading5,
+      command: () => {
+        setBlockType(props.editorView.state.schema.nodes['heading'], {
+          level: 5,
+        })(props.editorView.state, props.editorView.dispatch);
+        props.editorView.focus();
+      },
+    },
+    {
+      value: 'h6',
+      label: 'Heading 6',
+      Element: PmpHeading6,
+      command: () => {
+        setBlockType(props.editorView.state.schema.nodes['heading'], {
+          level: 6,
+        })(props.editorView.state, props.editorView.dispatch);
+        props.editorView.focus();
+      },
+    },
+    {
+      value: 'p',
+      label: 'Paragraph',
+      Element: PmpParagraph,
+      command: () => {
+        setToParagraph(props.editorView.state.schema.nodes['paragraph'])(
+          props.editorView.state,
+          props.editorView.dispatch,
+        );
+        props.editorView.focus();
+      },
+    },
+  ];
 
   // marks
   const activeBold = markActive(
@@ -266,110 +330,31 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         props.isScrolltop ? 'scroll-top' : '',
       )}
       >
-      <${PmpIconButton}
-        disabled=${!canUndo}
-        onClick=${() => {
-          undo(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-arrow-go-back-line" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        disabled=${!canRedo}
-        onClick=${() => {
-          redo(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-arrow-go-forward-line" />
-      </${PmpIconButton}>
-      <${PmpSeparator} className="pmp-view-menubar-separator" />
-      
-      <${PmpIconButton}
-        className=${activeParagraph ? 'selected' : ''}
-        onClick=${() => {
-          setToParagraph(props.editorView.state.schema.nodes['paragraph'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-text" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        disabled=${!canNormalText}
-        className=${activeH1 ? 'selected' : ''}
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['heading'], {
-            level: 1,
-          })(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-h-1" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        disabled=${!canNormalText}
-        className=${activeH2 ? 'selected' : ''}
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['heading'], {
-            level: 2,
-          })(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-h-2" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        disabled=${!canNormalText}
-        className=${activeH3 ? 'selected' : ''}
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['heading'], {
-            level: 3,
-          })(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-h-3" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        disabled=${!canNormalText}
-        className=${activeH4 ? 'selected' : ''}
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['heading'], {
-            level: 4,
-          })(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-h-4" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        disabled=${!canNormalText}
-        className=${activeH5 ? 'selected' : ''}
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['heading'], {
-            level: 5,
-          })(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-h-5" />
-      </${PmpIconButton}>
-      <${PmpIconButton}
-        disabled=${!canNormalText}
-        className=${activeH6 ? 'selected' : ''}
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['heading'], {
-            level: 6,
-          })(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-h-6" />
-      </${PmpIconButton}>
+
+      <${PmpSelect.Root} value="${selectedOption}" onChange="${(
+        optionName: string,
+      ) => {
+        const option = options.find((option) => option.value === selectedOption)!;
+        option.command();
+        setSelectedOption(optionName);
+      }}">
+        <${PmpSelect.Text}>
+          ${
+            options.find((option) => option.value === selectedOption)?.label ||
+            ''
+          }
+        </${PmpSelect.Text}>
+        <${PmpSelect.OptionGroup}>
+          ${options.map((option) => {
+            return html`
+              <${PmpSelect.Option} value="${option.value}">
+                <${option.Element}>${option.label}</${option.Element}> 
+              </${PmpSelect.Option}>
+            `;
+          })}
+        </${PmpSelect.OptionGroup}>
+      </${PmpSelect.Root}>
+
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpIconButton}
@@ -689,9 +674,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         </${PmpLayer}>
       `
       }
-      <${PmpSelect.Root}>
-        <${PmpSelect.Text}>Selection</${PmpSelect.Text}>
-      </${PmpSelect.Root}>
+
     </div>
   `;
 });

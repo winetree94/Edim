@@ -1,10 +1,12 @@
 import { html } from '../render';
 import { createContext, createRef, render } from 'preact';
-import { forwardRef } from 'preact/compat';
+import { createPortal, forwardRef } from 'preact/compat';
 
 export interface OverlayContext {
   elements: JSX.Element[];
+
   open(): void;
+
   close(): void;
 }
 
@@ -55,3 +57,7 @@ export const reRenderOverlay = () => {
 };
 
 reRenderOverlay();
+
+export const PmpOverlay = ({ children }: { children: JSX.Element }) => {
+  return createPortal(children, overlayContainer);
+};

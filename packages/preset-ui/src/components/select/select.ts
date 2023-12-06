@@ -1,15 +1,37 @@
-import { classes, html } from '../../cdk';
+import { classes, html, PmpOverlay } from '../../cdk';
 import {
+  createContext,
   forwardRef,
   HTMLAttributes,
+  useContext,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'preact/compat';
-import { useState } from 'preact/hooks';
 import { PmpLayer } from '../layer';
 import { PmpListItem, PmpUnorderedList } from '../list';
+import { PmpButton } from '../button';
 
-export interface PmpSelectProps extends HTMLAttributes<HTMLDivElement> {}
+interface PmpSelectContextValue {
+  opened: DOMRect | null;
+  value: string;
+  onSelect: (value: string) => void;
+  close: () => void;
+}
+
+const PmpSelectContext = createContext<PmpSelectContextValue>({
+  opened: null,
+  value: '',
+  onSelect: () => {},
+  close: () => {},
+});
+
+export interface PmpSelectProps {
+  children: JSX.Element;
+  value: string;
+  onChange?: (value: string) => void;
+  disabled?: boolean;
+}
 
 const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
   ({ children, ...props }, ref) => {
@@ -18,73 +40,104 @@ const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
 
     useImperativeHandle(ref, () => wrapperRef.current!);
 
+    const onSelect = (value: string) => {
+      props.onChange?.(value);
+      setOpened(null);
+    };
+
+    const close = () => {
+      setOpened(null);
+    };
+
     return html`
-      <div
+    <${PmpSelectContext.Provider} value=${{
+      opened: opened,
+      value: props.value,
+      onSelect: onSelect,
+      close: close,
+    }}>
+      <${PmpButton}
         ref="${wrapperRef}"
-        ${{ ...props }}
-        className="${classes('pmp-select', props.className)}"
+        disabled="${props.disabled}"
+        className="${classes(
+          'pmp-select',
+          opened ? 'pmp-active' : '',
+          props.disabled ? 'pmp-disabled' : '',
+        )}"
         onclick="${() => {
           const rect = wrapperRef.current!.getBoundingClientRect();
           setOpened(opened ? null : rect);
         }}"
       >
         ${children}
-        <i class="ri-arrow-down-s-line"></i>
-        ${opened &&
-        html`
-          <${PmpLayer}
-            left="${opened.left}"
-            top="${opened.bottom}"
-            maxWidth="${opened.width}"
-            minWidth="${opened.width}"
-            maxHeight="${300}"
-          >
-            <${PmpUnorderedList}>
-              <${PmpListItem}>item</${PmpListItem}>
-              <${PmpListItem}>item</${PmpListItem}>
-              <${PmpListItem}>item</${PmpListItem}>
-            </${PmpUnorderedList}>
-          </${PmpLayer}>
-        `}
-      </div>
+        <i
+          className="${classes(
+            'pmp-select-arrow-icon',
+            opened ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line',
+          )}"
+        ></i>
+      </${PmpButton}>
+    </${PmpSelectContext.Provider}>
     `;
   },
 );
 
-const PmpSelectText = forwardRef<
-  HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(({ children, ...props }, ref) => {
-  return html`
-    <p class="${classes('pmp-select-text')}" ${{ ...props }} ref="${ref}">
-      ${children}
-    </p>
-  `;
-});
+export interface PmpSelectTextProps {
+  children: JSX.Element;
+}
+
+const PmpSelectText = forwardRef<HTMLParagraphElement, PmpSelectTextProps>(
+  ({ children, ...props }, ref) => {
+    return html`
+      <p className="${classes('pmp-select-text')}" ref="${ref}">${children}</p>
+    `;
+  },
+);
+
+export interface PmpSelectOptionProps {
+  children: JSX.Element;
+  value: string;
+}
+
+const PmpSelectOption = forwardRef<HTMLLIElement, PmpSelectOptionProps>(
+  ({ children, value }, ref) => {
+    const context = useContext(PmpSelectContext);
+    return html`
+      <${PmpListItem} 
+        className="${classes(
+          'pmp-select-option',
+          context.value === value ? 'pmp-active' : '',
+        )}" 
+        onclick=${() => context.onSelect(value)}>
+        ${children}
+      </${PmpListItem}>
+    `;
+  },
+);
 
 const PmpSelectOptionGroup = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
->(({ children, ...props }, ref) => {
-  return html`
-    <div
-      class="${classes('pmp-select-option-group')}"
-      ${{ ...props }}
-      ref="${ref}"
-    >
-      ${children}
-    </div>
-  `;
-});
+>(({ children }) => {
+  const context = useContext(PmpSelectContext);
 
-const PmpSelectOption = forwardRef<
-  HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(({ children, ...props }, ref) => {
+  if (context.opened === null) {
+    return null;
+  }
+
   return html`
-    <div class="${classes('pmp-select-option')}" ${{ ...props }} ref="${ref}">
-      ${children}
-    </div>
+    <${PmpOverlay}>
+      <${PmpLayer}
+        left="${context.opened.left}"
+        top="${context.opened.bottom}"
+        maxHeight="${300}"
+        outerMousedown="${() => context.close()}"
+      >
+        <${PmpUnorderedList}>
+          ${children}
+        </${PmpUnorderedList}>
+      </${PmpLayer}>
+    </${PmpOverlay}>
   `;
 });
 

@@ -12,6 +12,7 @@
     "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic", "docusaurus-plugin-sass"],
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@site/*": ["./*"],

@@ -42,7 +42,7 @@ export const PmpListItem = forwardRef<HTMLLIElement, PmpListItemProps>(
   ({ className, children, ...props }, ref) => {
     return html`
       <li
-        class=${classes('pmp-view-list-item', className)}
+        className=${classes('pmp-view-list-item', className)}
         ...${props}
         ref=${ref}
       >
