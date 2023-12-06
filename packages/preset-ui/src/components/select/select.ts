@@ -101,19 +101,25 @@ const PmpSelectText = ({ children }: PmpSelectTextProps) => {
 
 export interface PmpSelectOptionProps {
   children: JSX.Element;
+  className?: string;
+  onClick?: () => void;
   value: string;
 }
 
 const PmpSelectOption = forwardRef<HTMLLIElement, PmpSelectOptionProps>(
-  ({ children, value }, ref) => {
+  ({ children, value, className, onClick }, ref) => {
     const context = useContext(PmpSelectContext);
     return html`
       <${PmpListItem} 
         className="${classes(
           'pmp-select-option',
           context.value === value ? 'pmp-active' : '',
+          className,
         )}" 
-        onclick=${() => context.onSelect(value)}>
+        onclick=${() => {
+          context.onSelect(value);
+          onClick?.();
+        }}>
         ${children}
       </${PmpListItem}>
     `;

@@ -2,7 +2,9 @@ import { Command, Transaction } from 'prosemirror-state';
 import { NodePair } from 'prosemirror-preset-core';
 import { Attrs } from 'prosemirror-model';
 
-export const setAlignment = (align: 'left' | 'right' | 'center'): Command => {
+export type TextAlignment = 'left' | 'right' | 'center';
+
+export const setAlignment = (align: TextAlignment): Command => {
   return (state, dispatch) => {
     let selection = state.selection;
     let tr = state.tr;
@@ -16,8 +18,6 @@ export const setAlignment = (align: 'left' | 'right' | 'center'): Command => {
       }
       return true;
     });
-
-    console.log(targetNodes);
 
     if (targetNodes.length === 0) {
       return false;

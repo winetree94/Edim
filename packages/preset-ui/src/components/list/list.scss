@@ -1,10 +1,10 @@
-ul.pmp-view-unordered-list, ol.pmp-view-ordered-list {
+.pmp-view-unordered-list, .pmp-view-ordered-list {
   list-style-type: none;
   padding: 0;
   margin: 4px 0;
 }
 
-li.pmp-view-list-item {
+.pmp-view-list-item {
   padding: 8px 10px;
   min-height: var(--ui-height);
   display: flex;

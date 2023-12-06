@@ -48,6 +48,34 @@
   }
 }
 
+.pmp-color-button {
+  position: relative;
+
+  .pmp-color-button-icon {
+    width: 16px;
+    height: 16px;
+    fill: var(--spindle-950);;
+  }
+
+  .current-font-color {
+    position: absolute;
+    background-color: var(--spindle-700);
+    height: 3px;
+    width: 12px;
+    bottom: 6px;
+    border-radius: 4px;
+  }
+}
+
+.pmp-menubar-align-option {
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .pmp-view-menubar-separator {
   margin: 4px 8px;
 }

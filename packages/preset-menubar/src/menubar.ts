@@ -9,6 +9,7 @@ import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { markActive } from 'prosemirror-preset-core';
 import {
+  TextAlignment,
   getRangeFirstAlignment,
   setAlignment,
 } from 'prosemirror-preset-paragraph';
@@ -126,6 +127,22 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       },
     },
   ];
+
+  const alignmentOptions = (['left', 'center', 'right'] as TextAlignment[]).map(
+    (align) => {
+      return {
+        value: align,
+        icon: html`<i className="ri-align-${align}" />`,
+        command: () => {
+          setAlignment(align)(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        },
+      };
+    },
+  );
 
   // marks
   const activeBold = markActive(
@@ -270,12 +287,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           'pmp-menubar-text-select',
           textType !== 'p' ? 'pmp-heading-selected' : '',
         )}"
-        value="${textType}" onChange="${(optionName: string) => {
-          const option = textTypeOptions.find(
-            (option) => option.value === optionName,
-          )!;
-          option.command();
-        }}">
+        value="${textType}">
         <${PmpSelect.Text}>
         <${PmpParagraph}>
           ${
@@ -287,7 +299,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         <${PmpSelect.OptionGroup}>
           ${textTypeOptions.map((option) => {
             return html`
-              <${PmpSelect.Option} value="${option.value}">
+              <${PmpSelect.Option} value="${option.value}" onClick=${option.command}>
                 <${option.Element}>${option.label}</${option.Element}> 
               </${PmpSelect.Option}>
             `;
@@ -346,7 +358,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         <i className="ri-code-line" />
       </${PmpButton}>
       <${PmpButton}
-        className="pmp-icon-button"
+        className="pmp-icon-button pmp-color-button"
         ref=${textColorButtonRef}
         onClick=${() => {
           const rect = textColorButtonRef.current!.getBoundingClientRect();
@@ -356,7 +368,14 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           });
         }}
         >
-        <i className="ri-font-color" />
+        <svg 
+          className="pmp-color-button-icon"
+          xmlns="http://www.w3.org/2000/svg" 
+          viewBox="0 0 24 24">
+          <path d="M15.2459 14H8.75407L7.15407 18H5L11 3H13L19 18H16.8459L15.2459 14ZM14.4459 12L12 5.88516L9.55407 12H14.4459ZM3">
+          </path>
+        </svg>
+        <span className="current-font-color"></span>
       </${PmpButton}>
       ${
         textColorLayerRef &&
@@ -394,7 +413,6 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         </${PmpLayer}>
       `
       }
-      <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpSelect.Root} 
         className="pmp-icon-button ${classes('pmp-menubar-align-select')}"
@@ -403,54 +421,16 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         <i className="ri-align-left" />
       </${PmpSelect.Text}>
       <${PmpSelect.OptionGroup}>
-        <${PmpSelect.Option} value="left">
-          <i className="ri-align-left" />
+      ${alignmentOptions.map(
+        (option) => html`
+        <${PmpSelect.Option} className="pmp-menubar-align-option" value="${option.value}" onClick=${option.command}>
+          <i className="ri-align-${option.value}" />
         </${PmpSelect.Option}>
-        <${PmpSelect.Option} value="center">
-          <i className="ri-align-center" />
-        </${PmpSelect.Option}>
-        <${PmpSelect.Option} value="right">
-          <i className="ri-align-right" />
-        </${PmpSelect.Option}>
+      `,
+      )}
       </${PmpSelect.OptionGroup}>
     </${PmpSelect.Root}>
 
-      <${PmpButton}
-        className="pmp-icon-button ${activeAlignLeft ? 'selected' : ''}"
-        onClick=${() => {
-          setAlignment('left')(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-align-left" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button ${activeAlignCenter ? 'selected' : ''}"
-        onClick=${() => {
-          setAlignment('center')(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-align-center" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button ${activeAlignRight ? 'selected' : ''}"
-        onClick=${() => {
-          setAlignment('right')(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-align-right" />
-      </${PmpButton}>
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpButton}
