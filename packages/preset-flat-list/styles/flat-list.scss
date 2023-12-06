@@ -10,6 +10,26 @@
     list-style-type: none;
 
     li.pmp-list-item {
+      word-break: break-all;
+      line-height: normal;
+
+      &:first-child {
+        margin-top: 10px; 
+      }
+      margin: 10px 0;
+
+      p.pmp-paragraph {
+        display: inline-block;
+        margin: 0;
+      }
+
+      &.pmp-align-center {
+        text-align: center;
+      }
+      &.pmp-align-right {
+        text-align: right;
+      }
+
       @for $i from 1 through 6 {
         &.pmp-list-item-indent-#{$i} {
           margin-left: 30px * $i;
@@ -17,10 +37,13 @@
       }
 
       &:before {
-        position: absolute;
-        text-align: center;
-        left: -2em;
-        width: 2em;
+        vertical-align: top;
+        margin-left: -1.5em;
+        margin-right: 0.3em;
+        text-align: right;
+        display: inline-block;
+        white-space: nowrap;
+        width: 1.2em;
       }
     }
   }

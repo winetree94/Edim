@@ -10,15 +10,14 @@ export const setAlignment = (align: 'left' | 'right' | 'center'): Command => {
 
     const targetNodes: NodePair[] = [];
     state.doc.nodesBetween(from, to, (node, pos, parent) => {
-      if (node.type.spec.group?.includes('disable-paragraph-attributes')) {
-        return false;
-      }
       if (node.type.spec.attrs?.['align']) {
         targetNodes.push({ node, pos, parent });
         return false;
       }
       return true;
     });
+
+    console.log(targetNodes);
 
     if (targetNodes.length === 0) {
       return false;
