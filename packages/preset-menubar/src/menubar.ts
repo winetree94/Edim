@@ -11,7 +11,6 @@ import { markActive } from 'prosemirror-preset-core';
 import {
   getRangeFirstAlignment,
   setAlignment,
-  setToParagraph,
 } from 'prosemirror-preset-paragraph';
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { insertTable } from 'prosemirror-preset-tables';
@@ -44,10 +43,8 @@ import { classes } from 'prosemirror-preset-ui';
 import { html } from 'prosemirror-preset-ui';
 import { PmpEmojiPicker } from 'prosemirror-preset-ui';
 import { getTextType } from './utils';
-import {
-  HeadingLevel,
-  transformRangeToHeading,
-} from 'prosemirror-preset-heading';
+import { HeadingLevel } from 'prosemirror-preset-heading';
+import { transformRangeToBlock } from '../../preset-core/src/commands';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
@@ -110,10 +107,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       label: `Heading ${level}`,
       Element: PmpHeadingByNumber[level],
       command: () => {
-        transformRangeToHeading(
-          props.editorView.state.schema.nodes['heading'],
+        transformRangeToBlock(props.editorView.state.schema.nodes['heading'], {
           level,
-        )(props.editorView.state, props.editorView.dispatch);
+        })(props.editorView.state, props.editorView.dispatch);
         props.editorView.focus();
       },
     })),
@@ -122,7 +118,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       label: 'Normal',
       Element: PmpParagraph,
       command: () => {
-        setToParagraph(props.editorView.state.schema.nodes['paragraph'])(
+        transformRangeToBlock(props.editorView.state.schema.nodes['paragraph'])(
           props.editorView.state,
           props.editorView.dispatch,
         );

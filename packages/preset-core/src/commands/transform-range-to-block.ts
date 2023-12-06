@@ -1,9 +1,10 @@
 import { Command } from 'prosemirror-state';
-import { getBlockContainerChildren, liftOut } from 'prosemirror-preset-core';
-import { NodeType } from 'prosemirror-model';
+import { Attrs, NodeType } from 'prosemirror-model';
+import { liftOut } from '../transforms';
+import { getBlockContainerChildren } from '../utils';
 
-export const transformRangeToHeading =
-  (nodeType: NodeType, level: number): Command =>
+export const transformRangeToBlock =
+  (nodeType: NodeType, attrs?: Attrs): Command =>
   (state, dispatch) => {
     let tr = state.tr;
     let selection = state.selection;
@@ -19,7 +20,7 @@ export const transformRangeToHeading =
         if (!nodeType.validContent(node.content)) {
           return tr;
         }
-        tr.setBlockType(pos, pos + node.nodeSize, nodeType, { level });
+        tr.setBlockType(pos, pos + node.nodeSize, nodeType, attrs);
         return tr;
       }, tr);
     selection = state.selection.map(tr.doc, tr.mapping);
