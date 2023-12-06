@@ -50,7 +50,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './packages/dev/dist/prosemirror-angular-standalone'
+          path: './packages/docs/build'
 
       - name: Deploy to GitHub Pages
         id: deployment
