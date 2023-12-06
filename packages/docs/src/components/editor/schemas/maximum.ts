@@ -67,7 +67,6 @@ import {
 } from 'prosemirror-preset-command';
 import { Plugin } from 'prosemirror-state';
 import { PmpMenubarPlugin } from 'prosemirror-preset-menubar';
-import { createPmpAlignPlugins } from 'prosemirror-preset-align';
 import { faker } from '@faker-js/faker';
 import { Schema } from 'prosemirror-model';
 import { dropCursor } from 'prosemirror-dropcursor';

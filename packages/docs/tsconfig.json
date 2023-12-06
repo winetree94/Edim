@@ -39,7 +39,6 @@
       "prosemirror-preset-text-color": ["../preset-text-color/src/index.ts"],
       "prosemirror-preset-code": ["../preset-code/src/index.ts"],
       "prosemirror-preset-ui": ["../preset-ui/src/index.ts"],
-      "prosemirror-preset-align": ["../preset-align/src/index.ts"],
       "prosemirror-preset-menubar": ["../preset-menubar/src/index.ts"]
     },
     "skipLibCheck": true
