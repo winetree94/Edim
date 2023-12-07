@@ -17,7 +17,7 @@
       "prosemirror-preset-command": ["../../preset-command/src/index.ts"],
       "prosemirror-preset-tables": ["../../preset-tables/src/index.ts"],
       "prosemirror-preset-blockquote": ["../../preset-blockquote/src/index.ts"],
-      "prosemirror-preset-strikethrough": ["../../preset-strikethrough/src/index.ts"],
+      "prosemirror-preset-marks": ["../../preset-marks/src/index.ts"],
       "prosemirror-preset-ui": ["../../preset-ui/src/index.ts"]
     }
   },

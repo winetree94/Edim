@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-strikethrough",
+  "name": "prosemirror-preset-marks",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {

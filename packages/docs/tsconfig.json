@@ -31,7 +31,7 @@
       "prosemirror-preset-core": ["../preset-core/src/index.ts"],
       "prosemirror-preset-codeblock": ["../preset-codeblock/src/index.ts"],
       "prosemirror-preset-blockquote": ["../preset-blockquote/src/index.ts"],
-      "prosemirror-preset-strikethrough": ["../preset-strikethrough/src/index.ts"],
+      "prosemirror-preset-marks": ["../preset-marks/src/index.ts"],
       "prosemirror-preset-keymap": ["../preset-keymap/src/index.ts"],
       "prosemirror-preset-text": ["../preset-text/src/index.ts"],
       "prosemirror-preset-ui": ["../preset-ui/src/index.ts"],

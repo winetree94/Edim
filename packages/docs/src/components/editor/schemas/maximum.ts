@@ -44,7 +44,7 @@ import {
   createPmpCodePlugins,
   PMP_ITALIC_MARK,
   createPmpItalicPlugins,
-} from 'prosemirror-preset-strikethrough';
+} from 'prosemirror-preset-marks';
 import {
   PMP_BLOCKQUOTE_NODE,
   createPmpBlockQuotePlugins,
