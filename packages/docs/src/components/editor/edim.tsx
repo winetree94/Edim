@@ -5,7 +5,6 @@ import {
   maximumPlugins,
   maximumSchema,
 } from '@site/src/components/editor/schemas/maximum';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 export const Edim = () => {
   const editorRef = useRef<ProseMirrorRef>(null);
@@ -18,17 +17,11 @@ export const Edim = () => {
   );
 
   return (
-    <BrowserOnly fallback={<div>loading</div>}>
-      {() => {
-        return (
-          <ProseMirror
-            ref={editorRef}
-            state={editorState}
-            attributes={{ spellCheck: 'false' }}
-            onStateChange={(state) => setEditorState(state)}
-          ></ProseMirror>
-        );
-      }}
-    </BrowserOnly>
+    <ProseMirror
+      ref={editorRef}
+      state={editorState}
+      attributes={{ spellCheck: 'false' }}
+      onStateChange={(state) => setEditorState(state)}
+    ></ProseMirror>
   );
 };

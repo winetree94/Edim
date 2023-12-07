@@ -7,3 +7,4 @@ export * from './list';
 export * from './indent';
 export * from './menubar';
 export * from './context';
+export * from './add-more';

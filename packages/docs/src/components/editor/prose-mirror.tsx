@@ -1,3 +1,4 @@
+import { classes } from 'prosemirror-preset-ui';
 import { DirectEditorProps, EditorView } from 'prosemirror-view';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
@@ -45,6 +46,6 @@ export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
     //   }
     // }, [state]);
 
-    return <div ref={editorDomRef} className={className}></div>;
+    return <div ref={editorDomRef} className={classes('edim-root')}></div>;
   },
 );
