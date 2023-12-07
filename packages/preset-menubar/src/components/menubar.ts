@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/unbound-method */
+import { TargetedEvent, forwardRef } from 'preact/compat';
 import { EditorState } from 'prosemirror-state';
 import { findParentNode } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
@@ -6,16 +6,11 @@ import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpLayer } from 'prosemirror-preset-ui';
-import { PmpSeparator } from 'prosemirror-preset-ui';
-import { PmpButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
 import {
   PMP_DEFAULT_COMMAND_LIST,
   PmpCommand,
 } from 'prosemirror-preset-command';
-import { PmpInput } from 'prosemirror-preset-ui';
-import { TargetedEvent, forwardRef } from 'preact/compat';
 import {
   ImagePlaceholderAddAction,
   ImagePlaceholderRemoveAction,
@@ -25,8 +20,14 @@ import {
   imagePlaceholderPluginKey,
   parseImageMeta,
 } from 'prosemirror-preset-image';
-import { classes } from 'prosemirror-preset-ui';
-import { html } from 'prosemirror-preset-ui';
+import {
+  PmpLayer,
+  PmpSeparator,
+  PmpButton,
+  PmpInput,
+  classes,
+  html,
+} from 'prosemirror-preset-ui';
 import { PmpEmojiPicker } from 'prosemirror-preset-ui';
 import { PmpMenubarContext } from './context';
 import { PmpMenubarTextTypeSelect } from './text-type';
