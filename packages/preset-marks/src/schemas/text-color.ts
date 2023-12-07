@@ -1,19 +1,32 @@
-import { MarkSpec } from 'prosemirror-model';
+import { MarkSpec, MarkType } from 'prosemirror-model';
 
-export interface TextColorAttributes {
+export interface PmpTextColorAttrs {
   color: string;
 }
 
-export const PMP_TEXT_COLOR_MARK: Record<string, MarkSpec> = {
+export interface PmpTextColor {
+  color: string;
+}
+
+export interface PmpTextColorMarkSpec extends MarkSpec {
+  colors: PmpTextColor[];
+}
+
+export interface PmpTextColorMarkType extends MarkType {
+  spec: PmpTextColorMarkSpec;
+}
+
+export const PMP_TEXT_COLOR_MARK: Record<string, PmpTextColorMarkSpec> = {
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
   textColor: {
+    colors: [],
     attrs: {
       color: { default: '' },
     },
     parseDOM: [{ tag: 'span.pmp-text-color' }],
     toDOM(node) {
-      const attrs = node.attrs as TextColorAttributes;
+      const attrs = node.attrs as PmpTextColorAttrs;
       return [
         'span',
         {
