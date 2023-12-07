@@ -18,7 +18,9 @@ export default function Home(): JSX.Element {
             wrapperClassName={styles.EditorContainer}
           >
             <div className={styles.EditorWrapper}>
-              <Edim></Edim>
+              <div className={styles.Editor}>
+                <Edim></Edim>
+              </div>
             </div>
           </Layout>
         );
