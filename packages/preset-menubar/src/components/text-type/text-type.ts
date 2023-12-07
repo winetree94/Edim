@@ -4,6 +4,7 @@ import {
   PmpHeadingByNumber,
   PmpParagraph,
   PmpSelect,
+  PmpShortCut,
   classes,
   html,
 } from 'prosemirror-preset-ui';
@@ -19,6 +20,9 @@ export const PmpMenubarTextTypeSelect = () => {
       value: `h${level}`,
       label: `Heading ${level}`,
       Element: PmpHeadingByNumber[level],
+      shortcut: html`
+        <${PmpShortCut}>⌘ + ${level}</${PmpShortCut}> 
+      `,
       command: () => {
         transformRangeToBlock(
           context.editorView.state.schema.nodes['heading'],
@@ -33,6 +37,9 @@ export const PmpMenubarTextTypeSelect = () => {
       value: 'p',
       label: 'Normal',
       Element: PmpParagraph,
+      shortcut: html`
+        <${PmpShortCut}>⌘ + p</${PmpShortCut}> 
+      `,
       command: () => {
         transformRangeToBlock(
           context.editorView.state.schema.nodes['paragraph'],
@@ -58,7 +65,8 @@ export const PmpMenubarTextTypeSelect = () => {
     ${textTypeOptions.map((option) => {
       return html`
         <${PmpSelect.Option} value="${option.value}" onClick=${option.command}>
-          <${option.Element}>${option.label}</${option.Element}> 
+          <${option.Element} className="pmp-menubar-select-text-type">${option.label}</${option.Element}> 
+          ${option.shortcut}
         </${PmpSelect.Option}>
       `;
     })}

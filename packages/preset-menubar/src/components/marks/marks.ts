@@ -1,6 +1,12 @@
 import { PmpMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { PmpButton, html } from 'prosemirror-preset-ui';
+import {
+  PmpButton,
+  PmpParagraph,
+  PmpSelect,
+  PmpShortCut,
+  html,
+} from 'prosemirror-preset-ui';
 import { toggleMark } from 'prosemirror-commands';
 import { markActive } from 'prosemirror-preset-core';
 
@@ -16,26 +22,101 @@ export const PmpMenubarMarkToggleButtons = () => {
     context.editorView.state,
     context.editorView.state.schema.marks['em'],
   );
-  const activeUnderline = markActive(
-    context.editorView.state,
-    context.editorView.state.schema.marks['underline'],
-  );
-  const activeStrikethrough = markActive(
-    context.editorView.state,
-    context.editorView.state.schema.marks['strikethrough'],
-  );
-  const activeSubscript = markActive(
-    context.editorView.state,
-    context.editorView.state.schema.marks['subscript'],
-  );
-  const activeSuperscript = markActive(
-    context.editorView.state,
-    context.editorView.state.schema.marks['superscript'],
-  );
-  const activeInlineCode = markActive(
-    context.editorView.state,
-    context.editorView.state.schema.marks['code'],
-  );
+
+  const moreButtons = [
+    {
+      iconName: 'ri-underline',
+      label: 'Underline',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['underline'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['underline'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    },
+    {
+      iconName: 'ri-strikethrough-2',
+      label: 'Strikethrough',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['strikethrough'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['strikethrough'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    },
+    {
+      iconName: 'ri-subscript',
+      label: 'Subscript',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['subscript'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['subscript'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    },
+    {
+      iconName: 'ri-superscript',
+      label: 'Superscript',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['superscript'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['superscript'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    },
+    {
+      iconName: 'ri-code-line',
+      label: 'Inline Code',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['code'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['code'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    },
+  ];
+
+  const moreActive = moreButtons.some((button) => button.active);
 
   return html`
   <${PmpButton}
@@ -63,65 +144,30 @@ export const PmpMenubarMarkToggleButtons = () => {
   >
   <i className="ri-italic" />
 </${PmpButton}>
-<${PmpButton}
-className="pmp-icon-button ${activeUnderline ? 'selected' : ''}"
-onClick=${() => {
-    toggleMark(context.editorView.state.schema.marks['underline'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
-    context.editorView.focus();
-  }}
->
-<i class="ri-underline"></i>
-</${PmpButton}>
-<${PmpButton}
-  className="pmp-icon-button ${activeStrikethrough ? 'selected' : ''}"
-  onClick=${() => {
-    toggleMark(context.editorView.state.schema.marks['strikethrough'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
-    context.editorView.focus();
-  }}
-  >
-  <i className="ri-strikethrough-2" />
-</${PmpButton}>
-<${PmpButton}
-  className="pmp-icon-button ${activeSubscript ? 'selected' : ''}"
-  onClick=${() => {
-    toggleMark(context.editorView.state.schema.marks['subscript'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
-    context.editorView.focus();
-  }}
-  >
-  <i className="ri-subscript" />
-</${PmpButton}>
-<${PmpButton}
-  className="pmp-icon-button ${activeSuperscript ? 'selected' : ''}"
-  onClick=${() => {
-    toggleMark(context.editorView.state.schema.marks['superscript'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
-    context.editorView.focus();
-  }}
-  >
-  <i className="ri-superscript" />
-</${PmpButton}>
-<${PmpButton}
-  className="pmp-icon-button ${activeInlineCode ? 'selected' : ''}"
-  onClick=${() => {
-    toggleMark(context.editorView.state.schema.marks['code'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
-    context.editorView.focus();
-  }}
-  >
-  <i className="ri-code-line" />
-</${PmpButton}>
+    <${PmpSelect.Root} 
+      hideArrow="${true}"
+      className="pmp-icon-button ${moreActive ? 'selected' : ''}">
+      <${PmpSelect.Text}>
+        <i class="ri-more-fill"></i>
+      </${PmpSelect.Text}>
+      <${PmpSelect.OptionGroup} 
+        className="pmp-menubar-more-marks-list">
+        ${moreButtons.map(
+          (button) => html`
+          <${PmpSelect.Option}
+            onClick="${button.command}"
+            value="${button.iconName}"
+            className="${button.active ? 'pmp-active' : ''}">
+            <i className="${button.iconName}" />
+            <${PmpParagraph} 
+              className="pmp-menubar-more-marks-description">
+              ${button.label}
+            </${PmpParagraph}>
+            ${button.shortcut}
+          </${PmpSelect.Option}>
+        `,
+        )}
+      </${PmpSelect.OptionGroup}>
+    </${PmpSelect.Root}>
   `;
 };
