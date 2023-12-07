@@ -1,4 +1,4 @@
-import { PmpMenubarContext } from '../../context';
+import { PmpMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import { PmpParagraph, PmpSelect, classes, html } from 'prosemirror-preset-ui';
 import { currentFontFamily } from '../../utils';

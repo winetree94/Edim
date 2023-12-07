@@ -1,4 +1,4 @@
-import { PmpMenubarContext } from '../../context';
+import { PmpMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import { PmpButton, html } from 'prosemirror-preset-ui';
 import { toggleMark } from 'prosemirror-commands';

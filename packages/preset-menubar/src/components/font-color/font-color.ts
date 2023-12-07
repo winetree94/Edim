@@ -1,6 +1,12 @@
-import { PmpMenubarContext } from '../../context';
+import { PmpMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { COLORS, PmpColor, PmpSelect, classes, html } from 'prosemirror-preset-ui';
+import {
+  COLORS,
+  PmpColor,
+  PmpSelect,
+  classes,
+  html,
+} from 'prosemirror-preset-ui';
 import { toggleMark } from 'prosemirror-commands';
 
 export const PmpMenubarFontColorSelect = () => {
