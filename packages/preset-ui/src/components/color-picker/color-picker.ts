@@ -2,7 +2,7 @@ import { html } from '../../cdk/render';
 import { classes } from '../../cdk/utils/core';
 import { HTMLAttributes, forwardRef } from 'preact/compat';
 
-const COLORS = [
+export const COLORS = [
   '#182B4D',
   '#0055CC',
   '#206A83',

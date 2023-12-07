@@ -38,6 +38,8 @@ import { PMP_LINK_MARK } from 'prosemirror-preset-link';
 import {
   PMP_FONT_FAMILY_MARK,
   PMP_STRIKETHROUGH_MARK,
+  PMP_SUBSCRIPT_MARK,
+  PMP_SUPERSCRIPT_MARK,
   PMP_UNDERLINE_MARK,
 } from 'prosemirror-preset-strikethrough';
 import {
@@ -106,6 +108,8 @@ export const maximumSchema = new Schema({
     PMP_STRIKETHROUGH_MARK,
     PMP_UNDERLINE_MARK,
     PMP_FONT_FAMILY_MARK,
+    PMP_SUPERSCRIPT_MARK,
+    PMP_SUBSCRIPT_MARK,
   ),
 });
 

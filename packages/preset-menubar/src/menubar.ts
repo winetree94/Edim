@@ -16,6 +16,8 @@ import {
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { insertTable } from 'prosemirror-preset-tables';
 import {
+  COLORS,
+  PmpColor,
   PmpHeadingByNumber,
   PmpLayer,
   PmpParagraph,
@@ -24,7 +26,6 @@ import {
 import { PmpSeparator } from 'prosemirror-preset-ui';
 import { PmpButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
-import { PmpColorPicker } from 'prosemirror-preset-ui';
 import {
   PMP_DEFAULT_COMMAND_LIST,
   PmpCommand,
@@ -45,10 +46,7 @@ import { html } from 'prosemirror-preset-ui';
 import { PmpEmojiPicker } from 'prosemirror-preset-ui';
 import { currentFontFamily, getTextType } from './utils';
 import { HeadingLevel } from 'prosemirror-preset-heading';
-import {
-  PmpFontFamilyAttrs,
-  PmpFontFamilyMarkType,
-} from 'prosemirror-preset-strikethrough';
+import { PmpFontFamilyMarkType } from 'prosemirror-preset-strikethrough';
 import { transformRangeToBlock } from '../../preset-core/src/commands';
 
 export interface PmpMenubarProps {
@@ -195,6 +193,14 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const activeStrikethrough = markActive(
     props.editorView.state,
     props.editorView.state.schema.marks['strikethrough'],
+  );
+  const activeSubscript = markActive(
+    props.editorView.state,
+    props.editorView.state.schema.marks['subscript'],
+  );
+  const activeSuperscript = markActive(
+    props.editorView.state,
+    props.editorView.state.schema.marks['superscript'],
   );
   const activeInlineCode = markActive(
     props.editorView.state,
@@ -411,6 +417,30 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         <i className="ri-strikethrough-2" />
       </${PmpButton}>
       <${PmpButton}
+        className="pmp-icon-button ${activeSubscript ? 'selected' : ''}"
+        onClick=${() => {
+          toggleMark(props.editorView.state.schema.marks['subscript'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
+        >
+        <i className="ri-subscript-2" />
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button ${activeSuperscript ? 'selected' : ''}"
+        onClick=${() => {
+          toggleMark(props.editorView.state.schema.marks['superscript'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+          props.editorView.focus();
+        }}
+        >
+        <i className="ri-superscript-2" />
+      </${PmpButton}>
+      <${PmpButton}
         className="pmp-icon-button ${activeInlineCode ? 'selected' : ''}"
         onClick=${() => {
           toggleMark(props.editorView.state.schema.marks['code'])(
@@ -422,18 +452,34 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         >
         <i className="ri-code-line" />
       </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button pmp-color-button"
-        ref=${textColorButtonRef}
-        onClick=${() => {
-          const rect = textColorButtonRef.current!.getBoundingClientRect();
-          setTextColorLayerRef({
-            top: rect.top + rect.height + 10,
-            left: rect.left,
-          });
-        }}
-        >
-        <svg 
+
+      <${PmpSeparator} className="pmp-view-menubar-separator" />
+
+      <${PmpSelect.Root} 
+        className="${classes('pmp-menubar-color-select')}"
+        value="${'black'}"
+        onChange="${(color: string) => {
+          const { from, to } = props.editorView.state.tr.selection;
+          if (from === to) {
+            toggleMark(props.editorView.state.schema.marks['textColor'], {
+              color,
+            })(props.editorView.state, props.editorView.dispatch);
+            props.editorView.focus();
+            return;
+          }
+          let tr = props.editorView.state.tr;
+          tr = tr.addMark(
+            from,
+            to,
+            props.editorView.state.schema.marks['textColor'].create({
+              color,
+            }),
+          );
+          props.editorView.dispatch(tr);
+          props.editorView.focus();
+        }}">
+      <${PmpSelect.Text}>
+      <svg 
           className="pmp-color-button-icon"
           xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 24 24">
@@ -441,55 +487,37 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           </path>
         </svg>
         <span className="current-font-color"></span>
-      </${PmpButton}>
-      ${
-        textColorLayerRef &&
-        html`
-        <${PmpLayer}
-          top=${textColorLayerRef.top}
-          left=${textColorLayerRef.left}
-          closeOnEsc=${true}
-          outerMousedown=${() => setTextColorLayerRef(null)}
-          onClose=${() => setTextColorLayerRef(null)}
-          >
-          <${PmpColorPicker}
-            onChange=${(color: string) => {
-              setTextColorLayerRef(null);
-              const { from, to } = props.editorView.state.tr.selection;
-              if (from === to) {
-                toggleMark(props.editorView.state.schema.marks['textColor'], {
-                  color,
-                })(props.editorView.state, props.editorView.dispatch);
-                props.editorView.focus();
-                return;
-              }
-              let tr = props.editorView.state.tr;
-              tr = tr.addMark(
-                from,
-                to,
-                props.editorView.state.schema.marks['textColor'].create({
-                  color,
-                }),
-              );
-              props.editorView.dispatch(tr);
-              props.editorView.focus();
-            }}
-            />
-        </${PmpLayer}>
-      `
-      }
+      </${PmpSelect.Text}>
+      <${PmpSelect.OptionGroup} className="pmp-color-layer-list">
+      ${COLORS.map(
+        (color) => html`
+        <${PmpSelect.Option}
+         className="pmp-colo-layer-list-item"
+         value="${color}">
+          <${PmpColor}
+            color=${color}
+            className=${'props.color' === color ? 'selected' : ''}
+          />
+          </${PmpSelect.Option}>
+        `,
+      )}
+      </${PmpSelect.OptionGroup}>
+    </${PmpSelect.Root}>
+
+      <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpSelect.Root} 
-        className="pmp-icon-button ${classes(
+        className="${classes(
           'pmp-menubar-align-select',
           firstAlignment !== 'left' ? 'pmp-menubar-align-active' : '',
         )}"
-        hideArrow="${true}"
         value="${firstAlignment}">
       <${PmpSelect.Text}>
         <i className="ri-align-${firstAlignment}" />
       </${PmpSelect.Text}>
-      <${PmpSelect.OptionGroup}>
+      <${
+        PmpSelect.OptionGroup
+      } matchWidth="${true}" className="pmp-menubar-align-list">
       ${alignmentOptions.map(
         (option) => html`
         <${PmpSelect.Option} className="pmp-menubar-align-option" value="${option.value}" onClick=${option.command}>

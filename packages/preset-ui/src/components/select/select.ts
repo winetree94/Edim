@@ -126,10 +126,16 @@ const PmpSelectOption = forwardRef<HTMLLIElement, PmpSelectOptionProps>(
   },
 );
 
+export interface PmpSelectOptionGroupProps {
+  className: string;
+  children: JSX.Element;
+  matchWidth: boolean;
+}
+
 const PmpSelectOptionGroup = forwardRef<
   HTMLDivElement,
-  HTMLAttributes<HTMLDivElement>
->(({ children }) => {
+  PmpSelectOptionGroupProps
+>(({ className, children, ...props }) => {
   const context = useContext(PmpSelectContext);
 
   if (context.opened === null) {
@@ -142,9 +148,9 @@ const PmpSelectOptionGroup = forwardRef<
         left="${context.opened.left}"
         top="${context.opened.bottom}"
         maxHeight="${300}"
-        outerMousedown="${() => context.close()}"
-      >
-        <${PmpUnorderedList}>
+        width="${props.matchWidth ? context.opened.width : undefined}"
+        outerMousedown="${() => context.close()}">
+        <${PmpUnorderedList} className="${classes(className)}">
           ${children}
         </${PmpUnorderedList}>
       </${PmpLayer}>
