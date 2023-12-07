@@ -97,7 +97,7 @@ onClick=${() => {
     context.editorView.focus();
   }}
   >
-  <i className="ri-subscript-2" />
+  <i className="ri-subscript" />
 </${PmpButton}>
 <${PmpButton}
   className="pmp-icon-button ${activeSuperscript ? 'selected' : ''}"
@@ -109,7 +109,7 @@ onClick=${() => {
     context.editorView.focus();
   }}
   >
-  <i className="ri-superscript-2" />
+  <i className="ri-superscript" />
 </${PmpButton}>
 <${PmpButton}
   className="pmp-icon-button ${activeInlineCode ? 'selected' : ''}"
