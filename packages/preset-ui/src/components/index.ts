@@ -9,3 +9,4 @@ export * from './separator';
 export * from './color-picker';
 export * from './select';
 export * from './heading';
+export * from './tooltip';

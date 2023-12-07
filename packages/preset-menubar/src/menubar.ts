@@ -3,26 +3,11 @@ import { render } from 'preact';
 import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { findParentNode } from 'prosemirror-utils';
 import { EditorView } from 'prosemirror-view';
-import { toggleMark } from 'prosemirror-commands';
-import { indentListItem, toggleList } from 'prosemirror-preset-flat-list';
 import { addMention } from 'prosemirror-preset-mention';
 import { toggleBlockquote } from 'prosemirror-preset-blockquote';
-import { markActive } from 'prosemirror-preset-core';
-import {
-  TextAlignment,
-  getRangeFirstAlignment,
-  setAlignment,
-} from 'prosemirror-preset-paragraph';
 import { addLink, PmpLinkFormLayer } from 'prosemirror-preset-link';
 import { insertTable } from 'prosemirror-preset-tables';
-import {
-  COLORS,
-  PmpColor,
-  PmpHeadingByNumber,
-  PmpLayer,
-  PmpParagraph,
-  PmpSelect,
-} from 'prosemirror-preset-ui';
+import { PmpLayer } from 'prosemirror-preset-ui';
 import { PmpSeparator } from 'prosemirror-preset-ui';
 import { PmpButton } from 'prosemirror-preset-ui';
 import { useRef, useState } from 'preact/hooks';
@@ -44,10 +29,16 @@ import {
 import { classes } from 'prosemirror-preset-ui';
 import { html } from 'prosemirror-preset-ui';
 import { PmpEmojiPicker } from 'prosemirror-preset-ui';
-import { currentFontFamily, getTextType } from './utils';
-import { HeadingLevel } from 'prosemirror-preset-heading';
-import { PmpFontFamilyMarkType } from 'prosemirror-preset-strikethrough';
-import { transformRangeToBlock } from '../../preset-core/src/commands';
+import { PmpMenubarContext } from './context';
+import {
+  PmpMenubarFontColorSelect,
+  PmpMenubarFontFamilySelect,
+  PmpMenubarIndentButtons,
+  PmpMenubarListToggleButtons,
+  PmpMenubarMarkToggleButtons,
+  PmpMenubarTextAlignSelect,
+  PmpMenubarTextTypeSelect,
+} from './features';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
@@ -71,11 +62,6 @@ const createFakeProgress = (
 };
 
 export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
-  const [textColorLayerRef, setTextColorLayerRef] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
-
   const [linkLayerRef, setLinkLayerRef] = useState<{
     top: number;
     left: number;
@@ -96,157 +82,10 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
     left: number;
   } | null>(null);
 
-  const textColorButtonRef = useRef<HTMLButtonElement>(null);
   const linkButtonRef = useRef<HTMLButtonElement>(null);
   const commandButtonRef = useRef<HTMLButtonElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const emojiButtonRef = useRef<HTMLButtonElement>(null);
-
-  const textType = getTextType(props.editorView.state);
-  const textTypeOptions = [
-    ...([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((level) => ({
-      value: `h${level}`,
-      label: `Heading ${level}`,
-      Element: PmpHeadingByNumber[level],
-      command: () => {
-        transformRangeToBlock(props.editorView.state.schema.nodes['heading'], {
-          level,
-        })(props.editorView.state, props.editorView.dispatch);
-        props.editorView.focus();
-      },
-    })),
-    {
-      value: 'p',
-      label: 'Normal',
-      Element: PmpParagraph,
-      command: () => {
-        transformRangeToBlock(props.editorView.state.schema.nodes['paragraph'])(
-          props.editorView.state,
-          props.editorView.dispatch,
-        );
-        props.editorView.focus();
-      },
-    },
-  ];
-
-  const currentFont = currentFontFamily(props.editorView.state);
-
-  const fontFamilyMarkType = props.editorView.state.schema.marks[
-    'font_family'
-  ] as PmpFontFamilyMarkType;
-
-  const fontOptions = [
-    {
-      label: 'Default',
-      value: 'default',
-      command: () => {
-        const tr =
-          props.editorView.state.tr.removeStoredMark(fontFamilyMarkType);
-        props.editorView.dispatch(tr);
-        props.editorView.focus();
-      },
-    },
-    ...fontFamilyMarkType.spec.fonts.map((font) => ({
-      value: font.fontFamily,
-      label: font.label,
-      command: () => {
-        const tr = props.editorView.state.tr.addStoredMark(
-          fontFamilyMarkType.create({
-            fontFamily: font.fontFamily,
-          }),
-        );
-        props.editorView.dispatch(tr);
-        props.editorView.focus();
-      },
-    })),
-  ];
-
-  const alignmentOptions = (['left', 'center', 'right'] as TextAlignment[]).map(
-    (align) => {
-      return {
-        value: align,
-        icon: html`<i className="ri-align-${align}" />`,
-        command: () => {
-          setAlignment(align)(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        },
-      };
-    },
-  );
-
-  // marks
-  const activeBold = markActive(
-    props.editorView.state,
-    props.editorView.state.schema.marks['strong'],
-  );
-  const activeItalic = markActive(
-    props.editorView.state,
-    props.editorView.state.schema.marks['em'],
-  );
-  const activeUnderline = markActive(
-    props.editorView.state,
-    props.editorView.state.schema.marks['underline'],
-  );
-  const activeStrikethrough = markActive(
-    props.editorView.state,
-    props.editorView.state.schema.marks['strikethrough'],
-  );
-  const activeSubscript = markActive(
-    props.editorView.state,
-    props.editorView.state.schema.marks['subscript'],
-  );
-  const activeSuperscript = markActive(
-    props.editorView.state,
-    props.editorView.state.schema.marks['superscript'],
-  );
-  const activeInlineCode = markActive(
-    props.editorView.state,
-    props.editorView.state.schema.marks['code'],
-  );
-
-  const firstAlignment = getRangeFirstAlignment(props.editorView.state);
-
-  const onIncreaseIndentClick = (): void => {
-    indentListItem(1)(props.editorView.state, props.editorView.dispatch);
-    props.editorView.focus();
-  };
-
-  const onDecreaseIndentClick = (): void => {
-    indentListItem(-1)(props.editorView.state, props.editorView.dispatch);
-    props.editorView.focus();
-  };
-
-  const canOrderedList = toggleList(
-    props.editorView.state.schema.nodes['ordered_list'],
-  )(props.editorView.state);
-  const canBulletList = toggleList(
-    props.editorView.state.schema.nodes['bullet_list'],
-  )(props.editorView.state);
-  const activeOrderedList = !!findParentNode(
-    (node) => node.type === props.editorView.state.schema.nodes['ordered_list'],
-  )(props.editorView.state.selection);
-  const activeUnorderedList = !!findParentNode(
-    (node) => node.type === props.editorView.state.schema.nodes['bullet_list'],
-  )(props.editorView.state.selection);
-
-  const onOrderedListClick = (): void => {
-    toggleList(props.editorView.state.schema.nodes['ordered_list'])(
-      props.editorView.state,
-      props.editorView.dispatch,
-    );
-    props.editorView.focus();
-  };
-
-  const onUnorderedListClick = (): void => {
-    toggleList(props.editorView.state.schema.nodes['bullet_list'])(
-      props.editorView.state,
-      props.editorView.dispatch,
-    );
-    props.editorView.focus();
-  };
 
   const onImageChange = async (e: TargetedEvent<HTMLInputElement, Event>) => {
     const target = e.target as HTMLInputElement;
@@ -317,245 +156,22 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   };
 
   return html`
-    <div
-      className=${classes('pmp-view-menubar-wrapper')}
-      >
-
-      <${PmpSelect.Root} 
-        className="${classes(
-          'pmp-menubar-text-select',
-          textType !== 'p' ? 'pmp-heading-selected' : '',
-        )}"
-        value="${textType}">
-        <${PmpSelect.Text}>
-        <${PmpParagraph}>
-          ${
-            textTypeOptions.find((option) => option.value === textType)
-              ?.label || ''
-          }
-        </${PmpParagraph}>
-        </${PmpSelect.Text}>
-        <${PmpSelect.OptionGroup}>
-          ${textTypeOptions.map((option) => {
-            return html`
-              <${PmpSelect.Option} value="${option.value}" onClick=${option.command}>
-                <${option.Element}>${option.label}</${option.Element}> 
-              </${PmpSelect.Option}>
-            `;
-          })}
-        </${PmpSelect.OptionGroup}>
-      </${PmpSelect.Root}>
-
-      <${PmpSelect.Root} 
-        className="${classes('pmp-menubar-font-select')}"
-        value="${currentFont}">
-      <${PmpSelect.Text}>
-      <${PmpParagraph}>
-      ${fontOptions.find((option) => option.value === currentFont)?.label || ''}
-      </${PmpParagraph}>
-      </${PmpSelect.Text}>
-      <${PmpSelect.OptionGroup}>
-        ${fontOptions.map((option) => {
-          return html`
-            <${PmpSelect.Option} value="${option.value}" onClick=${option.command}>
-              <${PmpParagraph} style="font-family:${option.value}">${option.label}</${PmpParagraph}> 
-            </${PmpSelect.Option}>
-          `;
-        })}
-      </${PmpSelect.OptionGroup}>
-    </${PmpSelect.Root}>
-
+    <${PmpMenubarContext.Provider} value="${{
+      editorView: props.editorView,
+      editorState: props.editorState,
+    }}">
+    <div className=${classes('pmp-view-menubar-wrapper')}>
+      <${PmpMenubarTextTypeSelect} />
+      <${PmpMenubarFontFamilySelect} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
-
-      <${PmpButton}
-        className="pmp-icon-button ${activeBold ? 'selected' : ''}"
-        onClick=${() => {
-          toggleMark(props.editorView.state.schema.marks['strong'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-bold" />
-      </${PmpButton}>
-
-      <${PmpButton}
-        className="pmp-icon-button ${activeItalic ? 'selected' : ''}"
-        onClick=${() => {
-          toggleMark(props.editorView.state.schema.marks['em'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-italic" />
-      </${PmpButton}>
-      <${PmpButton}
-      className="pmp-icon-button ${activeUnderline ? 'selected' : ''}"
-      onClick=${() => {
-        toggleMark(props.editorView.state.schema.marks['underline'])(
-          props.editorView.state,
-          props.editorView.dispatch,
-        );
-        props.editorView.focus();
-      }}
-      >
-      <i class="ri-underline"></i>
-    </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button ${activeStrikethrough ? 'selected' : ''}"
-        onClick=${() => {
-          toggleMark(props.editorView.state.schema.marks['strikethrough'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-strikethrough-2" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button ${activeSubscript ? 'selected' : ''}"
-        onClick=${() => {
-          toggleMark(props.editorView.state.schema.marks['subscript'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-subscript-2" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button ${activeSuperscript ? 'selected' : ''}"
-        onClick=${() => {
-          toggleMark(props.editorView.state.schema.marks['superscript'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-superscript-2" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button ${activeInlineCode ? 'selected' : ''}"
-        onClick=${() => {
-          toggleMark(props.editorView.state.schema.marks['code'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-          props.editorView.focus();
-        }}
-        >
-        <i className="ri-code-line" />
-      </${PmpButton}>
-
+      <${PmpMenubarMarkToggleButtons} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
-
-      <${PmpSelect.Root} 
-        className="${classes('pmp-menubar-color-select')}"
-        value="${'black'}"
-        onChange="${(color: string) => {
-          const { from, to } = props.editorView.state.tr.selection;
-          if (from === to) {
-            toggleMark(props.editorView.state.schema.marks['textColor'], {
-              color,
-            })(props.editorView.state, props.editorView.dispatch);
-            props.editorView.focus();
-            return;
-          }
-          let tr = props.editorView.state.tr;
-          tr = tr.addMark(
-            from,
-            to,
-            props.editorView.state.schema.marks['textColor'].create({
-              color,
-            }),
-          );
-          props.editorView.dispatch(tr);
-          props.editorView.focus();
-        }}">
-      <${PmpSelect.Text}>
-      <svg 
-          className="pmp-color-button-icon"
-          xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 24 24">
-          <path d="M15.2459 14H8.75407L7.15407 18H5L11 3H13L19 18H16.8459L15.2459 14ZM14.4459 12L12 5.88516L9.55407 12H14.4459ZM3">
-          </path>
-        </svg>
-        <span className="current-font-color"></span>
-      </${PmpSelect.Text}>
-      <${PmpSelect.OptionGroup} className="pmp-color-layer-list">
-      ${COLORS.map(
-        (color) => html`
-        <${PmpSelect.Option}
-         className="pmp-colo-layer-list-item"
-         value="${color}">
-          <${PmpColor}
-            color=${color}
-            className=${'props.color' === color ? 'selected' : ''}
-          />
-          </${PmpSelect.Option}>
-        `,
-      )}
-      </${PmpSelect.OptionGroup}>
-    </${PmpSelect.Root}>
-
+      <${PmpMenubarFontColorSelect} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
-
-      <${PmpSelect.Root} 
-        className="${classes(
-          'pmp-menubar-align-select',
-          firstAlignment !== 'left' ? 'pmp-menubar-align-active' : '',
-        )}"
-        value="${firstAlignment}">
-      <${PmpSelect.Text}>
-        <i className="ri-align-${firstAlignment}" />
-      </${PmpSelect.Text}>
-      <${
-        PmpSelect.OptionGroup
-      } matchWidth="${true}" className="pmp-menubar-align-list">
-      ${alignmentOptions.map(
-        (option) => html`
-        <${PmpSelect.Option} className="pmp-menubar-align-option" value="${option.value}" onClick=${option.command}>
-          <i className="ri-align-${option.value}" />
-        </${PmpSelect.Option}>
-      `,
-      )}
-      </${PmpSelect.OptionGroup}>
-    </${PmpSelect.Root}>
-
+      <${PmpMenubarTextAlignSelect} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
-
-      <${PmpButton}
-        className="pmp-icon-button ${activeOrderedList ? 'selected' : ''}"
-        disabled=${!canOrderedList}
-        onClick=${() => onOrderedListClick()}
-        >
-        <i className="ri-list-ordered" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button ${activeUnorderedList ? 'selected' : ''}"
-        disabled=${!canBulletList}
-        onClick=${() => onUnorderedListClick()}
-        >
-        <i className="ri-list-unordered" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button"
-        onClick=${() => onDecreaseIndentClick()}
-        >
-        <i className="ri-indent-decrease" />
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button"
-        onClick=${() => onIncreaseIndentClick()}
-        >
-        <i className="ri-indent-increase" />
-      </${PmpButton}>
+      <${PmpMenubarListToggleButtons} />
+      <${PmpMenubarIndentButtons} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
       <${PmpButton} className="pmp-icon-button" disabled=${true}>
@@ -723,6 +339,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       }
 
     </div>
+    </${PmpMenubarContext.Provider}>
   `;
 });
 

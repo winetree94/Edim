@@ -1,3 +1,8 @@
+@import '../src/features/text-type/text-type.scss';
+@import '../src/features/font-family/font-family.scss';
+@import '../src/features/font-color/font-color.scss';
+@import '../src/features/text-align/text-align.scss';
+
 .pmp-view-editor-root {
   display: flex;
   flex-direction: column;
@@ -38,64 +43,6 @@
   flex-wrap: wrap;
   gap: 4px;
   position: relative;
-}
-
-.pmp-menubar-text-select {
-  width: 110px;
-
-  &.pmp-heading-selected {
-    color: var(--spindle-700);
-  }
-}
-
-.pmp-menubar-font-select {
-  width: 110px;
-}
-
-.pmp-menubar-color-select {
-  position: relative;
-}
-
-.pmp-color-layer-list {
-  margin: 8px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  gap: 4px;
-}
-
-.pmp-colo-layer-list-item {
-  padding: 0; 
-}
-
-.pmp-color-button {
-  position: relative;
-}
-
-.pmp-color-button-icon {
-  width: 16px;
-  height: 16px;
-  fill: var(--spindle-950);
-}
-
-.current-font-color {
-  position: absolute;
-  background-color: var(--spindle-700);
-  height: 2px;
-  width: 12px;
-  bottom: 7px;
-  left: 6px;
-  border-radius: 4px;
-}
-
-.pmp-menubar-align-option {
-  height: 28px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.pmp-menubar-align-active {
-  color: var(--spindle-700);
 }
 
 .pmp-view-menubar-separator {
