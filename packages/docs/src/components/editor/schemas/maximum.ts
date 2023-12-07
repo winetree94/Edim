@@ -18,10 +18,6 @@ import {
   createPmpHorizontalRulePlugins,
 } from 'prosemirror-preset-hr';
 import {
-  PMP_ITALIC_MARK,
-  createPmpItalicPlugins,
-} from 'prosemirror-preset-italic';
-import {
   PMP_IMAGE_NODE,
   creatPmpImagePlugins,
   PmpImagePlaceholderViewProvider,
@@ -41,6 +37,13 @@ import {
   PMP_SUBSCRIPT_MARK,
   PMP_SUPERSCRIPT_MARK,
   PMP_UNDERLINE_MARK,
+  PMP_STRONG_MARK,
+  PMP_TEXT_COLOR_MARK,
+  createPmpStrongPlugins,
+  PMP_CODE_MARK,
+  createPmpCodePlugins,
+  PMP_ITALIC_MARK,
+  createPmpItalicPlugins,
 } from 'prosemirror-preset-strikethrough';
 import {
   PMP_BLOCKQUOTE_NODE,
@@ -51,17 +54,11 @@ import {
   createCodeBlockPlugins,
 } from 'prosemirror-preset-codeblock';
 import { PMP_TEXT_NODE } from 'prosemirror-preset-text';
-import { PMP_TEXT_COLOR_MARK } from 'prosemirror-preset-text-color';
 import {
   PMP_TABLE_NODES,
   createPmpTableEditingPlugins,
   createPmpTablePlugins,
 } from 'prosemirror-preset-tables';
-import { PMP_CODE_MARK, createPmpCodePlugins } from 'prosemirror-preset-code';
-import {
-  PMP_STRONG_MARK,
-  createPmpStrongPlugins,
-} from 'prosemirror-preset-strong';
 import { PMP_EMOJI_NODE } from 'prosemirror-preset-emoji';
 import {
   createPmpCommandPlugins,

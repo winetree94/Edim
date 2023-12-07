@@ -14,7 +14,6 @@
     "prosemirror-model": "*",
     "prosemirror-commands": "*",
     "prosemirror-keymap": "*",
-    "prosemirror-preset-core": "*",
     "prosemirror-preset-core": "*"
   },
   "devDependencies": {
