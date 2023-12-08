@@ -16,7 +16,7 @@ export const createPmpHeadingKeymapPlugins = (
 ): PMPlugin[] => {
   const headingKeymaps: Record<string, Command> = {};
   for (let i = 1; i <= configs.level; i++) {
-    headingKeymaps['Ctrl-Alt-' + i] = setBlockType(configs.nodeType, {
+    headingKeymaps['Alt-Mod-' + i] = setBlockType(configs.nodeType, {
       level: i,
     });
   }

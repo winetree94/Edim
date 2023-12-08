@@ -1,7 +1,4 @@
-import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
-import { emDash, inputRules } from 'prosemirror-inputrules';
-import { keymap } from 'prosemirror-keymap';
-import { toggleMark } from 'prosemirror-commands';
+import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
 
 const emDOM: DOMOutputSpec = ['em', 0];
 export const PMP_ITALIC_MARK: Record<string, MarkSpec> = {
@@ -19,22 +16,4 @@ export const PMP_ITALIC_MARK: Record<string, MarkSpec> = {
       return emDOM;
     },
   },
-};
-
-export interface CreatePmpItalicPluginConfigs {
-  markType: MarkType;
-}
-
-export const createPmpItalicPlugins = (
-  configs: CreatePmpItalicPluginConfigs,
-) => {
-  return [
-    inputRules({
-      rules: [emDash],
-    }),
-    keymap({
-      'Mod-i': toggleMark(configs.markType),
-      'Mod-I': toggleMark(configs.markType),
-    }),
-  ];
 };

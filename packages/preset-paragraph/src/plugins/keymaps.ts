@@ -3,6 +3,7 @@ import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { ParagraphAttributes } from '../schemas';
+import { mac } from 'prosemirror-preset-core';
 
 export interface PmpParagraphKeymapPluginConfigs {
   nodeType: NodeType;
@@ -11,9 +12,10 @@ export interface PmpParagraphKeymapPluginConfigs {
 export const createPmpParagraphKeymapPlugins = (
   configs: PmpParagraphKeymapPluginConfigs,
 ) => {
+  const key = mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0';
   return [
     keymap({
-      'Ctrl-Alt-0': setBlockType(configs.nodeType),
+      [key]: setBlockType(configs.nodeType),
     }),
     new Plugin({
       key: new PluginKey('paragraphBackspacePlugin'),

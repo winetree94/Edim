@@ -8,7 +8,7 @@ import {
   html,
 } from 'prosemirror-preset-ui';
 import { toggleMark } from 'prosemirror-commands';
-import { markActive } from 'prosemirror-preset-core';
+import { mac, markActive } from 'prosemirror-preset-core';
 
 export const PmpMenubarMarkToggleButtons = () => {
   const context = useContext(PmpMenubarContext);
@@ -32,7 +32,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['underline'],
       ),
       shortcut: html`
-        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+        <${PmpShortCut}>
+          ${mac ? '⌘' : 'Ctrl+'}U
+        </${PmpShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['underline'])(
@@ -50,10 +52,32 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['strikethrough'],
       ),
       shortcut: html`
-        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+        <${PmpShortCut}>
+          ${mac ? '⌘⇧' : 'Ctrl+Shift+'}S
+        </${PmpShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['strikethrough'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    },
+    {
+      iconName: 'ri-code-line',
+      label: 'Inline Code',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['code'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>
+          ${mac ? '⌘⇧' : 'Ctrl+Shift+'}M
+        </${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['code'])(
           context.editorView.state,
           context.editorView.dispatch,
         );
@@ -68,7 +92,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['subscript'],
       ),
       shortcut: html`
-        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+        <${PmpShortCut}>
+          ${mac ? '⌘⇧' : 'Ctrl+Shift+'},
+        </${PmpShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['subscript'])(
@@ -86,28 +112,12 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['superscript'],
       ),
       shortcut: html`
-        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
+        <${PmpShortCut}>
+          ${mac ? '⌘⇧' : 'Ctrl+Shift+'}.
+        </${PmpShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['superscript'])(
-          context.editorView.state,
-          context.editorView.dispatch,
-        );
-        context.editorView.focus();
-      },
-    },
-    {
-      iconName: 'ri-code-line',
-      label: 'Inline Code',
-      active: markActive(
-        context.editorView.state,
-        context.editorView.state.schema.marks['code'],
-      ),
-      shortcut: html`
-        <${PmpShortCut}>⌘ + 1</${PmpShortCut}>
-      `,
-      command: () => {
-        toggleMark(context.editorView.state.schema.marks['code'])(
           context.editorView.state,
           context.editorView.dispatch,
         );

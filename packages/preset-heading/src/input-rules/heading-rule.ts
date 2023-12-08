@@ -7,4 +7,4 @@ export const headingRule = (nodeType: NodeType, maxLevel: number) => {
     nodeType,
     (match) => ({ level: match[1].length }),
   );
-}
+};

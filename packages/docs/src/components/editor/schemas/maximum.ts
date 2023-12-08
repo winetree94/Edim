@@ -41,6 +41,10 @@ import {
   createPmpItalicPlugins,
   PMP_CODE_MARK,
   createPmpCodePlugins,
+  createPmpUnderlinePlugins,
+  createPmpStrikethroughPlugins,
+  createPmpSubscriptPlugins,
+  createPmpSuperscriptPlugins,
 } from 'prosemirror-preset-marks';
 import {
   PMP_BLOCKQUOTE_NODE,
@@ -151,7 +155,7 @@ export const maximumPlugins: Plugin[] = [].concat(
     placeholderViewProvider: () => new PmpImagePlaceholderViewProvider(),
   }),
   createPmpItalicPlugins({
-    markType: maximumSchema.marks['italic'],
+    markType: maximumSchema.marks['em'],
   }),
   createPmpStrongPlugins({
     markType: maximumSchema.marks['strong'],
@@ -164,5 +168,17 @@ export const maximumPlugins: Plugin[] = [].concat(
   createPmpBasicKeymapPlugins({}),
   createPmpHistoryPlugins({}),
   createPmpVirtualCursorPlugins(),
+  createPmpUnderlinePlugins({
+    markType: maximumSchema.marks['underline'],
+  }),
+  createPmpStrikethroughPlugins({
+    markType: maximumSchema.marks['strikethrough'],
+  }),
+  createPmpSubscriptPlugins({
+    markType: maximumSchema.marks['subscript'],
+  }),
+  createPmpSuperscriptPlugins({
+    markType: maximumSchema.marks['superscript'],
+  }),
   [PmpMenubarPlugin, dropCursor(), gapCursor()],
 );

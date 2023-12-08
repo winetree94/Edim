@@ -8,10 +8,12 @@ export interface HeadingInputRuleConfigs {
   level: number;
 }
 
-export const createPmpHeadingInputRulePlugins = (configs: HeadingInputRuleConfigs): PMPlugin[] => {
+export const createPmpHeadingInputRulePlugins = (
+  configs: HeadingInputRuleConfigs,
+): PMPlugin[] => {
   return [
     inputRules({
       rules: [headingRule(configs.nodeType, configs.level)],
     }),
-  ]
+  ];
 };

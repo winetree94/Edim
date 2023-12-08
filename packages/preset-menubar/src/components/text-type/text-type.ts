@@ -10,7 +10,7 @@ import {
 } from 'prosemirror-preset-ui';
 import { getTextType } from '../../utils';
 import { HeadingLevel } from 'prosemirror-preset-heading';
-import { transformRangeToBlock } from 'prosemirror-preset-core';
+import { mac, transformRangeToBlock } from 'prosemirror-preset-core';
 
 export const PmpMenubarTextTypeSelect = () => {
   const context = useContext(PmpMenubarContext);
@@ -21,7 +21,9 @@ export const PmpMenubarTextTypeSelect = () => {
       label: `Heading ${level}`,
       Element: PmpHeadingByNumber[level],
       shortcut: html`
-        <${PmpShortCut}>⌘ + ${level}</${PmpShortCut}> 
+        <${PmpShortCut}>
+          ${mac ? '⌥⌘' : 'Ctrl+Alt+'}${level}
+        </${PmpShortCut}> 
       `,
       command: () => {
         transformRangeToBlock(
@@ -38,7 +40,7 @@ export const PmpMenubarTextTypeSelect = () => {
       label: 'Normal',
       Element: PmpParagraph,
       shortcut: html`
-        <${PmpShortCut}>⌘ + p</${PmpShortCut}> 
+        <${PmpShortCut}>⌥⌘0</${PmpShortCut}> 
       `,
       command: () => {
         transformRangeToBlock(
