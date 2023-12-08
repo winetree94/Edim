@@ -1,6 +1,4 @@
-import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
-import { keymap } from 'prosemirror-keymap';
-import { toggleMark } from 'prosemirror-commands';
+import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
 
 const codeDOM: DOMOutputSpec = ['code', { class: 'pmp-code' }, 0];
 export const PMP_CODE_MARK: Record<string, MarkSpec> = {
@@ -10,16 +8,4 @@ export const PMP_CODE_MARK: Record<string, MarkSpec> = {
       return codeDOM;
     },
   },
-};
-
-export interface CreatePmpCodePluginConfigs {
-  markType: MarkType;
-}
-
-export const createPmpCodePlugins = (configs: CreatePmpCodePluginConfigs) => {
-  return [
-    keymap({
-      'Mod-C': toggleMark(configs.markType),
-    }),
-  ];
 };
