@@ -1,4 +1,5 @@
 import { NodeSpec } from 'prosemirror-model';
+import { parseQuillIndent, parseQuillTextAlign } from 'prosemirror-preset-core';
 
 export interface ListItemAttrs {
   indent: number;
@@ -24,18 +25,13 @@ export const PMP_FREE_LIST_ITEM_NODE: Record<string, NodeSpec> = {
         getAttrs(node) {
           const dom = node as HTMLElement;
           const align = dom.getAttribute('data-text-align');
+          const quillAlign = parseQuillTextAlign(dom);
           const indent = dom.dataset['indent'];
-
-          let legacyIndent = 0;
-          for (let i = 1; i <= 4; i++) {
-            legacyIndent = dom.classList.contains(`ql-indent-${i}`)
-              ? i + 1
-              : legacyIndent;
-          }
+          const quillIndent = parseQuillIndent(dom);
 
           return {
-            align: align || null,
-            indent: legacyIndent || indent || 1,
+            align: align || quillAlign || null,
+            indent: indent || quillIndent || 1,
           };
         },
       },

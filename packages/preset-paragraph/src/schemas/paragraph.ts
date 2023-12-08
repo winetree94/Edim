@@ -1,4 +1,5 @@
 import { NodeSpec } from 'prosemirror-model';
+import { parseQuillTextAlign } from 'prosemirror-preset-core';
 
 export interface ParagraphAttributes {
   align: 'left' | 'right' | 'center' | null;
@@ -23,9 +24,10 @@ export const PMP_PARAGRAPH_NODE: Record<string, NodeSpec> = {
         getAttrs: (node) => {
           const dom = node as HTMLElement;
           const align = dom.getAttribute('data-text-align');
+          const quillAlign = parseQuillTextAlign(dom);
           const indent = dom.getAttribute('data-indent');
           return {
-            align: align || null,
+            align: align || quillAlign || null,
             indent: indent || 0,
           };
         },

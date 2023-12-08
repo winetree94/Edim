@@ -9,7 +9,8 @@ import {
 
 export const PmpMenubarTextAlignSelect = () => {
   const context = useContext(PmpMenubarContext);
-  const firstAlignment = getRangeFirstAlignment(context.editorView.state);
+  const firstAlignment =
+    getRangeFirstAlignment(context.editorView.state) || 'left';
 
   const alignmentOptions = (['left', 'center', 'right'] as TextAlignment[]).map(
     (align) => {

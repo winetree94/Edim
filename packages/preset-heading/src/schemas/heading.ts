@@ -1,4 +1,5 @@
 import { NodeSpec } from 'prosemirror-model';
+import { parseQuillTextAlign } from 'prosemirror-preset-core';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -23,10 +24,11 @@ export const PMP_HEADING_NODE: Record<string, NodeSpec> = {
       getAttrs: (node) => {
         const dom = node as HTMLElement;
         const align = dom.getAttribute('data-text-align');
+        const quillAlign = parseQuillTextAlign(dom);
         const indent = Number(dom.getAttribute('data-indent'));
         return {
           level,
-          align: align || null,
+          align: align || quillAlign || null,
           indent: indent || 0,
         };
       },
