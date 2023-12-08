@@ -39,13 +39,25 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       editorState: props.editorState,
     }}">
     <div className=${classes('pmp-view-menubar-wrapper')}>
-      <${PmpMenubarTextTypeSelect} />
-      <${PmpMenubarFontFamilySelect} />
+      ${
+        props.editorView.state.schema.nodes['heading'] &&
+        html` <${PmpMenubarTextTypeSelect} /> `
+      }
+      ${
+        props.editorView.state.schema.marks['font_family'] &&
+        html` <${PmpMenubarFontFamilySelect} /> `
+      }
       <${PmpSeparator} className="pmp-view-menubar-separator" />
       <${PmpMenubarMarkToggleButtons} />
-      <${PmpSeparator} className="pmp-view-menubar-separator" />
-      <${PmpMenubarFontColorSelect} />
-      <${PmpSeparator} className="pmp-view-menubar-separator" />
+
+      ${
+        props.editorView.state.schema.marks['text_color'] &&
+        html`
+          <${PmpMenubarFontColorSelect} />
+          <${PmpSeparator} className="pmp-view-menubar-separator" />
+        `
+      }
+
       <${PmpMenubarTextAlignSelect} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
       <${PmpMenubarListToggleButtons} />

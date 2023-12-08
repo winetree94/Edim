@@ -18,7 +18,7 @@ export const PmpMenubarFontColorSelect = () => {
   onChange="${(color: string) => {
     const { from, to } = context.editorView.state.tr.selection;
     if (from === to) {
-      toggleMark(context.editorView.state.schema.marks['textColor'], {
+      toggleMark(context.editorView.state.schema.marks['text_color'], {
         color,
       })(context.editorView.state, context.editorView.dispatch);
       context.editorView.focus();
@@ -28,7 +28,7 @@ export const PmpMenubarFontColorSelect = () => {
     tr = tr.addMark(
       from,
       to,
-      context.editorView.state.schema.marks['textColor'].create({
+      context.editorView.state.schema.marks['text_color'].create({
         color,
       }),
     );

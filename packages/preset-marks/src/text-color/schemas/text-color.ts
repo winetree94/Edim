@@ -19,7 +19,7 @@ export interface PmpTextColorMarkType extends MarkType {
 export const PMP_TEXT_COLOR_MARK: Record<string, PmpTextColorMarkSpec> = {
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
-  textColor: {
+  text_color: {
     colors: [],
     attrs: {
       color: { default: '' },

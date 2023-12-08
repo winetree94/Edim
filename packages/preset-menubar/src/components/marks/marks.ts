@@ -4,27 +4,75 @@ import {
   PmpButton,
   PmpParagraph,
   PmpSelect,
+  PmpSeparator,
   PmpShortCut,
   html,
 } from 'prosemirror-preset-ui';
 import { toggleMark } from 'prosemirror-commands';
 import { clearMarks, mac, markActive } from 'prosemirror-preset-core';
+import { Attributes, VNode } from 'preact';
+
+export interface PmpMenubarMarkButton {
+  iconName: string;
+  label: string;
+  active: boolean;
+  shortcut: VNode<Attributes> | VNode<Attributes>[];
+  command: () => void;
+}
 
 export const PmpMenubarMarkToggleButtons = () => {
   const context = useContext(PmpMenubarContext);
 
-  // marks
-  const activeBold = markActive(
-    context.editorView.state,
-    context.editorView.state.schema.marks['strong'],
-  );
-  const activeItalic = markActive(
-    context.editorView.state,
-    context.editorView.state.schema.marks['em'],
-  );
+  const buttons: PmpMenubarMarkButton[] = [];
 
-  const moreButtons = [
-    {
+  if (context.editorView.state.schema.marks['strong']) {
+    buttons.push({
+      iconName: 'ri-bold',
+      label: 'Bold',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['strong'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>
+          ${mac ? '⌘' : 'Ctrl+'}B
+        </${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['strong'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    });
+  }
+
+  if (context.editorView.state.schema.marks['em']) {
+    buttons.push({
+      iconName: 'ri-italic',
+      label: 'Italic',
+      active: markActive(
+        context.editorView.state,
+        context.editorView.state.schema.marks['em'],
+      ),
+      shortcut: html`
+        <${PmpShortCut}>
+          ${mac ? '⌘' : 'Ctrl+'}I
+        </${PmpShortCut}>
+      `,
+      command: () => {
+        toggleMark(context.editorView.state.schema.marks['em'])(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    });
+  }
+
+  if (context.editorView.state.schema.marks['underline']) {
+    buttons.push({
       iconName: 'ri-underline',
       label: 'Underline',
       active: markActive(
@@ -43,8 +91,11 @@ export const PmpMenubarMarkToggleButtons = () => {
         );
         context.editorView.focus();
       },
-    },
-    {
+    });
+  }
+
+  if (context.editorView.state.schema.marks['strikethrough']) {
+    buttons.push({
       iconName: 'ri-strikethrough-2',
       label: 'Strikethrough',
       active: markActive(
@@ -63,8 +114,11 @@ export const PmpMenubarMarkToggleButtons = () => {
         );
         context.editorView.focus();
       },
-    },
-    {
+    });
+  }
+
+  if (context.editorView.state.schema.marks['code']) {
+    buttons.push({
       iconName: 'ri-code-line',
       label: 'Inline Code',
       active: markActive(
@@ -83,8 +137,11 @@ export const PmpMenubarMarkToggleButtons = () => {
         );
         context.editorView.focus();
       },
-    },
-    {
+    });
+  }
+
+  if (context.editorView.state.schema.marks['subscript']) {
+    buttons.push({
       iconName: 'ri-subscript',
       label: 'Subscript',
       active: markActive(
@@ -103,8 +160,11 @@ export const PmpMenubarMarkToggleButtons = () => {
         );
         context.editorView.focus();
       },
-    },
-    {
+    });
+  }
+
+  if (context.editorView.state.schema.marks['superscript']) {
+    buttons.push({
       iconName: 'ri-superscript',
       label: 'Superscript',
       active: markActive(
@@ -123,60 +183,52 @@ export const PmpMenubarMarkToggleButtons = () => {
         );
         context.editorView.focus();
       },
-    },
-    {
-      iconName: 'ri-format-clear',
-      label: 'Clear Format',
-      active: false,
-      shortcut: html`
+    });
+  }
+
+  buttons.push({
+    iconName: 'ri-format-clear',
+    label: 'Clear Format',
+    active: false,
+    shortcut: html`
         <${PmpShortCut}>
           ${mac ? '⌘' : 'Ctrl+'}\\
         </${PmpShortCut}>
       `,
-      command: () => {
-        clearMarks()(context.editorView.state, context.editorView.dispatch);
-        context.editorView.focus();
-      },
+    command: () => {
+      clearMarks()(context.editorView.state, context.editorView.dispatch);
+      context.editorView.focus();
     },
-  ];
+  });
 
-  const moreActive = moreButtons.some((button) => button.active);
+  const contextButtons = buttons.splice(2);
+  if (contextButtons.length === 1) {
+    buttons.push(...contextButtons.splice(0, 1));
+  }
+
+  const contextActive = contextButtons.some((button) => button.active);
 
   return html`
-  <${PmpButton}
-  className="pmp-icon-button ${activeBold ? 'selected' : ''}"
-  onClick=${() => {
-    toggleMark(context.editorView.state.schema.marks['strong'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
-    context.editorView.focus();
-  }}
-  >
-  <i className="ri-bold" />
-</${PmpButton}>
-
-<${PmpButton}
-  className="pmp-icon-button ${activeItalic ? 'selected' : ''}"
-  onClick=${() => {
-    toggleMark(context.editorView.state.schema.marks['em'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
-    context.editorView.focus();
-  }}
-  >
-  <i className="ri-italic" />
-</${PmpButton}>
-    <${PmpSelect.Root} 
+    ${buttons.map(
+      (button) => html`
+      <${PmpButton}
+        className="pmp-icon-button ${button.active ? 'selected' : ''}"
+        onClick=${button.command}>
+        <i className="${button.iconName}" />
+      </${PmpButton}>
+    `,
+    )}
+    ${contextButtons.length > 1 &&
+    html`
+     <${PmpSelect.Root} 
       hideArrow="${true}"
-      className="pmp-icon-button ${moreActive ? 'selected' : ''}">
+      className="pmp-icon-button ${contextActive ? 'selected' : ''}">
       <${PmpSelect.Text}>
         <i class="ri-more-fill"></i>
       </${PmpSelect.Text}>
       <${PmpSelect.OptionGroup} 
         className="pmp-menubar-more-marks-list">
-        ${moreButtons.map(
+        ${contextButtons.map(
           (button) => html`
           <${PmpSelect.Option}
             onClick="${button.command}"
@@ -192,6 +244,8 @@ export const PmpMenubarMarkToggleButtons = () => {
         `,
         )}
       </${PmpSelect.OptionGroup}>
-    </${PmpSelect.Root}>
+    </${PmpSelect.Root}>   
+    `}
+    <${PmpSeparator} className="pmp-view-menubar-separator" />
   `;
 };
