@@ -8,7 +8,7 @@ import {
   html,
 } from 'prosemirror-preset-ui';
 import { toggleMark } from 'prosemirror-commands';
-import { mac, markActive } from 'prosemirror-preset-core';
+import { clearMarks, mac, markActive } from 'prosemirror-preset-core';
 
 export const PmpMenubarMarkToggleButtons = () => {
   const context = useContext(PmpMenubarContext);
@@ -121,6 +121,20 @@ export const PmpMenubarMarkToggleButtons = () => {
           context.editorView.state,
           context.editorView.dispatch,
         );
+        context.editorView.focus();
+      },
+    },
+    {
+      iconName: 'ri-format-clear',
+      label: 'Clear Format',
+      active: false,
+      shortcut: html`
+        <${PmpShortCut}>
+          ${mac ? '⌘' : 'Ctrl+'}\\
+        </${PmpShortCut}>
+      `,
+      command: () => {
+        clearMarks()(context.editorView.state, context.editorView.dispatch);
         context.editorView.focus();
       },
     },

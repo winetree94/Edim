@@ -8,6 +8,7 @@ import {
   selectParentNode,
 } from 'prosemirror-commands';
 import { Plugin } from 'prosemirror-state';
+import { clearMarks } from '../commands';
 
 export interface CreatePmpBasicKeymapPluginConfigs {}
 
@@ -21,6 +22,7 @@ export const createPmpBasicKeymapPlugins = (
       'Alt-ArrowDown': joinDown,
       'Mod-BracketLeft': lift,
       Escape: selectParentNode,
+      'Mod-\\': clearMarks(),
     }),
     keymap(baseKeymap),
   ];
