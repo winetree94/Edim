@@ -11,7 +11,7 @@ export const createPmpCodeInputRulePlugins = (
 ): PMPlugin[] => [
   inputRules({
     rules: [
-      new InputRule(/`(.*)`$/, (state, match, start, end) =>
+      new InputRule(/`(.+)`$/, (state, match, start, end) =>
         state.tr
           .replaceRangeWith(
             start,

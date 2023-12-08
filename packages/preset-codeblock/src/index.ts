@@ -1,1 +1,2 @@
-export * from './code-block';
+export * from './schemas';
+export * from './plugins';
