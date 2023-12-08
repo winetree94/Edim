@@ -110,7 +110,7 @@ function getMarksAround($pos: ResolvedPos) {
     before = $pos.parent.maybeChild(index - 1);
   }
 
-  return [before?.marks.slice(), after?.marks.slice()] as const;
+  return [before?.marks.slice() || [], after?.marks.slice() || []] as const;
 }
 
 function isTextSelection(selection: Selection): selection is TextSelection {
