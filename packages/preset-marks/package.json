@@ -2,13 +2,69 @@
   "name": "prosemirror-preset-marks",
   "version": "0.0.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "start": "tsc --watch",
     "clean:dist": "rimraf dist",
     "clean:dependency": "rimraf node_modules",
-    "build": "tsc -p ./tsconfig.build.json"
+    "build": "tsup"
   },
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./italic": {
+      "types": "./dist/italic/index.d.ts",
+      "import": "./dist/italic/index.js",
+      "require": "./dist/italic/index.cjs"
+    },
+    "./code": {
+      "types": "./dist/code/index.d.ts",
+      "import": "./dist/code/index.js",
+      "require": "./dist/code/index.cjs"
+    },
+    "./font-family": {
+      "types": "./dist/font-family/index.d.cts",
+      "import": "./dist/font-family/index.js",
+      "require": "./dist/font-family/index.cjs"
+    },
+    "./strikethrough": {
+      "types": "./dist/strikethrough/index.d.ts",
+      "import": "./dist/strikethrough/index.js",
+      "require": "./dist/strikethrough/index.cjs"
+    },
+    "./strong": {
+      "types": "./dist/strong/index.d.ts",
+      "import": "./dist/strong/index.js",
+      "require": "./dist/strong/index.cjs"
+    },
+    "./subscript": {
+      "types": "./dist/subscript/index.d.ts",
+      "import": "./dist/subscript/index.js",
+      "require": "./dist/subscript/index.cjs"
+    },
+    "./superscript": {
+      "types": "./dist/superscript/index.d.ts",
+      "import": "./dist/superscript/index.js",
+      "require": "./dist/superscript/index.cjs"
+    },
+    "./text-color": {
+      "types": "./dist/text-color/index.d.ts",
+      "import": "./dist/text-color/index.js",
+      "require": "./dist/text-color/index.cjs"
+    },
+    "./underline": {
+      "types": "./dist/underline/index.d.ts",
+      "import": "./dist/underline/index.js",
+      "require": "./dist/underline/index.cjs"
+    },
+    "./styles/code.scss": "./styles/code.scss"
+  },
   "private": true,
   "dependencies": {
     "prosemirror-model": "*",
@@ -16,6 +72,7 @@
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
     "typescript": "^5.2.2"
   }
 }

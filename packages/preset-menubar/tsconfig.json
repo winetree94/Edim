@@ -18,13 +18,18 @@
       "prosemirror-preset-tables": ["../../preset-tables/src/index.ts"],
       "prosemirror-preset-blockquote": ["../../preset-blockquote/src/index.ts"],
       "prosemirror-preset-marks": ["../../preset-marks/src/index.ts"],
+      "prosemirror-preset-marks/code": ["../../preset-marks/src/code/index.ts"],
+      "prosemirror-preset-marks/font-family": ["../../preset-marks/src/font-family/index.ts"],
+      "prosemirror-preset-marks/italic": ["../../preset-marks/src/italic/index.ts"],
+      "prosemirror-preset-marks/strikethrough": ["../../preset-marks/src/strikethrough/index.ts"],
+      "prosemirror-preset-marks/strong": ["../../preset-marks/src/strong/index.ts"],
+      "prosemirror-preset-marks/subscript": ["../../preset-marks/src/subscript/index.ts"],
+      "prosemirror-preset-marks/superscript": ["../../preset-marks/src/superscript/index.ts"],
+      "prosemirror-preset-marks/text-color": ["../../preset-marks/src/text-color/index.ts"],
+      "prosemirror-preset-marks/underline": ["../../preset-marks/src/underline/index.ts"],
       "prosemirror-preset-ui": ["../../preset-ui/src/index.ts"]
     }
   },
-  "include": [
-    "src/*"
-  ],
-  "files": [
-    "src/index.ts"
-  ],
+  "include": ["./src"],
+  "files": ["src/index.ts"]
 }

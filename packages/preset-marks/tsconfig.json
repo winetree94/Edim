@@ -8,10 +8,6 @@
       "prosemirror-preset-core": ["../../preset-core/src/index.ts"]
     }
   },
-  "include": [
-    "src/*"
-  ],
-  "files": [
-    "src/index.ts"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules/"]
 }
