@@ -1,4 +1,3 @@
-import { PMP_DOC_NODE } from 'prosemirror-preset-document';
 import {
   PMP_HEADING_NODE,
   createPmpHeadingPlugins,
@@ -22,8 +21,6 @@ import {
   creatPmpImagePlugins,
   PmpImagePlaceholderViewProvider,
 } from 'prosemirror-preset-image';
-import { createPmpBasicKeymapPlugins } from 'prosemirror-preset-keymap';
-import { createPmpHistoryPlugins } from 'prosemirror-preset-history';
 import {
   PMP_MENTION_MARK,
   createPmpMentionPlugins,
@@ -58,7 +55,6 @@ import {
   PMP_CODE_BLOCK_NODE,
   createCodeBlockPlugins,
 } from 'prosemirror-preset-codeblock';
-import { PMP_TEXT_NODE } from 'prosemirror-preset-text';
 import {
   PMP_TABLE_NODES,
   createPmpTableEditingPlugins,
@@ -75,7 +71,13 @@ import { faker } from '@faker-js/faker';
 import { Schema } from 'prosemirror-model';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
-import { createPmpVirtualCursorPlugins } from 'prosemirror-preset-core';
+import {
+  PMP_DOC_NODE,
+  PMP_TEXT_NODE,
+  createPmpBasicKeymapPlugins,
+  createPmpHistoryPlugins,
+  createPmpVirtualCursorPlugins,
+} from 'prosemirror-preset-core';
 
 const items: MentionItem[] = Array.from({ length: 100 }).map(() => ({
   icon: faker.image.avatar(),

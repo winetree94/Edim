@@ -2,66 +2,63 @@
   "name": "prosemirror-preset-marks",
   "version": "0.0.0",
   "license": "MIT",
-  "type": "module",
   "scripts": {
-    "start": "tsc --watch",
+    "start": "tsup --watch",
     "clean:dist": "rimraf dist",
     "clean:dependency": "rimraf node_modules",
     "build": "tsup"
   },
-  "main": "dist/index.cjs",
+  "main": "dist/index.mjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.mjs"
     },
     "./italic": {
       "types": "./dist/italic/index.d.ts",
       "import": "./dist/italic/index.js",
-      "require": "./dist/italic/index.cjs"
+      "require": "./dist/italic/index.mjs"
     },
     "./code": {
       "types": "./dist/code/index.d.ts",
       "import": "./dist/code/index.js",
-      "require": "./dist/code/index.cjs"
-    },
-    "./font-family": {
-      "types": "./dist/font-family/index.d.ts",
-      "import": "./dist/font-family/index.js",
-      "require": "./dist/font-family/index.cjs"
+      "require": "./dist/code/index.mjs"
     },
     "./strikethrough": {
       "types": "./dist/strikethrough/index.d.ts",
       "import": "./dist/strikethrough/index.js",
-      "require": "./dist/strikethrough/index.cjs"
+      "require": "./dist/strikethrough/index.mjs"
     },
     "./strong": {
       "types": "./dist/strong/index.d.ts",
       "import": "./dist/strong/index.js",
-      "require": "./dist/strong/index.cjs"
+      "require": "./dist/strong/index.mjs"
     },
     "./subscript": {
       "types": "./dist/subscript/index.d.ts",
       "import": "./dist/subscript/index.js",
-      "require": "./dist/subscript/index.cjs"
+      "require": "./dist/subscript/index.mjs"
     },
     "./superscript": {
       "types": "./dist/superscript/index.d.ts",
       "import": "./dist/superscript/index.js",
-      "require": "./dist/superscript/index.cjs"
+      "require": "./dist/superscript/index.mjs"
     },
     "./text-color": {
       "types": "./dist/text-color/index.d.ts",
       "import": "./dist/text-color/index.js",
-      "require": "./dist/text-color/index.cjs"
+      "require": "./dist/text-color/index.mjs"
     },
     "./underline": {
       "types": "./dist/underline/index.d.ts",
       "import": "./dist/underline/index.js",
-      "require": "./dist/underline/index.cjs"
+      "require": "./dist/underline/index.mjs"
     },
     "./styles/code.scss": "./styles/code.scss"
   },

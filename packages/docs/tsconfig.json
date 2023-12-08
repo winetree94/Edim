@@ -16,13 +16,11 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@site/*": ["./*"],
-      "prosemirror-preset-document": ["../preset-document/src/index.ts"],
       "prosemirror-preset-tables": ["../preset-tables/src/index.ts"],
       "prosemirror-preset-emoji": ["../preset-emoji/src/index.ts"],
       "prosemirror-preset-heading": ["../preset-heading/src/index.ts"],
       "prosemirror-preset-command": ["../preset-command/src/index.ts"],
       "prosemirror-preset-hr": ["../preset-hr/src/index.ts"],
-      "prosemirror-preset-history": ["../preset-history/src/index.ts"],
       "prosemirror-preset-paragraph": ["../preset-paragraph/src/index.ts"],
       "prosemirror-preset-flat-list": ["../preset-flat-list/src/index.ts"],
       "prosemirror-preset-mention": ["../preset-mention/src/index.ts"],
@@ -41,8 +39,6 @@
       "prosemirror-preset-marks/superscript": ["../preset-marks/src/superscript/index.ts"],
       "prosemirror-preset-marks/text-color": ["../preset-marks/src/text-color/index.ts"],
       "prosemirror-preset-marks/underline": ["../preset-marks/src/underline/index.ts"],
-      "prosemirror-preset-keymap": ["../preset-keymap/src/index.ts"],
-      "prosemirror-preset-text": ["../preset-text/src/index.ts"],
       "prosemirror-preset-ui": ["../preset-ui/src/index.ts"],
       "prosemirror-preset-menubar": ["../preset-menubar/src/index.ts"]
     },

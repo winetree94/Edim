@@ -13,11 +13,14 @@
   "dependencies": {
     "prosemirror-state": "*",
     "prosemirror-model": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-keymap": "*",
     "prosemirror-transform": "*",
     "prosemirror-inputrules": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
     "typescript": "^5.2.2"
   }
 }

@@ -16,11 +16,11 @@
     "prosemirror-commands": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-keymap": "*",
-    "prosemirror-preset-core": "*",
     "prosemirror-preset-core": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
     "typescript": "^5.2.2"
   }
 }
