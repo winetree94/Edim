@@ -57,7 +57,6 @@ const currentTextColor = (state: EditorState): string | null => {
 export const PmpMenubarFontColorSelect = () => {
   const context = useContext(PmpMenubarContext);
   const currentColor = currentTextColor(context.editorView.state);
-  console.log(currentColor);
 
   return html`
     <${PmpSelect.Root} 

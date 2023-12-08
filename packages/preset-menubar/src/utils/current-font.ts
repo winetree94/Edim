@@ -5,10 +5,6 @@ import { EditorState, TextSelection } from 'prosemirror-state';
 export const currentFontFamily = (state: EditorState) => {
   const selection = state.selection;
 
-  if (selection.$from.parent !== selection.$to.parent) {
-    return 'default';
-  }
-
   if (!(selection instanceof TextSelection)) {
     return 'default';
   }
