@@ -28,25 +28,20 @@ import {
   PmpMentionView,
 } from 'prosemirror-preset-mention';
 import { PMP_LINK_MARK } from 'prosemirror-preset-link';
-import { PMP_FONT_FAMILY_MARK } from 'prosemirror-preset-marks/font-family';
-import { PMP_STRIKETHROUGH_MARK } from 'prosemirror-preset-marks/strikethrough';
-import { PMP_SUBSCRIPT_MARK } from 'prosemirror-preset-marks/subscript';
-import { PMP_SUPERSCRIPT_MARK } from 'prosemirror-preset-marks/superscript';
-import { PMP_UNDERLINE_MARK } from 'prosemirror-preset-marks/underline';
 import {
+  PMP_FONT_FAMILY_MARK,
+  PMP_STRIKETHROUGH_MARK,
+  PMP_SUBSCRIPT_MARK,
+  PMP_SUPERSCRIPT_MARK,
+  PMP_UNDERLINE_MARK,
   PMP_STRONG_MARK,
   createPmpStrongPlugins,
-} from 'prosemirror-preset-marks/strong';
-import { PMP_TEXT_COLOR_MARK } from 'prosemirror-preset-marks/text-color';
-import {
+  PMP_TEXT_COLOR_MARK,
   PMP_ITALIC_MARK,
   createPmpItalicPlugins,
-} from 'prosemirror-preset-marks/italic';
-import {
   PMP_CODE_MARK,
   createPmpCodePlugins,
-} from 'prosemirror-preset-marks/code';
-
+} from 'prosemirror-preset-marks';
 import {
   PMP_BLOCKQUOTE_NODE,
   createPmpBlockQuotePlugins,

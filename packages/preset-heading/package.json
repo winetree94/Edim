@@ -9,7 +9,7 @@
     "build": "tsup --tsconfig tsconfig.build.json"
   },
   "type": "module",
-  "main": "dist/index.mjs",
+  "main": "dist/index.cjs",
   "module": "dist/index.js",
   "style": "styles/heading.scss",
   "types": "dist/index.d.ts",

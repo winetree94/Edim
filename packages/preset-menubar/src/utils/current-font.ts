@@ -1,4 +1,4 @@
-import { PmpFontFamilyAttrs } from 'prosemirror-preset-marks/font-family';
+import { PmpFontFamilyAttrs } from 'prosemirror-preset-marks';
 import { EditorState, TextSelection } from 'prosemirror-state';
 
 export const currentFontFamily = (state: EditorState) => {
