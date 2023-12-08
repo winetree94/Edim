@@ -47,7 +47,12 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
         props.editorView.state.schema.marks['font_family'] &&
         html` <${PmpMenubarFontFamilySelect} /> `
       }
-      <${PmpSeparator} className="pmp-view-menubar-separator" />
+      ${
+        props.editorView.state.schema.nodes['heading'] ||
+        props.editorView.state.schema.marks['font_family']
+          ? html` <${PmpSeparator} className="pmp-view-menubar-separator" /> `
+          : null
+      }
       <${PmpMenubarMarkToggleButtons} />
 
       ${

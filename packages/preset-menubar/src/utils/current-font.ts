@@ -1,13 +1,20 @@
+import { markActive } from 'prosemirror-preset-core';
 import { PmpFontFamilyAttrs } from 'prosemirror-preset-marks';
 import { EditorState, TextSelection } from 'prosemirror-state';
 
 export const currentFontFamily = (state: EditorState) => {
   const selection = state.selection;
+
   if (selection.$from.parent !== selection.$to.parent) {
     return 'default';
   }
 
   if (!(selection instanceof TextSelection)) {
+    return 'default';
+  }
+
+  const actived = markActive(state, state.schema.marks['font_family']);
+  if (!actived) {
     return 'default';
   }
 
@@ -32,8 +39,6 @@ export const currentFontFamily = (state: EditorState) => {
   if (!fromFont || !toFont) {
     return 'default';
   }
-
-  console.log(fromFont, toFont);
 
   if (fromFont.fontFamily !== toFont.fontFamily) {
     return 'default';
