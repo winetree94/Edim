@@ -29,7 +29,7 @@
       "require": "./dist/code/index.cjs"
     },
     "./font-family": {
-      "types": "./dist/font-family/index.d.cts",
+      "types": "./dist/font-family/index.d.ts",
       "import": "./dist/font-family/index.js",
       "require": "./dist/font-family/index.cjs"
     },
