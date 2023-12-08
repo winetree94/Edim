@@ -2,7 +2,6 @@ import { classes, html, PmpOverlay } from '../../cdk';
 import {
   createContext,
   forwardRef,
-  HTMLAttributes,
   useContext,
   useImperativeHandle,
   useRef,
@@ -79,7 +78,7 @@ const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
                 <i
                   className="${classes(
                     'pmp-select-arrow-icon',
-                    opened ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line',
+                    'ri-arrow-down-s-line',
                   )}"
                 ></i>
               `
