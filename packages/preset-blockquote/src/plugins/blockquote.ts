@@ -6,20 +6,28 @@ import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
 
 export interface CreateBlockQuotePluginConfigs {
   nodeType: NodeType;
+  mergeAdjacentBlockquote?: boolean;
 }
 
-export const createPmpBlockquotePlugins = (
+export const createPmpBlockQuotePlugins = (
   configs: CreateBlockQuotePluginConfigs,
 ): PMPlugin[] => {
-  return [
+  const plugins: PMPlugin[] = [
     ...createPmpBlockquoteInputRulePlugins(configs),
     ...createPmpBlockquoteKeymapPlugins(configs),
-    ...createPmpMergeAdjacentNodePlugins({
-      specs: [
-        {
-          nodeType: configs.nodeType,
-        },
-      ],
-    }),
   ];
+
+  if (configs.mergeAdjacentBlockquote) {
+    plugins.push(
+      ...createPmpMergeAdjacentNodePlugins({
+        specs: [
+          {
+            nodeType: configs.nodeType,
+          },
+        ],
+      }),
+    );
+  }
+
+  return plugins;
 };

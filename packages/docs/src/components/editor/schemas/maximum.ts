@@ -47,7 +47,7 @@ import {
   createPmpSuperscriptPlugins,
 } from 'prosemirror-preset-marks';
 import {
-  PMP_BLOCKQUOTE_NODE,
+  PMP_BLOCKQUOTE_NODES,
   createPmpBlockQuotePlugins,
 } from 'prosemirror-preset-blockquote';
 import {
@@ -94,7 +94,7 @@ export const maximumSchema = new Schema({
     PMP_BULLET_FREE_LIST_NODE,
     PMP_FREE_LIST_ITEM_NODE,
     PMP_ORDERED_FREE_LIST_NODE,
-    PMP_BLOCKQUOTE_NODE,
+    PMP_BLOCKQUOTE_NODES,
     PMP_HORIZONTAL_RULE_NODE,
     PMP_HEADING_NODE,
     PMP_CODE_BLOCK_NODE,
@@ -140,6 +140,7 @@ export const maximumPlugins: Plugin[] = [].concat(
   }),
   createPmpBlockQuotePlugins({
     nodeType: maximumSchema.nodes['blockquote'],
+    mergeAdjacentBlockquote: true,
   }),
   createPmpHorizontalRulePlugins({
     nodeType: maximumSchema.nodes['horizontal_rule'],

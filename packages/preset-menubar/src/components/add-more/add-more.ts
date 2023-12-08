@@ -4,7 +4,6 @@ import { PmpInput, PmpLayer, PmpSelect, html } from 'prosemirror-preset-ui';
 import { getRangeFirstAlignment } from 'prosemirror-preset-paragraph';
 import { PmpLinkFormLayer, addLink } from 'prosemirror-preset-link';
 import { Fragment } from 'preact';
-import { insertTable } from 'prosemirror-preset-tables';
 import { addMention } from 'prosemirror-preset-mention';
 import { TargetedEvent } from 'preact/compat';
 import {
@@ -58,16 +57,6 @@ export const PmpMenubarAddMoreSelect = () => {
       },
     },
     {
-      label: 'Blockquote',
-      shortcut: html``,
-      command: () => {},
-    },
-    {
-      label: 'Codeblock',
-      shortcut: html``,
-      command: () => {},
-    },
-    {
       label: 'Link',
       shortcut: html``,
       command: () => {
@@ -94,14 +83,6 @@ export const PmpMenubarAddMoreSelect = () => {
       shortcut: html``,
       command: () => {
         imageInputRef.current?.click();
-      },
-    },
-    {
-      label: 'Table',
-      shortcut: html``,
-      command: () => {
-        insertTable()(context.editorView.state, context.editorView.dispatch);
-        context.editorView.focus();
       },
     },
   ];

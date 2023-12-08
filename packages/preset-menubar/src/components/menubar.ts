@@ -19,6 +19,8 @@ import { PmpMenubarTextAlignSelect } from './text-align';
 import { PmpMenubarListToggleButtons } from './list';
 import { PmpMenubarIndentButtons } from './indent';
 import { PmpMenubarAddMoreSelect } from './add-more';
+import { setBlockType } from 'prosemirror-commands';
+import { insertTable } from 'prosemirror-preset-tables';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
@@ -68,6 +70,35 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       <${PmpMenubarListToggleButtons} />
       <${PmpMenubarIndentButtons} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
+
+      <${PmpButton}
+        className="pmp-icon-button"
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['blockquote'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+        }}>
+        <i class="ri-double-quotes-r"></i>
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
+        onClick=${() => {
+          setBlockType(props.editorView.state.schema.nodes['code_block'])(
+            props.editorView.state,
+            props.editorView.dispatch,
+          );
+        }}>
+        <i class="ri-code-s-slash-line"></i>
+      </${PmpButton}>
+      <${PmpButton}
+        className="pmp-icon-button"
+        onClick=${() => {
+          insertTable()(props.editorView.state, props.editorView.dispatch);
+          props.editorView.focus();
+        }}>
+        <i class="ri-table-2"></i>
+      </${PmpButton}>
 
       <${PmpButton}
         className="pmp-icon-button"

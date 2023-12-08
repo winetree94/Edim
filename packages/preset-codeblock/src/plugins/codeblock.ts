@@ -1,7 +1,7 @@
 import { NodeType } from 'prosemirror-model';
 import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
-import { createCodeBlockInputRulePlugins } from "./input-rules";
-import { createCodeBlockKeymapPlugins } from "./keymap";
+import { createCodeBlockInputRulePlugins } from './input-rules';
+import { createCodeBlockKeymapPlugins } from './keymap';
 
 export interface CreateCodeBlockPluginConfigs {
   nodeType: NodeType;
