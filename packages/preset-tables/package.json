@@ -1,15 +1,18 @@
 {
   "name": "prosemirror-preset-tables",
   "version": "1.3.4",
-  "type": "module",
-  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsc --watch",
+    "start": "tsup --watch --tsconfig tsconfig.build.json",
     "clean:dist": "rimraf dist",
     "clean:dependency": "rimraf node_modules",
-    "build": "tsc -p ./tsconfig.build.json"
+    "build": "tsup --tsconfig tsconfig.build.json"
   },
+  "type": "module",
+  "main": "dist/index.mjs",
+  "module": "dist/index.js",
+  "style": "styles/tables.scss",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "prosemirror-preset-core": "*",
     "prosemirror-preset-ui": "*",

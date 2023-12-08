@@ -18,8 +18,8 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ESNext",
-    "module": "ESNext",
+    "module": "esnext",
+    "target": "es2020",
     "useDefineForClassFields": false,
     "lib": [
       "ES6",

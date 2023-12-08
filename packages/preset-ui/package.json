@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "tsc --watch",
+    "start": "tsup --watch --tsconfig tsconfig.build.json",
     "clean:dist": "rimraf dist",
     "clean:dependency": "rimraf node_modules",
-    "build": "tsc -p ./tsconfig.build.json"
+    "build": "tsup --tsconfig tsconfig.build.json"
   },
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "dist/index.mjs",
+  "module": "dist/index.js",
+  "style": "styles/ui.scss",
+  "types": "dist/index.d.ts",
   "private": true,
   "dependencies": {
     "prosemirror-state": "*",
