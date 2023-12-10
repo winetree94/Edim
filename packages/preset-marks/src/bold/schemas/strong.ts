@@ -1,7 +1,7 @@
 import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
 
 const strongDOM: DOMOutputSpec = ['strong', 0];
-export const PMP_STRONG_MARK: Record<string, MarkSpec> = {
+export const PMP_BOLD_MARK: Record<string, MarkSpec> = {
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
   strong: {

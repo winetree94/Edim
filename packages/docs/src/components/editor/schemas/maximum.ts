@@ -34,7 +34,7 @@ import {
   PMP_SUBSCRIPT_MARK,
   PMP_SUPERSCRIPT_MARK,
   PMP_UNDERLINE_MARK,
-  PMP_STRONG_MARK,
+  PMP_BOLD_MARK,
   createPmpBoldPlugins,
   PMP_TEXT_COLOR_MARK,
   PMP_ITALIC_MARK,
@@ -103,7 +103,7 @@ export const maximumSchema = new Schema({
   ),
   marks: Object.assign(
     {},
-    PMP_STRONG_MARK,
+    PMP_BOLD_MARK,
     PMP_ITALIC_MARK,
     PMP_UNDERLINE_MARK,
     PMP_STRIKETHROUGH_MARK,

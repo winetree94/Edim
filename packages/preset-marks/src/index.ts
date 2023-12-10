@@ -2,7 +2,7 @@ export * from './code';
 export * from './font-family';
 export * from './italic';
 export * from './strikethrough';
-export * from './strong';
+export * from './bold';
 export * from './subscript';
 export * from './superscript';
 export * from './text-color';
