@@ -35,7 +35,7 @@ import {
   PMP_SUPERSCRIPT_MARK,
   PMP_UNDERLINE_MARK,
   PMP_STRONG_MARK,
-  createPmpStrongPlugins,
+  createPmpBoldPlugins,
   PMP_TEXT_COLOR_MARK,
   PMP_ITALIC_MARK,
   createPmpItalicPlugins,
@@ -158,7 +158,7 @@ export const maximumPlugins: Plugin[] = [].concat(
   createPmpItalicPlugins({
     markType: maximumSchema.marks['em'],
   }),
-  createPmpStrongPlugins({
+  createPmpBoldPlugins({
     markType: maximumSchema.marks['strong'],
   }),
   createPmpCodePlugins({

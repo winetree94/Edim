@@ -1,6 +1,4 @@
-import { DOMOutputSpec, MarkSpec, MarkType } from 'prosemirror-model';
-import { keymap } from 'prosemirror-keymap';
-import { toggleMark } from 'prosemirror-commands';
+import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
 
 const strongDOM: DOMOutputSpec = ['strong', 0];
 export const PMP_STRONG_MARK: Record<string, MarkSpec> = {
@@ -32,19 +30,4 @@ export const PMP_STRONG_MARK: Record<string, MarkSpec> = {
       return strongDOM;
     },
   },
-};
-
-export interface CreatePmpStrongPluginConfigs {
-  markType: MarkType;
-}
-
-export const createPmpStrongPlugins = (
-  configs: CreatePmpStrongPluginConfigs,
-) => {
-  return [
-    keymap({
-      'Mod-b': toggleMark(configs.markType),
-      'Mod-B': toggleMark(configs.markType),
-    }),
-  ];
 };
