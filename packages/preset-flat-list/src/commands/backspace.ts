@@ -27,9 +27,8 @@ export const listItemBackspace =
     const currentBlock = findParentNode((node) => node.type.isBlock)(selection);
     if (
       currentBlock &&
-      ['ordered_list', 'bullet_list'].includes(
-        previous$.nodeBefore?.type.name || '',
-      )
+      previous$.nodeBefore &&
+      configs.listNodeTypes.includes(previous$.nodeBefore.type)
     ) {
       const lastListItem$ = state.tr.doc.resolve(selection.from - 3);
       const lastListItemPos = lastListItem$.before(lastListItem$.depth);

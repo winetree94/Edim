@@ -19,6 +19,8 @@ export const createPmpFlatListPlugins = (
       orderListNodeType: configs.orderListNodeType,
     }),
     ...createPmpFlatListKeymapPlugins({
+      bulletListNodeType: configs.bulletListNodeType,
+      orderListNodeType: configs.orderListNodeType,
       listItemNodeType: configs.listItemNodeType,
     }),
     ...createPmpMergeAdjacentNodePlugins({

@@ -1,8 +1,8 @@
 import { NodeType } from 'prosemirror-model';
 import { Plugin as PMPlugin } from 'prosemirror-state';
 import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
-import { createPmpListInputRulePlugins } from './input-rules';
-import { createPmpListKeymapPlugins } from './keymaps';
+import { createPmpTaskListInputRulePlugins } from './input-rules';
+import { createPmpFlatTaskListKeymapPlugins } from './keymaps';
 
 export interface PmpFlatTaskListPluginsConfig {
   taskListNodeType: NodeType;
@@ -13,13 +13,13 @@ export const createPmpFlatTaskListPlugins = (
   configs: PmpFlatTaskListPluginsConfig,
 ): PMPlugin[] => {
   return [
-    // ...createPmpListInputRulePlugins({
-    //   bulletListNodeType: configs.bulletListNodeType,
-    //   orderListNodeType: configs.taskListNodeType,
-    // }),
-    // ...createPmpListKeymapPlugins({
-    //   listItemNodeType: configs.taskListItemNodeType,
-    // }),
+    ...createPmpTaskListInputRulePlugins({
+      taskListNodeType: configs.taskListNodeType,
+    }),
+    ...createPmpFlatTaskListKeymapPlugins({
+      taskListNodeType: configs.taskListNodeType,
+      taskListItemNodeType: configs.taskListItemNodeType,
+    }),
     ...createPmpMergeAdjacentNodePlugins({
       specs: [
         {
