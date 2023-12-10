@@ -2,7 +2,7 @@ import { PmpMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import { PmpParagraph, PmpSelect, classes, html } from 'prosemirror-preset-ui';
 import { currentFontFamily } from '../../utils';
-import { PmpFontFamilyMarkType } from 'prosemirror-preset-marks';
+import { PmpFontFamilyMarkType } from 'prosemirror-preset-font-family';
 
 export const PmpMenubarFontFamilySelect = () => {
   const context = useContext(PmpMenubarContext);

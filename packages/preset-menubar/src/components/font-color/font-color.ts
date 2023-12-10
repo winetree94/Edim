@@ -10,7 +10,7 @@ import {
 import { toggleMark } from 'prosemirror-commands';
 import { EditorState, TextSelection } from 'prosemirror-state';
 import { markActive } from 'prosemirror-preset-core';
-import { PmpTextColorAttrs } from 'prosemirror-preset-marks';
+import { PmpTextColorAttrs } from 'prosemirror-preset-text-color';
 
 const currentTextColor = (state: EditorState): string | null => {
   const selection = state.selection;

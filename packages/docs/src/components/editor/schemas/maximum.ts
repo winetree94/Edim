@@ -28,24 +28,30 @@ import {
   PmpMentionView,
 } from 'prosemirror-preset-mention';
 import { PMP_LINK_MARK } from 'prosemirror-preset-link';
+import { PMP_BOLD_MARK, createPmpBoldPlugins } from 'prosemirror-preset-bold';
+import { PMP_CODE_MARK, createPmpCodePlugins } from 'prosemirror-preset-code';
+import { PMP_FONT_FAMILY_MARK } from 'prosemirror-preset-font-family';
 import {
-  PMP_FONT_FAMILY_MARK,
-  PMP_STRIKETHROUGH_MARK,
-  PMP_SUBSCRIPT_MARK,
-  PMP_SUPERSCRIPT_MARK,
-  PMP_UNDERLINE_MARK,
-  PMP_BOLD_MARK,
-  createPmpBoldPlugins,
-  PMP_TEXT_COLOR_MARK,
   PMP_ITALIC_MARK,
   createPmpItalicPlugins,
-  PMP_CODE_MARK,
-  createPmpCodePlugins,
-  createPmpUnderlinePlugins,
+} from 'prosemirror-preset-italic';
+import {
+  PMP_STRIKETHROUGH_MARK,
   createPmpStrikethroughPlugins,
+} from 'prosemirror-preset-strikethrough';
+import {
+  PMP_SUBSCRIPT_MARK,
   createPmpSubscriptPlugins,
+} from 'prosemirror-preset-subscript';
+import {
+  PMP_SUPERSCRIPT_MARK,
   createPmpSuperscriptPlugins,
-} from 'prosemirror-preset-marks';
+} from 'prosemirror-preset-superscript';
+import { PMP_TEXT_COLOR_MARK } from 'prosemirror-preset-text-color';
+import {
+  PMP_UNDERLINE_MARK,
+  createPmpUnderlinePlugins,
+} from 'prosemirror-preset-underline';
 import {
   PMP_BLOCKQUOTE_NODES,
   createPmpBlockQuotePlugins,

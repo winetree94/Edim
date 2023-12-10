@@ -17,7 +17,8 @@
       "prosemirror-preset-command": ["../../preset-command/src/index.ts"],
       "prosemirror-preset-tables": ["../../preset-tables/src/index.ts"],
       "prosemirror-preset-blockquote": ["../../preset-blockquote/src/index.ts"],
-      "prosemirror-preset-marks": ["../../preset-marks/src/index.ts"],
+      "prosemirror-preset-font-family": ["../../preset-font-family/src/index.ts"],
+      "prosemirror-preset-text-color": ["../../preset-text-color/src/index.ts"],
       "prosemirror-preset-ui": ["../../preset-ui/src/index.ts"]
     }
   },

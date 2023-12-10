@@ -1,5 +1,5 @@
 import { markActive } from 'prosemirror-preset-core';
-import { PmpFontFamilyAttrs } from 'prosemirror-preset-marks';
+import { PmpFontFamilyAttrs } from 'prosemirror-preset-font-family';
 import { EditorState, TextSelection } from 'prosemirror-state';
 
 export const currentFontFamily = (state: EditorState) => {
