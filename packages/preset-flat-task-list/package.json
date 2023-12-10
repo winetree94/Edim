@@ -20,10 +20,10 @@
     "prosemirror-transform": "*",
     "prosemirror-inputrules": "*",
     "prosemirror-preset-core": "*",
+    "prosemirror-preset-ui": "*",
     "prosemirror-preset-flat-list": "*",
     "prosemirror-commands": "*",
-    "prosemirror-utils": "*",
-    "orderedmap": "*"
+    "prosemirror-utils": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
