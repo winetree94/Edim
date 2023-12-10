@@ -13,6 +13,15 @@ export const wrappingInputRuleWithJoin = (
     | Attrs
     | null
     | ((matches: RegExpMatchArray) => Attrs | null) = null,
+  beforeWrapping?: (
+    wrapping: {
+      type: NodeType;
+      attrs: Attrs | null;
+    }[],
+  ) => {
+    type: NodeType;
+    attrs: Attrs | null;
+  }[],
   beforeJoinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
   afterJoinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
 ) => {
@@ -26,10 +35,19 @@ export const wrappingInputRuleWithJoin = (
     let tr = state.tr.delete(start, end);
     const $start = tr.doc.resolve(start);
     const range = $start.blockRange();
-    const wrapping = range && findWrapping(range, nodeType, wrapperAttrs);
+
+    if (!range) {
+      return null;
+    }
+
+    let wrapping = range && findWrapping(range, nodeType, wrapperAttrs);
 
     if (!wrapping) {
       return null;
+    }
+
+    if (beforeWrapping) {
+      wrapping = beforeWrapping(wrapping);
     }
 
     if (nodeAttrs) {

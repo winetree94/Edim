@@ -4,16 +4,31 @@ import { wrappingInputRuleWithJoin } from 'prosemirror-preset-core';
 import { Plugin } from 'prosemirror-state';
 
 export const checkedTaskListRule = (nodeType: NodeType) => {
-  return wrappingInputRuleWithJoin(/^\[x\]\s$/, nodeType, {
-    indent: 0,
-    checked: true,
-  });
+  return wrappingInputRuleWithJoin(
+    /^\[x\]\s$/,
+    nodeType,
+    {
+      indent: 0,
+    },
+    null,
+    (wrappings) => {
+      const [list, listItem] = wrappings;
+      return [
+        list,
+        {
+          ...listItem,
+          attrs: {
+            checked: true,
+          },
+        },
+      ];
+    },
+  );
 };
 
 export const uncheckedTaskListRule = (nodeType: NodeType) => {
   return wrappingInputRuleWithJoin(/^\[\]\s$/, nodeType, {
     indent: 0,
-    checked: false,
   });
 };
 
