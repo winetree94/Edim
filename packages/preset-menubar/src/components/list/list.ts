@@ -7,12 +7,14 @@ import { findParentNode } from 'prosemirror-utils';
 export const PmpMenubarListToggleButtons = () => {
   const context = useContext(PmpMenubarContext);
 
-  const canOrderedList = toggleList(
-    context.editorView.state.schema.nodes['ordered_list'],
-  )(context.editorView.state);
-  const canBulletList = toggleList(
-    context.editorView.state.schema.nodes['bullet_list'],
-  )(context.editorView.state);
+  const canOrderedList = toggleList({
+    listType: context.editorView.state.schema.nodes['ordered_list'],
+    listItemType: context.editorView.state.schema.nodes['list_item'],
+  })(context.editorView.state);
+  const canBulletList = toggleList({
+    listType: context.editorView.state.schema.nodes['bullet_list'],
+    listItemType: context.editorView.state.schema.nodes['list_item'],
+  })(context.editorView.state);
   const activeOrderedList = !!findParentNode(
     (node) =>
       node.type === context.editorView.state.schema.nodes['ordered_list'],
@@ -23,18 +25,18 @@ export const PmpMenubarListToggleButtons = () => {
   )(context.editorView.state.selection);
 
   const onOrderedListClick = (): void => {
-    toggleList(context.editorView.state.schema.nodes['ordered_list'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
+    toggleList({
+      listType: context.editorView.state.schema.nodes['ordered_list'],
+      listItemType: context.editorView.state.schema.nodes['list_item'],
+    })(context.editorView.state, context.editorView.dispatch);
     context.editorView.focus();
   };
 
   const onUnorderedListClick = (): void => {
-    toggleList(context.editorView.state.schema.nodes['bullet_list'])(
-      context.editorView.state,
-      context.editorView.dispatch,
-    );
+    toggleList({
+      listType: context.editorView.state.schema.nodes['bullet_list'],
+      listItemType: context.editorView.state.schema.nodes['list_item'],
+    })(context.editorView.state, context.editorView.dispatch);
     context.editorView.focus();
   };
 

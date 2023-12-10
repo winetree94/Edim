@@ -21,6 +21,7 @@ import { PmpMenubarIndentButtons } from './indent';
 import { PmpMenubarAddMoreSelect } from './add-more';
 import { setBlockType } from 'prosemirror-commands';
 import { insertTable } from 'prosemirror-preset-tables';
+import { PmpMenubarTaskListToggleButtons } from './task-list';
 
 export interface PmpMenubarProps {
   editorView: EditorView;
@@ -71,6 +72,7 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
       <${PmpMenubarIndentButtons} />
       <${PmpSeparator} className="pmp-view-menubar-separator" />
 
+      <${PmpMenubarTaskListToggleButtons} />
       <${PmpButton}
         className="pmp-icon-button"
         onClick=${() => {

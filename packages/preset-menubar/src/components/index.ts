@@ -8,3 +8,4 @@ export * from './indent';
 export * from './menubar';
 export * from './context';
 export * from './add-more';
+export * from './task-list';

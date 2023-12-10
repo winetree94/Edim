@@ -7,14 +7,19 @@ const allowedContentTypes = [
   'heading',
   'code_block',
   'blockquote',
+  'task_list',
   'ordered_list',
   'bullet_list',
 ];
 
+export interface ToggleListCommandConfigs {
+  listType: NodeType;
+  listItemType: NodeType;
+}
+
 export const toggleList =
-  (nodeType: NodeType): Command =>
+  (configs: ToggleListCommandConfigs): Command =>
   (state, dispatch) => {
-    const listItemType = state.schema.nodes['list_item'];
     let tr = state.tr;
     let selection = state.selection;
 
@@ -24,7 +29,7 @@ export const toggleList =
       selection.to,
     ).filter(({ node }) => allowedContentTypes.includes(node.type.name));
 
-    if (nodes.every(({ node }) => node.type === nodeType)) {
+    if (nodes.every(({ node }) => node.type === configs.listType)) {
       tr = liftOut(tr, state, selection.from, selection.to).tr;
       selection = state.selection.map(tr.doc, tr.mapping);
       dispatch?.(tr.setSelection(selection));
@@ -43,16 +48,16 @@ export const toggleList =
         const $from = tr.doc.resolve(pos);
         const $to = tr.doc.resolve(pos + node.nodeSize);
         const range = $from.blockRange($to)!;
-        if (!listItemType.validContent(Fragment.from(node))) {
+        if (!configs.listItemType.validContent(Fragment.from(node))) {
           return tr;
         }
         tr = tr.wrap(range, [
           {
-            type: nodeType,
+            type: configs.listType,
             attrs: null,
           },
           {
-            type: listItemType,
+            type: configs.listItemType,
             attrs: { indent: indents[index] },
           },
         ]);
