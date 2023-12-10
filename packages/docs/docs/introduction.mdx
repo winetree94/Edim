@@ -2,46 +2,40 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# 소개 
 
-Let's discover **Docusaurus in less than 5 minutes**.
+## Edim 이란?
 
-## Getting Started
+**Edim**은 ProseMirror 를 기반으로 한 오픈소스 리치 텍스트 에디터입니다. ProseMirror 와 함께 사용 가능한 사전 정의된 서식과 플러그인을 제공합니다.
 
-Get started by **creating a new site**.
+**ProseMirror**는 브라우저에서 동작하는 리치 텍스트 에디터를 만들기 위한 현대적인 툴킷입니다. 하지만 ProseMirror 는 **Quill.js** 와 같이 완성된 에디터를 제공하는 것이 목적이 아니기 때문에 학습곡선이 가파르며 작성해야 하는 코드 양도 많습니다. 극단적인 예로, ProseMirror 의 기본 상태는 div 요소를 생성하고 contenteditable=true 를 설정한 것과 비슷합니다.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+**Edim**은 이러한 ProseMirror 에서 즉시 사용 가능한 서식(Schema)과 플러그인(Plugin)을 제공하여 **Easy-To-Start** 가 가능하도록 돕습니다.
 
-### What you'll need
+Edim 은 **Remirror** 와 **Tiptap** 과는 다르게 ProseMirror 를 추상화하지 않으며 모든 API 를 직접 노출합니다. 이는 Edim 을 사용하는 것이 ProseMirror 를 직접 사용하는 것과 같은 경험을 제공하며 ProseMirror 의 공식 문서를 참고할 수 있다는 것을 의미합니다.
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+## Quill.js 와의 관계
 
-## Generate a new site
+**Edim**의 주요 목적중의 하나는 **Quill.js** 에서 **ProseMirror** 로의 전환을 돕는 것입니다.
 
-Generate a new Docusaurus site using the **classic template**.
+비즈니스 환경에서 **에디터 전환을 고려**할 때, **ProseMirror** 에서 기본 제공하는 서식만으로는 Quill.js 에서 작성된 문서를 그대로 표현하기 어렵습니다. 또한 Quill.js 에서 제공하는 UX 를 유지하기 위해서는 많은 시간과 노력이 필요합니다.
 
-The classic template will automatically be added to your project after you run the command:
+**Edim**은 Quill.js 에서 작성된 문서를 그대로 표현하고, UX 를 유지할 수 있도록 Quill.js 에서 제공하는 서식과 UX 구현을 위한 기능을 함께 제공합니다.
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+## 누구에게 추천하나요?
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+ProseMirror 는 설계 목적상 API 가 방대하고 적응하기 어렵습니다. 그리고 Edim을 사용한다는 것은 ProseMirror 를 직접 사용한다는 것과 같습니다. 에디터를 처음 도입하려는 경우, 적절한 추상화를 통해 개발 경험이 향상된 Remirror 나 Tiptap 이 더 적합할 수 있습니다.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+Edim은 비즈니스 요구사항이 높아 최종적으로 ProseMirror API 를 직접 다루어야 하거나 Quill.js 에서 구현된 에디터를 ProseMirror 로 전환하려는 프로젝트에 적합합니다.
 
-## Start your site
+## 빠르게 시작하기
 
-Run the development server:
+- 5분 튜토리얼
+- Getting Started 섹션
 
-```bash
-cd my-website
-npm run start
-```
+## 요구되는 사전 지식 
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+Edim 에서 기본 제공하는 서식과 UI를 사용할 계획이라면 자바스크립트에 대한 기본 이해도만으로 충분합니다.
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+하지만 Edim 에 서식을 추가하거나, 사용자 정의 UI/UX 를 직접 구현하려는 경우 ProseMirror 에 대한 이해가 필요합니다.
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.

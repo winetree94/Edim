@@ -1,8 +1,8 @@
 {
-  "label": "Getting Started",
+  "label": "시작하기",
   "position": 2,
   "link": {
     "type": "generated-index",
-    "description": "5 minutes to learn the most important Docusaurus concepts."
+    "description": "Edim 을 시작하기 위한 가이드"
   }
 }
