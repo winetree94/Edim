@@ -14,19 +14,21 @@ sidebar_position: 1
 
 Edim 은 **Remirror** 와 **Tiptap** 과는 다르게 ProseMirror 를 추상화하지 않으며 모든 API 를 직접 노출합니다. 이는 Edim 을 사용하는 것이 ProseMirror 를 직접 사용하는 것과 같은 경험을 제공하며 ProseMirror 의 공식 문서를 참고할 수 있다는 것을 의미합니다.
 
-## Quill.js 와의 관계
+## Quill.js 과의 관계
 
 **Edim**의 주요 목적중의 하나는 **Quill.js** 에서 **ProseMirror** 로의 전환을 돕는 것입니다.
 
 비즈니스 환경에서 **에디터 전환을 고려**할 때, **ProseMirror** 에서 기본 제공하는 서식만으로는 Quill.js 에서 작성된 문서를 그대로 표현하기 어렵습니다. 또한 Quill.js 에서 제공하는 UX 를 유지하기 위해서는 많은 시간과 노력이 필요합니다.
 
-**Edim**은 Quill.js 에서 작성된 문서를 그대로 표현하고, UX 를 유지할 수 있도록 Quill.js 에서 제공하는 서식과 UX 구현을 위한 기능을 함께 제공합니다.
+**Edim**은 Quill.js 에서 작성된 문서를 그대로 표현하고, 구현된 UI/UX 를 유지할 수 있도록 돕는 다양한 API를 함께 제공합니다.
 
 ## 누구에게 추천하나요?
 
-ProseMirror 는 설계 목적상 API 가 방대하고 적응하기 어렵습니다. 그리고 Edim을 사용한다는 것은 ProseMirror 를 직접 사용한다는 것과 같습니다. 에디터를 처음 도입하려는 경우, 적절한 추상화를 통해 개발 경험이 향상된 Remirror 나 Tiptap 이 더 적합할 수 있습니다.
-
 Edim은 비즈니스 요구사항이 높아 최종적으로 ProseMirror API 를 직접 다루어야 하거나 Quill.js 에서 구현된 에디터를 ProseMirror 로 전환하려는 프로젝트에 적합합니다.
+
+ProseMirror 는 설계 목적상 API 가 방대하고 적응하기 어렵습니다. 그리고 Edim을 사용한다는 것은 ProseMirror 를 직접 사용한다는 것과 같습니다. 에디터를 처음 만드려는 경우, 적절한 추상화를 통해 개발 경험이 향상된 Remirror 나 Tiptap 이 더 적합할 수 있습니다.
+
+하지만 Remirror 와 Tiptap 모두 완성된 에디터보다는 툴킷에 가깝습니다. 따라서 준비된 에디터가 필요하고 요구사항이 더 일치한다면 Edim 을 사용하는 것이 더 나은 시작지점이 될 수 있습니다.
 
 ## 빠르게 시작하기
 
@@ -37,5 +39,6 @@ Edim은 비즈니스 요구사항이 높아 최종적으로 ProseMirror API 를 
 
 Edim 에서 기본 제공하는 서식과 UI를 사용할 계획이라면 자바스크립트에 대한 기본 이해도만으로 충분합니다.
 
-하지만 Edim 에 서식을 추가하거나, 사용자 정의 UI/UX 를 직접 구현하려는 경우 ProseMirror 에 대한 이해가 필요합니다.
+본 문서는 ProseMirror 가 처음이라는 가정하에 진행되며, ProseMirror 에 대한 기본 지식을 일부 포함합니다.
 
+이후 Edim 에 서식을 추가하거나, 사용자 정의 UI/UX를 구현하려는 경우 ProseMirror 의 공식 문서를 참고해야 합니다.
