@@ -7,12 +7,26 @@ export const PmpMenubarIndentButtons = () => {
   const context = useContext(PmpMenubarContext);
 
   const onIncreaseIndentClick = (): void => {
-    indentListItem(1)(context.editorView.state, context.editorView.dispatch);
+    indentListItem({
+      listNodeTypes: [
+        context.editorState.schema.nodes['bullet_list'],
+        context.editorState.schema.nodes['ordered_list'],
+      ],
+      listItemNodeType: context.editorState.schema.nodes['list_item'],
+      reduce: 1,
+    })(context.editorView.state, context.editorView.dispatch);
     context.editorView.focus();
   };
 
   const onDecreaseIndentClick = (): void => {
-    indentListItem(-1)(context.editorView.state, context.editorView.dispatch);
+    indentListItem({
+      listNodeTypes: [
+        context.editorState.schema.nodes['bullet_list'],
+        context.editorState.schema.nodes['ordered_list'],
+      ],
+      listItemNodeType: context.editorState.schema.nodes['list_item'],
+      reduce: -1,
+    })(context.editorView.state, context.editorView.dispatch);
     context.editorView.focus();
   };
 

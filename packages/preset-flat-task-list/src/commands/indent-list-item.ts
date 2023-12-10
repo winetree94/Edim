@@ -1,16 +1,8 @@
-import { Node, NodeType } from 'prosemirror-model';
+import { Node } from 'prosemirror-model';
 import { Command, EditorState, Transaction } from 'prosemirror-state';
 import { liftOutOfFlatList } from '../transforms';
 
-export interface IndentListItemCommandConfigs {
-  listNodeTypes: NodeType[];
-  listItemNodeType: NodeType;
-  reduce: number;
-}
-
-export const indentListItem = (
-  configs: IndentListItemCommandConfigs,
-): Command => {
+export const indentListItem = (reduce: number): Command => {
   return (
     state: EditorState,
     dispatch?: (tr: Transaction) => void,
@@ -43,12 +35,9 @@ export const indentListItem = (
       .reduce<Transaction>((tr, { node, pos }) => {
         const attrs = node.attrs as { indent: number };
         const originIndent = attrs.indent;
-        const expectedIndent = Math.min(
-          (originIndent || 0) + configs.reduce,
-          6,
-        );
+        const expectedIndent = Math.min((originIndent || 0) + reduce, 6);
 
-        if (node.type !== configs.listItemNodeType) {
+        if (node.type.name !== 'list_item') {
           const targetIndent = Math.max(expectedIndent, 0);
           if (targetIndent === originIndent) {
             return tr;
@@ -62,7 +51,7 @@ export const indentListItem = (
           const range = tr.doc
             .resolve(pos)
             .blockRange(tr.doc.resolve(pos + node.nodeSize), (node) => {
-              return configs.listNodeTypes.includes(node.type);
+              return ['ordered_list', 'bullet_list'].includes(node.type.name);
             });
           return liftOutOfFlatList(tr, range!)!;
         }

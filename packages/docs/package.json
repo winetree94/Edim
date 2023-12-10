@@ -36,6 +36,7 @@
     "prosemirror-preset-core": "*",
     "prosemirror-preset-emoji": "*",
     "prosemirror-preset-flat-list": "*",
+    "prosemirror-preset-flat-task-list": "*",
     "prosemirror-preset-heading": "*",
     "prosemirror-preset-hr": "*",
     "prosemirror-preset-image": "*",

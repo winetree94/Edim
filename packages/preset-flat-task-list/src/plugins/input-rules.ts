@@ -22,13 +22,13 @@ export const bulletListRule = (nodeType: NodeType) => {
   });
 };
 
-export interface createPmpFlatListInputRulePluginsConfig {
+export interface createPmpListInputRulePluginsConfig {
   orderListNodeType: NodeType;
   bulletListNodeType: NodeType;
 }
 
-export const createPmpFlatListInputRulePlugins = (
-  configs: createPmpFlatListInputRulePluginsConfig,
+export const createPmpListInputRulePlugins = (
+  configs: createPmpListInputRulePluginsConfig,
 ): Plugin[] => [
   inputRules({
     rules: [

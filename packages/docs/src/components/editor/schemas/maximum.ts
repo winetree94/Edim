@@ -10,8 +10,13 @@ import {
   PMP_BULLET_FREE_LIST_NODE,
   PMP_FREE_LIST_ITEM_NODE,
   PMP_ORDERED_FREE_LIST_NODE,
-  createPmpListPlugins,
+  createPmpFlatListPlugins,
 } from 'prosemirror-preset-flat-list';
+import {
+  PMP_FLAT_TASK_LIST_NODES,
+  PMP_FLAT_TASK_LIST_ITEM_NODES,
+  createPmpFlatTaskListPlugins,
+} from 'prosemirror-preset-flat-task-list';
 import {
   PMP_HORIZONTAL_RULE_NODE,
   createPmpHorizontalRulePlugins,
@@ -100,6 +105,8 @@ export const maximumSchema = new Schema({
     PMP_BULLET_FREE_LIST_NODE,
     PMP_FREE_LIST_ITEM_NODE,
     PMP_ORDERED_FREE_LIST_NODE,
+    PMP_FLAT_TASK_LIST_NODES,
+    PMP_FLAT_TASK_LIST_ITEM_NODES,
     PMP_BLOCKQUOTE_NODES,
     PMP_HORIZONTAL_RULE_NODE,
     PMP_HEADING_NODE,
@@ -139,10 +146,14 @@ export const maximumPlugins: Plugin[] = [].concat(
   createPmpCommandPlugins({
     view: (view, plugin) => new PmpCommandView(view, plugin),
   }),
-  createPmpListPlugins({
+  createPmpFlatListPlugins({
     orderListNodeType: maximumSchema.nodes['ordered_list'],
     bulletListNodeType: maximumSchema.nodes['bullet_list'],
     listItemNodeType: maximumSchema.nodes['list_item'],
+  }),
+  createPmpFlatTaskListPlugins({
+    taskListNodeType: maximumSchema.nodes['task_list'],
+    taskListItemNodeType: maximumSchema.nodes['task_list_item'],
   }),
   createPmpBlockQuotePlugins({
     nodeType: maximumSchema.nodes['blockquote'],

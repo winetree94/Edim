@@ -1,19 +1,17 @@
 import { NodeType } from 'prosemirror-model';
 import { Plugin as PMPlugin } from 'prosemirror-state';
-import {
-  createPmpFlatListInputRulePlugins,
-  createPmpFlatListKeymapPlugins,
-} from './plugins';
 import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
+import { createPmpFlatListInputRulePlugins } from './input-rules';
+import { createPmpFlatListKeymapPlugins } from './keymaps';
 
-export interface PmpListPluginsConfig {
+export interface PmpFlatListPluginsConfig {
   orderListNodeType: NodeType;
   bulletListNodeType: NodeType;
   listItemNodeType: NodeType;
 }
 
-export const createPmpListPlugins = (
-  configs: PmpListPluginsConfig,
+export const createPmpFlatListPlugins = (
+  configs: PmpFlatListPluginsConfig,
 ): PMPlugin[] => {
   return [
     ...createPmpFlatListInputRulePlugins({

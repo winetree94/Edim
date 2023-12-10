@@ -23,6 +23,7 @@
       "prosemirror-preset-hr": ["../preset-hr/src/index.ts"],
       "prosemirror-preset-paragraph": ["../preset-paragraph/src/index.ts"],
       "prosemirror-preset-flat-list": ["../preset-flat-list/src/index.ts"],
+      "prosemirror-preset-flat-task-list": ["../preset-flat-task-list/src/index.ts"],
       "prosemirror-preset-mention": ["../preset-mention/src/index.ts"],
       "prosemirror-preset-image": ["../preset-image/src/index.ts"],
       "prosemirror-preset-link": ["../preset-link/src/index.ts"],

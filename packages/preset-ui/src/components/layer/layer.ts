@@ -15,6 +15,7 @@ export interface PmpLayerProps {
   children?: JSX.Element;
   closeOnEsc?: boolean;
   disableBackdrop?: boolean;
+  inline?: boolean;
   onClose?(): void;
   outerMousedown?: (e: MouseEvent) => void;
 }

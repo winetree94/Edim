@@ -17,3 +17,7 @@ export const parseQuillIndent = (element: HTMLElement): number => {
   }
   return legacyIndent;
 };
+
+export const isQuillTaskList = (element: HTMLElement): boolean => {
+  return element.hasAttribute('data-checked');
+};
