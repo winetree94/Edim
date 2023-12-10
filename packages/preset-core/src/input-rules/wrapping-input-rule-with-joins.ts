@@ -2,6 +2,8 @@ import { InputRule } from 'prosemirror-inputrules';
 import { Attrs, Node, NodeType } from 'prosemirror-model';
 import { canJoin, findWrapping } from 'prosemirror-transform';
 
+// TODO 정리 및 분리
+// 현재 join 목적보다는 attr 변경 목적으로 사용 중
 export const wrappingInputRuleWithJoin = (
   regexp: RegExp,
   nodeType: NodeType,
