@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "paths": {
+      "@edim-editor/core": ["../../core/src/index.ts"],
+      "@edim-editor/core": ["../../core/src/index.ts"],
+    }
+  },
+  "include": [
+    "src/*"
+  ],
+  "files": [
+    "src/index.ts"
+  ]
+}

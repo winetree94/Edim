@@ -1,0 +1,48 @@
+{
+  "name": "@edim-editor/menubar",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsup --watch --tsconfig tsconfig.build.json",
+    "clean:dist": "rimraf dist",
+    "clean:dependency": "rimraf node_modules",
+    "build": "tsup --tsconfig tsconfig.build.json"
+  },
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "style": "styles/menubar.scss",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "dependencies": {
+    "prosemirror-state": "*",
+    "prosemirror-view": "*",
+    "prosemirror-model": "*",
+    "prosemirror-keymap": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-history": "*",
+    "prosemirror-utils": "*",
+    "@edim-editor/flat-list": "*",
+    "@edim-editor/paragraph": "*",
+    "@edim-editor/heading": "*",
+    "@edim-editor/core": "*",
+    "@edim-editor/mention": "*",
+    "@edim-editor/image": "*",
+    "@edim-editor/link": "*",
+    "@edim-editor/tables": "*",
+    "@edim-editor/command": "*",
+    "@edim-editor/blockquote": "*",
+    "@edim-editor/text-color": "*",
+    "@edim-editor/font-family": "*",
+    "@edim-editor/ui": "*",
+    "emoji-datasource": "15.0.1",
+    "preact": "*",
+    "htm": "*",
+    "remixicon": "^3.5.0"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.2.2"
+  }
+}

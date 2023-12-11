@@ -1,0 +1,35 @@
+.edim-select {
+  display: flex;
+  cursor: pointer;
+  height: var(--ui-height);
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  // padding: 0 4px;
+
+  .edim-select-text {
+    margin: 0;
+    flex: 1 1 auto;
+    text-align: left;
+  }
+
+  i.edim-select-arrow-icon {
+    flex-shrink: 0;
+  }
+}
+
+.edim-select-option {
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--white-100);
+  }
+
+  &:active {
+    background-color: var(--white-200);
+  }
+
+  &.edim-active {
+    color: var(--spindle-700);
+  }
+}

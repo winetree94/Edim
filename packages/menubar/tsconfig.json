@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@edim-editor/core": ["../../core/src/index.ts"],
+      "@edim-editor/mention": ["../../mention/src/index.ts"],
+      "@edim-editor/heading": ["../../heading/src/index.ts"],
+      "@edim-editor/paragraph": ["../../paragraph/src/index.ts"],
+      "@edim-editor/flat-list": ["../../flat-list/src/index.ts"],
+      "@edim-editor/image": ["../../image/src/index.ts"],
+      "@edim-editor/link": ["../../link/src/index.ts"],
+      "@edim-editor/command": ["../../command/src/index.ts"],
+      "@edim-editor/tables": ["../../tables/src/index.ts"],
+      "@edim-editor/blockquote": ["../../blockquote/src/index.ts"],
+      "@edim-editor/font-family": ["../../font-family/src/index.ts"],
+      "@edim-editor/text-color": ["../../text-color/src/index.ts"],
+      "@edim-editor/ui": ["../../ui/src/index.ts"]
+    }
+  },
+  "include": ["./src"],
+  "files": ["src/index.ts"]
+}

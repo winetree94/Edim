@@ -1,0 +1,33 @@
+{
+  "name": "@edim-editor/core",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsup --watch --tsconfig tsconfig.build.json",
+    "clean:dist": "rimraf dist",
+    "clean:dependency": "rimraf node_modules",
+    "build": "tsup --tsconfig tsconfig.build.json"
+  },
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "style": "styles/core.scss",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "dependencies": {
+    "prosemirror-state": "*",
+    "prosemirror-model": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-keymap": "*",
+    "prosemirror-transform": "*",
+    "prosemirror-inputrules": "*",
+    "prosemirror-history": "*",
+    "prosemirror-gapcursor": "*",
+    "prosemirror-dropcursor": "*"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "tsup": "^8.0.1",
+    "typescript": "^5.2.2"
+  }
+}
