@@ -13,7 +13,7 @@ npm install prosemirror-state \
             prosemirror-view
 ```
 
-Edim 은 여러개의 패키지로 나뉘어 배포됩니다.
+Edim 은 각 구성요소가 여러개의 패키지로 나뉘어 배포됩니다.
  
 ```bash npm2yarn
 npm install @edim/core \
@@ -47,7 +47,7 @@ const state = EditorState.create({
 
 <BrowserOnly fallback={<div>loading</div>}>
   {() => {
-    const Edim = require('@site/src/components/editor/edim').Edim;
+    const { Edim } = require('@site/src/components/editor/edim');
     return <Edim></Edim>;
   }}
 </BrowserOnly>

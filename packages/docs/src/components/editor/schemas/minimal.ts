@@ -4,16 +4,20 @@ import {
   EDIM_DOC_NODES,
   EDIM_PARAGRAPH_NODE,
   EDIM_TEXT_NODES,
-  createEdimBasicKeymapPlugins,
-  createEdimHistoryPlugins,
+  createEdimCorePlugins,
 } from 'prosemirror-preset-core';
+import { createEdimMenubarPlugins } from 'prosemirror-preset-menubar';
 
 export const minimalSchema = new Schema({
-  nodes: Object.assign({}, EDIM_DOC_NODES, EDIM_TEXT_NODES, EDIM_PARAGRAPH_NODE),
-  marks: Object.assign({}),
+  nodes: {
+    EDIM_DOC_NODES,
+    EDIM_TEXT_NODES,
+    EDIM_PARAGRAPH_NODE,
+  },
+  marks: {},
 });
 
-export const minimalPlugins: Plugin[] = [].concat(
-  createEdimBasicKeymapPlugins({}),
-  createEdimHistoryPlugins({}),
-);
+export const minimalPlugins: Plugin[] = [
+  ...createEdimCorePlugins(),
+  ...createEdimMenubarPlugins(),
+];
