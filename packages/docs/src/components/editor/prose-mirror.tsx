@@ -1,3 +1,4 @@
+import React from 'react';
 import { classes } from 'prosemirror-preset-ui';
 import { DirectEditorProps, EditorView } from 'prosemirror-view';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
@@ -11,7 +12,7 @@ export interface ProseMirrorProps extends DirectEditorProps {
 }
 
 export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
-  ({ className, state, ...props }, ref) => {
+  ({ state, ...props }, ref) => {
     const editorDomRef = useRef<HTMLDivElement>(null);
     const editorViewRef = useRef<EditorView | null>(null);
 
@@ -27,11 +28,6 @@ export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
         ...props,
         dispatchTransaction: (transaction) => {
           view.updateState(view.state.apply(transaction));
-          // if (props.dispatchTransaction) {
-          //   props.dispatchTransaction(transaction);
-          // } else if (onStateChange && editorViewRef.current) {
-          //   onStateChange(view.state.apply(transaction));
-          // }
         },
       });
       editorViewRef.current = view;
@@ -39,12 +35,6 @@ export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
         view.destroy();
       };
     }, []);
-
-    // useEffect(() => {
-    //   if (editorViewRef.current && state) {
-    //     editorViewRef.current.updateState(state);
-    //   }
-    // }, [state]);
 
     return <div ref={editorDomRef} className={classes('edim-root')}></div>;
   },

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
@@ -8,23 +9,21 @@ export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
 
   return (
-    <BrowserOnly fallback={<div>loading</div>}>
-      {() => {
-        const Edim = require('@site/src/components/editor/edim').Edim;
-        return (
-          <Layout
-            title={`Hello from ${siteConfig.title}`}
-            description="Description will go into a meta tag in <head />"
-            wrapperClassName={styles.EditorContainer}
-          >
-            <div className={styles.EditorWrapper}>
-              <div className={styles.Editor}>
-                <Edim></Edim>
-              </div>
-            </div>
-          </Layout>
-        );
-      }}
-    </BrowserOnly>
+    <Layout
+      title={`Hello from ${siteConfig.title}`}
+      description="Description will go into a meta tag in <head />"
+      wrapperClassName={styles.EditorContainer}
+    >
+      <div className={styles.EditorWrapper}>
+        <div className={styles.Editor}>
+          <BrowserOnly fallback={<div>loading</div>}>
+            {() => {
+              const Edim = require('@site/src/components/editor/edim').Edim;
+              return <Edim></Edim>;
+            }}
+          </BrowserOnly>
+        </div>
+      </div>
+    </Layout>
   );
 }

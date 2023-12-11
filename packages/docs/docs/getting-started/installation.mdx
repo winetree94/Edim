@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1 
 ---
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # 설치
 
@@ -30,7 +31,7 @@ import {
   EDIM_DOC_NODES,
   EDIM_TEXT_NODES,
   createEdimCorePlugins,
-} from 'prosemirror-preset-core';
+} from '@edim/core';
 import {
   EDIM_PARAGRAPH_NODES,
   createEdimParagraphKeymapPlugins,
@@ -42,5 +43,11 @@ const state = EditorState.create({
 
   ],
 });
-
 ```
+
+<BrowserOnly fallback={<div>loading</div>}>
+  {() => {
+    const Edim = require('@site/src/components/editor/edim').Edim;
+    return <Edim></Edim>;
+  }}
+</BrowserOnly>
