@@ -1,4 +1,4 @@
-.pmp-button {
+.edim-button {
   background-color: transparent;
   background-repeat: no-repeat;
   border: none;
@@ -14,7 +14,7 @@
   padding: 0 4px;
   background-color: var(--white-50);
 
-  &.pmp-icon-button {
+  &.edim-icon-button {
     padding: 0;
     width: var(--ui-height);
     display: flex;
@@ -28,7 +28,7 @@
     background-color: var(--spindle-50);
   }
 
-  &.pmp-active {
+  &.edim-active {
     background-color: var(--white-200);
   }
 

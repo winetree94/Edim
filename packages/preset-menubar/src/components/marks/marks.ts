@@ -1,18 +1,18 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import {
-  PmpButton,
-  PmpParagraph,
-  PmpSelect,
-  PmpSeparator,
-  PmpShortCut,
+  EdimButton,
+  EdimParagraph,
+  EdimSelect,
+  EdimSeparator,
+  EdimShortCut,
   html,
 } from 'prosemirror-preset-ui';
 import { toggleMark } from 'prosemirror-commands';
 import { clearMarks, mac, markActive } from 'prosemirror-preset-core';
 import { Attributes, VNode } from 'preact';
 
-export interface PmpMenubarMarkButton {
+export interface EdimMenubarMarkButton {
   iconName: string;
   label: string;
   active: boolean;
@@ -20,10 +20,10 @@ export interface PmpMenubarMarkButton {
   command: () => void;
 }
 
-export const PmpMenubarMarkToggleButtons = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarMarkToggleButtons = () => {
+  const context = useContext(EdimMenubarContext);
 
-  const buttons: PmpMenubarMarkButton[] = [];
+  const buttons: EdimMenubarMarkButton[] = [];
 
   if (context.editorView.state.schema.marks['strong']) {
     buttons.push({
@@ -34,9 +34,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['strong'],
       ),
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘' : 'Ctrl+'}B
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['strong'])(
@@ -57,9 +57,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['em'],
       ),
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘' : 'Ctrl+'}I
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['em'])(
@@ -80,9 +80,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['underline'],
       ),
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘' : 'Ctrl+'}U
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['underline'])(
@@ -103,9 +103,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['strikethrough'],
       ),
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘⇧' : 'Ctrl+Shift+'}S
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['strikethrough'])(
@@ -126,9 +126,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['code'],
       ),
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘⇧' : 'Ctrl+Shift+'}M
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['code'])(
@@ -149,9 +149,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['subscript'],
       ),
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘⇧' : 'Ctrl+Shift+'},
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['subscript'])(
@@ -172,9 +172,9 @@ export const PmpMenubarMarkToggleButtons = () => {
         context.editorView.state.schema.marks['superscript'],
       ),
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘⇧' : 'Ctrl+Shift+'}.
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
       command: () => {
         toggleMark(context.editorView.state.schema.marks['superscript'])(
@@ -191,9 +191,9 @@ export const PmpMenubarMarkToggleButtons = () => {
     label: 'Clear Format',
     active: false,
     shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌘' : 'Ctrl+'}\\
-        </${PmpShortCut}>
+        </${EdimShortCut}>
       `,
     command: () => {
       clearMarks()(context.editorView.state, context.editorView.dispatch);
@@ -211,41 +211,41 @@ export const PmpMenubarMarkToggleButtons = () => {
   return html`
     ${buttons.map(
       (button) => html`
-      <${PmpButton}
-        className="pmp-icon-button ${button.active ? 'selected' : ''}"
+      <${EdimButton}
+        className="edim-icon-button ${button.active ? 'selected' : ''}"
         onClick=${button.command}>
         <i className="${button.iconName}" />
-      </${PmpButton}>
+      </${EdimButton}>
     `,
     )}
     ${contextButtons.length > 1 &&
     html`
-     <${PmpSelect.Root} 
+     <${EdimSelect.Root} 
       hideArrow="${true}"
-      className="pmp-icon-button ${contextActive ? 'selected' : ''}">
-      <${PmpSelect.Text}>
+      className="edim-icon-button ${contextActive ? 'selected' : ''}">
+      <${EdimSelect.Text}>
         <i class="ri-more-fill"></i>
-      </${PmpSelect.Text}>
-      <${PmpSelect.OptionGroup} 
-        className="pmp-menubar-more-marks-list">
+      </${EdimSelect.Text}>
+      <${EdimSelect.OptionGroup} 
+        className="edim-menubar-more-marks-list">
         ${contextButtons.map(
           (button) => html`
-          <${PmpSelect.Option}
+          <${EdimSelect.Option}
             onClick="${button.command}"
             value="${button.iconName}"
-            className="${button.active ? 'pmp-active' : ''}">
+            className="${button.active ? 'edim-active' : ''}">
             <i className="${button.iconName}" />
-            <${PmpParagraph} 
-              className="pmp-menubar-more-marks-description">
+            <${EdimParagraph} 
+              className="edim-menubar-more-marks-description">
               ${button.label}
-            </${PmpParagraph}>
+            </${EdimParagraph}>
             ${button.shortcut}
-          </${PmpSelect.Option}>
+          </${EdimSelect.Option}>
         `,
         )}
-      </${PmpSelect.OptionGroup}>
-    </${PmpSelect.Root}>   
+      </${EdimSelect.OptionGroup}>
+    </${EdimSelect.Root}>   
     `}
-    <${PmpSeparator} className="pmp-view-menubar-separator" />
+    <${EdimSeparator} className="edim-view-menubar-separator" />
   `;
 };

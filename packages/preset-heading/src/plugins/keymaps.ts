@@ -1,19 +1,19 @@
 import { setBlockType } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { Node, NodeType } from 'prosemirror-model';
-import { Plugin as PMPlugin, Command, Transaction } from 'prosemirror-state';
+import { Plugin as EDIMlugin, Command, Transaction } from 'prosemirror-state';
 import { HeadingAttributes } from '../schemas';
 
-export interface PmpHeadingKeymapPluginConfigs {
+export interface EdimHeadingKeymapPluginConfigs {
   nodeType: NodeType;
   level: number;
 }
 
 const indentAllowedParents = ['doc'];
 
-export const createPmpHeadingKeymapPlugins = (
-  configs: PmpHeadingKeymapPluginConfigs,
-): PMPlugin[] => {
+export const createEdimHeadingKeymapPlugins = (
+  configs: EdimHeadingKeymapPluginConfigs,
+): EDIMlugin[] => {
   const headingKeymaps: Record<string, Command> = {};
   for (let i = 1; i <= configs.level; i++) {
     headingKeymaps['Alt-Mod-' + i] = setBlockType(configs.nodeType, {
@@ -22,7 +22,7 @@ export const createPmpHeadingKeymapPlugins = (
   }
   return [
     keymap(headingKeymaps),
-    new PMPlugin({
+    new EDIMlugin({
       props: {
         handleKeyDown: (view, event) => {
           const backspacePressed = event.key === 'Backspace';
@@ -70,7 +70,7 @@ export const createPmpHeadingKeymapPlugins = (
         },
       },
     }),
-    new PMPlugin({
+    new EDIMlugin({
       props: {
         handleKeyDown: (view, event) => {
           const tabPressed = event.key === 'Tab';

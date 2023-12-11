@@ -13,7 +13,7 @@ export interface ImageAttrs {
   viewportWidth: number;
 }
 
-export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
+export const EDIM_IMAGE_NODES: Record<string, NodeSpec> = {
   image: {
     // inline: true,
     attrs: {
@@ -33,7 +33,7 @@ export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
           const viewportWidth = dom.dataset['viewportWidth'] || 80;
           const align = dom.parentElement?.dataset['align'] || 'center';
 
-          if (dom.classList.contains('pmp-emoji')) {
+          if (dom.classList.contains('edim-emoji')) {
             return false;
           }
 
@@ -58,7 +58,7 @@ export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
       return [
         'div',
         {
-          class: `pmp-image-wrapper pmp-image-align-${align}`,
+          class: `edim-image-wrapper edim-image-align-${align}`,
           'data-text-align': align,
         },
         [
@@ -67,7 +67,7 @@ export const PMP_IMAGE_NODE: Record<string, NodeSpec> = {
             src,
             alt,
             title,
-            class: 'pmp-image',
+            class: 'edim-image',
             style: `width: ${viewportWidth}%`,
             'data-viewport-width': viewportWidth,
           },
@@ -81,11 +81,11 @@ export interface ImageExtensionConfigs {
   placeholderViewProvider?: (view: EditorView) => ImagePlaceholderViewProvider;
 }
 
-export interface CreatePmpImagePluginConfigs {
+export interface CreateEdimImagePluginConfigs {
   placeholderViewProvider?: (view: EditorView) => ImagePlaceholderViewProvider;
 }
 
-export const creatPmpImagePlugins = (configs: CreatePmpImagePluginConfigs) => {
+export const creatEdimImagePlugins = (configs: CreateEdimImagePluginConfigs) => {
   return [
     createImagePlaceholderPlugin({
       placeholderViewProvider: configs.placeholderViewProvider,

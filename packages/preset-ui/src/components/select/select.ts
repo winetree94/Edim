@@ -1,4 +1,4 @@
-import { classes, html, PmpOverlay } from '../../cdk';
+import { classes, html, EdimOverlay } from '../../cdk';
 import {
   createContext,
   forwardRef,
@@ -7,25 +7,25 @@ import {
   useRef,
   useState,
 } from 'preact/compat';
-import { PmpLayer } from '../layer';
-import { PmpListItem, PmpUnorderedList } from '../list';
-import { PmpButton } from '../button';
+import { EdimLayer } from '../layer';
+import { EdimListItem, EdimUnorderedList } from '../list';
+import { EdimButton } from '../button';
 
-interface PmpSelectContextValue {
+interface EdimSelectContextValue {
   opened: DOMRect | null;
   value: string;
   onSelect: (value: string) => void;
   close: () => void;
 }
 
-const PmpSelectContext = createContext<PmpSelectContextValue>({
+const EdimSelectContext = createContext<EdimSelectContextValue>({
   opened: null,
   value: '',
   onSelect: () => {},
   close: () => {},
 });
 
-export interface PmpSelectProps {
+export interface EdimSelectProps {
   children: JSX.Element;
   value: string;
   className: string;
@@ -34,7 +34,7 @@ export interface PmpSelectProps {
   disabled?: boolean;
 }
 
-const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
+const EdimSelectRoot = forwardRef<HTMLDivElement, EdimSelectProps>(
   ({ children, className, ...props }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>();
     const [opened, setOpened] = useState<DOMRect | null>(null);
@@ -51,19 +51,19 @@ const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
     };
 
     return html`
-    <${PmpSelectContext.Provider} value=${{
+    <${EdimSelectContext.Provider} value=${{
       opened: opened,
       value: props.value,
       onSelect: onSelect,
       close: close,
     }}>
-      <${PmpButton}
+      <${EdimButton}
         ref="${wrapperRef}"
         disabled="${props.disabled}"
         className="${classes(
-          'pmp-select',
-          opened ? 'pmp-active' : '',
-          props.disabled ? 'pmp-disabled' : '',
+          'edim-select',
+          opened ? 'edim-active' : '',
+          props.disabled ? 'edim-disabled' : '',
           className,
         )}"
         onclick="${() => {
@@ -77,42 +77,42 @@ const PmpSelectRoot = forwardRef<HTMLDivElement, PmpSelectProps>(
             ? html`
                 <i
                   className="${classes(
-                    'pmp-select-arrow-icon',
+                    'edim-select-arrow-icon',
                     'ri-arrow-down-s-line',
                   )}"
                 ></i>
               `
             : null
         }
-      </${PmpButton}>
-    </${PmpSelectContext.Provider}>
+      </${EdimButton}>
+    </${EdimSelectContext.Provider}>
     `;
   },
 );
 
-export interface PmpSelectTextProps {
+export interface EdimSelectTextProps {
   children: JSX.Element;
 }
 
-const PmpSelectText = ({ children }: PmpSelectTextProps) => {
+const EdimSelectText = ({ children }: EdimSelectTextProps) => {
   return children;
 };
 
-export interface PmpSelectOptionProps {
+export interface EdimSelectOptionProps {
   children: JSX.Element;
   className?: string;
   onClick?: () => void;
   value: string;
 }
 
-const PmpSelectOption = forwardRef<HTMLLIElement, PmpSelectOptionProps>(
+const EdimSelectOption = forwardRef<HTMLLIElement, EdimSelectOptionProps>(
   ({ children, value, className, onClick }, ref) => {
-    const context = useContext(PmpSelectContext);
+    const context = useContext(EdimSelectContext);
     return html`
-      <${PmpListItem} 
+      <${EdimListItem} 
         className="${classes(
-          'pmp-select-option',
-          context.value === value ? 'pmp-active' : '',
+          'edim-select-option',
+          context.value === value ? 'edim-active' : '',
           className,
         )}" 
         onclick=${() => {
@@ -120,46 +120,46 @@ const PmpSelectOption = forwardRef<HTMLLIElement, PmpSelectOptionProps>(
           onClick?.();
         }}>
         ${children}
-      </${PmpListItem}>
+      </${EdimListItem}>
     `;
   },
 );
 
-export interface PmpSelectOptionGroupProps {
+export interface EdimSelectOptionGroupProps {
   className: string;
   children: JSX.Element;
   matchWidth: boolean;
 }
 
-const PmpSelectOptionGroup = forwardRef<
+const EdimSelectOptionGroup = forwardRef<
   HTMLDivElement,
-  PmpSelectOptionGroupProps
+  EdimSelectOptionGroupProps
 >(({ className, children, ...props }) => {
-  const context = useContext(PmpSelectContext);
+  const context = useContext(EdimSelectContext);
 
   if (context.opened === null) {
     return null;
   }
 
   return html`
-    <${PmpOverlay}>
-      <${PmpLayer}
+    <${EdimOverlay}>
+      <${EdimLayer}
         left="${context.opened.left}"
         top="${context.opened.bottom}"
         maxHeight="${300}"
         width="${props.matchWidth ? context.opened.width : undefined}"
         outerMousedown="${() => context.close()}">
-        <${PmpUnorderedList} className="${classes(className)}">
+        <${EdimUnorderedList} className="${classes(className)}">
           ${children}
-        </${PmpUnorderedList}>
-      </${PmpLayer}>
-    </${PmpOverlay}>
+        </${EdimUnorderedList}>
+      </${EdimLayer}>
+    </${EdimOverlay}>
   `;
 });
 
-export const PmpSelect = {
-  Root: PmpSelectRoot,
-  Text: PmpSelectText,
-  OptionGroup: PmpSelectOptionGroup,
-  Option: PmpSelectOption,
+export const EdimSelect = {
+  Root: EdimSelectRoot,
+  Text: EdimSelectText,
+  OptionGroup: EdimSelectOptionGroup,
+  Option: EdimSelectOption,
 } as const;

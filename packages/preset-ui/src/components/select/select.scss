@@ -1,4 +1,4 @@
-.pmp-select {
+.edim-select {
   display: flex;
   cursor: pointer;
   height: var(--ui-height);
@@ -7,18 +7,18 @@
   border-radius: 3px;
   // padding: 0 4px;
 
-  .pmp-select-text {
+  .edim-select-text {
     margin: 0;
     flex: 1 1 auto;
     text-align: left;
   }
 
-  i.pmp-select-arrow-icon {
+  i.edim-select-arrow-icon {
     flex-shrink: 0;
   }
 }
 
-.pmp-select-option {
+.edim-select-option {
   cursor: pointer;
 
   &:hover {
@@ -29,7 +29,7 @@
     background-color: var(--white-200);
   }
 
-  &.pmp-active {
+  &.edim-active {
     color: var(--spindle-700);
   }
 }

@@ -3,32 +3,32 @@ import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { useRef, useState } from 'preact/hooks';
 import {
-  PmpLayer,
-  PmpSeparator,
-  PmpButton,
+  EdimLayer,
+  EdimSeparator,
+  EdimButton,
   classes,
   html,
 } from 'prosemirror-preset-ui';
-import { PmpEmojiPicker } from 'prosemirror-preset-ui';
-import { PmpMenubarContext } from './context';
-import { PmpMenubarTextTypeSelect } from './text-type';
-import { PmpMenubarFontFamilySelect } from './font-family';
-import { PmpMenubarMarkToggleButtons } from './marks';
-import { PmpMenubarFontColorSelect } from './font-color';
-import { PmpMenubarTextAlignSelect } from './text-align';
-import { PmpMenubarListToggleButtons } from './list';
-import { PmpMenubarIndentButtons } from './indent';
-import { PmpMenubarAddMoreSelect } from './add-more';
+import { EdimEmojiPicker } from 'prosemirror-preset-ui';
+import { EdimMenubarContext } from './context';
+import { EdimMenubarTextTypeSelect } from './text-type';
+import { EdimMenubarFontFamilySelect } from './font-family';
+import { EdimMenubarMarkToggleButtons } from './marks';
+import { EdimMenubarFontColorSelect } from './font-color';
+import { EdimMenubarTextAlignSelect } from './text-align';
+import { EdimMenubarListToggleButtons } from './list';
+import { EdimMenubarIndentButtons } from './indent';
+import { EdimMenubarAddMoreSelect } from './add-more';
 import { setBlockType } from 'prosemirror-commands';
 import { insertTable } from 'prosemirror-preset-tables';
-import { PmpMenubarTaskListToggleButtons } from './task-list';
+import { EdimMenubarTaskListToggleButtons } from './task-list';
 
-export interface PmpMenubarProps {
+export interface EdimMenubarProps {
   editorView: EditorView;
   editorState: EditorState;
 }
 
-export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
+export const EdimMenubar = forwardRef((props: EdimMenubarProps) => {
   const [emojiLayerRef, setEmojiLayerRef] = useState<{
     top: number;
     left: number;
@@ -37,44 +37,44 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
   const emojiButtonRef = useRef<HTMLButtonElement>(null);
 
   return html`
-    <${PmpMenubarContext.Provider} value="${{
+    <${EdimMenubarContext.Provider} value="${{
       editorView: props.editorView,
       editorState: props.editorState,
     }}">
-    <div className=${classes('pmp-view-menubar-wrapper')}>
+    <div className=${classes('edim-view-menubar-wrapper')}>
       ${
         props.editorView.state.schema.nodes['heading'] &&
-        html` <${PmpMenubarTextTypeSelect} /> `
+        html` <${EdimMenubarTextTypeSelect} /> `
       }
       ${
         props.editorView.state.schema.marks['font_family'] &&
-        html` <${PmpMenubarFontFamilySelect} /> `
+        html` <${EdimMenubarFontFamilySelect} /> `
       }
       ${
         props.editorView.state.schema.nodes['heading'] ||
         props.editorView.state.schema.marks['font_family']
-          ? html` <${PmpSeparator} className="pmp-view-menubar-separator" /> `
+          ? html` <${EdimSeparator} className="edim-view-menubar-separator" /> `
           : null
       }
-      <${PmpMenubarMarkToggleButtons} />
+      <${EdimMenubarMarkToggleButtons} />
 
       ${
         props.editorView.state.schema.marks['text_color'] &&
         html`
-          <${PmpMenubarFontColorSelect} />
-          <${PmpSeparator} className="pmp-view-menubar-separator" />
+          <${EdimMenubarFontColorSelect} />
+          <${EdimSeparator} className="edim-view-menubar-separator" />
         `
       }
 
-      <${PmpMenubarTextAlignSelect} />
-      <${PmpSeparator} className="pmp-view-menubar-separator" />
-      <${PmpMenubarListToggleButtons} />
-      <${PmpMenubarIndentButtons} />
-      <${PmpSeparator} className="pmp-view-menubar-separator" />
+      <${EdimMenubarTextAlignSelect} />
+      <${EdimSeparator} className="edim-view-menubar-separator" />
+      <${EdimMenubarListToggleButtons} />
+      <${EdimMenubarIndentButtons} />
+      <${EdimSeparator} className="edim-view-menubar-separator" />
 
-      <${PmpMenubarTaskListToggleButtons} />
-      <${PmpButton}
-        className="pmp-icon-button"
+      <${EdimMenubarTaskListToggleButtons} />
+      <${EdimButton}
+        className="edim-icon-button"
         onClick=${() => {
           setBlockType(props.editorView.state.schema.nodes['blockquote'])(
             props.editorView.state,
@@ -82,9 +82,9 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           );
         }}>
         <i class="ri-double-quotes-r"></i>
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button"
+      </${EdimButton}>
+      <${EdimButton}
+        className="edim-icon-button"
         onClick=${() => {
           setBlockType(props.editorView.state.schema.nodes['code_block'])(
             props.editorView.state,
@@ -92,44 +92,49 @@ export const PmpMenubar = forwardRef((props: PmpMenubarProps) => {
           );
         }}>
         <i class="ri-code-s-slash-line"></i>
-      </${PmpButton}>
-      <${PmpButton}
-        className="pmp-icon-button"
+      </${EdimButton}>
+      <${EdimButton}
+        className="edim-icon-button"
         onClick=${() => {
           insertTable()(props.editorView.state, props.editorView.dispatch);
           props.editorView.focus();
         }}>
         <i class="ri-table-2"></i>
-      </${PmpButton}>
+      </${EdimButton}>
 
-      <${PmpButton}
-        className="pmp-icon-button"
-        ref=${emojiButtonRef} onClick=${() => {
-          const rect = emojiButtonRef.current!.getBoundingClientRect();
-          setEmojiLayerRef({
-            top: rect.top + rect.height + 10,
-            left: rect.left,
-          });
-        }}>
-        <i className="ri-emoji-sticker-line" />
-      </${PmpButton}>
+      ${
+        props.editorState.schema.nodes['emoji'] &&
+        html`
+        <${EdimButton}
+          className="edim-icon-button"
+          ref=${emojiButtonRef} onClick=${() => {
+            const rect = emojiButtonRef.current!.getBoundingClientRect();
+            setEmojiLayerRef({
+              top: rect.top + rect.height + 10,
+              left: rect.left,
+            });
+          }}>
+          <i className="ri-emoji-sticker-line" />
+        </${EdimButton}>
+      `
+      }
       ${
         emojiLayerRef &&
         html`
-        <${PmpLayer}
+        <${EdimLayer}
           top=${emojiLayerRef.top}
           left=${emojiLayerRef.left}
           closeOnEsc=${true}
           outerMousedown=${() => setEmojiLayerRef(null)}
           onClose=${() => setEmojiLayerRef(null)}
           >
-          <${PmpEmojiPicker} size=${32} gap=${1}>emoji</${PmpEmojiPicker}>
-        </${PmpLayer}>
+          <${EdimEmojiPicker} size=${32} gap=${1}>emoji</${EdimEmojiPicker}>
+        </${EdimLayer}>
       `
       }
 
-      <${PmpMenubarAddMoreSelect} />
+      <${EdimMenubarAddMoreSelect} />
     </div>
-    </${PmpMenubarContext.Provider}>
+    </${EdimMenubarContext.Provider}>
   `;
 });

@@ -1,8 +1,8 @@
 import {
-  PmpLayer,
-  PmpListItem,
-  PmpUnorderedList,
-  PmpParagraph,
+  EdimLayer,
+  EdimListItem,
+  EdimUnorderedList,
+  EdimParagraph,
   classes,
   html,
 } from 'prosemirror-preset-ui';
@@ -21,17 +21,17 @@ export interface MentionItem {
   name: string;
 }
 
-export interface PmpMentionViewProps {
+export interface EdimMentionViewProps {
   items: MentionItem[];
   selectedIndex: number;
   onHover?(index: number): void;
   onClick?(index: number): void;
 }
 
-export const PmpMention = forwardRef((props: PmpMentionViewProps) => {
+export const EdimMention = forwardRef((props: EdimMentionViewProps) => {
   useEffect(() => {
     const selected = document.querySelector(
-      '.pmp-view-mention-list-item.selected',
+      '.edim-view-mention-list-item.selected',
     );
     if (selected) {
       selected.scrollIntoView({ block: 'nearest' });
@@ -39,37 +39,37 @@ export const PmpMention = forwardRef((props: PmpMentionViewProps) => {
   }, [props.selectedIndex]);
 
   return html`
-    <div className="pmp-view-mention-container">
-      <${PmpUnorderedList}>
+    <div className="edim-view-mention-container">
+      <${EdimUnorderedList}>
         ${props.items.map(
           (item, index) => html`
-            <${PmpListItem}
+            <${EdimListItem}
               key=${index}
               className=${classes(
-                'pmp-view-mention-list-item',
+                'edim-view-mention-list-item',
                 props.selectedIndex === index ? 'selected' : '',
               )}
               onMouseMove=${() => props.onHover?.(index)}
               onClick=${() => props.onClick?.(index)}
             >
               <img
-                class="pmp-view-mention-list-item-avatar"
+                class="edim-view-mention-list-item-avatar"
                 src=${item.icon}
               />
-              <div className="pmp-view-mention-list-item-content">
-                <${PmpParagraph} className="pmp-view-mention-item-name">
+              <div className="edim-view-mention-list-item-content">
+                <${EdimParagraph} className="edim-view-mention-item-name">
                   ${item.name}
-                </${PmpParagraph}>
+                </${EdimParagraph}>
               </div>
-            </${PmpListItem}>
+            </${EdimListItem}>
           `,
         )}
-      </${PmpUnorderedList}>
+      </${EdimUnorderedList}>
     </div>
   `;
 });
 
-export class PmpMentionView implements MentionPluginView {
+export class EdimMentionView implements MentionPluginView {
   public prevKeyword: string = '';
   public wrapper: HTMLDivElement | undefined;
   public index = 0;
@@ -117,7 +117,7 @@ export class PmpMentionView implements MentionPluginView {
 
     render(
       html`
-      <${PmpLayer}
+      <${EdimLayer}
         left=${start.left}
         top=${end.bottom}
         disableBackdrop=${true}
@@ -125,7 +125,7 @@ export class PmpMentionView implements MentionPluginView {
         minWidth=${200}
         maxHeight=${300}
       >
-        <${PmpMention}
+        <${EdimMention}
           items=${items}
           selectedIndex=${this.index}
           onHover=${(index: number) => {
@@ -138,7 +138,7 @@ export class PmpMentionView implements MentionPluginView {
             this.applyMention(items[index]);
           }}
         />
-      </${PmpLayer}>
+      </${EdimLayer}>
       `,
       this.wrapper,
     );

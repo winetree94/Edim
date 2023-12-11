@@ -19,26 +19,26 @@ export const COLORS = [
   '#8270DB',
 ];
 
-export interface PmpColorProps extends HTMLAttributes<HTMLSpanElement> {
+export interface EdimColorProps extends HTMLAttributes<HTMLSpanElement> {
   color: string;
 }
 
-export const PmpColor = ({ className, color, ...props }: PmpColorProps) => {
+export const EdimColor = ({ className, color, ...props }: EdimColorProps) => {
   return html`
     <span
-      class=${classes('pmp-color', className)}
+      class=${classes('edim-color', className)}
       style=${{ backgroundColor: color }}
       ...${props}
     />
   `;
 };
 
-export interface PmpColorPickerProps {
+export interface EdimColorPickerProps {
   color?: string;
   onChange?(color: string): void;
 }
 
-export const PmpColorPicker = forwardRef((props: PmpColorPickerProps) => {
+export const EdimColorPicker = forwardRef((props: EdimColorPickerProps) => {
   const chunks = COLORS.reduce<string[][]>((result, color, index) => {
     if (index % 7 === 0) {
       result.push([]);
@@ -48,13 +48,13 @@ export const PmpColorPicker = forwardRef((props: PmpColorPickerProps) => {
   }, []);
 
   return html`
-    <div class=${classes('pmp-color-picker')}>
+    <div class=${classes('edim-color-picker')}>
       ${chunks.map(
         (chunk) => html`
-          <div class="pmp-color-group">
+          <div class="edim-color-group">
             ${chunk.map(
               (color) => html`
-                <${PmpColor}
+                <${EdimColor}
                   color=${color}
                   className=${props.color === color ? 'selected' : ''}
                   onClick=${() => props.onChange?.(color)}

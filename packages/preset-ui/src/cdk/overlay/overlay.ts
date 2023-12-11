@@ -18,13 +18,13 @@ const OverlayContext = createContext<OverlayContext>({
 
 const overlayContainer = ((): HTMLDivElement => {
   const exist = document.querySelector(
-    'div.pmp-overlay-container',
+    'div.edim-overlay-container',
   ) as HTMLDivElement;
   if (exist) {
     return exist;
   }
   const div = document.createElement('div');
-  div.classList.add('pmp-overlay-container');
+  div.classList.add('edim-overlay-container');
   document.body.appendChild(div);
   return div;
 })();
@@ -32,7 +32,7 @@ const overlayContainer = ((): HTMLDivElement => {
 const overlayRendered: JSX.Element[] = [];
 const overlayRef = createRef();
 
-const PmpOverlay2 = forwardRef<void>(() => {
+const EdimOverlay2 = forwardRef<void>(() => {
   const open = () => {};
   const close = () => {};
   return html`
@@ -48,9 +48,9 @@ const PmpOverlay2 = forwardRef<void>(() => {
 export const reRenderOverlay = () => {
   render(
     html`
-      <${PmpOverlay2}>
+      <${EdimOverlay2}>
         ${overlayRendered}
-      </${PmpOverlay2}>
+      </${EdimOverlay2}>
     `,
     overlayContainer,
   );
@@ -58,6 +58,6 @@ export const reRenderOverlay = () => {
 
 reRenderOverlay();
 
-export const PmpOverlay = ({ children }: { children: JSX.Element }) => {
+export const EdimOverlay = ({ children }: { children: JSX.Element }) => {
   return createPortal(children, overlayContainer);
 };

@@ -1,26 +1,26 @@
 import { NodeSpec } from 'prosemirror-model';
-import { Plugin as PMPlugin, Transaction } from 'prosemirror-state';
+import { Plugin as EDIMlugin, Transaction } from 'prosemirror-state';
 import { canJoin } from 'prosemirror-transform';
 import { NodePair } from '../types';
 
-export interface PmpMergeAdjacentNodeOption {
+export interface EdimMergeAdjacentNodeOption {
   nodeType: NodeSpec;
   beforeMergeTransaction?: (tr: Transaction, joinPos: number) => Transaction;
 }
 
-export interface PmpMergeAdjacentNodePluginConfigs {
-  specs: PmpMergeAdjacentNodeOption[];
+export interface EdimMergeAdjacentNodePluginConfigs {
+  specs: EdimMergeAdjacentNodeOption[];
 }
 
 /**
  * @description
  * 인접한 동일한 타입의 Node 가 Join 가능한 경우 자동 Join
  */
-export const createPmpMergeAdjacentNodePlugins = (
-  configs: PmpMergeAdjacentNodePluginConfigs,
-): PMPlugin[] => {
+export const createEdimMergeAdjacentNodePlugins = (
+  configs: EdimMergeAdjacentNodePluginConfigs,
+): EDIMlugin[] => {
   const types = configs.specs.map((spec) => spec.nodeType);
-  const plugin = new PMPlugin({
+  const plugin = new EDIMlugin({
     appendTransaction: (transactions, oldState, newState) => {
       if (!transactions.length) {
         return null;

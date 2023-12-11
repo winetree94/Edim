@@ -4,12 +4,43 @@ sidebar_position: 1
 
 # 설치
 
-```bash
+Edim 을 사용하기 위해서는 먼저 ProseMirror 를 설치해야 합니다.
+
+```bash npm2yarn
 npm install prosemirror-state \
-            prosemirror-view \
             prosemirror-model \
-            prosemirror-transform \
-            prosemirror-commands \
-            prosemirror-keymap \
-            prosemirror-inputrules
+            prosemirror-view
+```
+
+Edim 은 여러개의 패키지로 나뉘어 배포됩니다.
+ 
+```bash npm2yarn
+npm install @edim/core \
+            @edim/paragraph \
+            @edim/heading \
+            @edim/flat-list \
+            @edim/menubar
+```
+
+```typescript
+import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+
+import {
+  EDIM_DOC_NODES,
+  EDIM_TEXT_NODES,
+  createEdimCorePlugins,
+} from 'prosemirror-preset-core';
+import {
+  EDIM_PARAGRAPH_NODES,
+  createEdimParagraphKeymapPlugins,
+} from '@edim/paragraph';
+
+const state = EditorState.create({
+  schema: {},
+  plugins: [
+
+  ],
+});
+
 ```

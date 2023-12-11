@@ -1,5 +1,5 @@
 import { html } from 'prosemirror-preset-ui';
 
-export const PmpTaskListItem = () => {
+export const EdimTaskListItem = () => {
   return html`<div></div>`;
 }

@@ -6,23 +6,23 @@ import { CommandPluginState, CommandPluginView } from '../plugin';
 import { addMention } from 'prosemirror-preset-mention';
 import { insertTable } from 'prosemirror-preset-tables';
 import {
-  PmpLayer,
-  PmpListItem,
-  PmpUnorderedList,
-  PmpParagraph,
+  EdimLayer,
+  EdimListItem,
+  EdimUnorderedList,
+  EdimParagraph,
   classes,
   html,
 } from 'prosemirror-preset-ui';
 import { forwardRef } from 'preact/compat';
 
-export interface PmpCommandItem {
+export interface EdimCommandItem {
   icon: string;
   title: string;
   description: string;
   action: (view: EditorView, standalone?: boolean) => void;
 }
 
-export const PMP_DEFAULT_COMMAND_LIST: PmpCommandItem[] = [
+export const EDIM_DEFAULT_COMMAND_LIST: EdimCommandItem[] = [
   {
     icon: 'ri-at-line',
     title: 'Mention',
@@ -53,23 +53,23 @@ export const PMP_DEFAULT_COMMAND_LIST: PmpCommandItem[] = [
   },
 ];
 
-export interface PmpCommandProps {
-  items: PmpCommandItem[];
+export interface EdimCommandProps {
+  items: EdimCommandItem[];
   selectedIndex: number;
   onHover?(index: number): void;
   onClick?(index: number): void;
 }
 
-export const PmpCommand = forwardRef((props: PmpCommandProps) => {
+export const EdimCommand = forwardRef((props: EdimCommandProps) => {
   return html`
-    <div class="pmp-view-command-container">
-      <${PmpUnorderedList}>
+    <div class="edim-view-command-container">
+      <${EdimUnorderedList}>
         ${props.items.map(
           (item, index) => html`
-            <${PmpListItem}
+            <${EdimListItem}
               key=${index}
               className=${classes(
-                'pmp-view-command-list-item',
+                'edim-view-command-list-item',
                 props.selectedIndex === index ? 'selected' : '',
               )}
               onMouseMove=${() => props.onHover?.(index)}
@@ -78,22 +78,22 @@ export const PmpCommand = forwardRef((props: PmpCommandProps) => {
               <i
                 className=${classes(
                   item.icon,
-                  'pmp-view-command-list-item-icon',
+                  'edim-view-command-list-item-icon',
                 )}
               />
-              <div className="pmp-view-command-item-content">
-                <${PmpParagraph}>${item.title}</${PmpParagraph}>
-                <${PmpParagraph}>${item.description}</${PmpParagraph}>
+              <div className="edim-view-command-item-content">
+                <${EdimParagraph}>${item.title}</${EdimParagraph}>
+                <${EdimParagraph}>${item.description}</${EdimParagraph}>
               </div>
-            </${PmpListItem}>
+            </${EdimListItem}>
           `,
         )}
-      </${PmpUnorderedList}>
+      </${EdimUnorderedList}>
     </div>
   `;
 });
 
-export class PmpCommandView implements CommandPluginView {
+export class EdimCommandView implements CommandPluginView {
   public wrapper: HTMLDivElement | undefined;
   public index = 0;
 
@@ -117,7 +117,7 @@ export class PmpCommandView implements CommandPluginView {
     editorState: EditorState,
     pluginState: CommandPluginState,
   ): void {
-    const commands = PMP_DEFAULT_COMMAND_LIST.filter((item) => {
+    const commands = EDIM_DEFAULT_COMMAND_LIST.filter((item) => {
       if (!pluginState.keyword) {
         return true;
       }
@@ -145,7 +145,7 @@ export class PmpCommandView implements CommandPluginView {
 
     render(
       html`
-        <${PmpLayer}
+        <${EdimLayer}
           left=${start.left}
           top=${end.bottom}
           disableBackdrop=${true}
@@ -153,7 +153,7 @@ export class PmpCommandView implements CommandPluginView {
           minWidth=${200}
           maxHeight=${300}
         >
-          <${PmpCommand}
+          <${EdimCommand}
             items=${commands}
             selectedIndex=${this.index}
             onHover=${(index: number) => {
@@ -166,7 +166,7 @@ export class PmpCommandView implements CommandPluginView {
               commands[index].action(view);
             }}
           />
-        </${PmpLayer}>
+        </${EdimLayer}>
       `,
       this.wrapper,
     );
@@ -179,7 +179,7 @@ export class PmpCommandView implements CommandPluginView {
       return false;
     }
 
-    const commands = PMP_DEFAULT_COMMAND_LIST.filter((item) => {
+    const commands = EDIM_DEFAULT_COMMAND_LIST.filter((item) => {
       if (!pluginState.keyword) {
         return true;
       }

@@ -1,11 +1,11 @@
 import { html } from '../../cdk';
 import { useEffect } from 'preact/hooks';
 
-export interface PmpTooltipProps {
+export interface EdimTooltipProps {
   id: string;
 }
 
-export const PmpTooltip = (props: PmpTooltipProps) => {
+export const EdimTooltip = (props: EdimTooltipProps) => {
   useEffect(() => {
     const dom = document.getElementById(props.id);
   }, []);

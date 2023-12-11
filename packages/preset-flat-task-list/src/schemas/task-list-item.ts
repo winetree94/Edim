@@ -11,7 +11,7 @@ export interface ListItemAttrs {
   checked: boolean;
 }
 
-export const PMP_FLAT_TASK_LIST_ITEM_NODES: Record<string, NodeSpec> = {
+export const EDIM_FLAT_TASK_LIST_ITEM_NODES: Record<string, NodeSpec> = {
   task_list_item: {
     content: 'paragraph',
     group: 'disable-paragraph-attributes',
@@ -56,13 +56,13 @@ export const PMP_FLAT_TASK_LIST_ITEM_NODES: Record<string, NodeSpec> = {
     ],
     toDOM(node) {
       const attrs = node.attrs as ListItemAttrs;
-      const classes = ['pmp-task-list-item'];
+      const classes = ['edim-task-list-item'];
       if (attrs.align && attrs.align !== 'left') {
-        classes.push(`pmp-align-${attrs.align}`);
+        classes.push(`edim-align-${attrs.align}`);
       }
-      classes.push(`pmp-indent-${attrs.indent || 1}`);
+      classes.push(`edim-indent-${attrs.indent || 1}`);
       if (attrs.checked) {
-        classes.push('pmp-task-list-item-checked');
+        classes.push('edim-task-list-item-checked');
       }
       return [
         'li',

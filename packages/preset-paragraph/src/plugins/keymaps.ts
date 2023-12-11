@@ -5,12 +5,12 @@ import { Plugin, PluginKey } from 'prosemirror-state';
 import { ParagraphAttributes } from '../schemas';
 import { mac } from 'prosemirror-preset-core';
 
-export interface PmpParagraphKeymapPluginConfigs {
+export interface EdimParagraphKeymapPluginConfigs {
   nodeType: NodeType;
 }
 
-export const createPmpParagraphKeymapPlugins = (
-  configs: PmpParagraphKeymapPluginConfigs,
+export const createEdimParagraphKeymapPlugins = (
+  configs: EdimParagraphKeymapPluginConfigs,
 ) => {
   const key = mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0';
   return [

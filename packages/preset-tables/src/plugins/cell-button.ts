@@ -1,14 +1,14 @@
-import { Plugin as PMPlugin, PluginKey } from 'prosemirror-state';
+import { Plugin as EDIMlugin, PluginKey } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { findCellClosestToPos } from '../utils';
-import { PmpTableCellButtonWrapper } from '../components';
+import { EdimTableCellButtonWrapper } from '../components';
 import { render } from 'preact';
 import { html } from 'prosemirror-preset-ui';
 
 export const tableCellButtonPluginKey = new PluginKey('tableCellButtonPlugin');
 
-export const createPmpTableCellButtonPlugins = (): PMPlugin[] => {
-  const plugin: PMPlugin<DecorationSet> = new PMPlugin<DecorationSet>({
+export const createEdimTableCellButtonPlugins = (): EDIMlugin[] => {
+  const plugin: EDIMlugin<DecorationSet> = new EDIMlugin<DecorationSet>({
     key: tableCellButtonPluginKey,
     state: {
       init() {
@@ -21,13 +21,13 @@ export const createPmpTableCellButtonPlugins = (): PMPlugin[] => {
           return DecorationSet.empty;
         }
         const wrapper = document.createElement('div');
-        wrapper.classList.add('pmp-table-cell-buttons-wrapper');
+        wrapper.classList.add('edim-table-cell-buttons-wrapper');
         const deco = Decoration.widget(cell.pos + 1, wrapper, {
           destroy: () => {
             render(null, wrapper);
           },
         });
-        render(html`<${PmpTableCellButtonWrapper} />`, wrapper);
+        render(html`<${EdimTableCellButtonWrapper} />`, wrapper);
         return DecorationSet.create(tr.doc, [deco]);
       },
     },

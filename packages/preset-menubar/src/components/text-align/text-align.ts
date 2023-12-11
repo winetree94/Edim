@@ -1,14 +1,14 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { PmpSelect, classes, html } from 'prosemirror-preset-ui';
+import { EdimSelect, classes, html } from 'prosemirror-preset-ui';
 import {
   TextAlignment,
   getRangeFirstAlignment,
   setAlignment,
 } from 'prosemirror-preset-paragraph';
 
-export const PmpMenubarTextAlignSelect = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarTextAlignSelect = () => {
+  const context = useContext(EdimMenubarContext);
   const firstAlignment =
     getRangeFirstAlignment(context.editorView.state) || 'left';
 
@@ -29,26 +29,26 @@ export const PmpMenubarTextAlignSelect = () => {
   );
 
   return html`
-  <${PmpSelect.Root} 
+  <${EdimSelect.Root} 
   className="${classes(
-    'pmp-menubar-align-select',
-    firstAlignment !== 'left' ? 'pmp-menubar-align-active' : '',
+    'edim-menubar-align-select',
+    firstAlignment !== 'left' ? 'edim-menubar-align-active' : '',
   )}"
   value="${firstAlignment}">
-<${PmpSelect.Text}>
+<${EdimSelect.Text}>
   <i className="ri-align-${firstAlignment}" />
-</${PmpSelect.Text}>
+</${EdimSelect.Text}>
 <${
-    PmpSelect.OptionGroup
-  } matchWidth="${true}" className="pmp-menubar-align-list">
+    EdimSelect.OptionGroup
+  } matchWidth="${true}" className="edim-menubar-align-list">
 ${alignmentOptions.map(
   (option) => html`
-  <${PmpSelect.Option} className="pmp-menubar-align-option" value="${option.value}" onClick=${option.command}>
+  <${EdimSelect.Option} className="edim-menubar-align-option" value="${option.value}" onClick=${option.command}>
     <i className="ri-align-${option.value}" />
-  </${PmpSelect.Option}>
+  </${EdimSelect.Option}>
 `,
 )}
-</${PmpSelect.OptionGroup}>
-</${PmpSelect.Root}>
+</${EdimSelect.OptionGroup}>
+</${EdimSelect.Root}>
   `;
 };

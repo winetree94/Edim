@@ -1,10 +1,10 @@
-.pmp-view-emoji-picker {
+.edim-view-emoji-picker {
   display: flex;
   flex-direction: column;
   height: 300px;
 }
 
-.pmp-view-emoji-category-group {
+.edim-view-emoji-category-group {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -12,11 +12,11 @@
   flex-shrink: 0;
 }
 
-.pmp-view-emoji-category-button {
+.edim-view-emoji-category-button {
   flex-shrink: 0;
 }
 
-.pmp-view-emoji-view {
+.edim-view-emoji-view {
   flex: 0 1 auto;
   overflow-y: auto;
   display: flex;
@@ -24,6 +24,6 @@
   gap: 4px;
 }
 
-.pmp-view-emoji-picker-emoji {
+.edim-view-emoji-picker-emoji {
   overflow: hidden;
 }

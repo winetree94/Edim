@@ -3,7 +3,7 @@ import { useEffect } from 'preact/hooks';
 import { html } from '../../cdk';
 import { forwardRef } from 'preact/compat';
 
-export interface PmpLayerProps {
+export interface EdimLayerProps {
   top: number;
   left: number;
   width?: number;
@@ -20,7 +20,7 @@ export interface PmpLayerProps {
   outerMousedown?: (e: MouseEvent) => void;
 }
 
-export const PmpLayer = forwardRef((props: PmpLayerProps) => {
+export const EdimLayer = forwardRef((props: EdimLayerProps) => {
   useEffect(() => {
     if (!props.closeOnEsc) {
       return;

@@ -1,13 +1,13 @@
 import { MarkType } from 'prosemirror-model';
-import { Plugin as PMPlugin } from 'prosemirror-state';
-import { createPmpUnderlineKeymapPlugins } from './keymap';
+import { Plugin as EDIMlugin } from 'prosemirror-state';
+import { createEdimUnderlineKeymapPlugins } from './keymap';
 
-export interface PmpUnderlinePluginConfigs {
+export interface EdimUnderlinePluginConfigs {
   markType: MarkType;
 }
 
-export const createPmpUnderlinePlugins = (
-  configs: PmpUnderlinePluginConfigs,
-): PMPlugin[] => {
-  return [...createPmpUnderlineKeymapPlugins(configs)];
+export const createEdimUnderlinePlugins = (
+  configs: EdimUnderlinePluginConfigs,
+): EDIMlugin[] => {
+  return [...createEdimUnderlineKeymapPlugins(configs)];
 };

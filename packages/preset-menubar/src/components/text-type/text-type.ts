@@ -1,10 +1,10 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import {
-  PmpHeadingByNumber,
-  PmpParagraph,
-  PmpSelect,
-  PmpShortCut,
+  EdimHeadingByNumber,
+  EdimParagraph,
+  EdimSelect,
+  EdimShortCut,
   classes,
   html,
 } from 'prosemirror-preset-ui';
@@ -12,18 +12,18 @@ import { getTextType } from '../../utils';
 import { HeadingLevel } from 'prosemirror-preset-heading';
 import { mac, transformRangeToBlock } from 'prosemirror-preset-core';
 
-export const PmpMenubarTextTypeSelect = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarTextTypeSelect = () => {
+  const context = useContext(EdimMenubarContext);
   const textType = getTextType(context.editorView.state);
   const textTypeOptions = [
     ...([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((level) => ({
       value: `h${level}`,
       label: `Heading ${level}`,
-      Element: PmpHeadingByNumber[level],
+      Element: EdimHeadingByNumber[level],
       shortcut: html`
-        <${PmpShortCut}>
+        <${EdimShortCut}>
           ${mac ? '⌥⌘' : 'Ctrl+Alt+'}${level}
-        </${PmpShortCut}> 
+        </${EdimShortCut}> 
       `,
       command: () => {
         transformRangeToBlock(
@@ -38,9 +38,9 @@ export const PmpMenubarTextTypeSelect = () => {
     {
       value: 'p',
       label: 'Normal',
-      Element: PmpParagraph,
+      Element: EdimParagraph,
       shortcut: html`
-        <${PmpShortCut}>⌥⌘0</${PmpShortCut}> 
+        <${EdimShortCut}>⌥⌘0</${EdimShortCut}> 
       `,
       command: () => {
         transformRangeToBlock(
@@ -52,27 +52,27 @@ export const PmpMenubarTextTypeSelect = () => {
   ];
 
   return html`
-  <${PmpSelect.Root} 
+  <${EdimSelect.Root} 
   className="${classes(
-    'pmp-menubar-text-select',
-    textType !== 'p' ? 'pmp-heading-selected' : '',
+    'edim-menubar-text-select',
+    textType !== 'p' ? 'edim-heading-selected' : '',
   )}"
   value="${textType}">
-  <${PmpSelect.Text}>
-  <${PmpParagraph}>
+  <${EdimSelect.Text}>
+  <${EdimParagraph}>
     ${textTypeOptions.find((option) => option.value === textType)?.label || ''}
-  </${PmpParagraph}>
-  </${PmpSelect.Text}>
-  <${PmpSelect.OptionGroup}>
+  </${EdimParagraph}>
+  </${EdimSelect.Text}>
+  <${EdimSelect.OptionGroup}>
     ${textTypeOptions.map((option) => {
       return html`
-        <${PmpSelect.Option} value="${option.value}" onClick=${option.command}>
-          <${option.Element} className="pmp-menubar-select-text-type">${option.label}</${option.Element}> 
+        <${EdimSelect.Option} value="${option.value}" onClick=${option.command}>
+          <${option.Element} className="edim-menubar-select-text-type">${option.label}</${option.Element}> 
           ${option.shortcut}
-        </${PmpSelect.Option}>
+        </${EdimSelect.Option}>
       `;
     })}
-  </${PmpSelect.OptionGroup}>
-</${PmpSelect.Root}> 
+  </${EdimSelect.OptionGroup}>
+</${EdimSelect.Root}> 
   `;
 };

@@ -1,19 +1,19 @@
 .ProseMirror {
 
-  p.pmp-paragraph {
+  p.edim-paragraph {
     margin: 10px 0;
     &:first-child {
       margin-top: 10px;
     }
-    &.pmp-align-center {
+    &.edim-align-center {
       text-align: center;
     }
-    &.pmp-align-right {
+    &.edim-align-right {
       text-align: right;
     }
 
     @for $i from 1 through 6 {
-      &.pmp-paragraph-indent-#{$i} {
+      &.edim-paragraph-indent-#{$i} {
         margin-left: 30px * $i;
       }
     }

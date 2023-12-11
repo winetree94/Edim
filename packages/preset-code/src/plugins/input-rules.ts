@@ -1,14 +1,14 @@
-import { Plugin as PMPlugin } from 'prosemirror-state';
+import { Plugin as EDIMlugin } from 'prosemirror-state';
 import { InputRule, inputRules } from 'prosemirror-inputrules';
 import { MarkType } from 'prosemirror-model';
 
-export interface PmpCodeInputRulePluginConfigs {
+export interface EdimCodeInputRulePluginConfigs {
   markType: MarkType;
 }
 
-export const createPmpCodeInputRulePlugins = (
-  configs: PmpCodeInputRulePluginConfigs,
-): PMPlugin[] => [
+export const createEdimCodeInputRulePlugins = (
+  configs: EdimCodeInputRulePluginConfigs,
+): EDIMlugin[] => [
   inputRules({
     rules: [
       new InputRule(/`(.+)`$/, (state, match, start, end) =>

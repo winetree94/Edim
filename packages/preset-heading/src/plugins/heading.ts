@@ -1,15 +1,15 @@
-import { createPmpHeadingInputRulePlugins } from './input-rules';
-import { createPmpHeadingKeymapPlugins } from './keymaps';
+import { createEdimHeadingInputRulePlugins } from './input-rules';
+import { createEdimHeadingKeymapPlugins } from './keymaps';
 import { NodeType } from 'prosemirror-model';
 
-export interface PmpHeadingPluginConfigs {
+export interface EdimHeadingPluginConfigs {
   nodeType: NodeType;
   level: number;
 }
 
-export const createPmpHeadingPlugins = (configs: PmpHeadingPluginConfigs) => {
+export const createEdimHeadingPlugins = (configs: EdimHeadingPluginConfigs) => {
   return [
-    ...createPmpHeadingInputRulePlugins(configs),
-    ...createPmpHeadingKeymapPlugins(configs),
+    ...createEdimHeadingInputRulePlugins(configs),
+    ...createEdimHeadingKeymapPlugins(configs),
   ];
 };

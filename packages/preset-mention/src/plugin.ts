@@ -20,7 +20,7 @@ export interface MentionExtensionConfigs {
   ) => MentionPluginView;
 }
 
-export const PMP_MENTION_MARK: Record<string, MarkSpec> = {
+export const EDIM_MENTION_MARK: Record<string, MarkSpec> = {
   mention: {
     inclusive: false,
     attrs: {
@@ -31,7 +31,7 @@ export const PMP_MENTION_MARK: Record<string, MarkSpec> = {
         tag: 'span',
         getAttrs: (node): MentionAttribute | boolean => {
           const dom = node as HTMLSpanElement;
-          if (!dom.classList.contains('pmp-mention')) {
+          if (!dom.classList.contains('edim-mention')) {
             return false;
           }
           return {
@@ -59,7 +59,7 @@ export const PMP_MENTION_MARK: Record<string, MarkSpec> = {
       return [
         'span',
         {
-          class: 'pmp-mention',
+          class: 'edim-mention',
           'data-id': attrs.data_id,
         },
         0,
@@ -68,15 +68,15 @@ export const PMP_MENTION_MARK: Record<string, MarkSpec> = {
   } as MarkSpec,
 };
 
-export interface createPmpMentionPluginConfigs {
+export interface createEdimMentionPluginConfigs {
   view?: (
     view: EditorView,
     plugin: PluginKey<MentionPluginState>,
   ) => MentionPluginView;
 }
 
-export const createPmpMentionPlugins = (
-  configs: createPmpMentionPluginConfigs,
+export const createEdimMentionPlugins = (
+  configs: createEdimMentionPluginConfigs,
 ) => {
   const defaultPluginState: MentionPluginState = {
     active: false,

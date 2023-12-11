@@ -2,13 +2,13 @@ import { forwardRef, HTMLAttributes } from 'preact/compat';
 import { classes } from '../../cdk/utils/core';
 import { html } from '../../cdk/render';
 
-export interface PmpOrderedListProps extends HTMLAttributes<HTMLOListElement> {}
+export interface EdimOrderedListProps extends HTMLAttributes<HTMLOListElement> {}
 
-export const PmpOrderedList = forwardRef<HTMLOListElement, PmpOrderedListProps>(
+export const EdimOrderedList = forwardRef<HTMLOListElement, EdimOrderedListProps>(
   ({ className, children, ...props }, ref) => {
     return html`
       <ol
-        class=${classes('pmp-view-ordered-list', className)}
+        class=${classes('edim-view-ordered-list', className)}
         ...${props}
         ref=${ref}
       >
@@ -18,16 +18,16 @@ export const PmpOrderedList = forwardRef<HTMLOListElement, PmpOrderedListProps>(
   },
 );
 
-export interface PmpUnorderedListProps
+export interface EdimUnorderedListProps
   extends HTMLAttributes<HTMLUListElement> {}
 
-export const PmpUnorderedList = forwardRef<
+export const EdimUnorderedList = forwardRef<
   HTMLUListElement,
-  PmpUnorderedListProps
+  EdimUnorderedListProps
 >(({ className, children, ...props }, ref) => {
   return html`
     <ul
-      class=${classes('pmp-view-unordered-list', className)}
+      class=${classes('edim-view-unordered-list', className)}
       ...${props}
       ref=${ref}
     >
@@ -36,13 +36,13 @@ export const PmpUnorderedList = forwardRef<
   `;
 });
 
-export interface PmpListItemProps extends HTMLAttributes<HTMLLIElement> {}
+export interface EdimListItemProps extends HTMLAttributes<HTMLLIElement> {}
 
-export const PmpListItem = forwardRef<HTMLLIElement, PmpListItemProps>(
+export const EdimListItem = forwardRef<HTMLLIElement, EdimListItemProps>(
   ({ className, children, ...props }, ref) => {
     return html`
       <li
-        className=${classes('pmp-view-list-item', className)}
+        className=${classes('edim-view-list-item', className)}
         ...${props}
         ref=${ref}
       >

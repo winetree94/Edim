@@ -5,14 +5,14 @@ import { createRef, render } from 'preact';
 import { forwardRef, useImperativeHandle, useRef } from 'preact/compat';
 import { updateColumnsOnResize } from 'prosemirror-tables';
 
-export interface PmpTableViewRef {
+export interface EdimTableViewRef {
   colgroup: () => HTMLTableColElement;
   table: () => HTMLTableElement;
   tbody: () => HTMLTableSectionElement;
 }
 
-export const PmpTableView = forwardRef<
-  PmpTableViewRef,
+export const EdimTableView = forwardRef<
+  EdimTableViewRef,
   HTMLTableSectionElement
 >((_, ref) => {
   const tableRef = useRef<HTMLTableElement>(null);
@@ -26,15 +26,15 @@ export const PmpTableView = forwardRef<
   }));
 
   return html`
-    <table className="pmp-table" ref=${tableRef}>
-      <colgroup className="pmp-colgroup" ref=${colgroupRef}></colgroup>
-      <tbody className="pmp-tbody" ref=${tbodyRef}></tbody>
+    <table className="edim-table" ref=${tableRef}>
+      <colgroup className="edim-colgroup" ref=${colgroupRef}></colgroup>
+      <tbody className="edim-tbody" ref=${tbodyRef}></tbody>
     </table>
   `;
 });
 
-export class PmpTableNodeView implements NodeView {
-  public ref = createRef<PmpTableViewRef>();
+export class EdimTableNodeView implements NodeView {
+  public ref = createRef<EdimTableViewRef>();
   public readonly dom = document.createElement('div');
 
   public get contentDOM() {
@@ -46,8 +46,8 @@ export class PmpTableNodeView implements NodeView {
     private readonly editorView: EditorView,
     private readonly getPos: () => number | undefined,
   ) {
-    this.dom.classList.add('pmp-table-container');
-    render(html`<${PmpTableView} ref=${this.ref}></${PmpTableView}>`, this.dom);
+    this.dom.classList.add('edim-table-container');
+    render(html`<${EdimTableView} ref=${this.ref}></${EdimTableView}>`, this.dom);
     updateColumnsOnResize(
       node,
       this.ref.current!.colgroup(),
@@ -61,7 +61,7 @@ export class PmpTableNodeView implements NodeView {
       return false;
     }
     this.node = node;
-    render(html`<${PmpTableView} ref=${this.ref}></${PmpTableView}>`, this.dom);
+    render(html`<${EdimTableView} ref=${this.ref}></${EdimTableView}>`, this.dom);
     updateColumnsOnResize(
       node,
       this.ref.current!.colgroup(),

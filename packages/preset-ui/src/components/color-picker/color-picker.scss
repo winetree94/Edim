@@ -1,17 +1,17 @@
-.pmp-color-picker {
+.edim-color-picker {
   display: flex;
   flex-direction: column;
   gap: 5px;
   margin: 10px;
 
-  .pmp-color-group {
+  .edim-color-group {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
   }
 }
 
-.pmp-color {
+.edim-color {
   border: 1px solid transparent;
   width: 26px;
   height: 26px;

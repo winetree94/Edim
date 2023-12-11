@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { render } from 'preact';
-import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
+import { EditorState, Plugin, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { html } from 'prosemirror-preset-ui';
-import { PmpMenubar } from '../components';
+import { EdimMenubar } from '../components';
 
-export class PmpMenubarView implements PluginView {
+export class EdimMenubarView implements PluginView {
   public readonly editorRoot: HTMLDivElement;
   public readonly editorWrapper: HTMLDivElement;
   public readonly menubarWrapper: HTMLDivElement;
@@ -17,18 +17,18 @@ export class PmpMenubarView implements PluginView {
     this.editorView = editorView;
 
     const editorRoot = document.createElement('div');
-    editorRoot.classList.add('pmp-view-editor-root');
+    editorRoot.classList.add('edim-view-editor-root');
     this.editorRoot = editorRoot;
 
     const editorWrapper = document.createElement('div');
-    editorWrapper.classList.add('pmp-view-editor-scroll');
+    editorWrapper.classList.add('edim-view-editor-scroll');
     this.editorWrapper = editorWrapper;
 
     const menubarWrapper = document.createElement('div');
-    menubarWrapper.classList.add('pmp-view-editor-menubar-root');
+    menubarWrapper.classList.add('edim-view-editor-menubar-root');
     this.menubarWrapper = menubarWrapper;
 
-    editorView.dom.classList.add('pmp-view-editor');
+    editorView.dom.classList.add('edim-view-editor');
     const originParent = editorView.dom.parentElement!;
     const originIndex = Array.from(originParent.children).indexOf(
       editorView.dom,
@@ -50,7 +50,7 @@ export class PmpMenubarView implements PluginView {
   public render() {
     render(
       html`
-        <${PmpMenubar}
+        <${EdimMenubar}
           editorView=${this.editorView}
           editorState=${this.editorView.state}
         />
@@ -64,9 +64,12 @@ export class PmpMenubarView implements PluginView {
   }
 }
 
-export const PmpMenubarPlugin = new Plugin({
-  key: new PluginKey('pmp-menubar'),
-  view: (editorView) => {
-    return new PmpMenubarView(editorView);
-  },
-});
+export const createEdimMenubarPlugins = (): Plugin[] => {
+  return [
+    new Plugin({
+      view: (editorView) => {
+        return new EdimMenubarView(editorView);
+      },
+    }),
+  ];
+};

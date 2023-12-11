@@ -1,23 +1,23 @@
-.pmp-menubar-color-select {
+.edim-menubar-color-select {
   position: relative;
 }
 
-.pmp-color-layer-list {
+.edim-color-layer-list {
   margin: 8px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   gap: 4px;
 }
 
-.pmp-colo-layer-list-item {
+.edim-colo-layer-list-item {
   padding: 0; 
 }
 
-.pmp-color-button {
+.edim-color-button {
   position: relative;
 }
 
-.pmp-color-button-icon {
+.edim-color-button-icon {
   width: 16px;
   height: 16px;
   fill: var(--spindle-950);

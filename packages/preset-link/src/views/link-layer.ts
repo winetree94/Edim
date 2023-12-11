@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { PmpButton, PmpInput, PmpLabel, html } from 'prosemirror-preset-ui';
+import { EdimButton, EdimInput, EdimLabel, html } from 'prosemirror-preset-ui';
 import { forwardRef } from 'preact/compat';
 
-export interface PmpLinkFormProps {
+export interface EdimLinkFormProps {
   link?: string;
   text?: string;
   onCancel?(): void;
   onSubmit?(link: string, text: string): void;
 }
 
-export const PmpLinkFormLayer = forwardRef((props: PmpLinkFormProps) => {
+export const EdimLinkFormLayer = forwardRef((props: EdimLinkFormProps) => {
   const linkRef = useRef<HTMLInputElement>(null);
   const [link, setLink] = useState<string>(props.link || '');
   const [text, setText] = useState<string>(props.text || '');
@@ -23,10 +23,10 @@ export const PmpLinkFormLayer = forwardRef((props: PmpLinkFormProps) => {
   return html`
     <form
       onSubmit=${() => props.onSubmit?.(link, text)}
-      className="pmp-link-wrapper"
+      className="edim-link-wrapper"
     >
-      <${PmpLabel}>Link<//>
-      <${PmpInput}
+      <${EdimLabel}>Link<//>
+      <${EdimInput}
         ref=${linkRef}
         type="text"
         value=${link}
@@ -35,8 +35,8 @@ export const PmpLinkFormLayer = forwardRef((props: PmpLinkFormProps) => {
           setLink(target.value);
         }}
       />
-      <${PmpLabel}>Text (Optional)<//>
-      <${PmpInput}
+      <${EdimLabel}>Text (Optional)<//>
+      <${EdimInput}
         type="text"
         value=${text}
         onInput=${(e: Event) => {
@@ -44,11 +44,11 @@ export const PmpLinkFormLayer = forwardRef((props: PmpLinkFormProps) => {
           setText(target.value);
         }}
       />
-      <div className="pmp-link-buttons">
-        <${PmpButton} disabled=${!link} className="laksdjfsa" type="submit">
+      <div className="edim-link-buttons">
+        <${EdimButton} disabled=${!link} className="laksdjfsa" type="submit">
           submit
         <//>
-        <${PmpButton} onClick=${() => props.onCancel?.()}>cancel<//>
+        <${EdimButton} onClick=${() => props.onCancel?.()}>cancel<//>
       </div>
     </form>
   `;

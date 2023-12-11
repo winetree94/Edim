@@ -1,12 +1,16 @@
 import { NodeSpec } from 'prosemirror-model';
-import { isQuillTaskList, parseQuillIndent, parseQuillTextAlign } from 'prosemirror-preset-core';
+import {
+  isQuillTaskList,
+  parseQuillIndent,
+  parseQuillTextAlign,
+} from 'prosemirror-preset-core';
 
 export interface ListItemAttrs {
   indent: number;
   align: 'left' | 'right' | 'center' | null;
 }
 
-export const PMP_FREE_LIST_ITEM_NODE: Record<string, NodeSpec> = {
+export const EDIM_FREE_LIST_ITEM_NODES: Record<string, NodeSpec> = {
   list_item: {
     content: 'paragraph',
     group: 'disable-paragraph-attributes',
@@ -45,8 +49,8 @@ export const PMP_FREE_LIST_ITEM_NODE: Record<string, NodeSpec> = {
       return [
         'li',
         {
-          class: `pmp-list-item pmp-list-item-indent-${attrs.indent || 1} ${
-            attrs.align ? ` pmp-align-${attrs.align}` : ''
+          class: `edim-list-item edim-list-item-indent-${attrs.indent || 1} ${
+            attrs.align ? ` edim-align-${attrs.align}` : ''
           }`,
           'data-text-align': attrs.align || 'left',
           'data-indent': attrs.indent || 1,

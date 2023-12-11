@@ -1,25 +1,25 @@
 import { NodeType } from 'prosemirror-model';
-import { Plugin as PMPlugin } from 'prosemirror-state';
-import { createPmpBlockquoteInputRulePlugins } from './input-rules';
-import { createPmpBlockquoteKeymapPlugins } from './keymaps';
-import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
+import { Plugin as EDIMlugin } from 'prosemirror-state';
+import { createEdimBlockquoteInputRulePlugins } from './input-rules';
+import { createEdimBlockquoteKeymapPlugins } from './keymaps';
+import { createEdimMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
 
 export interface CreateBlockQuotePluginConfigs {
   nodeType: NodeType;
   mergeAdjacentBlockquote?: boolean;
 }
 
-export const createPmpBlockQuotePlugins = (
+export const createEdimBlockQuotePlugins = (
   configs: CreateBlockQuotePluginConfigs,
-): PMPlugin[] => {
-  const plugins: PMPlugin[] = [
-    ...createPmpBlockquoteInputRulePlugins(configs),
-    ...createPmpBlockquoteKeymapPlugins(configs),
+): EDIMlugin[] => {
+  const plugins: EDIMlugin[] = [
+    ...createEdimBlockquoteInputRulePlugins(configs),
+    ...createEdimBlockquoteKeymapPlugins(configs),
   ];
 
   if (configs.mergeAdjacentBlockquote) {
     plugins.push(
-      ...createPmpMergeAdjacentNodePlugins({
+      ...createEdimMergeAdjacentNodePlugins({
         specs: [
           {
             nodeType: configs.nodeType,

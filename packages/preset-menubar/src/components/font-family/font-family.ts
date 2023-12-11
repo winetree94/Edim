@@ -1,14 +1,14 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { PmpParagraph, PmpSelect, classes, html } from 'prosemirror-preset-ui';
+import { EdimParagraph, EdimSelect, classes, html } from 'prosemirror-preset-ui';
 import { currentFontFamily } from '../../utils';
-import { PmpFontFamilyMarkType } from 'prosemirror-preset-font-family';
+import { EdimFontFamilyMarkType } from 'prosemirror-preset-font-family';
 
-export const PmpMenubarFontFamilySelect = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarFontFamilySelect = () => {
+  const context = useContext(EdimMenubarContext);
   const fontFamilyMarkType = context.editorView.state.schema.marks[
     'font_family'
-  ] as PmpFontFamilyMarkType;
+  ] as EdimFontFamilyMarkType;
   const currentFont = currentFontFamily(context.editorView.state);
 
   const fontOptions = [
@@ -37,23 +37,23 @@ export const PmpMenubarFontFamilySelect = () => {
     })),
   ];
   return html`
-  <${PmpSelect.Root} 
-  className="${classes('pmp-menubar-font-select')}"
+  <${EdimSelect.Root} 
+  className="${classes('edim-menubar-font-select')}"
   value="${currentFont}">
-<${PmpSelect.Text}>
-<${PmpParagraph}>
+<${EdimSelect.Text}>
+<${EdimParagraph}>
 ${fontOptions.find((option) => option.value === currentFont)?.label || ''}
-</${PmpParagraph}>
-</${PmpSelect.Text}>
-<${PmpSelect.OptionGroup}>
+</${EdimParagraph}>
+</${EdimSelect.Text}>
+<${EdimSelect.OptionGroup}>
   ${fontOptions.map((option) => {
     return html`
-      <${PmpSelect.Option} value="${option.value}" onClick=${option.command}>
-        <${PmpParagraph} style="font-family:${option.value}">${option.label}</${PmpParagraph}> 
-      </${PmpSelect.Option}>
+      <${EdimSelect.Option} value="${option.value}" onClick=${option.command}>
+        <${EdimParagraph} style="font-family:${option.value}">${option.label}</${EdimParagraph}> 
+      </${EdimSelect.Option}>
     `;
   })}
-</${PmpSelect.OptionGroup}>
-</${PmpSelect.Root}>
+</${EdimSelect.OptionGroup}>
+</${EdimSelect.Root}>
   `;
 };

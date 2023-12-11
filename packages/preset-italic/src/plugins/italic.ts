@@ -1,12 +1,12 @@
 import { MarkType } from 'prosemirror-model';
-import { createPmpItalicKeymapPlugins } from './keymap';
+import { createEdimItalicKeymapPlugins } from './keymap';
 
-export interface CreatePmpItalicPluginConfigs {
+export interface CreateEdimItalicPluginConfigs {
   markType: MarkType;
 }
 
-export const createPmpItalicPlugins = (
-  configs: CreatePmpItalicPluginConfigs,
+export const createEdimItalicPlugins = (
+  configs: CreateEdimItalicPluginConfigs,
 ) => {
-  return [...createPmpItalicKeymapPlugins(configs)];
+  return [...createEdimItalicKeymapPlugins(configs)];
 };

@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
-import { Plugin as PMPlugin } from 'prosemirror-state';
+import { Plugin as EDIMlugin } from 'prosemirror-state';
 import { NodeType } from 'prosemirror-model';
 import {
   splitListItem,
@@ -7,14 +7,14 @@ import {
   listItemBackspace,
 } from 'prosemirror-preset-flat-list';
 
-export interface PmpFlatTaskListKeymapPluginConfigs {
+export interface EdimFlatTaskListKeymapPluginConfigs {
   taskListNodeType: NodeType;
   taskListItemNodeType: NodeType;
 }
 
-export const createPmpFlatTaskListKeymapPlugins = (
-  configs: PmpFlatTaskListKeymapPluginConfigs,
-): PMPlugin[] => {
+export const createEdimFlatTaskListKeymapPlugins = (
+  configs: EdimFlatTaskListKeymapPluginConfigs,
+): EDIMlugin[] => {
   return [
     keymap({
       Enter: splitListItem(configs.taskListItemNodeType),

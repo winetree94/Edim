@@ -1,6 +1,6 @@
 import { NodeSpec } from 'prosemirror-model';
 
-export const PMP_DOC_NODE: Record<string, NodeSpec> = {
+export const EDIM_DOC_NODES: Record<string, NodeSpec> = {
   doc: {
     group: 'block-container',
     content: 'block+',

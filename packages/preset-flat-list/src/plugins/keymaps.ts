@@ -1,17 +1,17 @@
 import { keymap } from 'prosemirror-keymap';
 import { indentListItem, listItemBackspace, splitListItem } from '../commands';
-import { Plugin as PMPlugin } from 'prosemirror-state';
+import { Plugin as EDIMlugin } from 'prosemirror-state';
 import { NodeType } from 'prosemirror-model';
 
-export interface PmpFlatListKeymapPluginConfigs {
+export interface EdimFlatListKeymapPluginConfigs {
   orderListNodeType: NodeType;
   bulletListNodeType: NodeType;
   listItemNodeType: NodeType;
 }
 
-export const createPmpFlatListKeymapPlugins = (
-  configs: PmpFlatListKeymapPluginConfigs,
-): PMPlugin[] => {
+export const createEdimFlatListKeymapPlugins = (
+  configs: EdimFlatListKeymapPluginConfigs,
+): EDIMlugin[] => {
   return [
     keymap({
       Enter: splitListItem(configs.listItemNodeType),

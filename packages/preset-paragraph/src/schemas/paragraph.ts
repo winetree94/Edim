@@ -6,7 +6,7 @@ export interface ParagraphAttributes {
   indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-export const PMP_PARAGRAPH_NODE: Record<string, NodeSpec> = {
+export const EDIM_PARAGRAPH_NODES: Record<string, NodeSpec> = {
   paragraph: {
     content: 'inline*',
     attrs: {
@@ -38,8 +38,8 @@ export const PMP_PARAGRAPH_NODE: Record<string, NodeSpec> = {
       return [
         'p',
         {
-          class: `pmp-paragraph pmp-paragraph-indent-${attrs.indent || 0}${
-            attrs.align ? ` pmp-align-${attrs.align}` : ''
+          class: `edim-paragraph edim-paragraph-indent-${attrs.indent || 0}${
+            attrs.align ? ` edim-align-${attrs.align}` : ''
           }`,
           'data-text-align': attrs.align || 'left',
           'data-indent': attrs.indent || 0,

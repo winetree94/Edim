@@ -1,5 +1,5 @@
 import { markActive } from 'prosemirror-preset-core';
-import { PmpFontFamilyAttrs } from 'prosemirror-preset-font-family';
+import { EdimFontFamilyAttrs } from 'prosemirror-preset-font-family';
 import { EditorState, TextSelection } from 'prosemirror-state';
 
 export const currentFontFamily = (state: EditorState) => {
@@ -16,7 +16,7 @@ export const currentFontFamily = (state: EditorState) => {
 
   const storedFont = state.storedMarks?.find(
     (mark) => mark.type === state.schema.marks['font_family'],
-  )?.attrs as PmpFontFamilyAttrs;
+  )?.attrs as EdimFontFamilyAttrs;
 
   if (storedFont) {
     return storedFont.fontFamily;
@@ -25,12 +25,12 @@ export const currentFontFamily = (state: EditorState) => {
   const fromFont = selection.$from
     .marks()
     .find((mark) => mark.type === state.schema.marks['font_family'])
-    ?.attrs as PmpFontFamilyAttrs;
+    ?.attrs as EdimFontFamilyAttrs;
 
   const toFont = selection.$from
     .marks()
     .find((mark) => mark.type === state.schema.marks['font_family'])
-    ?.attrs as PmpFontFamilyAttrs;
+    ?.attrs as EdimFontFamilyAttrs;
 
   if (!fromFont || !toFont) {
     return 'default';

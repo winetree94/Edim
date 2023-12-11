@@ -2,14 +2,14 @@ import { forwardRef, HTMLAttributes } from 'preact/compat';
 import { classes } from '../../cdk/utils/core';
 import { html } from '../../cdk/render';
 
-export interface PmpParagraphProps
+export interface EdimParagraphProps
   extends HTMLAttributes<HTMLParagraphElement> {}
 
-export const PmpParagraph = forwardRef<HTMLParagraphElement, PmpParagraphProps>(
+export const EdimParagraph = forwardRef<HTMLParagraphElement, EdimParagraphProps>(
   ({ className, children, ...props }, ref) => {
     return html`
       <p
-        class=${classes('pmp-view-paragraph', className)}
+        class=${classes('edim-view-paragraph', className)}
         ...${props}
         ref=${ref}
       >

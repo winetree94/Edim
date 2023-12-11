@@ -1,7 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 import { isQuillTaskList } from 'prosemirror-preset-core';
 
-export const PMP_FLAT_TASK_LIST_NODES: Record<string, NodeSpec> = {
+export const EDIM_FLAT_TASK_LIST_NODES: Record<string, NodeSpec> = {
   task_list: {
     parseDOM: [
       {
@@ -11,7 +11,7 @@ export const PMP_FLAT_TASK_LIST_NODES: Record<string, NodeSpec> = {
           if (isQuillTaskList(dom)) {
             return {};
           }
-          if (dom.classList.contains('pmp-task-list')) {
+          if (dom.classList.contains('edim-task-list')) {
             return {};
           }
           return false;
@@ -24,7 +24,7 @@ export const PMP_FLAT_TASK_LIST_NODES: Record<string, NodeSpec> = {
       return [
         'ul',
         {
-          class: 'pmp-task-list',
+          class: 'edim-task-list',
         },
         0,
       ];

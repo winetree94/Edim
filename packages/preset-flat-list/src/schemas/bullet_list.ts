@@ -1,7 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 import { isQuillTaskList } from 'prosemirror-preset-core';
 
-export const PMP_BULLET_FREE_LIST_NODE: Record<string, NodeSpec> = {
+export const EDIM_BULLET_FREE_LIST_NODES: Record<string, NodeSpec> = {
   bullet_list: {
     parseDOM: [
       {
@@ -21,7 +21,7 @@ export const PMP_BULLET_FREE_LIST_NODE: Record<string, NodeSpec> = {
       return [
         'ul',
         {
-          class: 'pmp-bullet-list',
+          class: 'edim-bullet-list',
         },
         0,
       ];

@@ -9,7 +9,7 @@ export interface HeadingAttributes {
   align: 'left' | 'right' | 'center' | null;
 }
 
-export const PMP_HEADING_NODE: Record<string, NodeSpec> = {
+export const EDIM_HEADING_NODES: Record<string, NodeSpec> = {
   heading: {
     attrs: {
       level: { default: 1 },
@@ -38,8 +38,8 @@ export const PMP_HEADING_NODE: Record<string, NodeSpec> = {
       return [
         'h' + attrs.level,
         {
-          class: `pmp-heading pmp-heading-indent-${attrs.indent || 0}${
-            attrs.align ? ` pmp-align-${attrs.align}` : ''
+          class: `edim-heading edim-heading-indent-${attrs.indent || 0}${
+            attrs.align ? ` edim-align-${attrs.align}` : ''
           }`,
           'data-text-align': attrs.align || 'left',
         },

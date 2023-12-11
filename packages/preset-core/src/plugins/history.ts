@@ -2,10 +2,10 @@ import { history, redo, undo } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { Plugin } from 'prosemirror-state';
 
-export interface CreatePmpHistoryPluginConfigs {}
+export interface CreateEdimHistoryPluginConfigs {}
 
-export const createPmpHistoryPlugins = (
-  configs: CreatePmpHistoryPluginConfigs,
+export const createEdimHistoryPlugins = (
+  configs: CreateEdimHistoryPluginConfigs,
 ): Plugin[] => {
   return [
     history(),

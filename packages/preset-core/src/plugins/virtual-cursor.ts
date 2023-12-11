@@ -1,15 +1,15 @@
 import type { ResolvedPos } from 'prosemirror-model';
 import { Mark } from 'prosemirror-model';
 import type { Selection } from 'prosemirror-state';
-import { Plugin as PMPlugin, TextSelection } from 'prosemirror-state';
+import { Plugin as EDIMlugin, TextSelection } from 'prosemirror-state';
 
 /**
  * Origin Project & License
  * https://github.com/ocavue/prosemirror-virtual-cursor
  */
-export function createPmpVirtualCursorPlugins(): PMPlugin[] {
+export function createEdimVirtualCursorPlugins(): EDIMlugin[] {
   return [
-    new PMPlugin({
+    new EDIMlugin({
       props: {
         handleKeyDown: (view, event): boolean => {
           const { selection } = view.state;

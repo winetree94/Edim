@@ -1,11 +1,11 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { PmpButton, html } from 'prosemirror-preset-ui';
+import { EdimButton, html } from 'prosemirror-preset-ui';
 import { toggleList } from 'prosemirror-preset-flat-list';
 import { findParentNode } from 'prosemirror-utils';
 
-export const PmpMenubarTaskListToggleButtons = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarTaskListToggleButtons = () => {
+  const context = useContext(EdimMenubarContext);
 
   const canTaskList = toggleList({
     listType: context.editorView.state.schema.nodes['task_list'],
@@ -24,11 +24,11 @@ export const PmpMenubarTaskListToggleButtons = () => {
   };
 
   return html`
-    <${PmpButton}
-      className="pmp-icon-button ${activeOrderedList ? 'selected' : ''}"
+    <${EdimButton}
+      className="edim-icon-button ${activeOrderedList ? 'selected' : ''}"
       disabled=${!canTaskList}
       onClick=${() => onTaskListClick()}>
       <i class="ri-checkbox-line"></i>
-    </${PmpButton}>
+    </${EdimButton}>
   `;
 };

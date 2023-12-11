@@ -1,8 +1,8 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext, useRef, useState } from 'preact/hooks';
-import { PmpInput, PmpLayer, PmpSelect, html } from 'prosemirror-preset-ui';
+import { EdimInput, EdimLayer, EdimSelect, html } from 'prosemirror-preset-ui';
 import { getRangeFirstAlignment } from 'prosemirror-preset-paragraph';
-import { PmpLinkFormLayer, addLink } from 'prosemirror-preset-link';
+import { EdimLinkFormLayer, addLink } from 'prosemirror-preset-link';
 import { Fragment } from 'preact';
 import { addMention } from 'prosemirror-preset-mention';
 import { TargetedEvent } from 'preact/compat';
@@ -33,8 +33,8 @@ const createFakeProgress = (
   });
 };
 
-export const PmpMenubarAddMoreSelect = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarAddMoreSelect = () => {
+  const context = useContext(EdimMenubarContext);
   const firstAlignment = getRangeFirstAlignment(context.editorView.state);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -48,14 +48,14 @@ export const PmpMenubarAddMoreSelect = () => {
   } | null>(null);
 
   const options = [
-    {
-      label: 'Mention',
-      shortcut: html``,
-      command: () => {
-        addMention()(context.editorView.state, context.editorView.dispatch);
-        context.editorView.focus();
-      },
-    },
+    // {
+    //   label: 'Mention',
+    //   shortcut: html``,
+    //   command: () => {
+    //     addMention()(context.editorView.state, context.editorView.dispatch);
+    //     context.editorView.focus();
+    //   },
+    // },
     {
       label: 'Link',
       shortcut: html``,
@@ -73,11 +73,11 @@ export const PmpMenubarAddMoreSelect = () => {
         });
       },
     },
-    {
-      label: 'Todo List',
-      shortcut: html``,
-      command: () => {},
-    },
+    // {
+    //   label: 'Todo List',
+    //   shortcut: html``,
+    //   command: () => {},
+    // },
     {
       label: 'Image',
       shortcut: html``,
@@ -157,25 +157,25 @@ export const PmpMenubarAddMoreSelect = () => {
 
   return html`
   <${Fragment}>
-    <${PmpSelect.Root} 
+    <${EdimSelect.Root} 
       value="${firstAlignment}">
-      <${PmpSelect.Text}>
+      <${EdimSelect.Text}>
         <i class="ri-add-line"></i>
-      </${PmpSelect.Text}>
-      <${PmpSelect.OptionGroup}>
+      </${EdimSelect.Text}>
+      <${EdimSelect.OptionGroup}>
       ${options.map(
         (option) => html`
-        <${PmpSelect.Option}
+        <${EdimSelect.Option}
           value="${option.label}"
           onClick=${option.command}>
           ${option.label}
-        </${PmpSelect.Option}>
+        </${EdimSelect.Option}>
       `,
       )}
-      </${PmpSelect.OptionGroup}>
-    </${PmpSelect.Root}>
+      </${EdimSelect.OptionGroup}>
+    </${EdimSelect.Root}>
 
-    <${PmpInput}
+    <${EdimInput}
       ref=${imageInputRef}
       type="file"
       accept="image/*"
@@ -189,14 +189,14 @@ export const PmpMenubarAddMoreSelect = () => {
     ${
       linkLayerRef &&
       html`
-      <${PmpLayer}
+      <${EdimLayer}
         top=${linkLayerRef.top}
         left=${linkLayerRef.left}
         closeOnEsc=${true}
         outerMousedown=${() => setLinkLayerRef(null)}
         onClose=${() => setLinkLayerRef(null)}
         >
-        <${PmpLinkFormLayer}
+        <${EdimLinkFormLayer}
           text=${linkLayerRef.text}
           link=${linkLayerRef.link}
           onSubmit=${(link: string, text: string) => {
@@ -209,7 +209,7 @@ export const PmpMenubarAddMoreSelect = () => {
           }}
           onCancel=${() => setLinkLayerRef(null)}
           />
-      </${PmpLayer}>
+      </${EdimLayer}>
     `
     }
    </${Fragment}> 

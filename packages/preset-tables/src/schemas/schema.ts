@@ -12,7 +12,7 @@ export interface CellAttributes {
   background: string | null;
 }
 
-// export const PMP_TABLE_NODES: Record<string, NodeSpec> = {
+// export const EDIM_TABLE_NODES: Record<string, NodeSpec> = {
 //   ...tableNodes({
 //     tableGroup: 'block',
 //     cellContent: 'block+',
@@ -95,7 +95,7 @@ for (const prop in extraAttrs) {
   cellAttrs[prop] = { default: extraAttrs[prop].default };
 }
 
-export const PMP_TABLE_NODES = {
+export const EDIM_TABLE_NODES: Record<string, NodeSpec> = {
   table: {
     content: 'table_row+',
     tableRole: 'table',

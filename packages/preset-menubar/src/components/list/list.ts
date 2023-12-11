@@ -1,11 +1,11 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { PmpButton, html } from 'prosemirror-preset-ui';
+import { EdimButton, html } from 'prosemirror-preset-ui';
 import { toggleList } from 'prosemirror-preset-flat-list';
 import { findParentNode } from 'prosemirror-utils';
 
-export const PmpMenubarListToggleButtons = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarListToggleButtons = () => {
+  const context = useContext(EdimMenubarContext);
 
   const canOrderedList = toggleList({
     listType: context.editorView.state.schema.nodes['ordered_list'],
@@ -41,19 +41,19 @@ export const PmpMenubarListToggleButtons = () => {
   };
 
   return html`
-  <${PmpButton}
-  className="pmp-icon-button ${activeOrderedList ? 'selected' : ''}"
+  <${EdimButton}
+  className="edim-icon-button ${activeOrderedList ? 'selected' : ''}"
   disabled=${!canOrderedList}
   onClick=${() => onOrderedListClick()}
   >
   <i className="ri-list-ordered" />
-</${PmpButton}>
-<${PmpButton}
-  className="pmp-icon-button ${activeUnorderedList ? 'selected' : ''}"
+</${EdimButton}>
+<${EdimButton}
+  className="edim-icon-button ${activeUnorderedList ? 'selected' : ''}"
   disabled=${!canBulletList}
   onClick=${() => onUnorderedListClick()}
   >
   <i className="ri-list-unordered" />
-</${PmpButton}>
+</${EdimButton}>
   `;
 };

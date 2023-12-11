@@ -2,12 +2,12 @@ import { forwardRef, HTMLAttributes } from 'preact/compat';
 import { classes } from '../../cdk/utils/core';
 import { html } from '../../cdk/render';
 
-export interface PmpInputProps extends HTMLAttributes<HTMLInputElement> {}
+export interface EdimInputProps extends HTMLAttributes<HTMLInputElement> {}
 
-export const PmpInput = forwardRef<HTMLInputElement, PmpInputProps>(
+export const EdimInput = forwardRef<HTMLInputElement, EdimInputProps>(
   ({ className, ...props }, ref) => {
     return html`
-      <input class=${classes('pmp-input', className)} ...${props} ref=${ref} />
+      <input class=${classes('edim-input', className)} ...${props} ref=${ref} />
     `;
   },
 );

@@ -1,22 +1,22 @@
 import { MarkSpec, MarkType } from 'prosemirror-model';
 
-export interface PmpTextColorAttrs {
+export interface EdimTextColorAttrs {
   color: string;
 }
 
-export interface PmpTextColor {
+export interface EdimTextColor {
   color: string;
 }
 
-export interface PmpTextColorMarkSpec extends MarkSpec {
-  colors: PmpTextColor[];
+export interface EdimTextColorMarkSpec extends MarkSpec {
+  colors: EdimTextColor[];
 }
 
-export interface PmpTextColorMarkType extends MarkType {
-  spec: PmpTextColorMarkSpec;
+export interface EdimTextColorMarkType extends MarkType {
+  spec: EdimTextColorMarkSpec;
 }
 
-export const PMP_TEXT_COLOR_MARK: Record<string, PmpTextColorMarkSpec> = {
+export const EDIM_TEXT_COLOR_MARKS: Record<string, EdimTextColorMarkSpec> = {
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
   text_color: {
@@ -24,13 +24,13 @@ export const PMP_TEXT_COLOR_MARK: Record<string, PmpTextColorMarkSpec> = {
     attrs: {
       color: { default: '' },
     },
-    parseDOM: [{ tag: 'span.pmp-text-color' }],
+    parseDOM: [{ tag: 'span.edim-text-color' }],
     toDOM(node) {
-      const attrs = node.attrs as PmpTextColorAttrs;
+      const attrs = node.attrs as EdimTextColorAttrs;
       return [
         'span',
         {
-          class: 'pmp-text-color',
+          class: 'edim-text-color',
           style: `color: ${attrs.color};`,
           attrs: {
             style: `color: ${attrs.color}`,

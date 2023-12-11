@@ -22,7 +22,7 @@ const DefaultCommandPluginState: CommandPluginState = {
   keyword: '',
 };
 
-export const createPmpCommandPlugins = (config: CommandExtensionConfigs) => {
+export const createEdimCommandPlugins = (config: CommandExtensionConfigs) => {
   const commandPluginKey = new PluginKey<CommandPluginState>('commandPlugin');
   let pluginView: CommandPluginView | null = null;
   return [

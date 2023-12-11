@@ -3,7 +3,7 @@ import { html, classes } from 'prosemirror-preset-ui';
 import { forwardRef } from 'preact/compat';
 import { ImagePlaceholderViewProvider, ImagePlaceholderSpec } from '../placeholder';
 
-export interface PmpImagePlaceholderProps {
+export interface EdimImagePlaceholderProps {
   progress: number;
   text_align: 'left' | 'center' | 'right';
   viewport_width: number;
@@ -11,12 +11,12 @@ export interface PmpImagePlaceholderProps {
   height: number;
 }
 
-export const PmpImagePlaceholder = forwardRef(
-  (props: PmpImagePlaceholderProps) => {
+export const EdimImagePlaceholder = forwardRef(
+  (props: EdimImagePlaceholderProps) => {
     const alignClasses = {
-      left: 'pmp-image-placeholder-align-left',
-      center: 'pmp-image-placeholder-align-center',
-      right: 'pmp-image-placeholder-align-right',
+      left: 'edim-image-placeholder-align-left',
+      center: 'edim-image-placeholder-align-center',
+      right: 'edim-image-placeholder-align-right',
     };
 
     const canvas = document.createElement('canvas');
@@ -30,21 +30,21 @@ export const PmpImagePlaceholder = forwardRef(
     return html`
       <div
         class=${classes(
-          'pmp-image-placeholder-view-wrapper',
+          'edim-image-placeholder-view-wrapper',
           alignClasses[props.text_align],
         )}
       >
         <div
-          class=${classes('pmp-image-placeholder-view-container')}
+          class=${classes('edim-image-placeholder-view-container')}
           style=${{ width: `${props.viewport_width}%` }}
         >
           <img
-            class=${classes('pmp-image-placeholder-fake-image')}
+            class=${classes('edim-image-placeholder-fake-image')}
             src=${url}
           />
-          <div class=${classes('pmp-image-placeholer-progress-wrapper')}>
+          <div class=${classes('edim-image-placeholer-progress-wrapper')}>
             <div>
-              <span class="pmp-spinner" />
+              <span class="edim-spinner" />
             </div>
             <div>${Math.ceil(props.progress * 100)}%</div>
           </div>
@@ -54,7 +54,7 @@ export const PmpImagePlaceholder = forwardRef(
   },
 );
 
-export class PmpImagePlaceholderViewProvider
+export class EdimImagePlaceholderViewProvider
   implements ImagePlaceholderViewProvider
 {
   public wrapper = document.createElement('div');
@@ -66,7 +66,7 @@ export class PmpImagePlaceholderViewProvider
 
   public render(spec: ImagePlaceholderSpec) {
     render(
-      html` <${PmpImagePlaceholder}
+      html` <${EdimImagePlaceholder}
         progress=${spec.progress}
         viewport_width=${spec.viewport_width}
         width=${spec.width}

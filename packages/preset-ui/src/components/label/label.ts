@@ -2,12 +2,12 @@ import { forwardRef, HTMLAttributes } from 'preact/compat';
 import { classes } from '../../cdk/utils/core';
 import { html } from '../../cdk/render';
 
-export interface PmpLabelProps extends HTMLAttributes<HTMLLabelElement> {}
+export interface EdimLabelProps extends HTMLAttributes<HTMLLabelElement> {}
 
-export const PmpLabel = forwardRef<HTMLLabelElement, PmpLabelProps>(
+export const EdimLabel = forwardRef<HTMLLabelElement, EdimLabelProps>(
   ({ className, children, ...props }, ref) => {
     return html`
-      <label class=${classes('pmp-label', className)} ...${props} ref=${ref}>
+      <label class=${classes('edim-label', className)} ...${props} ref=${ref}>
         ${children}
       </label>
     `;

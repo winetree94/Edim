@@ -4,7 +4,7 @@ export interface EmojiAttribute {
   data_id: string;
 }
 
-export const PMP_EMOJI_NODE: Record<string, NodeSpec> = {
+export const EDIM_EMOJI_NODE: Record<string, NodeSpec> = {
   emoji: {
     inclusive: false,
     inline: true,
@@ -21,7 +21,7 @@ export const PMP_EMOJI_NODE: Record<string, NodeSpec> = {
         getAttrs: (node) => {
           const dom = node as HTMLSpanElement;
 
-          const currentEmoji = dom.classList.contains('pmp-emoji');
+          const currentEmoji = dom.classList.contains('edim-emoji');
           const legacyEmoji = dom.classList.contains('emoji-img');
 
           if (!currentEmoji && !legacyEmoji) {
@@ -44,7 +44,7 @@ export const PMP_EMOJI_NODE: Record<string, NodeSpec> = {
       return [
         'img',
         {
-          class: 'pmp-emoji',
+          class: 'edim-emoji',
           'data-id': attrs.data_id,
         },
       ];

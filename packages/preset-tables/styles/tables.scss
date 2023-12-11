@@ -1,8 +1,8 @@
-.ProseMirror .pmp-table-container {
+.ProseMirror .edim-table-container {
   overflow-x: auto;
   height: auto;
 
-  table.pmp-table {
+  table.edim-table {
     display: table;
     border-collapse: collapse;
     table-layout: fixed;
@@ -10,14 +10,14 @@
     overflow: hidden;
     margin: 0;
 
-    colgroup.pmp-colgroup {
+    colgroup.edim-colgroup {
       display: table-column-group;
       col {
         display: table-column;
       }
     }
 
-    tbody.pmp-tbody {
+    tbody.edim-tbody {
       display: table-row-group;
       vertical-align: middle;
       border-color: inherit;
@@ -72,7 +72,7 @@
   }
 }
 
-.pmp-table-cell-buttons-wrapper {
+.edim-table-cell-buttons-wrapper {
   position: absolute;
   top: 10px;
   right: 10px;

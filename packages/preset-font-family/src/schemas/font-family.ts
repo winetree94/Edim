@@ -1,23 +1,23 @@
 import { MarkSpec, MarkType } from 'prosemirror-model';
 
-export interface PmpFontFamilyAttrs {
+export interface EdimFontFamilyAttrs {
   fontFamily: string | null;
 }
 
-export interface PmpFontFamily {
+export interface EdimFontFamily {
   fontFamily: string;
   label: string;
 }
 
-export interface PmpFontFamilyMarkSpec extends MarkSpec {
-  fonts: PmpFontFamily[];
+export interface EdimFontFamilyMarkSpec extends MarkSpec {
+  fonts: EdimFontFamily[];
 }
 
-export interface PmpFontFamilyMarkType extends MarkType {
-  spec: PmpFontFamilyMarkSpec;
+export interface EdimFontFamilyMarkType extends MarkType {
+  spec: EdimFontFamilyMarkSpec;
 }
 
-export const PMP_FONT_FAMILY_MARK: Record<string, PmpFontFamilyMarkSpec> = {
+export const EDIM_FONT_FAMILY_MARKS: Record<string, EdimFontFamilyMarkSpec> = {
   font_family: {
     fonts: [
       {
@@ -40,7 +40,7 @@ export const PMP_FONT_FAMILY_MARK: Record<string, PmpFontFamilyMarkSpec> = {
     },
     parseDOM: [
       {
-        tag: 'span.pmp-font-family',
+        tag: 'span.edim-font-family',
         getAttrs: (node) => {
           const dom = node as HTMLElement;
           const fontFamily = dom.getAttribute('data-font-family');
@@ -51,7 +51,7 @@ export const PMP_FONT_FAMILY_MARK: Record<string, PmpFontFamilyMarkSpec> = {
       },
     ],
     toDOM(node) {
-      const attrs = node.attrs as PmpFontFamilyAttrs;
+      const attrs = node.attrs as EdimFontFamilyAttrs;
       return [
         'span',
         {

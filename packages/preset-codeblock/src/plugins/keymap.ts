@@ -2,12 +2,12 @@ import { NodeType } from 'prosemirror-model';
 import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
 
-export interface PmpCodeBlockKeymapPluginConfigs {
+export interface EdimCodeBlockKeymapPluginConfigs {
   nodeType: NodeType;
 }
 
 export const createCodeBlockKeymapPlugins = (
-  configs: PmpCodeBlockKeymapPluginConfigs,
+  configs: EdimCodeBlockKeymapPluginConfigs,
 ) => {
   return [
     keymap({

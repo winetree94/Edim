@@ -1,10 +1,10 @@
-import { PmpMenubarContext } from '../context';
+import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { PmpButton, html } from 'prosemirror-preset-ui';
+import { EdimButton, html } from 'prosemirror-preset-ui';
 import { indentListItem } from 'prosemirror-preset-flat-list';
 
-export const PmpMenubarIndentButtons = () => {
-  const context = useContext(PmpMenubarContext);
+export const EdimMenubarIndentButtons = () => {
+  const context = useContext(EdimMenubarContext);
 
   const onIncreaseIndentClick = (): void => {
     indentListItem({
@@ -31,17 +31,17 @@ export const PmpMenubarIndentButtons = () => {
   };
 
   return html`
-  <${PmpButton}
-  className="pmp-icon-button"
+  <${EdimButton}
+  className="edim-icon-button"
   onClick=${() => onDecreaseIndentClick()}
   >
   <i className="ri-indent-decrease" />
-</${PmpButton}>
-<${PmpButton}
-  className="pmp-icon-button"
+</${EdimButton}>
+<${EdimButton}
+  className="edim-icon-button"
   onClick=${() => onIncreaseIndentClick()}
   >
   <i className="ri-indent-increase" />
-</${PmpButton}>
+</${EdimButton}>
   `;
 };

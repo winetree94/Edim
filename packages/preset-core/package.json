@@ -20,7 +20,10 @@
     "prosemirror-commands": "*",
     "prosemirror-keymap": "*",
     "prosemirror-transform": "*",
-    "prosemirror-inputrules": "*"
+    "prosemirror-inputrules": "*",
+    "prosemirror-history": "*",
+    "prosemirror-gapcursor": "*",
+    "prosemirror-dropcursor": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

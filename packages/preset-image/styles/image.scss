@@ -1,14 +1,14 @@
 @import '../src/views/image-placeholder.scss';
 
 .ProseMirror {
-  div.pmp-image-wrapper {
-    &.pmp-image-align-left {
+  div.edim-image-wrapper {
+    &.edim-image-align-left {
       text-align: left;
     }
-    &.pmp-image-align-center {
+    &.edim-image-align-center {
       text-align: center;
     }
-    &.pmp-image-align-right {
+    &.edim-image-align-right {
       text-align: right;
     }
   }

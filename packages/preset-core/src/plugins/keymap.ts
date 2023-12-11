@@ -10,10 +10,10 @@ import {
 import { Plugin } from 'prosemirror-state';
 import { clearMarks } from '../commands';
 
-export interface CreatePmpBasicKeymapPluginConfigs {}
+export interface CreateEdimBasicKeymapPluginConfigs {}
 
-export const createPmpBasicKeymapPlugins = (
-  configs: CreatePmpBasicKeymapPluginConfigs,
+export const createEdimBasicKeymapPlugins = (
+  configs: CreateEdimBasicKeymapPluginConfigs,
 ): Plugin[] => {
   return [
     keymap({

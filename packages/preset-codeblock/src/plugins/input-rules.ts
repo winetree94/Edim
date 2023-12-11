@@ -5,12 +5,12 @@ export function codeBlockRule(nodeType: NodeType) {
   return textblockTypeInputRule(/^```$/, nodeType);
 }
 
-export interface PmpCodeBlockInputRulePluginConfigs {
+export interface EdimCodeBlockInputRulePluginConfigs {
   nodeType: NodeType;
 }
 
 export const createCodeBlockInputRulePlugins = (
-  configs: PmpCodeBlockInputRulePluginConfigs,
+  configs: EdimCodeBlockInputRulePluginConfigs,
 ) => {
   return [
     inputRules({

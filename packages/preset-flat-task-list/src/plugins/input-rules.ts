@@ -32,12 +32,12 @@ export const uncheckedTaskListRule = (nodeType: NodeType) => {
   });
 };
 
-export interface createPmpTaskListInputRulePluginsConfig {
+export interface createEdimTaskListInputRulePluginsConfig {
   taskListNodeType: NodeType;
 }
 
-export const createPmpTaskListInputRulePlugins = (
-  configs: createPmpTaskListInputRulePluginsConfig,
+export const createEdimTaskListInputRulePlugins = (
+  configs: createEdimTaskListInputRulePluginsConfig,
 ): Plugin[] => [
   inputRules({
     rules: [

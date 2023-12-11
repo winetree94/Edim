@@ -1,5 +1,5 @@
 import { NodeType } from 'prosemirror-model';
-import { createPmpMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
+import { createEdimMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
 import { createCodeBlockInputRulePlugins } from './input-rules';
 import { createCodeBlockKeymapPlugins } from './keymap';
 
@@ -13,7 +13,7 @@ export const createCodeBlockPlugins = (
   return [
     ...createCodeBlockInputRulePlugins(configs),
     ...createCodeBlockKeymapPlugins(configs),
-    ...createPmpMergeAdjacentNodePlugins({
+    ...createEdimMergeAdjacentNodePlugins({
       specs: [
         {
           nodeType: configs.nodeType,

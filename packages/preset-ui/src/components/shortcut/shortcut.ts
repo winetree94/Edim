@@ -1,9 +1,9 @@
 import { html } from '../../cdk';
 
-export interface PmpShortcutProps {
+export interface EdimShortcutProps {
   children: JSX.Element;
 }
 
-export const PmpShortCut = (props: PmpShortcutProps) => {
-  return html`<span className="pmp-ui-shortcut">${props.children}</span>`;
+export const EdimShortCut = (props: EdimShortcutProps) => {
+  return html`<span className="edim-ui-shortcut">${props.children}</span>`;
 };

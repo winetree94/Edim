@@ -1,19 +1,19 @@
 import { Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import {
-  PMP_DOC_NODE,
-  PMP_PARAGRAPH_NODE,
-  PMP_TEXT_NODE,
-  createPmpBasicKeymapPlugins,
-  createPmpHistoryPlugins,
+  EDIM_DOC_NODES,
+  EDIM_PARAGRAPH_NODE,
+  EDIM_TEXT_NODES,
+  createEdimBasicKeymapPlugins,
+  createEdimHistoryPlugins,
 } from 'prosemirror-preset-core';
 
 export const minimalSchema = new Schema({
-  nodes: Object.assign({}, PMP_DOC_NODE, PMP_TEXT_NODE, PMP_PARAGRAPH_NODE),
+  nodes: Object.assign({}, EDIM_DOC_NODES, EDIM_TEXT_NODES, EDIM_PARAGRAPH_NODE),
   marks: Object.assign({}),
 });
 
 export const minimalPlugins: Plugin[] = [].concat(
-  createPmpBasicKeymapPlugins({}),
-  createPmpHistoryPlugins({}),
+  createEdimBasicKeymapPlugins({}),
+  createEdimHistoryPlugins({}),
 );

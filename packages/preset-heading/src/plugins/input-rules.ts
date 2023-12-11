@@ -1,4 +1,4 @@
-import { Plugin as PMPlugin } from 'prosemirror-state';
+import { Plugin as EDIMlugin } from 'prosemirror-state';
 import { NodeType } from 'prosemirror-model';
 import { headingRule } from '../input-rules';
 import { inputRules } from 'prosemirror-inputrules';
@@ -8,9 +8,9 @@ export interface HeadingInputRuleConfigs {
   level: number;
 }
 
-export const createPmpHeadingInputRulePlugins = (
+export const createEdimHeadingInputRulePlugins = (
   configs: HeadingInputRuleConfigs,
-): PMPlugin[] => {
+): EDIMlugin[] => {
   return [
     inputRules({
       rules: [headingRule(configs.nodeType, configs.level)],

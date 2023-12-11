@@ -3,13 +3,13 @@ import { indentListItem } from './indent-list-item';
 import { findParentNode } from 'prosemirror-utils';
 import { NodeType } from 'prosemirror-model';
 
-export interface PmpListItemBackspaceCommandConfigs {
+export interface EdimListItemBackspaceCommandConfigs {
   listNodeTypes: NodeType[];
   listItemNodeType: NodeType;
 }
 
 export const listItemBackspace =
-  (configs: PmpListItemBackspaceCommandConfigs): Command =>
+  (configs: EdimListItemBackspaceCommandConfigs): Command =>
   (state, dispatch) => {
     const selection = state.selection;
     if (selection.from !== selection.to) {

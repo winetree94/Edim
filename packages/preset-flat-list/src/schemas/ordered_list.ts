@@ -3,12 +3,12 @@ import { DOMOutputSpec, NodeSpec } from 'prosemirror-model';
 const olDOM: DOMOutputSpec = [
   'ol',
   {
-    class: 'pmp-ordered-list',
+    class: 'edim-ordered-list',
   },
   0,
 ];
 
-export const PMP_ORDERED_FREE_LIST_NODE: Record<string, NodeSpec> = {
+export const EDIM_ORDERED_FREE_LIST_NODES: Record<string, NodeSpec> = {
   ordered_list: {
     parseDOM: [
       {

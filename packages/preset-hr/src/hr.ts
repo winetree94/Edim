@@ -2,7 +2,7 @@ import { keymap } from 'prosemirror-keymap';
 import { DOMOutputSpec, NodeSpec, NodeType } from 'prosemirror-model';
 
 const hrDOM: DOMOutputSpec = ['hr'];
-export const PMP_HORIZONTAL_RULE_NODE: Record<string, NodeSpec> = {
+export const EDIM_HORIZONTAL_RULE_NODES: Record<string, NodeSpec> = {
   horizontal_rule: {
     group: 'block',
     parseDOM: [{ tag: 'hr' }],
@@ -12,12 +12,12 @@ export const PMP_HORIZONTAL_RULE_NODE: Record<string, NodeSpec> = {
   },
 };
 
-export interface CreatePmpHorizontalRulePluginConfigs {
+export interface CreateEdimHorizontalRulePluginConfigs {
   nodeType: NodeType;
 }
 
-export const createPmpHorizontalRulePlugins = (
-  configs: CreatePmpHorizontalRulePluginConfigs,
+export const createEdimHorizontalRulePlugins = (
+  configs: CreateEdimHorizontalRulePluginConfigs,
 ) => {
   return [
     keymap({

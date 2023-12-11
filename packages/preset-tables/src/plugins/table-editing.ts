@@ -1,18 +1,18 @@
 import { columnResizing, tableEditing } from 'prosemirror-tables';
-import { createPmpTableCellButtonPlugins } from './cell-button';
-import { createPmpFocusedCellDecorationPlugins } from './focused-cell';
-import { Plugin as PMPlugin } from 'prosemirror-state';
-import { PmpTableNodeView } from '../node-views';
+import { createEdimTableCellButtonPlugins } from './cell-button';
+import { createEdimFocusedCellDecorationPlugins } from './focused-cell';
+import { Plugin as EDIMlugin } from 'prosemirror-state';
+import { EdimTableNodeView } from '../node-views';
 
-export const createPmpTableEditingPlugins = () => {
+export const createEdimTableEditingPlugins = () => {
   return [
-    ...createPmpFocusedCellDecorationPlugins(),
-    ...createPmpTableCellButtonPlugins(),
-    new PMPlugin({
+    ...createEdimFocusedCellDecorationPlugins(),
+    ...createEdimTableCellButtonPlugins(),
+    new EDIMlugin({
       props: {
         nodeViews: {
           table: (node, view, getPos) =>
-            new PmpTableNodeView(node, view, getPos),
+            new EdimTableNodeView(node, view, getPos),
         },
       },
     }),

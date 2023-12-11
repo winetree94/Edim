@@ -1,15 +1,15 @@
 .ProseMirror {
 
-  li.pmp-list-item {
+  li.edim-list-item {
     position: relative;
   }
 
-  ul.pmp-bullet-list,
-  ol.pmp-ordered-list {
+  ul.edim-bullet-list,
+  ol.edim-ordered-list {
     padding-left: 0;
     list-style-type: none;
 
-    li.pmp-list-item {
+    li.edim-list-item {
       word-break: break-all;
       line-height: normal;
 
@@ -18,20 +18,20 @@
       }
       margin: 10px 0;
 
-      p.pmp-paragraph {
+      p.edim-paragraph {
         display: inline-block;
         margin: 0;
       }
 
-      &.pmp-align-center {
+      &.edim-align-center {
         text-align: center;
       }
-      &.pmp-align-right {
+      &.edim-align-right {
         text-align: right;
       }
 
       @for $i from 1 through 6 {
-        &.pmp-list-item-indent-#{$i} {
+        &.edim-list-item-indent-#{$i} {
           margin-left: 30px * $i;
         }
       }
@@ -48,35 +48,35 @@
     }
   }
 
-  ul.pmp-bullet-list {
-    li.pmp-list-item {
-      &.pmp-list-item-indent-1::before {
+  ul.edim-bullet-list {
+    li.edim-list-item {
+      &.edim-list-item-indent-1::before {
         content: '\25cf';
       }
-      &.pmp-list-item-indent-2::before {
+      &.edim-list-item-indent-2::before {
         content: '\25cb';
       }
-      &.pmp-list-item-indent-3::before {
+      &.edim-list-item-indent-3::before {
         content: '\25a0';
       }
-      &.pmp-list-item-indent-4::before {
+      &.edim-list-item-indent-4::before {
         content: '\25cf';
       }
-      &.pmp-list-item-indent-5::before {
+      &.edim-list-item-indent-5::before {
         content: '\25cb';
       }
-      &.pmp-list-item-indent-6::before {
+      &.edim-list-item-indent-6::before {
         content: '\25a0';
       }
     }
   }
 
-  ol.pmp-ordered-list {
+  ol.edim-ordered-list {
     counter-reset: list-1 list-2 list-3 list-4 list-5 list-6;
     counter-increment: list-0;
 
-    li.pmp-list-item {
-      &.pmp-list-item-indent-1 {
+    li.edim-list-item {
+      &.edim-list-item-indent-1 {
         counter-reset: list-2 list-3 list-4 list-5 list-6 list-7;
         counter-increment: list-1;
 
@@ -85,7 +85,7 @@
         }
       }
 
-      &.pmp-list-item-indent-2 {
+      &.edim-list-item-indent-2 {
         counter-reset: list-3 list-4 list-5 list-6 list-7;
         counter-increment: list-2;
 
@@ -94,7 +94,7 @@
         }
       }
 
-      &.pmp-list-item-indent-3 {
+      &.edim-list-item-indent-3 {
         counter-reset: list-4 list-5 list-6 list-7;
         counter-increment: list-3;
 
@@ -103,7 +103,7 @@
         }
       }
 
-      &.pmp-list-item-indent-4 {
+      &.edim-list-item-indent-4 {
         counter-reset: list-5 list-6 list-7;
         counter-increment: list-4;
 
@@ -112,7 +112,7 @@
         }
       }
 
-      &.pmp-list-item-indent-5 {
+      &.edim-list-item-indent-5 {
         counter-reset: list-6 list-7;
         counter-increment: list-5;
 
