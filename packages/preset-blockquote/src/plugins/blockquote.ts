@@ -2,7 +2,7 @@ import { NodeType } from 'prosemirror-model';
 import { Plugin as EDIMlugin } from 'prosemirror-state';
 import { createEdimBlockquoteInputRulePlugins } from './input-rules';
 import { createEdimBlockquoteKeymapPlugins } from './keymaps';
-import { createEdimMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
+import { createEdimMergeAdjacentNodePlugins } from '@edim-editor/core';
 
 export interface CreateBlockQuotePluginConfigs {
   nodeType: NodeType;

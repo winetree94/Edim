@@ -1,8 +1,8 @@
 import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { EdimParagraph, EdimSelect, classes, html } from 'prosemirror-preset-ui';
+import { EdimParagraph, EdimSelect, classes, html } from '@edim-editor/ui';
 import { currentFontFamily } from '../../utils';
-import { EdimFontFamilyMarkType } from 'prosemirror-preset-font-family';
+import { EdimFontFamilyMarkType } from '@edim-editor/font-family';
 
 export const EdimMenubarFontFamilySelect = () => {
   const context = useContext(EdimMenubarContext);

@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-flat-list",
+  "name": "@edim-editor/flat-list",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -19,7 +19,7 @@
     "prosemirror-state": "*",
     "prosemirror-transform": "*",
     "prosemirror-inputrules": "*",
-    "prosemirror-preset-core": "*",
+    "@edim-editor/core": "*",
     "prosemirror-commands": "*",
     "prosemirror-utils": "*",
     "orderedmap": "*"

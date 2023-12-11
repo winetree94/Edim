@@ -5,9 +5,9 @@
     "outDir": "./dist",
     "declaration": true,
     "paths": {
-      "prosemirror-preset-core": ["../../preset-core/src/index.ts"],
-      "prosemirror-preset-ui": ["../../preset-ui/src/index.ts"],
-      "prosemirror-preset-flat-list": ["../../preset-flat-list/src/index.ts"]
+      "@edim-editor/core": ["../../preset-core/src/index.ts"],
+      "@edim-editor/ui": ["../../preset-ui/src/index.ts"],
+      "@edim-editor/flat-list": ["../../preset-flat-list/src/index.ts"]
     }
   },
   "include": [

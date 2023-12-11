@@ -1,5 +1,5 @@
 import { EditorState } from 'prosemirror-state';
-import { HeadingAttributes } from 'prosemirror-preset-heading';
+import { HeadingAttributes } from '@edim-editor/heading';
 
 export const getTextType = (state: EditorState) => {
   const { selection } = state;

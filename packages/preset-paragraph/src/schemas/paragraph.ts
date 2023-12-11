@@ -1,5 +1,5 @@
 import { NodeSpec } from 'prosemirror-model';
-import { parseQuillTextAlign } from 'prosemirror-preset-core';
+import { parseQuillTextAlign } from '@edim-editor/core';
 
 export interface ParagraphAttributes {
   align: 'left' | 'right' | 'center' | null;

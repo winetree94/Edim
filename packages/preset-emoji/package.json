@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-emoji",
+  "name": "@edim-editor/emoji",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -16,7 +16,7 @@
   "private": true,
   "dependencies": {
     "prosemirror-model": "*",
-    "prosemirror-preset-core": "*",
+    "@edim-editor/core": "*",
     "prosemirror-keymap": "*",
     "prosemirror-inputrules": "*"
   },

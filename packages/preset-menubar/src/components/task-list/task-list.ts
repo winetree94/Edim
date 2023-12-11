@@ -1,7 +1,7 @@
 import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { EdimButton, html } from 'prosemirror-preset-ui';
-import { toggleList } from 'prosemirror-preset-flat-list';
+import { EdimButton, html } from '@edim-editor/ui';
+import { toggleList } from '@edim-editor/flat-list';
 import { findParentNode } from 'prosemirror-utils';
 
 export const EdimMenubarTaskListToggleButtons = () => {

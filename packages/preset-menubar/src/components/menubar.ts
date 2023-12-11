@@ -8,8 +8,8 @@ import {
   EdimButton,
   classes,
   html,
-} from 'prosemirror-preset-ui';
-import { EdimEmojiPicker } from 'prosemirror-preset-ui';
+} from '@edim-editor/ui';
+import { EdimEmojiPicker } from '@edim-editor/ui';
 import { EdimMenubarContext } from './context';
 import { EdimMenubarTextTypeSelect } from './text-type';
 import { EdimMenubarFontFamilySelect } from './font-family';
@@ -20,7 +20,7 @@ import { EdimMenubarListToggleButtons } from './list';
 import { EdimMenubarIndentButtons } from './indent';
 import { EdimMenubarAddMoreSelect } from './add-more';
 import { setBlockType } from 'prosemirror-commands';
-import { insertTable } from 'prosemirror-preset-tables';
+import { insertTable } from '@edim-editor/tables';
 import { EdimMenubarTaskListToggleButtons } from './task-list';
 
 export interface EdimMenubarProps {

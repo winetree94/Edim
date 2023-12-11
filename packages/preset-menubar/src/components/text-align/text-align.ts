@@ -1,11 +1,11 @@
 import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { EdimSelect, classes, html } from 'prosemirror-preset-ui';
+import { EdimSelect, classes, html } from '@edim-editor/ui';
 import {
   TextAlignment,
   getRangeFirstAlignment,
   setAlignment,
-} from 'prosemirror-preset-paragraph';
+} from '@edim-editor/paragraph';
 
 export const EdimMenubarTextAlignSelect = () => {
   const context = useContext(EdimMenubarContext);

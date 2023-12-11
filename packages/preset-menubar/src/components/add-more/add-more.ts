@@ -1,10 +1,10 @@
 import { EdimMenubarContext } from '../context';
 import { useContext, useRef, useState } from 'preact/hooks';
-import { EdimInput, EdimLayer, EdimSelect, html } from 'prosemirror-preset-ui';
-import { getRangeFirstAlignment } from 'prosemirror-preset-paragraph';
-import { EdimLinkFormLayer, addLink } from 'prosemirror-preset-link';
+import { EdimInput, EdimLayer, EdimSelect, html } from '@edim-editor/ui';
+import { getRangeFirstAlignment } from '@edim-editor/paragraph';
+import { EdimLinkFormLayer, addLink } from '@edim-editor/link';
 import { Fragment } from 'preact';
-import { addMention } from 'prosemirror-preset-mention';
+import { addMention } from '@edim-editor/mention';
 import { TargetedEvent } from 'preact/compat';
 import {
   ImagePlaceholderAddAction,
@@ -14,7 +14,7 @@ import {
   imageFileToBase64Url,
   imagePlaceholderPluginKey,
   parseImageMeta,
-} from 'prosemirror-preset-image';
+} from '@edim-editor/image';
 import { findParentNode } from 'prosemirror-utils';
 
 const createFakeProgress = (

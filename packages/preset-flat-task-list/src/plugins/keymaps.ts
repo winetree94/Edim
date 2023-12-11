@@ -5,7 +5,7 @@ import {
   splitListItem,
   indentListItem,
   listItemBackspace,
-} from 'prosemirror-preset-flat-list';
+} from '@edim-editor/flat-list';
 
 export interface EdimFlatTaskListKeymapPluginConfigs {
   taskListNodeType: NodeType;

@@ -5,8 +5,8 @@ import {
   EDIM_PARAGRAPH_NODE,
   EDIM_TEXT_NODES,
   createEdimCorePlugins,
-} from 'prosemirror-preset-core';
-import { createEdimMenubarPlugins } from 'prosemirror-preset-menubar';
+} from '@edim-editor/core';
+import { createEdimMenubarPlugins } from '@edim-editor/menubar';
 
 export const minimalSchema = new Schema({
   nodes: {

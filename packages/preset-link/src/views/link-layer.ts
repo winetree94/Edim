@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { EdimButton, EdimInput, EdimLabel, html } from 'prosemirror-preset-ui';
+import { EdimButton, EdimInput, EdimLabel, html } from '@edim-editor/ui';
 import { forwardRef } from 'preact/compat';
 
 export interface EdimLinkFormProps {

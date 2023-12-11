@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-command",
+  "name": "@edim-editor/command",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -16,14 +16,14 @@
   "private": true,
   "dependencies": {
     "prosemirror-model": "*",
-    "prosemirror-preset-core": "*",
+    "@edim-editor/core": "*",
     "prosemirror-state": "*",
     "prosemirror-keymap": "*",
     "prosemirror-view": "*",
     "prosemirror-inputrules": "*",
-    "prosemirror-preset-ui": "*",
-    "prosemirror-preset-mention": "*",
-    "prosemirror-preset-tables": "*"
+    "@edim-editor/ui": "*",
+    "@edim-editor/mention": "*",
+    "@edim-editor/tables": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

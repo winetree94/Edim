@@ -1,5 +1,5 @@
-import { markActive } from 'prosemirror-preset-core';
-import { EdimFontFamilyAttrs } from 'prosemirror-preset-font-family';
+import { markActive } from '@edim-editor/core';
+import { EdimFontFamilyAttrs } from '@edim-editor/font-family';
 import { EditorState, TextSelection } from 'prosemirror-state';
 
 export const currentFontFamily = (state: EditorState) => {

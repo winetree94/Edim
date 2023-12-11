@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-link",
+  "name": "@edim-editor/link",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -17,8 +17,8 @@
   "dependencies": {
     "prosemirror-state": "*",
     "prosemirror-model": "*",
-    "prosemirror-preset-core": "*",
-    "prosemirror-preset-ui": "*"
+    "@edim-editor/core": "*",
+    "@edim-editor/ui": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

@@ -7,10 +7,10 @@ import {
   EdimShortCut,
   classes,
   html,
-} from 'prosemirror-preset-ui';
+} from '@edim-editor/ui';
 import { getTextType } from '../../utils';
-import { HeadingLevel } from 'prosemirror-preset-heading';
-import { mac, transformRangeToBlock } from 'prosemirror-preset-core';
+import { HeadingLevel } from '@edim-editor/heading';
+import { mac, transformRangeToBlock } from '@edim-editor/core';
 
 export const EdimMenubarTextTypeSelect = () => {
   const context = useContext(EdimMenubarContext);

@@ -1,5 +1,5 @@
 import { Command } from 'prosemirror-state';
-import { NodePair } from 'prosemirror-preset-core';
+import { NodePair } from '@edim-editor/core';
 
 export const toggleBlockquote = (): Command => {
   return (state, dispatch) => {

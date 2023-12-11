@@ -2,7 +2,7 @@
 import { render } from 'preact';
 import { EditorState, Plugin, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { html } from 'prosemirror-preset-ui';
+import { html } from '@edim-editor/ui';
 import { EdimMenubar } from '../components';
 
 export class EdimMenubarView implements PluginView {

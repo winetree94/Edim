@@ -1,6 +1,6 @@
 import { Fragment, NodeType } from 'prosemirror-model';
 import { Command } from 'prosemirror-state';
-import { getBlockContainerChildren, liftOut } from 'prosemirror-preset-core';
+import { getBlockContainerChildren, liftOut } from '@edim-editor/core';
 
 const allowedContentTypes = [
   'paragraph',

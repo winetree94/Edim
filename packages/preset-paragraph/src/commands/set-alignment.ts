@@ -1,5 +1,5 @@
 import { Command, Transaction } from 'prosemirror-state';
-import { NodePair } from 'prosemirror-preset-core';
+import { NodePair } from '@edim-editor/core';
 import { Attrs } from 'prosemirror-model';
 
 export type TextAlignment = 'left' | 'right' | 'center';

@@ -1,7 +1,7 @@
 import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
-import { EdimButton, html } from 'prosemirror-preset-ui';
-import { indentListItem } from 'prosemirror-preset-flat-list';
+import { EdimButton, html } from '@edim-editor/ui';
+import { indentListItem } from '@edim-editor/flat-list';
 
 export const EdimMenubarIndentButtons = () => {
   const context = useContext(EdimMenubarContext);

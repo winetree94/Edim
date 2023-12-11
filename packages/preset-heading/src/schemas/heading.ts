@@ -1,5 +1,5 @@
 import { NodeSpec } from 'prosemirror-model';
-import { parseQuillTextAlign } from 'prosemirror-preset-core';
+import { parseQuillTextAlign } from '@edim-editor/core';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 

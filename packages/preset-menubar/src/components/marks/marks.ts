@@ -7,9 +7,9 @@ import {
   EdimSeparator,
   EdimShortCut,
   html,
-} from 'prosemirror-preset-ui';
+} from '@edim-editor/ui';
 import { toggleMark } from 'prosemirror-commands';
-import { clearMarks, mac, markActive } from 'prosemirror-preset-core';
+import { clearMarks, mac, markActive } from '@edim-editor/core';
 import { Attributes, VNode } from 'preact';
 
 export interface EdimMenubarMarkButton {

@@ -3,7 +3,7 @@ import {
   isQuillTaskList,
   parseQuillIndent,
   parseQuillTextAlign,
-} from 'prosemirror-preset-core';
+} from '@edim-editor/core';
 
 export interface ListItemAttrs {
   indent: number;

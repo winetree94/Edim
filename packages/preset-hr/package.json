@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-hr",
+  "name": "@edim-editor/hr",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -16,7 +16,7 @@
   "dependencies": {
     "prosemirror-model": "*",
     "prosemirror-keymap": "*",
-    "prosemirror-preset-core": "*"
+    "@edim-editor/core": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

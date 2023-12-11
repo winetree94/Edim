@@ -3,7 +3,7 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import { findCellClosestToPos } from '../utils';
 import { EdimTableCellButtonWrapper } from '../components';
 import { render } from 'preact';
-import { html } from 'prosemirror-preset-ui';
+import { html } from '@edim-editor/ui';
 
 export const tableCellButtonPluginKey = new PluginKey('tableCellButtonPlugin');
 

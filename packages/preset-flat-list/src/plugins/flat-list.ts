@@ -1,6 +1,6 @@
 import { NodeType } from 'prosemirror-model';
 import { Plugin as EDIMlugin } from 'prosemirror-state';
-import { createEdimMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
+import { createEdimMergeAdjacentNodePlugins } from '@edim-editor/core';
 import { createEdimFlatListInputRulePlugins } from './input-rules';
 import { createEdimFlatListKeymapPlugins } from './keymaps';
 

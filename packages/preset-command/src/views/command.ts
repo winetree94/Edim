@@ -3,8 +3,8 @@ import { render } from 'preact';
 import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { CommandPluginState, CommandPluginView } from '../plugin';
-import { addMention } from 'prosemirror-preset-mention';
-import { insertTable } from 'prosemirror-preset-tables';
+import { addMention } from '@edim-editor/mention';
+import { insertTable } from '@edim-editor/tables';
 import {
   EdimLayer,
   EdimListItem,
@@ -12,7 +12,7 @@ import {
   EdimParagraph,
   classes,
   html,
-} from 'prosemirror-preset-ui';
+} from '@edim-editor/ui';
 import { forwardRef } from 'preact/compat';
 
 export interface EdimCommandItem {

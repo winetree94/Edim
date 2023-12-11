@@ -1,5 +1,5 @@
 import React from 'react';
-import { classes } from 'prosemirror-preset-ui';
+import { classes } from '@edim-editor/ui';
 import { DirectEditorProps, EditorView } from 'prosemirror-view';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 

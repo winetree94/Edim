@@ -1,5 +1,5 @@
 import { render } from 'preact';
-import { html, classes } from 'prosemirror-preset-ui';
+import { html, classes } from '@edim-editor/ui';
 import { forwardRef } from 'preact/compat';
 import { ImagePlaceholderViewProvider, ImagePlaceholderSpec } from '../placeholder';
 

@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-mention",
+  "name": "@edim-editor/mention",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -17,10 +17,10 @@
   "dependencies": {
     "prosemirror-state": "*",
     "prosemirror-model": "*",
-    "prosemirror-preset-core": "*",
+    "@edim-editor/core": "*",
     "prosemirror-keymap": "*",
     "prosemirror-inputrules": "*",
-    "prosemirror-preset-ui": "*"
+    "@edim-editor/ui": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

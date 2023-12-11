@@ -6,11 +6,11 @@ import {
   EdimSelect,
   classes,
   html,
-} from 'prosemirror-preset-ui';
+} from '@edim-editor/ui';
 import { toggleMark } from 'prosemirror-commands';
 import { EditorState, TextSelection } from 'prosemirror-state';
-import { markActive } from 'prosemirror-preset-core';
-import { EdimTextColorAttrs } from 'prosemirror-preset-text-color';
+import { markActive } from '@edim-editor/core';
+import { EdimTextColorAttrs } from '@edim-editor/text-color';
 
 const currentTextColor = (state: EditorState): string | null => {
   const selection = state.selection;

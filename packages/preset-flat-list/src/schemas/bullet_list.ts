@@ -1,5 +1,5 @@
 import { NodeSpec } from 'prosemirror-model';
-import { isQuillTaskList } from 'prosemirror-preset-core';
+import { isQuillTaskList } from '@edim-editor/core';
 
 export const EDIM_BULLET_FREE_LIST_NODES: Record<string, NodeSpec> = {
   bullet_list: {

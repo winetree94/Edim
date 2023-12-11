@@ -5,9 +5,9 @@
     "outDir": "./dist",
     "declaration": true,
     "paths": {
-      "prosemirror-preset-ui": ["../../preset-ui/src/index.ts"],
-      "prosemirror-preset-mention": ["../../preset-mention/src/index.ts"],
-      "prosemirror-preset-tables": ["../../preset-tables/src/index.ts"]
+      "@edim-editor/ui": ["../../preset-ui/src/index.ts"],
+      "@edim-editor/mention": ["../../preset-mention/src/index.ts"],
+      "@edim-editor/tables": ["../../preset-tables/src/index.ts"]
     }
   },
   "include": [

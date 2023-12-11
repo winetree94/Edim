@@ -1,5 +1,5 @@
 import { NodeSpec } from 'prosemirror-model';
-import { isQuillTaskList } from 'prosemirror-preset-core';
+import { isQuillTaskList } from '@edim-editor/core';
 
 export const EDIM_FLAT_TASK_LIST_NODES: Record<string, NodeSpec> = {
   task_list: {

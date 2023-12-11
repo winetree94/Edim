@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-italic",
+  "name": "@edim-editor/italic",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
   "private": true,
   "dependencies": {
     "prosemirror-model": "*",
-    "prosemirror-preset-core": "*"
+    "@edim-editor/core": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

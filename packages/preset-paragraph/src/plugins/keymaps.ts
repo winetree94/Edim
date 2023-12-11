@@ -3,7 +3,7 @@ import { keymap } from 'prosemirror-keymap';
 import { setBlockType } from 'prosemirror-commands';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import { ParagraphAttributes } from '../schemas';
-import { mac } from 'prosemirror-preset-core';
+import { mac } from '@edim-editor/core';
 
 export interface EdimParagraphKeymapPluginConfigs {
   nodeType: NodeType;

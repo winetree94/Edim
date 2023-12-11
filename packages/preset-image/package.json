@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-image",
+  "name": "@edim-editor/image",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -18,8 +18,8 @@
     "prosemirror-state": "*",
     "prosemirror-view": "*",
     "prosemirror-model": "*",
-    "prosemirror-preset-core": "*",
-    "prosemirror-preset-ui": "*"
+    "@edim-editor/core": "*",
+    "@edim-editor/ui": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

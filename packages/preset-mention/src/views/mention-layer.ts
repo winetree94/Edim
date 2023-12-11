@@ -5,7 +5,7 @@ import {
   EdimParagraph,
   classes,
   html,
-} from 'prosemirror-preset-ui';
+} from '@edim-editor/ui';
 import { MentionPluginView } from '../plugin';
 import { MentionPluginState } from '../state';
 import { EditorState, PluginKey } from 'prosemirror-state';

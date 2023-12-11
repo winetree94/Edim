@@ -1,5 +1,5 @@
 {
-  "name": "prosemirror-preset-flat-task-list",
+  "name": "@edim-editor/flat-task-list",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -19,9 +19,9 @@
     "prosemirror-state": "*",
     "prosemirror-transform": "*",
     "prosemirror-inputrules": "*",
-    "prosemirror-preset-core": "*",
-    "prosemirror-preset-ui": "*",
-    "prosemirror-preset-flat-list": "*",
+    "@edim-editor/core": "*",
+    "@edim-editor/ui": "*",
+    "@edim-editor/flat-list": "*",
     "prosemirror-commands": "*",
     "prosemirror-utils": "*"
   },

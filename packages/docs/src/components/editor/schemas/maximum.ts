@@ -6,91 +6,91 @@ import {
   EDIM_DOC_NODES,
   EDIM_TEXT_NODES,
   createEdimCorePlugins,
-} from 'prosemirror-preset-core';
+} from '@edim-editor/core';
 import {
   EDIM_HEADING_NODES,
   createEdimHeadingPlugins,
-} from 'prosemirror-preset-heading';
+} from '@edim-editor/heading';
 import {
   createEdimParagraphPlugins,
   EDIM_PARAGRAPH_NODES,
-} from 'prosemirror-preset-paragraph';
+} from '@edim-editor/paragraph';
 import {
   EDIM_BULLET_FREE_LIST_NODES,
   EDIM_FREE_LIST_ITEM_NODES,
   EDIM_ORDERED_FREE_LIST_NODES,
   createEdimFlatListPlugins,
-} from 'prosemirror-preset-flat-list';
+} from '@edim-editor/flat-list';
 import {
   EDIM_FLAT_TASK_LIST_NODES,
   EDIM_FLAT_TASK_LIST_ITEM_NODES,
   createEdimFlatTaskListPlugins,
-} from 'prosemirror-preset-flat-task-list';
+} from '@edim-editor/flat-task-list';
 import {
   EDIM_HORIZONTAL_RULE_NODES,
   createEdimHorizontalRulePlugins,
-} from 'prosemirror-preset-hr';
+} from '@edim-editor/hr';
 import {
   EDIM_IMAGE_NODES,
   creatEdimImagePlugins,
   EdimImagePlaceholderViewProvider,
-} from 'prosemirror-preset-image';
+} from '@edim-editor/image';
 // import {
 //   EDIM_MENTION_MARK,
 //   createEdimMentionPlugins,
 //   MentionItem,
 //   EdimMentionView,
-// } from 'prosemirror-preset-mention';
-import { EDIM_LINK_MARKS } from 'prosemirror-preset-link';
+// } from '@edim-editor/mention';
+import { EDIM_LINK_MARKS } from '@edim-editor/link';
 import {
   EDIM_BOLD_MARKS,
   createEdimBoldPlugins,
-} from 'prosemirror-preset-bold';
+} from '@edim-editor/bold';
 import {
   EDIM_CODE_MARKS,
   createEdimCodePlugins,
-} from 'prosemirror-preset-code';
-import { EDIM_FONT_FAMILY_MARKS } from 'prosemirror-preset-font-family';
+} from '@edim-editor/code';
+import { EDIM_FONT_FAMILY_MARKS } from '@edim-editor/font-family';
 import {
   EDIM_ITALIC_MARKS,
   createEdimItalicPlugins,
-} from 'prosemirror-preset-italic';
+} from '@edim-editor/italic';
 import {
   EDIM_STRIKETHROUGH_MARKS,
   createEdimStrikethroughPlugins,
-} from 'prosemirror-preset-strikethrough';
+} from '@edim-editor/strikethrough';
 import {
   EDIM_SUBSCRIPT_MARKS,
   createEdimSubscriptPlugins,
-} from 'prosemirror-preset-subscript';
+} from '@edim-editor/subscript';
 import {
   EDIM_SUPERSCRIPT_MARKS,
   createEdimSuperscriptPlugins,
-} from 'prosemirror-preset-superscript';
-import { EDIM_TEXT_COLOR_MARKS } from 'prosemirror-preset-text-color';
+} from '@edim-editor/superscript';
+import { EDIM_TEXT_COLOR_MARKS } from '@edim-editor/text-color';
 import {
   EDIM_UNDERLINE_MARKS,
   createEdimUnderlinePlugins,
-} from 'prosemirror-preset-underline';
+} from '@edim-editor/underline';
 import {
   EDIM_BLOCKQUOTE_NODES,
   createEdimBlockQuotePlugins,
-} from 'prosemirror-preset-blockquote';
+} from '@edim-editor/blockquote';
 import {
   EDIM_CODE_BLOCK_NODES,
   createCodeBlockPlugins,
-} from 'prosemirror-preset-codeblock';
+} from '@edim-editor/codeblock';
 import {
   EDIM_TABLE_NODES,
   createEdimTableEditingPlugins,
   createEdimTablePlugins,
-} from 'prosemirror-preset-tables';
-// import { EDIM_EMOJI_NODE } from 'prosemirror-preset-emoji';
+} from '@edim-editor/tables';
+// import { EDIM_EMOJI_NODE } from '@edim-editor/emoji';
 // import {
 //   createEdimCommandPlugins,
 //   EdimCommandView,
-// } from 'prosemirror-preset-command';
-import { createEdimMenubarPlugins } from 'prosemirror-preset-menubar';
+// } from '@edim-editor/command';
+import { createEdimMenubarPlugins } from '@edim-editor/menubar';
 
 // const items: MentionItem[] = Array.from({ length: 100 }).map(() => ({
 //   icon: faker.image.avatar(),

@@ -1,5 +1,5 @@
 import { NodeType } from 'prosemirror-model';
-import { createEdimMergeAdjacentNodePlugins } from 'prosemirror-preset-core';
+import { createEdimMergeAdjacentNodePlugins } from '@edim-editor/core';
 import { createCodeBlockInputRulePlugins } from './input-rules';
 import { createCodeBlockKeymapPlugins } from './keymap';
 
