@@ -2,21 +2,23 @@ import { forwardRef, HTMLAttributes } from 'preact/compat';
 import { classes } from '../../cdk/utils/core';
 import { html } from '../../cdk/render';
 
-export interface EdimOrderedListProps extends HTMLAttributes<HTMLOListElement> {}
+export interface EdimOrderedListProps
+  extends HTMLAttributes<HTMLOListElement> {}
 
-export const EdimOrderedList = forwardRef<HTMLOListElement, EdimOrderedListProps>(
-  ({ className, children, ...props }, ref) => {
-    return html`
-      <ol
-        class=${classes('edim-view-ordered-list', className)}
-        ...${props}
-        ref=${ref}
-      >
-        ${children}
-      </ol>
-    `;
-  },
-);
+export const EdimOrderedList = forwardRef<
+  HTMLOListElement,
+  EdimOrderedListProps
+>(({ className, children, ...props }, ref) => {
+  return html`
+    <ol
+      class=${classes('edim-view-ordered-list', className)}
+      ...${props}
+      ref=${ref}
+    >
+      ${children}
+    </ol>
+  `;
+});
 
 export interface EdimUnorderedListProps
   extends HTMLAttributes<HTMLUListElement> {}
