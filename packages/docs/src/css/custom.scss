@@ -1,27 +1,4 @@
-
-
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
- @import '@edim-editor/core/styles/core.scss';
- @import '@edim-editor/heading/styles/heading.scss';
- @import '@edim-editor/code/styles/code.scss';
- @import '@edim-editor/codeblock/styles/codeblock.scss';
- @import '@edim-editor/blockquote/styles/blockquote.scss';
- @import '@edim-editor/paragraph/styles/paragraph.scss';
- @import '@edim-editor/mention/styles/mention.scss';
- @import '@edim-editor/flat-list/styles/flat-list.scss';
- @import '@edim-editor/flat-task-list/styles/flat-task-list.scss';
- @import '@edim-editor/image/styles/image.scss';
- @import '@edim-editor/link/styles/link.scss';
- @import '@edim-editor/emoji/styles/emoji.scss';
- @import '@edim-editor/tables/styles/tables.scss';
- @import '@edim-editor/command/styles/command.scss';
- @import '@edim-editor/ui/styles/ui.scss';
- @import '@edim-editor/menubar/styles/menubar.scss';
-
+@import '@edim-editor/preset/styles/preset.scss';
 
 /* You can override the default Infima variables here. */
 :root {
@@ -59,4 +36,9 @@ body {
 
 .edim-root {
   width: 100%;
+}
+
+.stackblitz {
+  width: 100%;
+  height: 400px;
 }

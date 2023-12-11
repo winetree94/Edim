@@ -1,0 +1,62 @@
+---
+sidebar_position: 1 
+---
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
+# 빠른 시작
+
+**Edim**의 각 구성요소는 여러개의 패키지로 나뉘어 배포됩니다. 사용자는 필요한 구성요소만을 선택하여 자신만의 에디터를 구성할 수 있으며, 모든 구성 요소가 통합된 `@edim-editor/preset` 패키지만을 사용할 수도 있습니다.
+
+본문은 `@edim-editor/preset` 패키지를 사용하여 최소한의 코드로 에디터를 생성하는 방법을 설명합니다.
+
+## 의존성 설치
+
+ProseMirror 를 통해 에디터를 생성하려면 최소 3개의 패키지가 필요합니다. 아래의 명령어를 통해 필요한 패키지를 설치합니다.
+
+```bash npm2yarn
+npm install prosemirror-state \
+            prosemirror-model \
+            prosemirror-view \
+            @edim-editor/preset
+```
+
+```html
+<html>
+  <head>
+  </head>
+  <body>
+  </body>
+</html>
+```
+
+## 스타일 Import
+
+```scss title="/styles/global.scss"
+@import '@edim-editor/preset/styles/preset.scss';
+```
+
+```typescript title="/src/index.ts"
+import { EditorState } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { EDIM_PRESET_SCHEMA, edimPresetPlugins } from '@edim-editor/preset';
+
+const view = new EditorView(
+  // 에디터가 생성될 위치의 Div Element 를 지정해야 합니다.
+  document.querySelector('#editor'),
+  {
+    state: EditorState.create({
+      schema: EDIM_PRESET_SCHEMA,
+      plugins: edimPresetPlugins(),
+    }),
+  },
+);
+```
+
+<BrowserOnly>
+  {() => {
+    const { QuickStart } = require('@site/src/components/examples/getting-started/installation');
+    return <QuickStart />
+  }}
+</BrowserOnly>
+
+<iframe className='stackblitz' src="https://stackblitz.com/edit/typescript-tm1j7h?embed=1&file=index.ts"></iframe>

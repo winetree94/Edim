@@ -1,18 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { ProseMirror, ProseMirrorRef } from './prose-mirror';
 import { EditorState } from 'prosemirror-state';
-import {
-  maximumPlugins,
-  maximumSchema,
-} from '@site/src/components/editor/schemas/maximum';
+import { EDIM_PRESET_SCHEMA, edimPresetPlugins } from '@edim-editor/preset';
 
 export const Edim = () => {
   const editorRef = useRef<ProseMirrorRef>(null);
 
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.create({
-      schema: maximumSchema,
-      plugins: maximumPlugins,
+      schema: EDIM_PRESET_SCHEMA,
+      plugins: edimPresetPlugins(),
     }),
   );
 

@@ -55,6 +55,7 @@
     "@edim-editor/tables": "*",
     "@edim-editor/ui": "*",
     "@edim-editor/menubar": "*",
+    "@edim-editor/preset": "*",
     "prosemirror-schema-basic": "*",
     "prosemirror-state": "*",
     "prosemirror-transform": "*",

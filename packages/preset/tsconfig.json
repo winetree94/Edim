@@ -1,21 +1,10 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Docusaurus v2",
-  "docs": "https://v2.docusaurus.io/docs/typescript-support",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "lib": ["DOM"],
-    "moduleResolution": "node",
-    "noEmit": true,
-    "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic", "docusaurus-plugin-sass"],
-    "baseUrl": ".",
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "declaration": true,
     "paths": {
-      "@site/*": ["./*"],
       "@edim-editor/tables": ["../tables/src/index.ts"],
       "@edim-editor/emoji": ["../emoji/src/index.ts"],
       "@edim-editor/heading": ["../heading/src/index.ts"],
@@ -40,9 +29,13 @@
       "@edim-editor/text-color": ["../text-color/src/index.ts"],
       "@edim-editor/underline": ["../underline/src/index.ts"],
       "@edim-editor/ui": ["../ui/src/index.ts"],
-      "@edim-editor/menubar": ["../menubar/src/index.ts"],
-      "@edim-editor/preset": ["../preset/src/index.ts"]
-    },
-    "skipLibCheck": true
-  }
+      "@edim-editor/menubar": ["../menubar/src/index.ts"]
+    }
+  },
+  "include": [
+    "src/*"
+  ],
+  "files": [
+    "src/index.ts"
+  ]
 }
