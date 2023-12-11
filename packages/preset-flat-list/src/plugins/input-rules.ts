@@ -22,13 +22,13 @@ export const bulletListRule = (nodeType: NodeType) => {
   });
 };
 
-export interface createEdimFlatListInputRulePluginsConfig {
+export interface EdimFlatListInputRulePluginConfigs {
   orderListNodeType: NodeType;
   bulletListNodeType: NodeType;
 }
 
-export const createEdimFlatListInputRulePlugins = (
-  configs: createEdimFlatListInputRulePluginsConfig,
+export const edimFlatListInputRulePlugins = (
+  configs: EdimFlatListInputRulePluginConfigs,
 ): Plugin[] => [
   inputRules({
     rules: [

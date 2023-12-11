@@ -1,4 +1,4 @@
-import { Plugin as EDIMlugin, PluginKey } from 'prosemirror-state';
+import { Plugin as PMPlugin, PluginKey } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { findCellClosestToPos } from '../utils';
 import { EdimTableCellButtonWrapper } from '../components';
@@ -7,8 +7,8 @@ import { html } from '@edim-editor/ui';
 
 export const tableCellButtonPluginKey = new PluginKey('tableCellButtonPlugin');
 
-export const createEdimTableCellButtonPlugins = (): EDIMlugin[] => {
-  const plugin: EDIMlugin<DecorationSet> = new EDIMlugin<DecorationSet>({
+export const edimTableCellButtonPlugins = (): PMPlugin[] => {
+  const plugin: PMPlugin<DecorationSet> = new PMPlugin<DecorationSet>({
     key: tableCellButtonPluginKey,
     state: {
       init() {

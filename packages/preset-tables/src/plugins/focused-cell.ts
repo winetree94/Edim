@@ -1,4 +1,4 @@
-import { Plugin as EDIMlugin, PluginKey } from 'prosemirror-state';
+import { Plugin as PMPlugin, PluginKey } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { findCellClosestToPos } from '../utils';
 
@@ -6,8 +6,8 @@ export const focusedCellPluginKey = new PluginKey<DecorationSet>(
   'focusedCellPlugin',
 );
 
-export const createEdimFocusedCellDecorationPlugins = (): EDIMlugin[] => {
-  const plugin: EDIMlugin<DecorationSet> = new EDIMlugin<DecorationSet>({
+export const edimFocusedCellDecorationPlugins = (): PMPlugin[] => {
+  const plugin: PMPlugin<DecorationSet> = new PMPlugin<DecorationSet>({
     key: focusedCellPluginKey,
     state: {
       init() {

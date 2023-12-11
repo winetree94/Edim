@@ -1,12 +1,10 @@
 import { MarkType } from 'prosemirror-model';
-import { createEdimSubscriptKeymapPlugins } from './keymap';
+import { edimSubscriptKeymapPlugins } from './keymap';
 
-export interface CreateEdimSubscriptPluginConfigs {
+export interface EdimSubscriptPluginConfigs {
   markType: MarkType;
 }
 
-export const createEdimSubscriptPlugins = (
-  configs: CreateEdimSubscriptPluginConfigs,
-) => {
-  return [...createEdimSubscriptKeymapPlugins(configs)];
+export const edimSubscriptPlugins = (configs: EdimSubscriptPluginConfigs) => {
+  return [...edimSubscriptKeymapPlugins(configs)];
 };

@@ -12,12 +12,12 @@ export const EDIM_HORIZONTAL_RULE_NODES: Record<string, NodeSpec> = {
   },
 };
 
-export interface CreateEdimHorizontalRulePluginConfigs {
+export interface EdimHorizontalRulePluginConfigs {
   nodeType: NodeType;
 }
 
-export const createEdimHorizontalRulePlugins = (
-  configs: CreateEdimHorizontalRulePluginConfigs,
+export const edimHorizontalRulePlugins = (
+  configs: EdimHorizontalRulePluginConfigs,
 ) => {
   return [
     keymap({

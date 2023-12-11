@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
-import { Plugin as EDIMlugin } from 'prosemirror-state';
+import { Plugin as PMPlugin } from 'prosemirror-state';
 import { NodeType } from 'prosemirror-model';
 import {
   splitListItem,
@@ -12,9 +12,9 @@ export interface EdimFlatTaskListKeymapPluginConfigs {
   taskListItemNodeType: NodeType;
 }
 
-export const createEdimFlatTaskListKeymapPlugins = (
+export const edimFlatTaskListKeymapPlugins = (
   configs: EdimFlatTaskListKeymapPluginConfigs,
-): EDIMlugin[] => {
+): PMPlugin[] => {
   return [
     keymap({
       Enter: splitListItem(configs.taskListItemNodeType),

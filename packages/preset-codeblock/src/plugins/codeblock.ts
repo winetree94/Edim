@@ -1,19 +1,17 @@
 import { NodeType } from 'prosemirror-model';
-import { createEdimMergeAdjacentNodePlugins } from '@edim-editor/core';
-import { createCodeBlockInputRulePlugins } from './input-rules';
-import { createCodeBlockKeymapPlugins } from './keymap';
+import { edimMergeAdjacentNodePlugins } from '@edim-editor/core';
+import { edimCodeBlockInputRulePlugins } from './input-rules';
+import { edimCodeBlockKeymapPlugins } from './keymap';
 
-export interface CreateCodeBlockPluginConfigs {
+export interface EdimCodeBlockPluginConfigs {
   nodeType: NodeType;
 }
 
-export const createCodeBlockPlugins = (
-  configs: CreateCodeBlockPluginConfigs,
-) => {
+export const edimCodeBlockPlugins = (configs: EdimCodeBlockPluginConfigs) => {
   return [
-    ...createCodeBlockInputRulePlugins(configs),
-    ...createCodeBlockKeymapPlugins(configs),
-    ...createEdimMergeAdjacentNodePlugins({
+    ...edimCodeBlockInputRulePlugins(configs),
+    ...edimCodeBlockKeymapPlugins(configs),
+    ...edimMergeAdjacentNodePlugins({
       specs: [
         {
           nodeType: configs.nodeType,

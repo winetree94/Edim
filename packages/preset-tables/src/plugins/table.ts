@@ -1,24 +1,14 @@
-import { Plugin as EDIMlugin } from 'prosemirror-state';
+import { Plugin as PMPlugin } from 'prosemirror-state';
 
-export interface EdimTableEditingPluginConfigs {
+export interface EdimTablePluginConfigs {}
 
-}
+const DEFAULT_EDIM_TABLE_EDITING_PLUGIN_CONFIGS: EdimTablePluginConfigs = {};
 
-const DEFAULT_EDIM_TABLE_EDITING_PLUGIN_CONFIGS: EdimTableEditingPluginConfigs = {
-  
-};
-
-export const createEdimTablePlugins = (
-  configs?: EdimTableEditingPluginConfigs,
-) => {
+export const edimTablePlugins = (configs?: EdimTablePluginConfigs) => {
   const mergedConfigs = {
     ...DEFAULT_EDIM_TABLE_EDITING_PLUGIN_CONFIGS,
     ...configs,
   };
 
-  return [
-    new EDIMlugin({
-
-    }),
-  ];
-}
+  return [new PMPlugin({})];
+};

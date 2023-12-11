@@ -1,12 +1,12 @@
 import { MarkType } from 'prosemirror-model';
-import { createEdimSuperscriptKeymapPlugins } from './keymap';
+import { edimSuperscriptKeymapPlugins } from './keymap';
 
-export interface CreateEdimSuperscriptPluginConfigs {
+export interface EdimSuperscriptPluginConfigs {
   markType: MarkType;
 }
 
-export const createEdimSuperscriptPlugins = (
-  configs: CreateEdimSuperscriptPluginConfigs,
+export const edimSuperscriptPlugins = (
+  configs: EdimSuperscriptPluginConfigs,
 ) => {
-  return [...createEdimSuperscriptKeymapPlugins(configs)];
+  return [...edimSuperscriptKeymapPlugins(configs)];
 };

@@ -6,7 +6,7 @@ export interface EdimCodeBlockKeymapPluginConfigs {
   nodeType: NodeType;
 }
 
-export const createCodeBlockKeymapPlugins = (
+export const edimCodeBlockKeymapPlugins = (
   configs: EdimCodeBlockKeymapPluginConfigs,
 ) => {
   return [

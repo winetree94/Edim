@@ -68,16 +68,14 @@ export const EDIM_MENTION_MARK: Record<string, MarkSpec> = {
   } as MarkSpec,
 };
 
-export interface createEdimMentionPluginConfigs {
+export interface EdimMentionPluginConfigs {
   view?: (
     view: EditorView,
     plugin: PluginKey<MentionPluginState>,
   ) => MentionPluginView;
 }
 
-export const createEdimMentionPlugins = (
-  configs: createEdimMentionPluginConfigs,
-) => {
+export const edimMentionPlugins = (configs: EdimMentionPluginConfigs) => {
   const defaultPluginState: MentionPluginState = {
     active: false,
     keyword: '',

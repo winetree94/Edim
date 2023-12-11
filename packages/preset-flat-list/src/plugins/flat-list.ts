@@ -1,29 +1,29 @@
 import { NodeType } from 'prosemirror-model';
-import { Plugin as EDIMlugin } from 'prosemirror-state';
-import { createEdimMergeAdjacentNodePlugins } from '@edim-editor/core';
-import { createEdimFlatListInputRulePlugins } from './input-rules';
-import { createEdimFlatListKeymapPlugins } from './keymaps';
+import { Plugin as PMPlugin } from 'prosemirror-state';
+import { edimMergeAdjacentNodePlugins } from '@edim-editor/core';
+import { edimFlatListInputRulePlugins } from './input-rules';
+import { edimFlatListKeymapPlugins } from './keymaps';
 
-export interface EdimFlatListPluginsConfig {
+export interface EdimFlatListPluginConfigs {
   orderListNodeType: NodeType;
   bulletListNodeType: NodeType;
   listItemNodeType: NodeType;
 }
 
-export const createEdimFlatListPlugins = (
-  configs: EdimFlatListPluginsConfig,
-): EDIMlugin[] => {
+export const edimFlatListPlugins = (
+  configs: EdimFlatListPluginConfigs,
+): PMPlugin[] => {
   return [
-    ...createEdimFlatListInputRulePlugins({
+    ...edimFlatListInputRulePlugins({
       bulletListNodeType: configs.bulletListNodeType,
       orderListNodeType: configs.orderListNodeType,
     }),
-    ...createEdimFlatListKeymapPlugins({
+    ...edimFlatListKeymapPlugins({
       bulletListNodeType: configs.bulletListNodeType,
       orderListNodeType: configs.orderListNodeType,
       listItemNodeType: configs.listItemNodeType,
     }),
-    ...createEdimMergeAdjacentNodePlugins({
+    ...edimMergeAdjacentNodePlugins({
       specs: [
         {
           nodeType: configs.bulletListNodeType,

@@ -9,7 +9,7 @@ export interface EdimParagraphKeymapPluginConfigs {
   nodeType: NodeType;
 }
 
-export const createEdimParagraphKeymapPlugins = (
+export const edimParagraphKeymapPlugins = (
   configs: EdimParagraphKeymapPluginConfigs,
 ) => {
   const key = mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0';

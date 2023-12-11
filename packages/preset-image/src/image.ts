@@ -81,11 +81,11 @@ export interface ImageExtensionConfigs {
   placeholderViewProvider?: (view: EditorView) => ImagePlaceholderViewProvider;
 }
 
-export interface CreateEdimImagePluginConfigs {
+export interface EdimImagePluginConfigs {
   placeholderViewProvider?: (view: EditorView) => ImagePlaceholderViewProvider;
 }
 
-export const creatEdimImagePlugins = (configs: CreateEdimImagePluginConfigs) => {
+export const edimImagePlugins = (configs: EdimImagePluginConfigs) => {
   return [
     createImagePlaceholderPlugin({
       placeholderViewProvider: configs.placeholderViewProvider,

@@ -1,15 +1,15 @@
-import { Plugin as PmPlugin } from 'prosemirror-state';
-import { createEdimBasicKeymapPlugins } from './keymap';
-import { createEdimHistoryPlugins } from './history';
-import { createEdimVirtualCursorPlugins } from './virtual-cursor';
+import { Plugin as PMPlugin } from 'prosemirror-state';
+import { edimBasicKeymapPlugins } from './keymap';
+import { edimHistoryPlugins } from './history';
+import { edimVirtualCursorPlugins } from './virtual-cursor';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 
-export const createEdimCorePlugins = (): PmPlugin[] => {
+export const edimCorePlugins = (): PMPlugin[] => {
   return [
-    ...createEdimBasicKeymapPlugins({}),
-    ...createEdimHistoryPlugins({}),
-    ...createEdimVirtualCursorPlugins(),
+    ...edimBasicKeymapPlugins({}),
+    ...edimHistoryPlugins({}),
+    ...edimVirtualCursorPlugins(),
     dropCursor(),
     gapCursor(),
   ];

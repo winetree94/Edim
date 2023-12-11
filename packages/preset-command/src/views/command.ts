@@ -2,7 +2,7 @@
 import { render } from 'preact';
 import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { CommandPluginState, CommandPluginView } from '../plugin';
+import { EdimCommandPluginState, EdimCommandPluginView } from '../plugin';
 import { addMention } from '@edim-editor/mention';
 import { insertTable } from '@edim-editor/tables';
 import {
@@ -93,13 +93,13 @@ export const EdimCommand = forwardRef((props: EdimCommandProps) => {
   `;
 });
 
-export class EdimCommandView implements CommandPluginView {
+export class EdimCommandView implements EdimCommandPluginView {
   public wrapper: HTMLDivElement | undefined;
   public index = 0;
 
   public constructor(
     private readonly view: EditorView,
-    private readonly pluginKey: PluginKey<CommandPluginState>,
+    private readonly pluginKey: PluginKey<EdimCommandPluginState>,
   ) {}
 
   public update(view: EditorView) {
@@ -115,7 +115,7 @@ export class EdimCommandView implements CommandPluginView {
   public render(
     view: EditorView,
     editorState: EditorState,
-    pluginState: CommandPluginState,
+    pluginState: EdimCommandPluginState,
   ): void {
     const commands = EDIM_DEFAULT_COMMAND_LIST.filter((item) => {
       if (!pluginState.keyword) {

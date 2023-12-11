@@ -1,5 +1,5 @@
 import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';
-import { Plugin as EDIMlugin } from 'prosemirror-state';
+import { Plugin as PMPlugin } from 'prosemirror-state';
 import { NodeType } from 'prosemirror-model';
 
 /// Given a blockquote node type, returns an input rule that turns `"> "`
@@ -12,9 +12,9 @@ export interface EdimBlockquoteInputRulePluginConfigs {
   nodeType: NodeType;
 }
 
-export const createEdimBlockquoteInputRulePlugins = (
+export const edimBlockquoteInputRulePlugins = (
   configs: EdimBlockquoteInputRulePluginConfigs,
-): EDIMlugin[] => [
+): PMPlugin[] => [
   inputRules({
     rules: [blockQuoteRule(configs.nodeType)],
   }),

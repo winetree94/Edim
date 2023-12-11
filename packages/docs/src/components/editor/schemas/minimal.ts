@@ -4,9 +4,9 @@ import {
   EDIM_DOC_NODES,
   EDIM_PARAGRAPH_NODE,
   EDIM_TEXT_NODES,
-  createEdimCorePlugins,
+  edimCorePlugins,
 } from '@edim-editor/core';
-import { createEdimMenubarPlugins } from '@edim-editor/menubar';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
 
 export const minimalSchema = new Schema({
   nodes: {
@@ -18,6 +18,6 @@ export const minimalSchema = new Schema({
 });
 
 export const minimalPlugins: Plugin[] = [
-  ...createEdimCorePlugins(),
-  ...createEdimMenubarPlugins(),
+  ...edimCorePlugins(),
+  ...edimMenubarPlugins(),
 ];

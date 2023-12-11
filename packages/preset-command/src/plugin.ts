@@ -1,32 +1,34 @@
 import { Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 
-export interface CommandExtensionConfigs {
+export interface EdimCommandPluginConfigs {
   view?: (
     view: EditorView,
-    plugin: PluginKey<CommandPluginState>,
+    plugin: PluginKey<EdimCommandPluginState>,
   ) => PluginView;
 }
 
-export interface CommandPluginView extends PluginView {
+export interface EdimCommandPluginView extends PluginView {
   handleKeydown?(view: EditorView, event: KeyboardEvent): boolean | void;
 }
 
-export interface CommandPluginState {
+export interface EdimCommandPluginState {
   active: boolean;
   keyword: string;
 }
 
-const DefaultCommandPluginState: CommandPluginState = {
+const DefaultCommandPluginState: EdimCommandPluginState = {
   active: false,
   keyword: '',
 };
 
-export const createEdimCommandPlugins = (config: CommandExtensionConfigs) => {
-  const commandPluginKey = new PluginKey<CommandPluginState>('commandPlugin');
-  let pluginView: CommandPluginView | null = null;
+export const edimCommandPlugins = (config: EdimCommandPluginConfigs) => {
+  const commandPluginKey = new PluginKey<EdimCommandPluginState>(
+    'commandPlugin',
+  );
+  let pluginView: EdimCommandPluginView | null = null;
   return [
-    new Plugin<CommandPluginState>({
+    new Plugin<EdimCommandPluginState>({
       key: commandPluginKey,
       view: (editorView) => {
         pluginView = config.view?.(editorView, commandPluginKey) || {};

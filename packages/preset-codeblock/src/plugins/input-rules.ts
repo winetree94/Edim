@@ -9,7 +9,7 @@ export interface EdimCodeBlockInputRulePluginConfigs {
   nodeType: NodeType;
 }
 
-export const createCodeBlockInputRulePlugins = (
+export const edimCodeBlockInputRulePlugins = (
   configs: EdimCodeBlockInputRulePluginConfigs,
 ) => {
   return [

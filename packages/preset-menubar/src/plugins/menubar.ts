@@ -64,7 +64,7 @@ export class EdimMenubarView implements PluginView {
   }
 }
 
-export const createEdimMenubarPlugins = (): Plugin[] => {
+export const edimMenubarPlugins = (): Plugin[] => {
   return [
     new Plugin({
       view: (editorView) => {

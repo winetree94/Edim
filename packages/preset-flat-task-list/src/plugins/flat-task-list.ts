@@ -1,26 +1,26 @@
 import { NodeType } from 'prosemirror-model';
-import { Plugin as EDIMlugin } from 'prosemirror-state';
-import { createEdimMergeAdjacentNodePlugins } from '@edim-editor/core';
-import { createEdimTaskListInputRulePlugins } from './input-rules';
-import { createEdimFlatTaskListKeymapPlugins } from './keymaps';
+import { Plugin as PMPlugin } from 'prosemirror-state';
+import { edimMergeAdjacentNodePlugins } from '@edim-editor/core';
+import { edimTaskListInputRulePlugins } from './input-rules';
+import { edimFlatTaskListKeymapPlugins } from './keymaps';
 
-export interface EdimFlatTaskListPluginsConfig {
+export interface EdimFlatTaskListPluginConfigs {
   taskListNodeType: NodeType;
   taskListItemNodeType: NodeType;
 }
 
-export const createEdimFlatTaskListPlugins = (
-  configs: EdimFlatTaskListPluginsConfig,
-): EDIMlugin[] => {
+export const edimFlatTaskListPlugins = (
+  configs: EdimFlatTaskListPluginConfigs,
+): PMPlugin[] => {
   return [
-    ...createEdimTaskListInputRulePlugins({
+    ...edimTaskListInputRulePlugins({
       taskListNodeType: configs.taskListNodeType,
     }),
-    ...createEdimFlatTaskListKeymapPlugins({
+    ...edimFlatTaskListKeymapPlugins({
       taskListNodeType: configs.taskListNodeType,
       taskListItemNodeType: configs.taskListItemNodeType,
     }),
-    ...createEdimMergeAdjacentNodePlugins({
+    ...edimMergeAdjacentNodePlugins({
       specs: [
         {
           nodeType: configs.taskListNodeType,

@@ -1,5 +1,5 @@
 import { MarkType } from 'prosemirror-model';
-import { createEdimStrikethroughKeymapPlugins } from './keymap';
+import { edimStrikethroughKeymapPlugins } from './keymap';
 
 export interface CreateEdimStrikethroughPluginConfigs {
   markType: MarkType;
@@ -8,5 +8,5 @@ export interface CreateEdimStrikethroughPluginConfigs {
 export const createEdimStrikethroughPlugins = (
   configs: CreateEdimStrikethroughPluginConfigs,
 ) => {
-  return [...createEdimStrikethroughKeymapPlugins(configs)];
+  return [...edimStrikethroughKeymapPlugins(configs)];
 };

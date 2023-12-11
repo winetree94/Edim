@@ -5,34 +5,31 @@ import { faker } from '@faker-js/faker';
 import {
   EDIM_DOC_NODES,
   EDIM_TEXT_NODES,
-  createEdimCorePlugins,
+  edimCorePlugins,
 } from '@edim-editor/core';
+import { EDIM_HEADING_NODES, edimHeadingPlugins } from '@edim-editor/heading';
 import {
-  EDIM_HEADING_NODES,
-  createEdimHeadingPlugins,
-} from '@edim-editor/heading';
-import {
-  createEdimParagraphPlugins,
+  edimParagraphPlugins,
   EDIM_PARAGRAPH_NODES,
 } from '@edim-editor/paragraph';
 import {
   EDIM_BULLET_FREE_LIST_NODES,
   EDIM_FREE_LIST_ITEM_NODES,
   EDIM_ORDERED_FREE_LIST_NODES,
-  createEdimFlatListPlugins,
+  edimFlatListPlugins,
 } from '@edim-editor/flat-list';
 import {
   EDIM_FLAT_TASK_LIST_NODES,
   EDIM_FLAT_TASK_LIST_ITEM_NODES,
-  createEdimFlatTaskListPlugins,
+  edimFlatTaskListPlugins,
 } from '@edim-editor/flat-task-list';
 import {
   EDIM_HORIZONTAL_RULE_NODES,
-  createEdimHorizontalRulePlugins,
+  edimHorizontalRulePlugins,
 } from '@edim-editor/hr';
 import {
   EDIM_IMAGE_NODES,
-  creatEdimImagePlugins,
+  edimImagePlugins,
   EdimImagePlaceholderViewProvider,
 } from '@edim-editor/image';
 // import {
@@ -42,55 +39,46 @@ import {
 //   EdimMentionView,
 // } from '@edim-editor/mention';
 import { EDIM_LINK_MARKS } from '@edim-editor/link';
-import {
-  EDIM_BOLD_MARKS,
-  createEdimBoldPlugins,
-} from '@edim-editor/bold';
-import {
-  EDIM_CODE_MARKS,
-  createEdimCodePlugins,
-} from '@edim-editor/code';
+import { EDIM_BOLD_MARKS, edimBoldPlugins } from '@edim-editor/bold';
+import { EDIM_CODE_MARKS, edimCodePlugins } from '@edim-editor/code';
 import { EDIM_FONT_FAMILY_MARKS } from '@edim-editor/font-family';
-import {
-  EDIM_ITALIC_MARKS,
-  createEdimItalicPlugins,
-} from '@edim-editor/italic';
+import { EDIM_ITALIC_MARKS, edimItalicPlugins } from '@edim-editor/italic';
 import {
   EDIM_STRIKETHROUGH_MARKS,
   createEdimStrikethroughPlugins,
 } from '@edim-editor/strikethrough';
 import {
   EDIM_SUBSCRIPT_MARKS,
-  createEdimSubscriptPlugins,
+  edimSubscriptPlugins,
 } from '@edim-editor/subscript';
 import {
   EDIM_SUPERSCRIPT_MARKS,
-  createEdimSuperscriptPlugins,
+  edimSuperscriptPlugins,
 } from '@edim-editor/superscript';
 import { EDIM_TEXT_COLOR_MARKS } from '@edim-editor/text-color';
 import {
   EDIM_UNDERLINE_MARKS,
-  createEdimUnderlinePlugins,
+  edimUnderlinePlugins,
 } from '@edim-editor/underline';
 import {
   EDIM_BLOCKQUOTE_NODES,
-  createEdimBlockQuotePlugins,
+  edimBlockQuotePlugins,
 } from '@edim-editor/blockquote';
 import {
   EDIM_CODE_BLOCK_NODES,
-  createCodeBlockPlugins,
+  edimCodeBlockPlugins,
 } from '@edim-editor/codeblock';
 import {
   EDIM_TABLE_NODES,
-  createEdimTableEditingPlugins,
-  createEdimTablePlugins,
+  edimTableEditingPlugins,
+  edimTablePlugins,
 } from '@edim-editor/tables';
 // import { EDIM_EMOJI_NODE } from '@edim-editor/emoji';
 // import {
 //   createEdimCommandPlugins,
 //   EdimCommandView,
 // } from '@edim-editor/command';
-import { createEdimMenubarPlugins } from '@edim-editor/menubar';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
 
 // const items: MentionItem[] = Array.from({ length: 100 }).map(() => ({
 //   icon: faker.image.avatar(),
@@ -132,58 +120,58 @@ export const maximumSchema = new Schema({
 });
 
 export const maximumPlugins: Plugin[] = [
-  ...createEdimParagraphPlugins({
+  ...edimParagraphPlugins({
     nodeType: maximumSchema.nodes['paragraph'],
   }),
-  ...createEdimFlatListPlugins({
+  ...edimFlatListPlugins({
     orderListNodeType: maximumSchema.nodes['ordered_list'],
     bulletListNodeType: maximumSchema.nodes['bullet_list'],
     listItemNodeType: maximumSchema.nodes['list_item'],
   }),
-  ...createEdimFlatTaskListPlugins({
+  ...edimFlatTaskListPlugins({
     taskListNodeType: maximumSchema.nodes['task_list'],
     taskListItemNodeType: maximumSchema.nodes['task_list_item'],
   }),
-  ...createEdimBlockQuotePlugins({
+  ...edimBlockQuotePlugins({
     nodeType: maximumSchema.nodes['blockquote'],
     mergeAdjacentBlockquote: true,
   }),
-  ...createEdimHorizontalRulePlugins({
+  ...edimHorizontalRulePlugins({
     nodeType: maximumSchema.nodes['horizontal_rule'],
   }),
-  ...createEdimHeadingPlugins({
+  ...edimHeadingPlugins({
     nodeType: maximumSchema.nodes['heading'],
     level: 6,
   }),
-  ...createCodeBlockPlugins({
+  ...edimCodeBlockPlugins({
     nodeType: maximumSchema.nodes['code_block'],
   }),
-  ...creatEdimImagePlugins({
+  ...edimImagePlugins({
     placeholderViewProvider: () => new EdimImagePlaceholderViewProvider(),
   }),
-  ...createEdimItalicPlugins({
+  ...edimItalicPlugins({
     markType: maximumSchema.marks['em'],
   }),
-  ...createEdimBoldPlugins({
+  ...edimBoldPlugins({
     markType: maximumSchema.marks['strong'],
   }),
-  ...createEdimCodePlugins({
+  ...edimCodePlugins({
     markType: maximumSchema.marks['code'],
   }),
-  ...createEdimTablePlugins({}),
-  ...createEdimTableEditingPlugins(),
-  ...createEdimCorePlugins(),
-  ...createEdimUnderlinePlugins({
+  ...edimTablePlugins({}),
+  ...edimTableEditingPlugins(),
+  ...edimCorePlugins(),
+  ...edimUnderlinePlugins({
     markType: maximumSchema.marks['underline'],
   }),
   ...createEdimStrikethroughPlugins({
     markType: maximumSchema.marks['strikethrough'],
   }),
-  ...createEdimSubscriptPlugins({
+  ...edimSubscriptPlugins({
     markType: maximumSchema.marks['subscript'],
   }),
-  ...createEdimSuperscriptPlugins({
+  ...edimSuperscriptPlugins({
     markType: maximumSchema.marks['superscript'],
   }),
-  ...createEdimMenubarPlugins(),
+  ...edimMenubarPlugins(),
 ];
