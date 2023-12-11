@@ -144,7 +144,7 @@ export const EDIM_TABLE_NODES: Record<string, NodeSpec> = {
     parseDOM: [
       {
         tag: 'td',
-        getAttrs: (dom: HTMLElement) => getCellAttrs(dom, extraAttrs),
+        getAttrs: (dom) => getCellAttrs(dom, extraAttrs),
       },
     ],
     toDOM(node: Node) {
@@ -172,7 +172,7 @@ export const EDIM_TABLE_NODES: Record<string, NodeSpec> = {
     parseDOM: [
       {
         tag: 'th',
-        getAttrs: (dom: HTMLElement) => getCellAttrs(dom, extraAttrs),
+        getAttrs: (dom) => getCellAttrs(dom, extraAttrs),
       },
     ],
     toDOM(node: Node) {
