@@ -21,7 +21,7 @@ export default function Home(): JSX.Element {
               const {
                 Maximum,
               } = require('@site/src/components/examples/getting-started/maximum');
-              return <Maximum className={styles.MainEditor} />;
+              return <Maximum className="main-editor" />;
             }}
           </BrowserOnly>
         </div>
