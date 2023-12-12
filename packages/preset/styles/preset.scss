@@ -1,12 +1,26 @@
+// core
 @import '../../ui/styles/ui.scss';
-@import '../../menubar/styles/menubar.scss';
 @import '../../core/styles/core.scss';
-@import '../../heading/styles/heading.scss';
-@import '../../code/styles/code.scss';
-@import '../../codeblock/styles/codeblock.scss';
-@import '../../blockquote/styles/blockquote.scss';
+@import '../../menubar/styles/menubar.scss';
+
+// nodes
 @import '../../paragraph/styles/paragraph.scss';
+@import '../../heading/styles/heading.scss';
 @import '../../flat-list/styles/flat-list.scss';
 @import '../../flat-task-list/styles/flat-task-list.scss';
+@import '../../blockquote/styles/blockquote.scss';
+@import '../../hr/styles/hr.scss';
+@import '../../codeblock/styles/codeblock.scss';
+
+// marks
+@import '../../bold/styles/bold.scss';
+@import '../../italic/styles/italic.scss';
+@import '../../underline/styles/underline.scss';
+@import '../../strikethrough/styles/strikethrough.scss';
+@import '../../code/styles/code.scss';
+@import '../../subscript/styles/subscript.scss';
+@import '../../superscript/styles/superscript.scss';
+@import '../../font-family/styles/font-family.scss';
+@import '../../text-color/styles/text-color.scss';
 @import '../../link/styles/link.scss';
 @import '../../_wip_tables/styles/tables.scss';
