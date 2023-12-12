@@ -35,12 +35,15 @@ export const edimParagraphNodes = (): Record<string, NodeSpec> => ({
     ],
     toDOM(node) {
       const attrs = node.attrs as ParagraphAttributes;
+      const classes = ['edim-paragraph'];
+      classes.push(`edim-paragraph-indent-${attrs.indent || 0}`);
+      if (attrs.align) {
+        classes.push(`edim-align-${attrs.align}`);
+      }
       return [
         'p',
         {
-          class: `edim-paragraph edim-paragraph-indent-${attrs.indent || 0}${
-            attrs.align ? ` edim-align-${attrs.align}` : ''
-          }`,
+          class: classes.join(' '),
           'data-text-align': attrs.align || 'left',
           'data-indent': attrs.indent || 0,
         },

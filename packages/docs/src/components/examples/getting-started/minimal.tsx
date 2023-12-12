@@ -6,7 +6,10 @@ import { EditorState } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
 import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
-import { edimParagraphNodes } from '@edim-editor/paragraph';
+import {
+  edimParagraphNodes,
+  edimParagraphPlugins,
+} from '@edim-editor/paragraph';
 
 export const Minimal = (props: ProseMirrorProps) => {
   const [state] = useState(
@@ -17,7 +20,7 @@ export const Minimal = (props: ProseMirrorProps) => {
           ...edimParagraphNodes(),
         },
       }),
-      plugins: [...edimCorePlugins()],
+      plugins: [...edimCorePlugins(), ...edimParagraphPlugins()],
     }),
   );
 

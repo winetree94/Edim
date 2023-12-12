@@ -39,19 +39,19 @@ scss 를 선호하는 경우 `@edim-editor/preset/styles/preset.scss` 를 사용
 
 ## 에디터 인스턴스 생성
 
-`@edim-editor/preset` 은 에디터에서 사용할 서식인 `EDIM_PRESET_SCHEMA` 와 에디터의 UI/UX 를 담당하는 플러그인의 집합인 `edimPresetPlugins`를 제공합니다. 아래는 ProseMirror 의 API 를 통해 에디터 인스턴스를 생성하는 방법의 예시입니다.
+`@edim-editor/preset` 은 에디터에서 사용할 서식인 `edimPresetSchema` 와 에디터의 UI/UX 를 담당하는 플러그인의 집합인 `edimPresetPlugins`를 제공합니다. 아래는 ProseMirror 의 API 를 통해 에디터 인스턴스를 생성하는 방법의 예시입니다.
 
 ```typescript title="/src/index.ts"
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { EDIM_PRESET_SCHEMA, edimPresetPlugins } from '@edim-editor/preset';
+import { edimPresetSchema, edimPresetPlugins } from '@edim-editor/preset';
 
 const view = new EditorView(
   // 에디터가 생성될 위치의 Div Element 를 지정해야 합니다.
   document.querySelector('#editor'),
   {
     state: EditorState.create({
-      schema: EDIM_PRESET_SCHEMA,
+      schema: edimPresetSchema(),
       plugins: edimPresetPlugins(),
     }),
   },
@@ -73,7 +73,7 @@ const view = new EditorView(
 
 ## 프레임워크와 함께 사용
 
-**Edim**은 현재 프레임워크를 위한 별도의 추상화 계층을 제공하지 않습니다. 따라서 각 프레임워크에 맞는 ProseMirror 추상화 라이브러리를 함께 사용하는 것이 도움이 될 수 있습니다. 관련 프로젝트는 아래의 링크를 참조하세요. 
+현재 **Edim**은 프레임워크를 위한 별도의 추상화 계층을 제공하지 않습니다. 따라서 각 환경에 맞는 ProseMirror 추상화 라이브러리를 함께 사용하는 것이 도움이 될 수 있습니다. 관련 프로젝트는 아래의 링크를 참조하세요. 
 
 - [prosemirror-adapter](https://github.com/Saul-Mirone/prosemirror-adapter)
 - [use-prosemirror](https://github.com/ponymessenger/use-prosemirror)

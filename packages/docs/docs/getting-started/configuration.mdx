@@ -6,26 +6,35 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # 사용자화
 
-**Edim**은 에디터의 각 구성 요소를 개별로 설치하여 사용자가 원하는 에디터의 기능만 사용하거나, 자신만의 기능을 추가할 수 있습니다. Edim 의 각 패키지는 ProseMirror 에서 사용할 수 있는 서식(Node, Mark)과 플러그인(Plugin)으로 구성됩니다. 아래는  `@edim-editor/core` 패키지를 통해 최소한의 기능으로 에디터를 생성하는 코드 예시입니다.
+본문은 Edim의 통합 패키지인 `@edim-editor/preset` 을 사용하지 않고, 각각의 구성요소를 개별 설치하여 사용하는 방법을 안내합니다.
 
-```typescript
+Edim 은 에디터의 기본 서식과 동작을 위한 `@edim-editor/core` 패키지를 필수적으로 설치해야 합니다. 이후 요구사항에 따라 `@edim-editor/*` 패키지 중 원하는 기능을 추가합니다.
+
+각 하위 패키지는 ProseMirror 에서 사용할 수 있는 서식(Node, Mark)과 플러그인(Plugin) 그리고 명령(Command) 함수를 제공합니다. 필요에 따라서는 스타일시트를 포함합니다. 아래는 `@edim-editor/core`, `@edim-editor/paragraph` 두개의 패키지를 통해 최소한의 기능으로 에디터를 생성하는 코드 예시입니다.
+
+```scss title="src/global.scss"
+@import '@edim-editor/core/styles/core.css';
+@import '@edim-editor/paragraph/styles/paragraph.css';
+```
+
+```typescript title="src/index.ts"
 import { Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import {
-  EDIM_DOC_NODES,
+  edimBaseNodes,
   edimCorePlugins,
 } from '@edim-editor/core';
 import {
-  EDIM_PARAGRAPH_NODE,
+  edimParagraphNodes,
 } from '@edim-editor/paragraph';
 
 const view = new EditorView(document.querySelector('#editor'), {
   state: EditorState.create({
     schema: new Schema({
       nodes: {
-        ...EDIM_DOC_NODES,
-        ...EDIM_PARAGRAPH_NODE,
+        ...edimBaseNodes(),
+        ...edimParagraphNodes(),
       },
     }),
     plugins: [
@@ -35,9 +44,111 @@ const view = new EditorView(document.querySelector('#editor'), {
 });
 ```
 
+안내된 설치 지침을 완료한 경우, 렌더링된 에디터의 모습은 아래와 같습니다.
+
 <BrowserOnly>
   {() => {
     const { Minimal } = require('@site/src/components/examples/getting-started/minimal');
     return <Minimal />
   }}
 </BrowserOnly>
+
+Edim 의 모든 패키지를 사용하여 설정한 경우 아래의 모습이 됩니다. `@edim-editor/preset` 를 사용한 것과 동일합니다.
+
+```css title="src/global.scss"
+@import '@edim-editor/ui/styles/ui.scss';
+@import '@edim-editor/menubar/styles/menubar.scss';
+@import '@edim-editor/core/styles/core.scss';
+@import '@edim-editor/heading/styles/heading.scss';
+@import '@edim-editor/code/styles/code.scss';
+@import '@edim-editor/codeblock/styles/codeblock.scss';
+@import '@edim-editor/blockquote/styles/blockquote.scss';
+@import '@edim-editor/paragraph/styles/paragraph.scss';
+@import '@edim-editor/flat-list/styles/flat-list.scss';
+@import '@edim-editor/flat-task-list/styles/flat-task-list.scss';
+@import '@edim-editor/link/styles/link.scss';
+@import '@edim-editor/_wip_tables/styles/tables.scss';
+```
+
+```typescript title="src/index.ts"
+import { Schema } from 'prosemirror-model';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
+import { edimHeadingNodes, edimHeadingPlugins } from '@edim-editor/heading';
+import { edimParagraphNodes, edimParagraphPlugins } from '@edim-editor/paragraph';
+import { edimFlatBulletListNodes, edimFlatListItemNodes, edimFlatListPlugins, edimFlatOrderedListNodes } from '@edim-editor/flat-list';
+import { edimFlatTaskListNodes, edimFlatTaskListItemNodes, edimFlatTaskListPlugins } from '@edim-editor/flat-task-list';
+import { edimHorizontalRuleNodes, edimHorizontalRulePlugins } from '@edim-editor/hr';
+import { edimLinkMarks } from '@edim-editor/link';
+import { edimBoldMarks, edimBoldPlugins } from '@edim-editor/bold';
+import { edimCodeMarks, edimCodePlugins } from '@edim-editor/code';
+import { edimFontFamilyMarks } from '@edim-editor/font-family';
+import { edimItalicMarks, edimItalicPlugins } from '@edim-editor/italic';
+import { edimStrikeThroughMarks, edimStrikethroughPlugins } from '@edim-editor/strikethrough';
+import { edimSubscriptMarks, edimSubscriptPlugins } from '@edim-editor/subscript';
+import { edimSuperscriptMarks, edimSuperscriptPlugins } from '@edim-editor/superscript';
+import { edimTextColorMarks } from '@edim-editor/text-color';
+import { edimUnderlineMarks, edimUnderlinePlugins } from '@edim-editor/underline';
+import { edimBlockQuotePlugins, edimBlockquoteNodes } from '@edim-editor/blockquote';
+import { edimCodeBlockNodes, edimCodeBlockPlugins } from '@edim-editor/codeblock';
+import { edimTableEditingPlugins, edimTableNodes, edimTablePlugins } from '@edim-editor/tables';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
+
+export const allSchema = new Schema({
+  nodes: {
+    ...edimBaseNodes(),
+    ...edimParagraphNodes(),
+    ...edimFlatBulletListNodes(),
+    ...edimFlatOrderedListNodes(),
+    ...edimFlatListItemNodes(),
+    ...edimFlatTaskListNodes(),
+    ...edimFlatTaskListItemNodes(),
+    ...edimBlockquoteNodes(),
+    ...edimHorizontalRuleNodes(),
+    ...edimHeadingNodes(),
+    ...edimCodeBlockNodes(),
+    ...edimTableNodes(),
+  },
+  marks: {
+    ...edimBoldMarks(),
+    ...edimItalicMarks(),
+    ...edimUnderlineMarks(),
+    ...edimStrikeThroughMarks(),
+    ...edimCodeMarks(),
+    ...edimSubscriptMarks(),
+    ...edimSuperscriptMarks(),
+    ...edimFontFamilyMarks(),
+    ...edimTextColorMarks(),
+    ...edimLinkMarks(),
+  },
+});
+
+export const allPlugins = [
+  ...edimParagraphPlugins(),
+  ...edimFlatListPlugins(),
+  ...edimFlatTaskListPlugins(),
+  ...edimBlockQuotePlugins(),
+  ...edimHorizontalRulePlugins(),
+  ...edimHeadingPlugins(),
+  ...edimCodeBlockPlugins(),
+  ...edimItalicPlugins(),
+  ...edimBoldPlugins(),
+  ...edimCodePlugins(),
+  ...edimTablePlugins(),
+  ...edimTableEditingPlugins(),
+  ...edimCorePlugins(),
+  ...edimUnderlinePlugins(),
+  ...edimStrikethroughPlugins(),
+  ...edimSubscriptPlugins(),
+  ...edimSuperscriptPlugins(),
+  ...edimMenubarPlugins(),
+];
+
+const view = new EditorView(document.querySelector('#editor'), {
+  state: EditorState.create({
+    schema: allSchema,
+    plugins: allPlugins,
+  }),
+});
+```
+
+<iframe className='stackblitz' src="https://stackblitz.com/edit/typescript-tm1j7h?ctl=1&embed=1"></iframe>
