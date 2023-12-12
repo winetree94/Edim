@@ -2,29 +2,35 @@ import { setBlockType } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { Node, NodeType } from 'prosemirror-model';
 import { Plugin as PMPlugin, Command, Transaction } from 'prosemirror-state';
-import { HeadingAttributes } from '../schemas';
+import { EDIM_DEFAULT_HEADING_LEVEL, HeadingAttributes } from '../schemas';
+import { checkHeadingNodeType } from '../utils';
 
 export interface EdimHeadingKeymapPluginConfigs {
-  nodeType: NodeType;
-  level: number;
+  nodeType?: NodeType;
+  level?: number;
 }
 
 const indentAllowedParents = ['doc'];
 
 export const edimHeadingKeymapPlugins = (
-  configs: EdimHeadingKeymapPluginConfigs,
+  configs?: EdimHeadingKeymapPluginConfigs,
 ): PMPlugin[] => {
+  const level = configs?.level || EDIM_DEFAULT_HEADING_LEVEL;
   const headingKeymaps: Record<string, Command> = {};
-  for (let i = 1; i <= configs.level; i++) {
-    headingKeymaps['Alt-Mod-' + i] = setBlockType(configs.nodeType, {
-      level: i,
-    });
+  for (let i = 1; i <= level; i++) {
+    headingKeymaps['Alt-Mod-' + i] = (state, dispatch) => {
+      const nodeType = checkHeadingNodeType(configs?.nodeType)(state);
+      return setBlockType(nodeType, {
+        level: i,
+      })(state, dispatch);
+    };
   }
   return [
     keymap(headingKeymaps),
     new PMPlugin({
       props: {
         handleKeyDown: (view, event) => {
+          const nodeType = checkHeadingNodeType(configs?.nodeType)(view.state);
           const backspacePressed = event.key === 'Backspace';
           const metaPressed = event.metaKey;
           const selection = view.state.selection;
@@ -41,7 +47,7 @@ export const edimHeadingKeymapPlugins = (
           const resolvedPos = view.state.doc.resolve(selection.from);
           const node = resolvedPos.node();
 
-          if (node.type !== configs.nodeType || resolvedPos.nodeBefore) {
+          if (node.type !== nodeType || resolvedPos.nodeBefore) {
             return false;
           }
 
@@ -73,6 +79,7 @@ export const edimHeadingKeymapPlugins = (
     new PMPlugin({
       props: {
         handleKeyDown: (view, event) => {
+          const nodeType = checkHeadingNodeType(configs?.nodeType)(view.state);
           const tabPressed = event.key === 'Tab';
           const shiftPressed = event.shiftKey;
 
@@ -91,7 +98,7 @@ export const edimHeadingKeymapPlugins = (
             view.state.selection.to,
             (node, pos, parent) => {
               if (
-                node.type === configs.nodeType &&
+                node.type === nodeType &&
                 indentAllowedParents.includes(parent?.type.name || '')
               ) {
                 nodes.push({ node, pos, parent });
@@ -109,7 +116,7 @@ export const edimHeadingKeymapPlugins = (
               0,
               Math.min(attrs.indent + (shiftPressed ? -1 : 1), 6),
             );
-            return tr.setNodeMarkup(node.pos, configs.nodeType, {
+            return tr.setNodeMarkup(node.pos, nodeType, {
               ...attrs,
               indent: targetIndent,
             });

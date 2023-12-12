@@ -5,10 +5,14 @@ import { edimVirtualCursorPlugins } from './virtual-cursor';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 
-export const edimCorePlugins = (): PMPlugin[] => {
+export interface EdimCorePluginConfigs {}
+
+export const edimCorePlugins = (
+  configs?: EdimCorePluginConfigs,
+): PMPlugin[] => {
   return [
-    ...edimBasicKeymapPlugins({}),
-    ...edimHistoryPlugins({}),
+    ...edimBasicKeymapPlugins(),
+    ...edimHistoryPlugins(),
     ...edimVirtualCursorPlugins(),
     dropCursor(),
     gapCursor(),

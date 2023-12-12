@@ -1,3 +1,2 @@
-export * from './document';
+export * from './base';
 export * from './paragraph';
-export * from './text';

@@ -18,8 +18,10 @@ export default function Home(): JSX.Element {
         <div className={styles.Editor}>
           <BrowserOnly fallback={<div>loading</div>}>
             {() => {
-              const Edim = require('@site/src/components/editor/edim').Edim;
-              return <Edim></Edim>;
+              const {
+                Maximum,
+              } = require('@site/src/components/examples/getting-started/maximum');
+              return <Maximum className={styles.MainEditor} />;
             }}
           </BrowserOnly>
         </div>

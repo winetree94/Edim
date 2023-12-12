@@ -2,15 +2,19 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import { NodeType } from 'prosemirror-model';
 import { wrapIn } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
+import { checkBlockquoteNodeType } from '../utils';
 
 export interface EdimBlockquoteKeymapPluginConfigs {
-  nodeType: NodeType;
+  nodeType?: NodeType;
 }
 
 export const edimBlockquoteKeymapPlugins = (
-  configs: EdimBlockquoteKeymapPluginConfigs,
+  configs?: EdimBlockquoteKeymapPluginConfigs,
 ): PMPlugin[] => [
   keymap({
-    'Ctrl->': wrapIn(configs.nodeType),
+    'Ctrl->': (state, dispatch) => {
+      const nodeType = checkBlockquoteNodeType(configs?.nodeType)(state);
+      return wrapIn(nodeType)(state, dispatch);
+    },
   }),
 ];

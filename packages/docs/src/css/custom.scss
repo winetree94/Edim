@@ -36,6 +36,11 @@ body {
 
 .edim-root {
   width: 100%;
+  margin: var(--ifm-leading) 0;
+}
+
+.border {
+  border: 1px solid #ccc;
 }
 
 .stackblitz {

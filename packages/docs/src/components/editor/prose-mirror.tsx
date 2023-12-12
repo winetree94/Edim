@@ -39,7 +39,7 @@ export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
     return (
       <div
         ref={editorDomRef}
-        className={classes('edim-root')}
+        className={classes('edim-root', props.className)}
         style={props.style}
       ></div>
     );

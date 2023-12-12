@@ -5,7 +5,7 @@ import { Plugin } from 'prosemirror-state';
 export interface EdimHistoryPluginConfigs {}
 
 export const edimHistoryPlugins = (
-  configs: EdimHistoryPluginConfigs,
+  configs?: EdimHistoryPluginConfigs,
 ): Plugin[] => {
   return [
     history(),

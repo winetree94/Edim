@@ -12,7 +12,7 @@ const preDOM: DOMOutputSpec = [
   ],
 ];
 
-export const EDIM_CODE_BLOCK_NODES: Record<string, NodeSpec> = {
+export const edimCodeBlockNodes = (): Record<string, NodeSpec> => ({
   code_block: {
     content: 'text*',
     marks: '',
@@ -24,4 +24,4 @@ export const EDIM_CODE_BLOCK_NODES: Record<string, NodeSpec> = {
       return preDOM;
     },
   },
-};
+});

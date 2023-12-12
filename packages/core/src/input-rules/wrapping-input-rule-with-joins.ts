@@ -1,12 +1,14 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { Attrs, Node, NodeType } from 'prosemirror-model';
 import { canJoin, findWrapping } from 'prosemirror-transform';
+import { NodeTypeOrGetter } from 'types';
+import { parseNodeType } from '../utils';
 
 // TODO 정리 및 분리
 // 현재 join 목적보다는 attr 변경 목적으로 사용 중
 export const wrappingInputRuleWithJoin = (
   regexp: RegExp,
-  nodeType: NodeType,
+  maybeNodeType: NodeTypeOrGetter,
   getNodeAttrs:
     | Attrs
     | null
@@ -28,6 +30,7 @@ export const wrappingInputRuleWithJoin = (
   afterJoinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
 ) => {
   return new InputRule(regexp, (state, match, start, end) => {
+    const nodeType = parseNodeType(maybeNodeType, state);
     const nodeAttrs =
       getNodeAttrs instanceof Function ? getNodeAttrs(match) : getNodeAttrs;
     const wrapperAttrs =

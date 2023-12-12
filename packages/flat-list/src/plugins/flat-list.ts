@@ -3,33 +3,34 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import { edimMergeAdjacentNodePlugins } from '@edim-editor/core';
 import { edimFlatListInputRulePlugins } from './input-rules';
 import { edimFlatListKeymapPlugins } from './keymaps';
+import { checkBulletListNodeType, checkOrderedListNodeType } from '../utils';
 
 export interface EdimFlatListPluginConfigs {
-  orderListNodeType: NodeType;
-  bulletListNodeType: NodeType;
-  listItemNodeType: NodeType;
+  orderListNodeType?: NodeType;
+  bulletListNodeType?: NodeType;
+  listItemNodeType?: NodeType;
 }
 
 export const edimFlatListPlugins = (
-  configs: EdimFlatListPluginConfigs,
+  configs?: EdimFlatListPluginConfigs,
 ): PMPlugin[] => {
   return [
     ...edimFlatListInputRulePlugins({
-      bulletListNodeType: configs.bulletListNodeType,
-      orderListNodeType: configs.orderListNodeType,
+      bulletListNodeType: configs?.bulletListNodeType,
+      orderListNodeType: configs?.orderListNodeType,
     }),
     ...edimFlatListKeymapPlugins({
-      bulletListNodeType: configs.bulletListNodeType,
-      orderListNodeType: configs.orderListNodeType,
-      listItemNodeType: configs.listItemNodeType,
+      bulletListNodeType: configs?.bulletListNodeType,
+      orderListNodeType: configs?.orderListNodeType,
+      listItemNodeType: configs?.listItemNodeType,
     }),
     ...edimMergeAdjacentNodePlugins({
       specs: [
         {
-          nodeType: configs.bulletListNodeType,
+          nodeType: checkBulletListNodeType(configs?.bulletListNodeType),
         },
         {
-          nodeType: configs.orderListNodeType,
+          nodeType: checkOrderedListNodeType(configs?.orderListNodeType),
         },
       ],
     }),

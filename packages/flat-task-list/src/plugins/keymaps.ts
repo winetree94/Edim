@@ -6,32 +6,37 @@ import {
   indentListItem,
   listItemBackspace,
 } from '@edim-editor/flat-list';
+import { checkTaskListNodeType } from '../utils';
 
 export interface EdimFlatTaskListKeymapPluginConfigs {
-  taskListNodeType: NodeType;
-  taskListItemNodeType: NodeType;
+  taskListNodeType?: NodeType;
+  taskListItemNodeType?: NodeType;
 }
 
 export const edimFlatTaskListKeymapPlugins = (
-  configs: EdimFlatTaskListKeymapPluginConfigs,
+  configs?: EdimFlatTaskListKeymapPluginConfigs,
 ): PMPlugin[] => {
   return [
     keymap({
-      Enter: splitListItem(configs.taskListItemNodeType),
-      'Shift-Enter': splitListItem(configs.taskListItemNodeType),
+      Enter: splitListItem(
+        checkTaskListNodeType(configs?.taskListItemNodeType),
+      ),
+      'Shift-Enter': splitListItem(
+        checkTaskListNodeType(configs?.taskListItemNodeType),
+      ),
       Tab: indentListItem({
-        listNodeTypes: [configs.taskListNodeType],
-        listItemNodeType: configs.taskListItemNodeType,
+        listNodeTypes: [checkTaskListNodeType(configs?.taskListNodeType)],
+        listItemNodeType: checkTaskListNodeType(configs?.taskListItemNodeType),
         reduce: 1,
       }),
       'Shift-Tab': indentListItem({
-        listNodeTypes: [configs.taskListNodeType],
-        listItemNodeType: configs.taskListItemNodeType,
+        listNodeTypes: [checkTaskListNodeType(configs?.taskListNodeType)],
+        listItemNodeType: checkTaskListNodeType(configs?.taskListItemNodeType),
         reduce: -1,
       }),
       Backspace: listItemBackspace({
-        listNodeTypes: [configs.taskListNodeType],
-        listItemNodeType: configs.taskListItemNodeType,
+        listNodeTypes: [checkTaskListNodeType(configs?.taskListNodeType)],
+        listItemNodeType: checkTaskListNodeType(configs?.taskListItemNodeType),
       }),
     }),
   ];

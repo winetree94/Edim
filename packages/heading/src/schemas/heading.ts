@@ -1,6 +1,9 @@
 import { NodeSpec } from 'prosemirror-model';
 import { parseQuillTextAlign } from '@edim-editor/core';
 
+export const EDIM_HEADING_NODE_NAME = 'heading';
+export const EDIM_DEFAULT_HEADING_LEVEL = 6;
+
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface HeadingAttributes {
@@ -9,8 +12,8 @@ export interface HeadingAttributes {
   align: 'left' | 'right' | 'center' | null;
 }
 
-export const EDIM_HEADING_NODES: Record<string, NodeSpec> = {
-  heading: {
+export const edimHeadingNodes = (): Record<string, NodeSpec> => ({
+  [EDIM_HEADING_NODE_NAME]: {
     attrs: {
       level: { default: 1 },
       indent: { default: 0 },
@@ -47,4 +50,4 @@ export const EDIM_HEADING_NODES: Record<string, NodeSpec> = {
       ];
     },
   },
-};
+});

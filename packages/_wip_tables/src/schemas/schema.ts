@@ -95,7 +95,7 @@ for (const prop in extraAttrs) {
   cellAttrs[prop] = { default: extraAttrs[prop].default };
 }
 
-export const EDIM_TABLE_NODES: Record<string, NodeSpec> = {
+export const edimTableNodes = (): Record<string, NodeSpec> => ({
   table: {
     content: 'table_row+',
     tableRole: 'table',
@@ -179,4 +179,4 @@ export const EDIM_TABLE_NODES: Record<string, NodeSpec> = {
       return ['th', setCellAttrs(node, extraAttrs), 0];
     },
   },
-};
+});

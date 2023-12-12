@@ -5,14 +5,16 @@ import {
   parseQuillTextAlign,
 } from '@edim-editor/core';
 
-export interface ListItemAttrs {
+export const EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME = 'task_list_item';
+
+export interface EdimFlatTaskListItemAttrs {
   indent: number;
   align: 'left' | 'right' | 'center' | null;
   checked: boolean;
 }
 
-export const EDIM_FLAT_TASK_LIST_ITEM_NODES: Record<string, NodeSpec> = {
-  task_list_item: {
+export const edimFlatTaskListItemNodes = (): Record<string, NodeSpec> => ({
+  [EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME]: {
     content: 'paragraph',
     group: 'disable-paragraph-attributes',
     selectable: false,
@@ -55,7 +57,7 @@ export const EDIM_FLAT_TASK_LIST_ITEM_NODES: Record<string, NodeSpec> = {
       },
     ],
     toDOM(node) {
-      const attrs = node.attrs as ListItemAttrs;
+      const attrs = node.attrs as EdimFlatTaskListItemAttrs;
       const classes = ['edim-task-list-item'];
       if (attrs.align && attrs.align !== 'left') {
         classes.push(`edim-align-${attrs.align}`);
@@ -77,4 +79,4 @@ export const EDIM_FLAT_TASK_LIST_ITEM_NODES: Record<string, NodeSpec> = {
     },
     defining: true,
   },
-};
+});

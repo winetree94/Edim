@@ -1,8 +1,11 @@
 import { NodeSpec } from 'prosemirror-model';
 
-export const EDIM_DOC_NODES: Record<string, NodeSpec> = {
+export const edimBaseNodes = (): Record<string, NodeSpec> => ({
   doc: {
     group: 'block-container',
     content: 'block+',
   },
-};
+  text: {
+    group: 'inline',
+  },
+});

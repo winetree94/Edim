@@ -6,7 +6,7 @@ export interface ParagraphAttributes {
   indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-export const EDIM_PARAGRAPH_NODES: Record<string, NodeSpec> = {
+export const edimParagraphNodes = (): Record<string, NodeSpec> => ({
   paragraph: {
     content: 'inline*',
     attrs: {
@@ -48,4 +48,4 @@ export const EDIM_PARAGRAPH_NODES: Record<string, NodeSpec> = {
       ];
     },
   },
-};
+});

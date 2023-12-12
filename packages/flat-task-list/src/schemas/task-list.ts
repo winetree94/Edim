@@ -1,8 +1,10 @@
 import { NodeSpec } from 'prosemirror-model';
 import { isQuillTaskList } from '@edim-editor/core';
 
-export const EDIM_FLAT_TASK_LIST_NODES: Record<string, NodeSpec> = {
-  task_list: {
+export const EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME = 'task_list';
+
+export const edimFlatTaskListNodes = (): Record<string, NodeSpec> => ({
+  [EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME]: {
     parseDOM: [
       {
         tag: 'ul',
@@ -30,4 +32,4 @@ export const EDIM_FLAT_TASK_LIST_NODES: Record<string, NodeSpec> = {
       ];
     },
   },
-};
+});

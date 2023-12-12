@@ -5,13 +5,15 @@ import {
   parseQuillTextAlign,
 } from '@edim-editor/core';
 
+export const EDIM_DEFAULT_FLAT_LIST_ITEM_NODE_NAME = 'list_item';
+
 export interface ListItemAttrs {
   indent: number;
   align: 'left' | 'right' | 'center' | null;
 }
 
-export const EDIM_FREE_LIST_ITEM_NODES: Record<string, NodeSpec> = {
-  list_item: {
+export const edimFlatListItemNodes = (): Record<string, NodeSpec> => ({
+  [EDIM_DEFAULT_FLAT_LIST_ITEM_NODE_NAME]: {
     content: 'paragraph',
     group: 'disable-paragraph-attributes',
     selectable: false,
@@ -60,4 +62,4 @@ export const EDIM_FREE_LIST_ITEM_NODES: Record<string, NodeSpec> = {
     },
     defining: true,
   },
-};
+});

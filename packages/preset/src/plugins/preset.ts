@@ -14,60 +14,43 @@ import { edimSuperscriptPlugins } from '@edim-editor/superscript';
 import { edimUnderlinePlugins } from '@edim-editor/underline';
 import { edimBlockQuotePlugins } from '@edim-editor/blockquote';
 import { edimCodeBlockPlugins } from '@edim-editor/codeblock';
-import { edimTableEditingPlugins, edimTablePlugins } from '../../../_wip_tables/src';
+import { edimTableEditingPlugins, edimTablePlugins } from '@edim-editor/tables';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
-import { EDIM_PRESET_SCHEMA } from '../schemas';
+import { edimPresetSchema } from '../schemas';
 
 export const edimPresetPlugins = (): Plugin[] => [
-  ...edimParagraphPlugins({
-    nodeType: EDIM_PRESET_SCHEMA.nodes['paragraph'],
-  }),
-  ...edimFlatListPlugins({
-    orderListNodeType: EDIM_PRESET_SCHEMA.nodes['ordered_list'],
-    bulletListNodeType: EDIM_PRESET_SCHEMA.nodes['bullet_list'],
-    listItemNodeType: EDIM_PRESET_SCHEMA.nodes['list_item'],
-  }),
-  ...edimFlatTaskListPlugins({
-    taskListNodeType: EDIM_PRESET_SCHEMA.nodes['task_list'],
-    taskListItemNodeType: EDIM_PRESET_SCHEMA.nodes['task_list_item'],
-  }),
-  ...edimBlockQuotePlugins({
-    nodeType: EDIM_PRESET_SCHEMA.nodes['blockquote'],
-    mergeAdjacentBlockquote: true,
-  }),
-  ...edimHorizontalRulePlugins({
-    nodeType: EDIM_PRESET_SCHEMA.nodes['horizontal_rule'],
-  }),
-  ...edimHeadingPlugins({
-    nodeType: EDIM_PRESET_SCHEMA.nodes['heading'],
-    level: 6,
-  }),
+  ...edimParagraphPlugins(),
+  ...edimFlatListPlugins(),
+  ...edimFlatTaskListPlugins(),
+  ...edimBlockQuotePlugins(),
+  ...edimHorizontalRulePlugins(),
+  ...edimHeadingPlugins(),
   ...edimCodeBlockPlugins({
-    nodeType: EDIM_PRESET_SCHEMA.nodes['code_block'],
+    nodeType: edimPresetSchema.nodes['code_block'],
   }),
   ...edimItalicPlugins({
-    markType: EDIM_PRESET_SCHEMA.marks['em'],
+    markType: edimPresetSchema.marks['em'],
   }),
   ...edimBoldPlugins({
-    markType: EDIM_PRESET_SCHEMA.marks['strong'],
+    markType: edimPresetSchema.marks['strong'],
   }),
   ...edimCodePlugins({
-    markType: EDIM_PRESET_SCHEMA.marks['code'],
+    markType: edimPresetSchema.marks['code'],
   }),
-  ...edimTablePlugins({}),
+  ...edimTablePlugins(),
   ...edimTableEditingPlugins(),
   ...edimCorePlugins(),
   ...edimUnderlinePlugins({
-    markType: EDIM_PRESET_SCHEMA.marks['underline'],
+    markType: edimPresetSchema.marks['underline'],
   }),
   ...createEdimStrikethroughPlugins({
-    markType: EDIM_PRESET_SCHEMA.marks['strikethrough'],
+    markType: edimPresetSchema.marks['strikethrough'],
   }),
   ...edimSubscriptPlugins({
-    markType: EDIM_PRESET_SCHEMA.marks['subscript'],
+    markType: edimPresetSchema.marks['subscript'],
   }),
   ...edimSuperscriptPlugins({
-    markType: EDIM_PRESET_SCHEMA.marks['superscript'],
+    markType: edimPresetSchema.marks['superscript'],
   }),
   ...edimMenubarPlugins(),
 ];

@@ -1,8 +1,10 @@
 import { NodeSpec } from 'prosemirror-model';
 import { isQuillTaskList } from '@edim-editor/core';
 
-export const EDIM_BULLET_FREE_LIST_NODES: Record<string, NodeSpec> = {
-  bullet_list: {
+export const EDIM_DEFAULT_FLAT_BULLET_LIST_NODE_NAME = 'bullet_list';
+
+export const edimFlatBulletListNodes = (): Record<string, NodeSpec> => ({
+  [EDIM_DEFAULT_FLAT_BULLET_LIST_NODE_NAME]: {
     parseDOM: [
       {
         tag: 'ul',
@@ -27,4 +29,4 @@ export const EDIM_BULLET_FREE_LIST_NODES: Record<string, NodeSpec> = {
       ];
     },
   },
-};
+});

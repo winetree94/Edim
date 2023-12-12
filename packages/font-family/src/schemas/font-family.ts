@@ -17,7 +17,7 @@ export interface EdimFontFamilyMarkType extends MarkType {
   spec: EdimFontFamilyMarkSpec;
 }
 
-export const EDIM_FONT_FAMILY_MARKS: Record<string, EdimFontFamilyMarkSpec> = {
+export const edimFontFamilyMarks = (): Record<string, EdimFontFamilyMarkSpec> => ({
   font_family: {
     fonts: [
       {
@@ -65,4 +65,4 @@ export const EDIM_FONT_FAMILY_MARKS: Record<string, EdimFontFamilyMarkSpec> = {
       ];
     },
   },
-};
+});

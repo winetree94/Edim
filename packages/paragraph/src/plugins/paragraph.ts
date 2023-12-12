@@ -3,11 +3,11 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import { edimParagraphKeymapPlugins } from './keymaps';
 
 export interface EdimParagraphPluginConfigs {
-  nodeType: NodeType;
+  nodeType?: NodeType;
 }
 
 export const edimParagraphPlugins = (
-  configs: EdimParagraphPluginConfigs,
+  configs?: EdimParagraphPluginConfigs,
 ): PMPlugin[] => {
   return [...edimParagraphKeymapPlugins(configs)];
 };

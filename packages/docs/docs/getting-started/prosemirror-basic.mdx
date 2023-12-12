@@ -4,3 +4,21 @@ sidebar_position: 3
 import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # ProseMirror 기초
+
+Edim의 ProseMirror 를 기반으로 만들어진 에디터입니다. 본문은 Edim 을 사용하기 위해 필요한 기본적인 ProseMirror 사용법에 대해 설명합니다.
+
+## ProseMirror 란?
+
+**ProseMirror**는 WYSIWYG(what-you-see-is-what-you-get) 에디터를 만들기 위한 라이브러리입니다. ProseMirror 는 완성된 에디터를 제공하기보다 에디터를 만들기 위한 기본적인 빌딩 블록을 제공합니다. ProseMirror 는 에디터의 거의 모든 부분을 커스터마이징할 수 있도록 설계되어 있습니다.
+
+ProseMirror 에서 제공하는 기본적인 패키지와 그 역할은 다음과 같습니다.
+
+- prosemirror-model
+  - 에디터의 문서 모델을 정의하기 위한 도구입니다. 이 모델은 에디터의 내용을 표현하는데 사용됩니다.
+- prosemirror-state
+  - 에디터의 전체 상태를 설명하는 데이터 구조를 제공하며 선택(Selection)을 포함하며, 다음 상태로 이동하기 위한 트랜잭션 시스템을 제공합니다.
+- prosemirror-view
+  -  주어진 에디터 상태를 브라우저에서 편집 가능한 요소로 표시하는 사용자 인터페이스 컴포넌트를 구현하고 해당 요소와의 사용자 상호작용을 처리합니다.
+- prosemirror-transform
+  - 기록 및 재생할 수 있는 방식으로 문서를 수정하는 기능을 포함하며, 이는 상태 모듈의 트랜잭션의 기초이며, 되돌리기 기록 및 공동 편집을 가능하게 합니다.
+

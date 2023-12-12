@@ -3,26 +3,27 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import { edimBlockquoteInputRulePlugins } from './input-rules';
 import { edimBlockquoteKeymapPlugins } from './keymaps';
 import { edimMergeAdjacentNodePlugins } from '@edim-editor/core';
+import { checkBlockquoteNodeType } from '../utils';
 
 export interface EdimBlockQuotePluginConfigs {
-  nodeType: NodeType;
+  nodeType?: NodeType;
   mergeAdjacentBlockquote?: boolean;
 }
 
 export const edimBlockQuotePlugins = (
-  configs: EdimBlockQuotePluginConfigs,
+  configs?: EdimBlockQuotePluginConfigs,
 ): PMPlugin[] => {
   const plugins: PMPlugin[] = [
     ...edimBlockquoteInputRulePlugins(configs),
     ...edimBlockquoteKeymapPlugins(configs),
   ];
 
-  if (configs.mergeAdjacentBlockquote) {
+  if (configs?.mergeAdjacentBlockquote) {
     plugins.push(
       ...edimMergeAdjacentNodePlugins({
         specs: [
           {
-            nodeType: configs.nodeType,
+            nodeType: checkBlockquoteNodeType(configs?.nodeType),
           },
         ],
       }),

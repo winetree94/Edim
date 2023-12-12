@@ -1,5 +1,7 @@
 import { DOMOutputSpec, NodeSpec } from 'prosemirror-model';
 
+export const EDIM_DEFAULT_FLAT_ORDERED_LIST_NODE_NAME = 'ordered_list';
+
 const olDOM: DOMOutputSpec = [
   'ol',
   {
@@ -8,8 +10,8 @@ const olDOM: DOMOutputSpec = [
   0,
 ];
 
-export const EDIM_ORDERED_FREE_LIST_NODES: Record<string, NodeSpec> = {
-  ordered_list: {
+export const edimFlatOrderedListNodes = (): Record<string, NodeSpec> => ({
+  [EDIM_DEFAULT_FLAT_ORDERED_LIST_NODE_NAME]: {
     parseDOM: [
       {
         tag: 'ol',
@@ -24,4 +26,4 @@ export const EDIM_ORDERED_FREE_LIST_NODES: Record<string, NodeSpec> = {
       return olDOM;
     },
   },
-};
+});

@@ -6,16 +6,22 @@ import { ParagraphAttributes } from '../schemas';
 import { mac } from '@edim-editor/core';
 
 export interface EdimParagraphKeymapPluginConfigs {
-  nodeType: NodeType;
+  nodeType?: NodeType;
 }
 
 export const edimParagraphKeymapPlugins = (
-  configs: EdimParagraphKeymapPluginConfigs,
+  configs?: EdimParagraphKeymapPluginConfigs,
 ) => {
   const key = mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0';
   return [
     keymap({
-      [key]: setBlockType(configs.nodeType),
+      [key]: (state, dispatch) => {
+        const nodeType = configs?.nodeType || state.schema.nodes['paragraph'];
+        if (!nodeType) {
+          throw new Error('"paragraph" node type not found.');
+        }
+        return setBlockType(nodeType)(state, dispatch);
+      },
     }),
     new Plugin({
       key: new PluginKey('paragraphBackspacePlugin'),

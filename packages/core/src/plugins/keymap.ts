@@ -13,7 +13,7 @@ import { clearMarks } from '../commands';
 export interface EdimBasicKeymapPluginConfigs {}
 
 export const edimBasicKeymapPlugins = (
-  configs: EdimBasicKeymapPluginConfigs,
+  configs?: EdimBasicKeymapPluginConfigs,
 ): Plugin[] => {
   return [
     keymap({

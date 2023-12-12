@@ -1,4 +1,5 @@
-import { Attrs, Fragment, NodeType, Slice } from 'prosemirror-model';
+import { NodeTypeOrGetter, parseNodeType } from '@edim-editor/core';
+import { Attrs, Fragment, Slice } from 'prosemirror-model';
 import {
   Command,
   EditorState,
@@ -11,10 +12,11 @@ import { canSplit } from 'prosemirror-transform';
 /// Build a command that splits a non-empty textblock at the top level
 /// of a list item by also splitting that list item.
 export const splitListItem = (
-  itemType: NodeType,
+  maybeItemType: NodeTypeOrGetter,
   itemAttrs?: Attrs,
 ): Command => {
   return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
+    const itemType = parseNodeType(maybeItemType, state);
     const { $from, $to, node } = state.selection as NodeSelection;
     if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
       return false;
