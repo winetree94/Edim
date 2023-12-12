@@ -27,31 +27,32 @@ import { edimBlockquoteNodes } from '@edim-editor/blockquote';
 import { edimCodeBlockNodes } from '@edim-editor/codeblock';
 import { edimTableNodes } from '@edim-editor/tables';
 
-export const edimPresetSchema = new Schema({
-  nodes: {
-    ...edimBaseNodes(),
-    ...edimParagraphNodes(),
-    ...edimFlatBulletListNodes(),
-    ...edimFlatOrderedListNodes(),
-    ...edimFlatListItemNodes(),
-    ...edimFlatTaskListNodes(),
-    ...edimFlatTaskListItemNodes(),
-    ...edimBlockquoteNodes(),
-    ...edimHorizontalRuleNodes(),
-    ...edimHeadingNodes(),
-    ...edimCodeBlockNodes(),
-    ...edimTableNodes(),
-  },
-  marks: {
-    ...edimBoldMarks(),
-    ...edimItalicMarks(),
-    ...edimUnderlineMarks(),
-    ...edimStrikeThroughMarks(),
-    ...edimCodeMarks(),
-    ...edimSubscriptMarks(),
-    ...edimSuperscriptMarks(),
-    ...edimFontFamilyMarks(),
-    ...edimTextColorMarks(),
-    ...edimLinkMarks(),
-  },
-});
+export const edimPresetSchema = () =>
+  new Schema({
+    nodes: {
+      ...edimBaseNodes(),
+      ...edimParagraphNodes(),
+      ...edimFlatBulletListNodes(),
+      ...edimFlatOrderedListNodes(),
+      ...edimFlatListItemNodes(),
+      ...edimFlatTaskListNodes(),
+      ...edimFlatTaskListItemNodes(),
+      ...edimBlockquoteNodes(),
+      ...edimHorizontalRuleNodes(),
+      ...edimHeadingNodes(),
+      ...edimCodeBlockNodes(),
+      ...edimTableNodes(),
+    },
+    marks: {
+      ...edimBoldMarks(),
+      ...edimItalicMarks(),
+      ...edimUnderlineMarks(),
+      ...edimStrikeThroughMarks(),
+      ...edimCodeMarks(),
+      ...edimSubscriptMarks(),
+      ...edimSuperscriptMarks(),
+      ...edimFontFamilyMarks(),
+      ...edimTextColorMarks(),
+      ...edimLinkMarks(),
+    },
+  });

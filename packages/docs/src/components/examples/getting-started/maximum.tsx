@@ -9,7 +9,7 @@ import { edimPresetSchema, edimPresetPlugins } from '@edim-editor/preset';
 export const Maximum = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
-      schema: edimPresetSchema,
+      schema: edimPresetSchema(),
       plugins: edimPresetPlugins(),
     }),
   );
