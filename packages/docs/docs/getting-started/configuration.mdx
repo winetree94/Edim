@@ -8,14 +8,19 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 본문은 Edim의 통합 패키지인 `@edim-editor/preset` 을 사용하지 않고, 각각의 구성요소를 개별 설치하여 사용하는 방법을 안내합니다.
 
-Edim 은 에디터의 기본 서식과 동작을 위한 `@edim-editor/core` 패키지를 필수적으로 설치해야 합니다. 이후 요구사항에 따라 `@edim-editor/*` 패키지 중 원하는 기능을 추가합니다.
+Edim 은 에디터의 기본 동작을 위한 `@edim-editor/core`, `@edim-editor/ui` 패키지를 필수적으로 설치해야 합니다. 이후 요구사항에 따라 `@edim-editor/*` 패키지 중 원하는 기능을 추가합니다.
 
 각 하위 패키지는 ProseMirror 에서 사용할 수 있는 서식(Node, Mark)과 플러그인(Plugin) 그리고 명령(Command) 함수를 제공합니다. 필요에 따라서는 스타일시트를 포함합니다. 아래는 `@edim-editor/core`, `@edim-editor/paragraph` 두개의 패키지를 통해 최소한의 기능으로 에디터를 생성하는 코드 예시입니다.
 
 ```scss title="src/global.scss"
 @import '@edim-editor/core/styles/core.css';
+@import '@edim-editor/ui/styles/ui.css';
 @import '@edim-editor/paragraph/styles/paragraph.css';
 ```
+
+:::info
+Edim 의 모든 패키지는 스타일은 css 와 scss 파일을 동시에 제공합니다.
+:::
 
 ```typescript title="src/index.ts"
 import { Plugin } from 'prosemirror-state';
@@ -150,5 +155,10 @@ const view = new EditorView(document.querySelector('#editor'), {
   }),
 });
 ```
+
+:::info
+ProseMirror 의 동작 특성 상 플러그인의 순서가 중요합니다.
+:::
+
 
 <iframe className='stackblitz' src="https://stackblitz.com/edit/typescript-tm1j7h?ctl=1&embed=1"></iframe>

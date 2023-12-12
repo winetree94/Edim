@@ -30,10 +30,10 @@ export const edimPresetPlugins = (): PMPlugin[] => [
   ...edimCodePlugins(),
   ...edimTablePlugins(),
   ...edimTableEditingPlugins(),
-  ...edimCorePlugins(),
   ...edimUnderlinePlugins(),
   ...edimStrikethroughPlugins(),
   ...edimSubscriptPlugins(),
   ...edimSuperscriptPlugins(),
+  ...edimCorePlugins(),
   ...edimMenubarPlugins(),
 ];
