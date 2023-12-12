@@ -14,7 +14,7 @@ import { edimSuperscriptPlugins } from '@edim-editor/superscript';
 import { edimUnderlinePlugins } from '@edim-editor/underline';
 import { edimBlockQuotePlugins } from '@edim-editor/blockquote';
 import { edimCodeBlockPlugins } from '@edim-editor/codeblock';
-import { edimTableEditingPlugins, edimTablePlugins } from '@edim-editor/tables';
+import { edimTableEditingPlugins, edimTablePlugins } from '../../../tables/dist';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 
 export const edimPresetPlugins = (): PMPlugin[] => [

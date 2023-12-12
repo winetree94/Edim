@@ -38,12 +38,15 @@ export const edimHeadingNodes = (): Record<string, NodeSpec> => ({
     })),
     toDOM(node) {
       const attrs = node.attrs as HeadingAttributes;
+      const classes = ['edim-heading'];
+      classes.push(`edim-heading-indent-${attrs.indent}`);
+      if (attrs.align) {
+        classes.push(`edim-align-${attrs.align}`);
+      }
       return [
         'h' + attrs.level,
         {
-          class: `edim-heading edim-heading-indent-${attrs.indent || 0}${
-            attrs.align ? ` edim-align-${attrs.align}` : ''
-          }`,
+          class: classes.join(' '),
           'data-text-align': attrs.align || 'left',
         },
         0,

@@ -11,15 +11,31 @@ import {
   edimParagraphPlugins,
 } from '@edim-editor/paragraph';
 
+const schema = new Schema({
+  nodes: {
+    ...edimBaseNodes(),
+    ...edimParagraphNodes(),
+  },
+});
+
 export const Minimal = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
-      schema: new Schema({
-        nodes: {
-          ...edimBaseNodes(),
-          ...edimParagraphNodes(),
-        },
+      doc: schema.nodeFromJSON({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'This is a minimal example of a ProseMirror editor with a few plugins.',
+              },
+            ],
+          },
+        ],
       }),
+      schema: schema,
       plugins: [...edimCorePlugins(), ...edimParagraphPlugins()],
     }),
   );

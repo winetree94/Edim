@@ -20,7 +20,7 @@ import { EdimMenubarListToggleButtons } from './list';
 import { EdimMenubarIndentButtons } from './indent';
 import { EdimMenubarAddMoreSelect } from './add-more';
 import { setBlockType } from 'prosemirror-commands';
-import { insertTable } from '../../../_wip_tables/src';
+import { insertTable } from '@edim-editor/tables';
 import { EdimMenubarTaskListToggleButtons } from './task-list';
 
 export interface EdimMenubarProps {

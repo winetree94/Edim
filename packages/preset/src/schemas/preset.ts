@@ -25,7 +25,7 @@ import { edimTextColorMarks } from '@edim-editor/text-color';
 import { edimUnderlineMarks } from '@edim-editor/underline';
 import { edimBlockquoteNodes } from '@edim-editor/blockquote';
 import { edimCodeBlockNodes } from '@edim-editor/codeblock';
-import { edimTableNodes } from '@edim-editor/tables';
+import { edimTableNodes } from '../../../tables/dist';
 
 export const edimPresetSchema = () =>
   new Schema({

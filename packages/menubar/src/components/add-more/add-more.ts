@@ -1,37 +1,9 @@
 import { EdimMenubarContext } from '../context';
 import { useContext, useRef, useState } from 'preact/hooks';
-import { EdimInput, EdimLayer, EdimSelect, html } from '@edim-editor/ui';
+import { EdimLayer, EdimSelect, html } from '@edim-editor/ui';
 import { getRangeFirstAlignment } from '@edim-editor/paragraph';
 import { EdimLinkFormLayer, addLink } from '@edim-editor/link';
 import { Fragment } from 'preact';
-import { addMention } from '../../../../_wip_mention/src';
-import { TargetedEvent } from 'preact/compat';
-// import {
-//   ImagePlaceholderAddAction,
-//   ImagePlaceholderRemoveAction,
-//   ImagePlaceholderUpdateAction,
-//   findPlaceholderPos,
-//   imageFileToBase64Url,
-//   imagePlaceholderPluginKey,
-//   parseImageMeta,
-// } from '@edim-editor/image';
-import { findParentNode } from 'prosemirror-utils';
-
-const createFakeProgress = (
-  progressChange: (progress: number) => void,
-): Promise<void> => {
-  return new Promise((resolve) => {
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 0.1;
-      progressChange(progress);
-      if (progress >= 1) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 300);
-  });
-};
 
 export const EdimMenubarAddMoreSelect = () => {
   const context = useContext(EdimMenubarContext);

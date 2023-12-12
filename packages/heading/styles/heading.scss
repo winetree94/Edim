@@ -1,34 +1,49 @@
 .ProseMirror {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1.edim-heading,
+  h2.edim-heading,
+  h3.edim-heading,
+  h4.edim-heading,
+  h5.edim-heading,
+  h6.edim-heading {
     font-weight: normal;
-
     @for $i from 1 through 6 {
       &.edim-heading-indent-#{$i} {
         margin-left: 30px * $i;
       }
     }
-  }
-
-  h1:first-child,
-  h2:first-child,
-  h3:first-child,
-  h4:first-child,
-  h5:first-child,
-  h6:first-child {
-    margin-top: 10px;
-  }
-
-  .edim-heading {
     &.edim-align-center {
       text-align: center;
     }
     &.edim-align-right {
       text-align: right;
     }
+  }
+
+  h1.edim-heading {
+    font-size: 32px;
+  }
+  h2.edim-heading {
+    font-size: 24px;
+  }
+  h3.edim-heading {
+    font-size: 20px;
+  }
+  h4.edim-heading {
+    font-size: 16px;
+  }
+  h5.edim-heading {
+    font-size: 14px;
+  }
+  h6.edim-heading {
+    font-size: 12px;
+  }
+
+  h1.edim-heading:first-child,
+  h2.edim-heading:first-child,
+  h3.edim-heading:first-child,
+  h4.edim-heading:first-child,
+  h5.edim-heading:first-child,
+  h6.edim-heading:first-child {
+    margin-top: 10px;
   }
 }
