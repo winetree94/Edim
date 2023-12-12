@@ -6,8 +6,9 @@
     "start": "tsup --watch --tsconfig tsconfig.build.json",
     "clean:dist": "rimraf dist",
     "clean:dependency": "rimraf node_modules",
-    "build": "tsup --tsconfig tsconfig.build.json",
-    "build:style": "sass styles/preset.scss:styles/preset.css"
+    "build": "npm run clean:dist && npm run build:ts && npm run build:style",
+    "build:ts": "tsup --tsconfig tsconfig.build.json",
+    "build:style": "sass styles:styles"
   },
   "type": "module",
   "main": "dist/index.cjs",

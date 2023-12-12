@@ -6,7 +6,8 @@
     "start": "tsup --watch --tsconfig tsconfig.build.json",
     "clean:dist": "rimraf dist",
     "clean:dependency": "rimraf node_modules",
-    "build": "tsup --tsconfig tsconfig.build.json"
+    "build": "npm run clean:dist && npm run build:ts",
+    "build:ts": "tsup --tsconfig tsconfig.build.json"
   },
   "type": "module",
   "main": "dist/index.cjs",
