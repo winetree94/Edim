@@ -1,4 +1,4 @@
-import { Node, NodeType } from 'prosemirror-model';
+import { MarkType, Node, NodeType } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 
 export interface NodePair {
@@ -8,3 +8,4 @@ export interface NodePair {
 }
 
 export type NodeTypeOrGetter = NodeType | ((state: EditorState) => NodeType);
+export type MarkTypeOrGetter = MarkType | ((state: EditorState) => MarkType);

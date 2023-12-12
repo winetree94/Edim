@@ -1,5 +1,7 @@
 import { DOMOutputSpec, NodeSpec } from 'prosemirror-model';
 
+export const EDIM_CODEBLOCK_NODE_NAME = 'code_block';
+
 const preDOM: DOMOutputSpec = [
   'pre',
   { class: 'edim-codeblock-wrapper' },
@@ -13,7 +15,7 @@ const preDOM: DOMOutputSpec = [
 ];
 
 export const edimCodeBlockNodes = (): Record<string, NodeSpec> => ({
-  code_block: {
+  [EDIM_CODEBLOCK_NODE_NAME]: {
     content: 'text*',
     marks: '',
     group: 'block',

@@ -1,10 +1,12 @@
 import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
 
-const strongDOM: DOMOutputSpec = ['strong', 0];
+export const EDIM_BOLD_MARK_NAME = 'strong';
+
+const boldDOM: DOMOutputSpec = ['strong', 0];
 export const edimBoldMarks = (): Record<string, MarkSpec> => ({
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
-  strong: {
+  [EDIM_BOLD_MARK_NAME]: {
     parseDOM: [
       { tag: 'strong' },
       // This works around a Google Docs misbehavior where
@@ -27,7 +29,7 @@ export const edimBoldMarks = (): Record<string, MarkSpec> => ({
       },
     ],
     toDOM() {
-      return strongDOM;
+      return boldDOM;
     },
   },
 });

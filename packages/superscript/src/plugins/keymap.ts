@@ -1,18 +1,25 @@
 import { MarkType } from 'prosemirror-model';
 import { keymap } from 'prosemirror-keymap';
 import { toggleMark } from 'prosemirror-commands';
+import { checkSuperscriptMarkType } from '../utils';
 
 export interface EdimSuperscriptKeymapPluginConfigs {
-  markType: MarkType;
+  markType?: MarkType;
 }
 
 export const edimSuperscriptKeymapPlugins = (
-  configs: EdimSuperscriptKeymapPluginConfigs,
+  configs?: EdimSuperscriptKeymapPluginConfigs,
 ) => {
   return [
     keymap({
-      'Mod-Shift-.': toggleMark(configs.markType),
-      'Mod-Shift->': toggleMark(configs.markType),
+      'Mod-Shift-.': (state, dispatch) => {
+        const markType = checkSuperscriptMarkType(configs?.markType)(state);
+        return toggleMark(markType)(state, dispatch);
+      },
+      'Mod-Shift->': (state, dispatch) => {
+        const markType = checkSuperscriptMarkType(configs?.markType)(state);
+        return toggleMark(markType)(state, dispatch);
+      },
     }),
   ];
 };

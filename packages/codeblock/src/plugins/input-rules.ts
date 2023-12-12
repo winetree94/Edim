@@ -1,20 +1,23 @@
 import { NodeType } from 'prosemirror-model';
-import { inputRules, textblockTypeInputRule } from 'prosemirror-inputrules';
-
-export function codeBlockRule(nodeType: NodeType) {
-  return textblockTypeInputRule(/^```$/, nodeType);
-}
+import { inputRules } from 'prosemirror-inputrules';
+import { textblockTypeInputRule } from '@edim-editor/core';
+import { checkCodeblockNodeType } from '../utils';
 
 export interface EdimCodeBlockInputRulePluginConfigs {
-  nodeType: NodeType;
+  nodeType?: NodeType;
 }
 
 export const edimCodeBlockInputRulePlugins = (
-  configs: EdimCodeBlockInputRulePluginConfigs,
+  configs?: EdimCodeBlockInputRulePluginConfigs,
 ) => {
   return [
     inputRules({
-      rules: [codeBlockRule(configs.nodeType)],
+      rules: [
+        textblockTypeInputRule(
+          /^```$/,
+          checkCodeblockNodeType(configs?.nodeType),
+        ),
+      ],
     }),
   ];
 };

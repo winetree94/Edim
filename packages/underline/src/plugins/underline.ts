@@ -3,11 +3,11 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import { edimUnderlineKeymapPlugins } from './keymap';
 
 export interface EdimUnderlinePluginConfigs {
-  markType: MarkType;
+  markType?: MarkType;
 }
 
 export const edimUnderlinePlugins = (
-  configs: EdimUnderlinePluginConfigs,
+  configs?: EdimUnderlinePluginConfigs,
 ): PMPlugin[] => {
   return [...edimUnderlineKeymapPlugins(configs)];
 };

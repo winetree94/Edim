@@ -1,6 +1,6 @@
 import { NodeType } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
-import { NodeTypeOrGetter } from 'types';
+import { NodeTypeOrGetter } from '../types';
 
 export const checkNodeTypeExistAndThrowError = (
   maybe?: NodeType | null | undefined,
