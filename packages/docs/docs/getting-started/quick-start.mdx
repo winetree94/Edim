@@ -5,9 +5,7 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # 빠른 시작 가이드
 
-**Edim**의 각 구성요소는 여러개의 패키지로 나뉘어 배포됩니다. 사용자는 필요한 구성요소만을 선택하여 자신만의 에디터를 구성할 수 있으며, 모든 구성 요소가 통합된 `@edim-editor/preset` 패키지만을 사용할 수도 있습니다.
-
-본문은 `@edim-editor/preset` 패키지를 사용하여 최소한의 코드로 에디터를 생성하는 방법을 설명합니다.
+**Edim**의 각 구성요소는 여러개의 패키지로 나뉘어 배포됩니다. 사용자는 필요한 구성요소만을 선택하여 자신만의 에디터를 구성하거나, 모든 구성 요소가 통합된 `@edim-editor/preset` 패키지만을 사용할 수도 있습니다. 본문은 해당 패키지를 사용하여 최소한의 코드로 에디터를 생성하는 방법을 설명합니다.
 
 ## 의존성 설치
 
@@ -20,9 +18,28 @@ npm install prosemirror-state \
             @edim-editor/preset
 ```
 
+## 에디터 생성
+
+```html title="/src/index.html"
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles/global.css">
+  </head>
+  <body>
+    <div id="editor"></div>
+  </body>
+</html>
+```
+
 ```scss title="/styles/global.scss"
 @import '@edim-editor/preset/styles/preset.scss';
 ```
+
+:::info
+
+scss 를 선호하는 경우 `@edim-editor/preset/styles/preset.scss` 를 사용할 수도 있습니다.
+
+:::
 
 ```typescript title="/src/index.ts"
 import { EditorState } from 'prosemirror-state';
