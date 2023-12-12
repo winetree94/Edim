@@ -4,17 +4,17 @@ import { EdimInput, EdimLayer, EdimSelect, html } from '@edim-editor/ui';
 import { getRangeFirstAlignment } from '@edim-editor/paragraph';
 import { EdimLinkFormLayer, addLink } from '@edim-editor/link';
 import { Fragment } from 'preact';
-import { addMention } from '@edim-editor/mention';
+import { addMention } from '../../../../_wip_mention/src';
 import { TargetedEvent } from 'preact/compat';
-import {
-  ImagePlaceholderAddAction,
-  ImagePlaceholderRemoveAction,
-  ImagePlaceholderUpdateAction,
-  findPlaceholderPos,
-  imageFileToBase64Url,
-  imagePlaceholderPluginKey,
-  parseImageMeta,
-} from '@edim-editor/image';
+// import {
+//   ImagePlaceholderAddAction,
+//   ImagePlaceholderRemoveAction,
+//   ImagePlaceholderUpdateAction,
+//   findPlaceholderPos,
+//   imageFileToBase64Url,
+//   imagePlaceholderPluginKey,
+//   parseImageMeta,
+// } from '@edim-editor/image';
 import { findParentNode } from 'prosemirror-utils';
 
 const createFakeProgress = (
@@ -87,73 +87,73 @@ export const EdimMenubarAddMoreSelect = () => {
     },
   ];
 
-  const onImageChange = async (e: TargetedEvent<HTMLInputElement, Event>) => {
-    const target = e.target as HTMLInputElement;
-    const imageFiles = await Promise.all(
-      Array.from(target.files || []).map((file) =>
-        imageFileToBase64Url(file).then((url) =>
-          parseImageMeta(url).then((image) => ({
-            url,
-            image,
-          })),
-        ),
-      ),
-    );
+  // const onImageChange = async (e: TargetedEvent<HTMLInputElement, Event>) => {
+  //   const target = e.target as HTMLInputElement;
+  //   const imageFiles = await Promise.all(
+  //     Array.from(target.files || []).map((file) =>
+  //       imageFileToBase64Url(file).then((url) =>
+  //         parseImageMeta(url).then((image) => ({
+  //           url,
+  //           image,
+  //         })),
+  //       ),
+  //     ),
+  //   );
 
-    await Promise.all(
-      imageFiles.map(async (file) => {
-        const id = Math.random().toString();
-        let tr = context.editorView.state.tr;
+  //   await Promise.all(
+  //     imageFiles.map(async (file) => {
+  //       const id = Math.random().toString();
+  //       let tr = context.editorView.state.tr;
 
-        const adjacentInsertableParent = findParentNode((node) => {
-          return node?.type.spec.group?.includes('block-container') || false;
-        })(context.editorView.state.selection);
+  //       const adjacentInsertableParent = findParentNode((node) => {
+  //         return node?.type.spec.group?.includes('block-container') || false;
+  //       })(context.editorView.state.selection);
 
-        const insertPos = adjacentInsertableParent
-          ? adjacentInsertableParent.pos +
-            adjacentInsertableParent.node.nodeSize
-          : 0;
+  //       const insertPos = adjacentInsertableParent
+  //         ? adjacentInsertableParent.pos +
+  //           adjacentInsertableParent.node.nodeSize
+  //         : 0;
 
-        tr.setMeta(imagePlaceholderPluginKey, {
-          type: 'add',
-          id,
-          pos: insertPos,
-          progress: 0,
-          text_align: 'center',
-          width: file.image.width,
-          height: file.image.height,
-          viewport_width: 80,
-        } as ImagePlaceholderAddAction);
+  //       tr.setMeta(imagePlaceholderPluginKey, {
+  //         type: 'add',
+  //         id,
+  //         pos: insertPos,
+  //         progress: 0,
+  //         text_align: 'center',
+  //         width: file.image.width,
+  //         height: file.image.height,
+  //         viewport_width: 80,
+  //       } as ImagePlaceholderAddAction);
 
-        context.editorView.dispatch(tr);
+  //       context.editorView.dispatch(tr);
 
-        await createFakeProgress((progress) => {
-          let tr = context.editorView.state.tr;
-          tr = tr.setMeta(imagePlaceholderPluginKey, {
-            type: 'update',
-            id,
-            progress,
-          } as ImagePlaceholderUpdateAction);
-          context.editorView.dispatch(tr);
-        });
+  //       await createFakeProgress((progress) => {
+  //         let tr = context.editorView.state.tr;
+  //         tr = tr.setMeta(imagePlaceholderPluginKey, {
+  //           type: 'update',
+  //           id,
+  //           progress,
+  //         } as ImagePlaceholderUpdateAction);
+  //         context.editorView.dispatch(tr);
+  //       });
 
-        const pos = findPlaceholderPos(context.editorView.state, id);
-        tr = context.editorView.state.tr;
-        if (!pos) {
-          return;
-        }
-        tr = tr.setMeta(imagePlaceholderPluginKey, {
-          type: 'remove',
-          id,
-        } as ImagePlaceholderRemoveAction);
-        const node = context.editorView.state.schema.nodes['image'].create({
-          src: file.url,
-        });
-        tr = tr.replaceWith(pos, pos, node);
-        context.editorView.dispatch(tr);
-      }),
-    );
-  };
+  //       const pos = findPlaceholderPos(context.editorView.state, id);
+  //       tr = context.editorView.state.tr;
+  //       if (!pos) {
+  //         return;
+  //       }
+  //       tr = tr.setMeta(imagePlaceholderPluginKey, {
+  //         type: 'remove',
+  //         id,
+  //       } as ImagePlaceholderRemoveAction);
+  //       const node = context.editorView.state.schema.nodes['image'].create({
+  //         src: file.url,
+  //       });
+  //       tr = tr.replaceWith(pos, pos, node);
+  //       context.editorView.dispatch(tr);
+  //     }),
+  //   );
+  // };
 
   return html`
   <${Fragment}>
@@ -174,17 +174,6 @@ export const EdimMenubarAddMoreSelect = () => {
       )}
       </${EdimSelect.OptionGroup}>
     </${EdimSelect.Root}>
-
-    <${EdimInput}
-      ref=${imageInputRef}
-      type="file"
-      accept="image/*"
-      multiple
-      hidden
-      onChange=${(e: TargetedEvent<HTMLInputElement, Event>) => {
-        void onImageChange(e);
-      }}
-    />
 
     ${
       linkLayerRef &&

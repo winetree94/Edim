@@ -5,10 +5,6 @@ import { edimParagraphPlugins } from '@edim-editor/paragraph';
 import { edimFlatListPlugins } from '@edim-editor/flat-list';
 import { edimFlatTaskListPlugins } from '@edim-editor/flat-task-list';
 import { edimHorizontalRulePlugins } from '@edim-editor/hr';
-import {
-  edimImagePlugins,
-  EdimImagePlaceholderViewProvider,
-} from '@edim-editor/image';
 import { edimBoldPlugins } from '@edim-editor/bold';
 import { edimCodePlugins } from '@edim-editor/code';
 import { edimItalicPlugins } from '@edim-editor/italic';
@@ -18,7 +14,7 @@ import { edimSuperscriptPlugins } from '@edim-editor/superscript';
 import { edimUnderlinePlugins } from '@edim-editor/underline';
 import { edimBlockQuotePlugins } from '@edim-editor/blockquote';
 import { edimCodeBlockPlugins } from '@edim-editor/codeblock';
-import { edimTableEditingPlugins, edimTablePlugins } from '@edim-editor/tables';
+import { edimTableEditingPlugins, edimTablePlugins } from '../../../_wip_tables/src';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 import { EDIM_PRESET_SCHEMA } from '../schemas';
 
@@ -48,9 +44,6 @@ export const edimPresetPlugins = (): Plugin[] => [
   }),
   ...edimCodeBlockPlugins({
     nodeType: EDIM_PRESET_SCHEMA.nodes['code_block'],
-  }),
-  ...edimImagePlugins({
-    placeholderViewProvider: () => new EdimImagePlaceholderViewProvider(),
   }),
   ...edimItalicPlugins({
     markType: EDIM_PRESET_SCHEMA.marks['em'],

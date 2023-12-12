@@ -27,11 +27,11 @@ import {
   EDIM_HORIZONTAL_RULE_NODES,
   edimHorizontalRulePlugins,
 } from '@edim-editor/hr';
-import {
-  EDIM_IMAGE_NODES,
-  edimImagePlugins,
-  EdimImagePlaceholderViewProvider,
-} from '@edim-editor/image';
+// import {
+//   EDIM_IMAGE_NODES,
+//   edimImagePlugins,
+//   EdimImagePlaceholderViewProvider,
+// } from '@edim-editor/image';
 // import {
 //   EDIM_MENTION_MARK,
 //   createEdimMentionPlugins,
@@ -72,7 +72,7 @@ import {
   EDIM_TABLE_NODES,
   edimTableEditingPlugins,
   edimTablePlugins,
-} from '@edim-editor/tables';
+} from '../../../../../_wip_tables/src';
 // import { EDIM_EMOJI_NODE } from '@edim-editor/emoji';
 // import {
 //   createEdimCommandPlugins,
@@ -101,7 +101,6 @@ export const maximumSchema = new Schema({
     ...EDIM_HORIZONTAL_RULE_NODES,
     ...EDIM_HEADING_NODES,
     ...EDIM_CODE_BLOCK_NODES,
-    ...EDIM_IMAGE_NODES,
     ...EDIM_TABLE_NODES,
   },
   marks: {
@@ -145,9 +144,6 @@ export const maximumPlugins: Plugin[] = [
   }),
   ...edimCodeBlockPlugins({
     nodeType: maximumSchema.nodes['code_block'],
-  }),
-  ...edimImagePlugins({
-    placeholderViewProvider: () => new EdimImagePlaceholderViewProvider(),
   }),
   ...edimItalicPlugins({
     markType: maximumSchema.marks['em'],
