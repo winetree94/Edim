@@ -12,7 +12,7 @@
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
-  "style": "styles/preset.scss",
+  "style": "styles/preset.css",
   "types": "dist/index.d.ts",
   "private": true,
   "dependencies": {
