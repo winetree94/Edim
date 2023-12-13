@@ -12,6 +12,7 @@
       "@edim-editor/heading": ["../../heading/src/index.ts"],
       "@edim-editor/paragraph": ["../../paragraph/src/index.ts"],
       "@edim-editor/flat-list": ["../../flat-list/src/index.ts"],
+      "@edim-editor/flat-task-list": ["../../flat-task-list/src/index.ts"],
       "@edim-editor/image": ["../../image/src/index.ts"],
       "@edim-editor/link": ["../../link/src/index.ts"],
       "@edim-editor/command": ["../../command/src/index.ts"],

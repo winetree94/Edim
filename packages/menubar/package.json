@@ -25,6 +25,7 @@
     "prosemirror-history": "*",
     "prosemirror-utils": "*",
     "@edim-editor/flat-list": "*",
+    "@edim-editor/flat-task-list": "*",
     "@edim-editor/paragraph": "*",
     "@edim-editor/heading": "*",
     "@edim-editor/core": "*",

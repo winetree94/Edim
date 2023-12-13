@@ -1,5 +1,57 @@
 ---
 sidebar_position: 4
 ---
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Paragraph
+
+`@edim-editor/paragraph` 에디터에 **문단** 서식과 관련된 플러그인을 제공합니다.
+
+## 설치
+
+```bash
+npm install @edim-editor/paragraph
+```
+
+## 스타일
+
+```css title="src/index.scss"
+@import "@edim-editor/core/styles/core.scss";
+```
+
+## 플러그인 목록
+
+```typescript title="src/index.ts"
+import { Plugin } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import {
+  edimBaseNodes,
+  edimCorePlugins,
+} from '@edim-editor/core';
+import {
+  edimParagraphNodes,
+} from '@edim-editor/paragraph';
+
+const view = new EditorView(document.querySelector('#editor'), {
+  state: EditorState.create({
+    schema: new Schema({
+      nodes: {
+        ...edimBaseNodes(),
+        ...edimParagraphNodes(),
+      },
+    }),
+    plugins: [
+      ...edimCorePlugins()
+    ],
+  }),
+});
+```
+
+<BrowserOnly>
+  {() => {
+    const { ParagraphExample } = require('@site/src/components/examples/packages/paragraph.tsx');
+    return <ParagraphExample />
+  }}
+</BrowserOnly>
+

@@ -30,7 +30,5 @@ export const createEnsuredNodeType =
   (schemaKeyName: string) =>
   (defaultNodeType?: NodeType) =>
   (state: EditorState) => {
-    const type = defaultNodeType || state.schema.nodes[schemaKeyName];
-    checkNodeTypeExistAndThrowError(type);
-    return type;
+    return defaultNodeType || state.schema.nodes[schemaKeyName];
   };

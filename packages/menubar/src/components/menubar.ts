@@ -1,16 +1,16 @@
 import { forwardRef } from 'preact/compat';
-import { EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import { useRef, useState } from 'preact/hooks';
+import { setBlockType } from 'prosemirror-commands';
 import {
   EdimLayer,
   EdimSeparator,
   EdimButton,
   classes,
   html,
+  EdimEmojiPicker,
 } from '@edim-editor/ui';
-import { EdimEmojiPicker } from '@edim-editor/ui';
-import { EdimMenubarContext } from './context';
+import { insertTable } from '@edim-editor/tables';
+import { EdimMenubarContext, EdimMenubarContextType } from './context';
 import { EdimMenubarTextTypeSelect } from './text-type';
 import { EdimMenubarFontFamilySelect } from './font-family';
 import { EdimMenubarMarkToggleButtons } from './marks';
@@ -19,16 +19,9 @@ import { EdimMenubarTextAlignSelect } from './text-align';
 import { EdimMenubarListToggleButtons } from './list';
 import { EdimMenubarIndentButtons } from './indent';
 import { EdimMenubarAddMoreSelect } from './add-more';
-import { setBlockType } from 'prosemirror-commands';
-import { insertTable } from '@edim-editor/tables';
 import { EdimMenubarTaskListToggleButtons } from './task-list';
 
-export interface EdimMenubarProps {
-  editorView: EditorView;
-  editorState: EditorState;
-}
-
-export const EdimMenubar = forwardRef((props: EdimMenubarProps) => {
+export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
   const [emojiLayerRef, setEmojiLayerRef] = useState<{
     top: number;
     left: number;
