@@ -6,18 +6,47 @@ export interface ParagraphAttributes {
   indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-export const edimParagraphNodes = (): Record<string, NodeSpec> => ({
-  paragraph: {
+export interface EdimParagraphNodeConfigs {
+  /**
+   * allow text align
+   *
+   * @default true
+   */
+  allowAlign?: boolean;
+
+  /**
+   * allow indent
+   *
+   * @default true
+   */
+  allowIndent?: boolean;
+
+  /**
+   * node name
+   *
+   * @default "paragraph"
+   */
+  nodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimParagraphNodeConfigs> = {
+  allowAlign: true,
+  allowIndent: true,
+  nodeName: 'paragraph',
+};
+
+export const edimParagraphNodes = (
+  configs?: EdimParagraphNodeConfigs,
+): Record<string, NodeSpec> => {
+  const _configs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     content: 'inline*',
-    attrs: {
-      align: {
-        default: 'left',
-      },
-      indent: {
-        default: 0,
-      },
-    },
     group: 'block',
+    attrs: {},
     parseDOM: [
       {
         tag: 'p',
@@ -50,5 +79,21 @@ export const edimParagraphNodes = (): Record<string, NodeSpec> => ({
         0,
       ];
     },
-  },
-});
+  };
+
+  if (_configs.allowAlign) {
+    nodeSpec.attrs!['align'] = {
+      default: 'left',
+    };
+  }
+
+  if (_configs.allowIndent) {
+    nodeSpec.attrs!['indent'] = {
+      default: 0,
+    };
+  }
+
+  return {
+    [_configs.nodeName]: nodeSpec,
+  };
+};
