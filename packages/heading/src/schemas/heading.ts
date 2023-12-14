@@ -4,12 +4,12 @@ import { NodeSpec } from 'prosemirror-model';
 export const EDIM_HEADING_DEFAULT_NODE_NAME = 'heading';
 export const EDIM_DEFAULT_HEADING_LEVEL = 6;
 
-export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
-export type HeadingAlign = 'left' | 'right' | 'center' | null;
+export type EdimHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+export type EdimHeadingAlign = 'left' | 'right' | 'center' | null;
 
 export interface EdimHeadingAttrs {
-  level: HeadingLevel;
-  align: HeadingAlign;
+  level: EdimHeadingLevel;
+  align: EdimHeadingAlign;
 }
 
 export interface EdimHeadingNodeSpec extends NodeSpec {
@@ -18,11 +18,11 @@ export interface EdimHeadingNodeSpec extends NodeSpec {
       default: number;
     };
     align: {
-      default: HeadingAlign;
+      default: EdimHeadingAlign;
     };
   };
   meta: {
-    levels: HeadingLevel[];
+    levels: EdimHeadingLevel[];
     maxIndent: number;
   };
 }
@@ -30,7 +30,7 @@ export interface EdimHeadingNodeSpec extends NodeSpec {
 export interface EdimHeadingNodeConfigs {
   allowIndent?: boolean;
   allowAlign?: boolean;
-  level?: HeadingLevel[];
+  level?: EdimHeadingLevel[];
   nodeName?: string;
 }
 

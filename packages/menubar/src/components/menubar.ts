@@ -32,12 +32,10 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
     <${EdimMenubarContext.Provider} value="${{
       editorView: props.editorView,
       editorState: props.editorState,
+      options: props.options,
     }}">
     <div className=${classes('edim-view-menubar-wrapper')}>
-      ${
-        props.editorView.state.schema.nodes['heading'] &&
-        html` <${EdimMenubarTextTypeSelect} /> `
-      }
+      <${EdimMenubarTextTypeSelect} />
       ${
         props.editorView.state.schema.marks['font_family'] &&
         html` <${EdimMenubarFontFamilySelect} /> `

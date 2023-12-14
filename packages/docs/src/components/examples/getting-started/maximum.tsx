@@ -7,7 +7,10 @@ import React, { useState } from 'react';
 import { edimPresetSchema, edimPresetPlugins } from '@edim-editor/preset';
 
 const schema = edimPresetSchema();
-const plugins = edimPresetPlugins({ schema });
+const plugins = edimPresetPlugins({
+  schema,
+});
+console.log(schema);
 
 export const Maximum = (props: ProseMirrorProps) => {
   const [state] = useState(

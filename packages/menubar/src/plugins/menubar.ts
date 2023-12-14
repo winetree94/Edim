@@ -1,11 +1,28 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { render } from 'preact';
 import { EditorState, Plugin, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { html } from '@edim-editor/ui';
 import { EdimMenubar } from '../components';
+import { NodeType } from 'prosemirror-model';
+import { EdimHeadingLevel } from '@edim-editor/heading';
 
-export interface EdimMenubarPluginConfigs {}
+export interface EdimMenubarPluginConfigs {
+  textType?: {
+    paragraphNodeType: NodeType;
+    headingNodeType: NodeType;
+    headingLevels: EdimHeadingLevel[];
+  };
+  fontFamilyMarkType?: NodeType;
+  flatOrderedListNodeType?: NodeType;
+  flatBulletListNodeType?: NodeType;
+  flatListItemNodeType?: NodeType;
+  flatTaskListNodeType?: NodeType;
+  flatTaskListItemNodeType?: NodeType;
+  blockQuoteNodeType?: NodeType;
+  codeBlockNodeType?: NodeType;
+  tableNodeType?: NodeType;
+  linkNodeType?: NodeType;
+}
 
 export class EdimMenubarView implements PluginView {
   public readonly editorRoot: HTMLDivElement;
@@ -57,6 +74,7 @@ export class EdimMenubarView implements PluginView {
         <${EdimMenubar}
           editorView=${this.editorView}
           editorState=${this.editorView.state}
+          options=${this.configs}
         />
       `,
       this.menubarWrapper,
