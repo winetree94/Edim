@@ -1,33 +1,23 @@
-import { inputRules } from 'prosemirror-inputrules';
+import { inputRules, wrappingInputRule } from 'prosemirror-inputrules';
 import { NodeType } from 'prosemirror-model';
-import { wrappingInputRule } from '@edim-editor/core';
 import { Plugin } from 'prosemirror-state';
-import { checkBulletListNodeType, checkOrderedListNodeType } from '../utils';
 
 export interface EdimFlatListInputRulePluginConfigs {
-  orderListNodeType?: NodeType;
-  bulletListNodeType?: NodeType;
+  orderListNodeType: NodeType;
+  bulletListNodeType: NodeType;
 }
 
 export const edimFlatListInputRulePlugins = (
-  configs?: EdimFlatListInputRulePluginConfigs,
+  configs: EdimFlatListInputRulePluginConfigs,
 ): Plugin[] => [
   inputRules({
     rules: [
-      wrappingInputRule(
-        /^(\d+)\.\s$/,
-        checkOrderedListNodeType(configs?.orderListNodeType),
-        {
-          indent: 0,
-        },
-      ),
-      wrappingInputRule(
-        /^\s*([-+*])\s$/,
-        checkBulletListNodeType(configs?.bulletListNodeType),
-        {
-          indent: 0,
-        },
-      ),
+      wrappingInputRule(/^(\d+)\.\s$/, configs.orderListNodeType, {
+        indent: 0,
+      }),
+      wrappingInputRule(/^\s*([-+*])\s$/, configs.bulletListNodeType, {
+        indent: 0,
+      }),
     ],
   }),
 ];

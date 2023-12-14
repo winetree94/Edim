@@ -9,11 +9,25 @@ import {
   html,
 } from '@edim-editor/ui';
 import { getTextType } from '../../utils';
-import { HeadingLevel } from '@edim-editor/heading';
+import { HeadingLevel, checkHeadingNodeType } from '@edim-editor/heading';
 import { mac, transformRangeToBlock } from '@edim-editor/core';
+import { checkParagraphNodeType } from '@edim-editor/paragraph';
 
 export const EdimMenubarTextTypeSelect = () => {
   const context = useContext(EdimMenubarContext);
+
+  const paragraphNodeType = checkParagraphNodeType(
+    context.options?.paragraphNodeType,
+  )(context.editorState);
+
+  const headingNodeType = checkHeadingNodeType(
+    context.options?.headingNodeType,
+  )(context.editorState);
+
+  if (!paragraphNodeType || !headingNodeType) {
+    return null;
+  }
+
   const textType = getTextType(context.editorView.state);
 
   const textTypeOptions = [
@@ -27,12 +41,9 @@ export const EdimMenubarTextTypeSelect = () => {
         </${EdimShortCut}> 
       `,
       command: () => {
-        transformRangeToBlock(
-          context.editorView.state.schema.nodes['heading'],
-          {
-            level,
-          },
-        )(context.editorView.state, context.editorView.dispatch);
+        transformRangeToBlock(headingNodeType, {
+          level,
+        })(context.editorView.state, context.editorView.dispatch);
         context.editorView.focus();
       },
     })),
@@ -44,9 +55,10 @@ export const EdimMenubarTextTypeSelect = () => {
         <${EdimShortCut}>⌥⌘0</${EdimShortCut}> 
       `,
       command: () => {
-        transformRangeToBlock(
-          context.editorView.state.schema.nodes['paragraph'],
-        )(context.editorView.state, context.editorView.dispatch);
+        transformRangeToBlock(paragraphNodeType)(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
         context.editorView.focus();
       },
     },

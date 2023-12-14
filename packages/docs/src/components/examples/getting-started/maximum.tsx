@@ -6,11 +6,14 @@ import { EditorState } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { edimPresetSchema, edimPresetPlugins } from '@edim-editor/preset';
 
+const schema = edimPresetSchema();
+const plugins = edimPresetPlugins({ schema });
+
 export const Maximum = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
-      schema: edimPresetSchema(),
-      plugins: edimPresetPlugins(),
+      schema: schema,
+      plugins: plugins,
     }),
   );
 

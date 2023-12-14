@@ -128,51 +128,51 @@ export const EdimMenubarAddMoreSelect = () => {
   // };
 
   return html`
-  <${Fragment}>
-    <${EdimSelect.Root} 
-      value="${firstAlignment}">
-      <${EdimSelect.Text}>
-        <i class="ri-add-line"></i>
-      </${EdimSelect.Text}>
-      <${EdimSelect.OptionGroup}>
-      ${options.map(
-        (option) => html`
-        <${EdimSelect.Option}
-          value="${option.label}"
-          onClick=${option.command}>
-          ${option.label}
-        </${EdimSelect.Option}>
-      `,
-      )}
-      </${EdimSelect.OptionGroup}>
-    </${EdimSelect.Root}>
+    <${Fragment}>
+      <${EdimSelect.Root} 
+        value="${firstAlignment}">
+        <${EdimSelect.Text}>
+          <i class="ri-add-line"></i>
+        </${EdimSelect.Text}>
+        <${EdimSelect.OptionGroup}>
+        ${options.map(
+          (option) => html`
+          <${EdimSelect.Option}
+            value="${option.label}"
+            onClick=${option.command}>
+            ${option.label}
+          </${EdimSelect.Option}>
+        `,
+        )}
+        </${EdimSelect.OptionGroup}>
+      </${EdimSelect.Root}>
 
-    ${
-      linkLayerRef &&
-      html`
-      <${EdimLayer}
-        top=${linkLayerRef.top}
-        left=${linkLayerRef.left}
-        closeOnEsc=${true}
-        outerMousedown=${() => setLinkLayerRef(null)}
-        onClose=${() => setLinkLayerRef(null)}
-        >
-        <${EdimLinkFormLayer}
-          text=${linkLayerRef.text}
-          link=${linkLayerRef.link}
-          onSubmit=${(link: string, text: string) => {
-            setLinkLayerRef(null);
-            const { from, to } = context.editorView.state.selection;
-            let tr = context.editorView.state.tr;
-            tr = addLink(tr, from, to, text, link);
-            context.editorView.dispatch(tr);
-            context.editorView.focus();
-          }}
-          onCancel=${() => setLinkLayerRef(null)}
-          />
-      </${EdimLayer}>
-    `
-    }
-   </${Fragment}> 
+      ${
+        linkLayerRef &&
+        html`
+        <${EdimLayer}
+          top=${linkLayerRef.top}
+          left=${linkLayerRef.left}
+          closeOnEsc=${true}
+          outerMousedown=${() => setLinkLayerRef(null)}
+          onClose=${() => setLinkLayerRef(null)}
+          >
+          <${EdimLinkFormLayer}
+            text=${linkLayerRef.text}
+            link=${linkLayerRef.link}
+            onSubmit=${(link: string, text: string) => {
+              setLinkLayerRef(null);
+              const { from, to } = context.editorView.state.selection;
+              let tr = context.editorView.state.tr;
+              tr = addLink(tr, from, to, text, link);
+              context.editorView.dispatch(tr);
+              context.editorView.focus();
+            }}
+            onCancel=${() => setLinkLayerRef(null)}
+            />
+        </${EdimLayer}>
+      `
+      }
+    </${Fragment}> 
   `;
 };

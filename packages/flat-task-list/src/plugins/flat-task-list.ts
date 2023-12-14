@@ -11,11 +11,11 @@ export interface EdimFlatTaskListPluginConfigs {
 }
 
 export const edimFlatTaskListPlugins = (
-  configs?: EdimFlatTaskListPluginConfigs,
+  configs: EdimFlatTaskListPluginConfigs,
 ): PMPlugin[] => {
   return [
     ...edimTaskListInputRulePlugins({
-      taskListNodeType: configs?.taskListNodeType,
+      taskListNodeType: configs.taskListNodeType,
     }),
     ...edimFlatTaskListKeymapPlugins({
       taskListNodeType: configs?.taskListNodeType,

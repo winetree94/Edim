@@ -1,7 +1,7 @@
 import { parseQuillTextAlign } from '@edim-editor/core';
 import { NodeSpec } from 'prosemirror-model';
 
-export const EDIM_HEADING_NODE_NAME = 'heading';
+export const EDIM_HEADING_DEFAULT_NODE_NAME = 'heading';
 export const EDIM_DEFAULT_HEADING_LEVEL = 6;
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
@@ -31,12 +31,14 @@ export interface EdimHeadingNodeConfigs {
   allowIndent?: boolean;
   allowAlign?: boolean;
   level?: HeadingLevel[];
+  nodeName?: string;
 }
 
 const EDIM_DEFAULT_HEADING_NODE_CONFIGS: Required<EdimHeadingNodeConfigs> = {
   allowIndent: true,
   allowAlign: true,
   level: [1, 2, 3, 4, 5, 6],
+  nodeName: EDIM_HEADING_DEFAULT_NODE_NAME,
 };
 
 export const edimHeadingNodes = (
@@ -95,6 +97,6 @@ export const edimHeadingNodes = (
   };
 
   return {
-    [EDIM_HEADING_NODE_NAME]: nodeSpec,
+    [_configs.nodeName]: nodeSpec,
   };
 };

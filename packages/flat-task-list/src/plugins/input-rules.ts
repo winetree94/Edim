@@ -2,27 +2,22 @@ import { inputRules } from 'prosemirror-inputrules';
 import { NodeType } from 'prosemirror-model';
 import { wrappingInputRuleWithJoin } from '@edim-editor/core';
 import { Plugin } from 'prosemirror-state';
-import { checkTaskListNodeType } from '../utils';
 
 export interface EdimTaskListInputRulePluginConfigs {
-  taskListNodeType?: NodeType;
+  taskListNodeType: NodeType;
 }
 
 export const edimTaskListInputRulePlugins = (
-  configs?: EdimTaskListInputRulePluginConfigs,
+  configs: EdimTaskListInputRulePluginConfigs,
 ): Plugin[] => [
   inputRules({
     rules: [
-      wrappingInputRuleWithJoin(
-        /^\[\]\s$/,
-        checkTaskListNodeType(configs?.taskListNodeType),
-        {
-          indent: 0,
-        },
-      ),
+      wrappingInputRuleWithJoin(/^\[\]\s$/, configs.taskListNodeType, {
+        indent: 0,
+      }),
       wrappingInputRuleWithJoin(
         /^\[x\]\s$/,
-        checkTaskListNodeType(configs?.taskListNodeType),
+        configs.taskListNodeType,
         {
           indent: 0,
         },

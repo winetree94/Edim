@@ -18,6 +18,13 @@ const schema = new Schema({
   },
 });
 
+const plugins = [
+  ...edimCorePlugins(),
+  ...edimParagraphPlugins({
+    nodeType: schema.nodes.paragraph,
+  }),
+];
+
 export const Minimal = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
@@ -36,7 +43,7 @@ export const Minimal = (props: ProseMirrorProps) => {
         ],
       }),
       schema: schema,
-      plugins: [...edimCorePlugins(), ...edimParagraphPlugins()],
+      plugins: plugins,
     }),
   );
 

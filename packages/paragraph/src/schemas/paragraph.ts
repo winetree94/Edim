@@ -1,6 +1,8 @@
 import { NodeSpec } from 'prosemirror-model';
 import { parseQuillTextAlign } from '@edim-editor/core';
 
+export const EDIM_PARAGRAPH_DEFAULT_NODE_NAME = 'paragraph';
+
 export interface ParagraphAttributes {
   align: 'left' | 'right' | 'center' | null;
 }
@@ -23,7 +25,7 @@ export interface EdimParagraphNodeConfigs {
 
 const DEFAULT_CONFIGS: Required<EdimParagraphNodeConfigs> = {
   allowAlign: true,
-  nodeName: 'paragraph',
+  nodeName: EDIM_PARAGRAPH_DEFAULT_NODE_NAME,
 };
 
 export const edimParagraphNodes = (

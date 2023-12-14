@@ -2,7 +2,7 @@ import {
   ProseMirror,
   ProseMirrorProps,
 } from '@site/src/components/editor/prose-mirror';
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Plugin } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
 import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
@@ -22,6 +22,14 @@ const schema = new Schema({
   },
 });
 
+const plugins: Plugin[] = [
+  ...edimParagraphPlugins({
+    nodeType: schema.nodes.paragraph,
+  }),
+  ...edimMenubarPlugins(),
+  ...edimCorePlugins(),
+];
+
 export const ParagraphExample = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
@@ -40,11 +48,7 @@ export const ParagraphExample = (props: ProseMirrorProps) => {
         ],
       }),
       schema: schema,
-      plugins: [
-        ...edimParagraphPlugins(),
-        ...edimMenubarPlugins(),
-        ...edimCorePlugins(),
-      ],
+      plugins: plugins,
     }),
   );
 
