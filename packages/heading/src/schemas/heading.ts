@@ -1,4 +1,4 @@
-import { NodeSpec } from 'prosemirror-model';
+import { AttributeSpec, NodeSpec } from 'prosemirror-model';
 import { parseQuillTextAlign } from '@edim-editor/core';
 
 export const EDIM_HEADING_NODE_NAME = 'heading';
@@ -28,6 +28,14 @@ const EDIM_DEFAULT_HEADING_NODE_CONFIGS: Required<EdimHeadingNodeConfigs> = {
   level: [1, 2, 3, 4, 5, 6],
 };
 
+interface NT<
+  ATTRIBUTE_SPECS extends { [key: string]: AttributeSpec } = {
+    [key: string]: AttributeSpec;
+  },
+> extends NodeSpec {
+  attrs: ATTRIBUTE_SPECS;
+}
+
 export const edimHeadingNodes = (
   configs?: EdimHeadingNodeConfigs,
 ): Record<string, NodeSpec> => {
@@ -36,7 +44,7 @@ export const edimHeadingNodes = (
     ...configs,
   };
 
-  const nodeSpec: NodeSpec = {
+  const nodeSpec: EdimHeadingNodeSpec = {
     attrs: {
       level: {
         default: 1,
