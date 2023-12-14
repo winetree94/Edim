@@ -1,20 +1,17 @@
 import { Command, TextSelection } from 'prosemirror-state';
 import { indentListItem } from './indent-list-item';
 import { findParentNode } from 'prosemirror-utils';
-import { NodeTypeOrGetter, parseNodeType } from '@edim-editor/core';
+import { NodeType } from 'prosemirror-model';
 
 export interface EdimListItemBackspaceCommandConfigs {
-  listNodeTypes: NodeTypeOrGetter[];
-  listItemNodeType: NodeTypeOrGetter;
+  listNodeTypes: NodeType[];
+  listItemNodeType: NodeType;
 }
 
 export const listItemBackspace =
   (configs: EdimListItemBackspaceCommandConfigs): Command =>
   (state, dispatch) => {
-    const listNodeTypes = configs.listNodeTypes.map((maybeType) =>
-      parseNodeType(maybeType, state),
-    );
-    const listItemNodeType = parseNodeType(configs.listItemNodeType, state);
+    const listItemNodeType = configs.listItemNodeType;
     const selection = state.selection;
     if (selection.from !== selection.to) {
       return false;
@@ -22,7 +19,7 @@ export const listItemBackspace =
     const previous$ = state.doc.resolve(selection.from - 1);
     if (previous$.parent.type === listItemNodeType) {
       indentListItem({
-        listNodeTypes: listNodeTypes,
+        listNodeTypes: configs.listNodeTypes,
         listItemNodeType: listItemNodeType,
         reduce: -1,
       })(state, dispatch);
@@ -32,7 +29,7 @@ export const listItemBackspace =
     if (
       currentBlock &&
       previous$.nodeBefore &&
-      listNodeTypes.includes(previous$.nodeBefore.type)
+      configs.listNodeTypes.includes(previous$.nodeBefore.type)
     ) {
       const lastListItem$ = state.tr.doc.resolve(selection.from - 3);
       const lastListItemPos = lastListItem$.before(lastListItem$.depth);

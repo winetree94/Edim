@@ -2,7 +2,6 @@ import { Plugin as PMPlugin, Transaction } from 'prosemirror-state';
 import { NodeType } from 'prosemirror-model';
 import { canJoin } from 'prosemirror-transform';
 import { NodePair } from '../types';
-import { parseNodeType } from '../utils';
 
 export interface EdimMergeAdjacentNodeOption {
   nodeType: NodeType;
@@ -23,9 +22,7 @@ export const edimMergeAdjacentNodePlugins = (
   // const types = configs.specs.map((spec) =>  spec.nodeType);
   const plugin = new PMPlugin({
     appendTransaction: (transactions, oldState, newState) => {
-      const types = configs.specs.map((spec) =>
-        parseNodeType(spec.nodeType, newState),
-      );
+      const types = configs.specs.map((spec) => spec.nodeType);
       if (!transactions.length) {
         return null;
       }

@@ -1,5 +1,4 @@
-import { NodeTypeOrGetter, parseNodeType } from '@edim-editor/core';
-import { Attrs, Fragment, Slice } from 'prosemirror-model';
+import { Attrs, Fragment, NodeType, Slice } from 'prosemirror-model';
 import {
   Command,
   EditorState,
@@ -12,18 +11,17 @@ import { canSplit } from 'prosemirror-transform';
 /// Build a command that splits a non-empty textblock at the top level
 /// of a list item by also splitting that list item.
 export const splitListItem = (
-  maybeItemType: NodeTypeOrGetter,
+  nodeType: NodeType,
   itemAttrs?: Attrs,
 ): Command => {
   return function (state: EditorState, dispatch?: (tr: Transaction) => void) {
-    const itemType = parseNodeType(maybeItemType, state);
     const { $from, $to, node } = state.selection as NodeSelection;
     if ((node && node.isBlock) || $from.depth < 2 || !$from.sameParent($to)) {
       return false;
     }
 
     const grandParent = $from.node(-1);
-    if (grandParent.type != itemType) {
+    if (grandParent.type != nodeType) {
       return false;
     }
 
@@ -36,7 +34,7 @@ export const splitListItem = (
       // command handle lifting.
       if (
         $from.depth == 3 ||
-        $from.node(-3).type != itemType ||
+        $from.node(-3).type != nodeType ||
         $from.index(-2) != $from.node(-2).childCount - 1
       ) {
         return false;
@@ -56,7 +54,7 @@ export const splitListItem = (
               ? 2
               : 3;
         // Add a second list item with an empty default start node
-        wrap = wrap.append(Fragment.from(itemType.createAndFill()));
+        wrap = wrap.append(Fragment.from(nodeType.createAndFill()));
         const start = $from.before($from.depth - (depthBefore - 1));
         const tr = state.tr.replace(
           start,
@@ -85,7 +83,7 @@ export const splitListItem = (
     const tr = state.tr.delete($from.pos, $to.pos);
     const types = nextType
       ? [
-          itemAttrs ? { type: itemType, attrs: itemAttrs } : null,
+          itemAttrs ? { type: nodeType, attrs: itemAttrs } : null,
           { type: nextType },
         ]
       : undefined;

@@ -4,19 +4,19 @@ import { EdimButton, html } from '@edim-editor/ui';
 import { toggleList } from '@edim-editor/flat-list';
 import { findParentNode } from 'prosemirror-utils';
 import {
-  checkTaskListItemNodeType,
-  checkTaskListNodeType,
+  EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME,
+  EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME,
 } from '@edim-editor/flat-task-list';
 
 export const EdimMenubarTaskListToggleButtons = () => {
   const context = useContext(EdimMenubarContext);
 
-  const useTaskList = checkTaskListNodeType(undefined)(
-    context.editorView.state,
-  );
-  const useTaskListItem = checkTaskListItemNodeType(undefined)(
-    context.editorView.state,
-  );
+  const useTaskList =
+    context.editorState.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME];
+  const useTaskListItem =
+    context.editorState.schema.nodes[
+      EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME
+    ];
 
   if (!useTaskList || !useTaskListItem) {
     return null;

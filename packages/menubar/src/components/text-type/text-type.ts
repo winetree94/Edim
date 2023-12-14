@@ -9,20 +9,21 @@ import {
   html,
 } from '@edim-editor/ui';
 import { getTextType } from '../../utils';
-import { HeadingLevel, checkHeadingNodeType } from '@edim-editor/heading';
+import {
+  EDIM_HEADING_DEFAULT_NODE_NAME,
+  HeadingLevel,
+} from '@edim-editor/heading';
 import { mac, transformRangeToBlock } from '@edim-editor/core';
-import { checkParagraphNodeType } from '@edim-editor/paragraph';
+import { EDIM_PARAGRAPH_DEFAULT_NODE_NAME } from '@edim-editor/paragraph';
 
 export const EdimMenubarTextTypeSelect = () => {
   const context = useContext(EdimMenubarContext);
 
-  const paragraphNodeType = checkParagraphNodeType(
-    context.options?.paragraphNodeType,
-  )(context.editorState);
+  const paragraphNodeType =
+    context.editorState.schema.nodes[EDIM_PARAGRAPH_DEFAULT_NODE_NAME];
 
-  const headingNodeType = checkHeadingNodeType(
-    context.options?.headingNodeType,
-  )(context.editorState);
+  const headingNodeType =
+    context.editorState.schema.nodes[EDIM_HEADING_DEFAULT_NODE_NAME];
 
   if (!paragraphNodeType || !headingNodeType) {
     return null;
