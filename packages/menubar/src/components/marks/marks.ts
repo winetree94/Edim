@@ -22,6 +22,11 @@ export interface EdimMenubarMarkButton {
 
 export const EdimMenubarMarkToggleButtons = () => {
   const context = useContext(EdimMenubarContext);
+  const hasMark = !!Object.values(context.editorState.schema.marks).length;
+
+  if (!hasMark) {
+    return null;
+  }
 
   const buttons: EdimMenubarMarkButton[] = [];
 

@@ -17,7 +17,6 @@ const schema = new Schema({
     ...edimBaseNodes(),
     ...edimParagraphNodes({
       allowAlign: true,
-      allowIndent: true,
       nodeName: 'paragraph',
     }),
   },

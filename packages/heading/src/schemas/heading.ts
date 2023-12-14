@@ -1,19 +1,30 @@
-import { AttributeSpec, NodeSpec } from 'prosemirror-model';
 import { parseQuillTextAlign } from '@edim-editor/core';
+import { NodeSpec } from 'prosemirror-model';
 
 export const EDIM_HEADING_NODE_NAME = 'heading';
 export const EDIM_DEFAULT_HEADING_LEVEL = 6;
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+export type HeadingAlign = 'left' | 'right' | 'center' | null;
 
 export interface EdimHeadingAttrs {
   level: HeadingLevel;
-  indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  align: 'left' | 'right' | 'center' | null;
+  align: HeadingAlign;
 }
 
 export interface EdimHeadingNodeSpec extends NodeSpec {
-  configs?: EdimHeadingNodeConfigs;
+  attrs: {
+    level: {
+      default: number;
+    };
+    align: {
+      default: HeadingAlign;
+    };
+  };
+  meta: {
+    levels: HeadingLevel[];
+    maxIndent: number;
+  };
 }
 
 export interface EdimHeadingNodeConfigs {
@@ -28,17 +39,9 @@ const EDIM_DEFAULT_HEADING_NODE_CONFIGS: Required<EdimHeadingNodeConfigs> = {
   level: [1, 2, 3, 4, 5, 6],
 };
 
-interface NT<
-  ATTRIBUTE_SPECS extends { [key: string]: AttributeSpec } = {
-    [key: string]: AttributeSpec;
-  },
-> extends NodeSpec {
-  attrs: ATTRIBUTE_SPECS;
-}
-
 export const edimHeadingNodes = (
   configs?: EdimHeadingNodeConfigs,
-): Record<string, NodeSpec> => {
+): Record<string, EdimHeadingNodeSpec> => {
   const _configs = {
     ...EDIM_DEFAULT_HEADING_NODE_CONFIGS,
     ...configs,
@@ -49,12 +52,13 @@ export const edimHeadingNodes = (
       level: {
         default: 1,
       },
-      indent: {
-        default: 0,
-      },
       align: {
         default: 'left',
       },
+    },
+    meta: {
+      levels: _configs.level,
+      maxIndent: 6,
     },
     content: 'inline*',
     group: 'block',
@@ -76,7 +80,6 @@ export const edimHeadingNodes = (
     toDOM(node) {
       const attrs = node.attrs as EdimHeadingAttrs;
       const classes = ['edim-heading'];
-      classes.push(`edim-heading-indent-${attrs.indent}`);
       if (attrs.align) {
         classes.push(`edim-align-${attrs.align}`);
       }

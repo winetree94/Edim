@@ -20,6 +20,7 @@ export const indentListItem = (
       parseNodeType(maybeType, state),
     );
     const listItemNodeType = parseNodeType(configs.listItemNodeType, state);
+
     let tr = state.tr;
     let selection = state.selection;
     const { $from, $to } = selection;

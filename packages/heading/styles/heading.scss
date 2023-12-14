@@ -6,11 +6,6 @@
   h5.edim-heading,
   h6.edim-heading {
     font-weight: normal;
-    @for $i from 1 through 6 {
-      &.edim-heading-indent-#{$i} {
-        margin-left: 30px * $i;
-      }
-    }
     &.edim-align-center {
       text-align: center;
     }

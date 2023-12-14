@@ -53,27 +53,30 @@ export const EdimMenubarTextTypeSelect = () => {
   ];
 
   return html`
-  <${EdimSelect.Root} 
-  className="${classes(
-    'edim-menubar-text-select',
-    textType !== 'p' ? 'edim-heading-selected' : '',
-  )}"
-  value="${textType}">
-  <${EdimSelect.Text}>
-  <${EdimParagraph}>
-    ${textTypeOptions.find((option) => option.value === textType)?.label || ''}
-  </${EdimParagraph}>
-  </${EdimSelect.Text}>
-  <${EdimSelect.OptionGroup}>
-    ${textTypeOptions.map((option) => {
-      return html`
-        <${EdimSelect.Option} value="${option.value}" onClick=${option.command}>
-          <${option.Element} className="edim-menubar-select-text-type">${option.label}</${option.Element}> 
-          ${option.shortcut}
-        </${EdimSelect.Option}>
-      `;
-    })}
-  </${EdimSelect.OptionGroup}>
-</${EdimSelect.Root}> 
+    <${EdimSelect.Root} 
+      className="${classes(
+        'edim-menubar-text-select',
+        textType !== 'p' ? 'edim-heading-selected' : '',
+      )}"
+      value="${textType}">
+      <${EdimSelect.Text}>
+        <${EdimParagraph}>
+          ${
+            textTypeOptions.find((option) => option.value === textType)
+              ?.label || ''
+          }
+        </${EdimParagraph}>
+      </${EdimSelect.Text}>
+      <${EdimSelect.OptionGroup}>
+        ${textTypeOptions.map((option) => {
+          return html`
+            <${EdimSelect.Option} value="${option.value}" onClick=${option.command}>
+              <${option.Element} className="edim-menubar-select-text-type">${option.label}</${option.Element}> 
+              ${option.shortcut}
+            </${EdimSelect.Option}>
+          `;
+        })}
+      </${EdimSelect.OptionGroup}>
+    </${EdimSelect.Root}> 
   `;
 };

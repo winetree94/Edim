@@ -9,6 +9,10 @@ export interface EdimMenubarOptions {
   flatOrderedListNodeType?: NodeType;
   flatBulletListNodeType?: NodeType;
   flatListItemNodeType?: NodeType;
+  blockQuoteNodeType?: NodeType;
+  codeBlockNodeType?: NodeType;
+  tableNodeType?: NodeType;
+  linkNodeType?: NodeType;
 }
 
 export interface EdimMenubarContextType {

@@ -3,7 +3,6 @@ import { parseQuillTextAlign } from '@edim-editor/core';
 
 export interface ParagraphAttributes {
   align: 'left' | 'right' | 'center' | null;
-  indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 export interface EdimParagraphNodeConfigs {
@@ -15,13 +14,6 @@ export interface EdimParagraphNodeConfigs {
   allowAlign?: boolean;
 
   /**
-   * allow indent
-   *
-   * @default true
-   */
-  allowIndent?: boolean;
-
-  /**
    * node name
    *
    * @default "paragraph"
@@ -31,7 +23,6 @@ export interface EdimParagraphNodeConfigs {
 
 const DEFAULT_CONFIGS: Required<EdimParagraphNodeConfigs> = {
   allowAlign: true,
-  allowIndent: true,
   nodeName: 'paragraph',
 };
 
@@ -65,7 +56,6 @@ export const edimParagraphNodes = (
     toDOM(node) {
       const attrs = node.attrs as ParagraphAttributes;
       const classes = ['edim-paragraph'];
-      classes.push(`edim-paragraph-indent-${attrs.indent || 0}`);
       if (attrs.align) {
         classes.push(`edim-align-${attrs.align}`);
       }
@@ -74,7 +64,6 @@ export const edimParagraphNodes = (
         {
           class: classes.join(' '),
           'data-text-align': attrs.align || 'left',
-          'data-indent': attrs.indent || 0,
         },
         0,
       ];
@@ -84,12 +73,6 @@ export const edimParagraphNodes = (
   if (_configs.allowAlign) {
     nodeSpec.attrs!['align'] = {
       default: 'left',
-    };
-  }
-
-  if (_configs.allowIndent) {
-    nodeSpec.attrs!['indent'] = {
-      default: 0,
     };
   }
 

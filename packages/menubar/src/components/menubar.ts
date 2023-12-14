@@ -17,7 +17,6 @@ import { EdimMenubarMarkToggleButtons } from './marks';
 import { EdimMenubarFontColorSelect } from './font-color';
 import { EdimMenubarTextAlignSelect } from './text-align';
 import { EdimMenubarListToggleButtons } from './list';
-import { EdimMenubarIndentButtons } from './indent';
 import { EdimMenubarAddMoreSelect } from './add-more';
 import { EdimMenubarTaskListToggleButtons } from './task-list';
 
@@ -60,10 +59,7 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
       }
 
       <${EdimMenubarTextAlignSelect} />
-      <${EdimSeparator} className="edim-view-menubar-separator" />
       <${EdimMenubarListToggleButtons} />
-      <${EdimMenubarIndentButtons} />
-      <${EdimSeparator} className="edim-view-menubar-separator" />
 
       <${EdimMenubarTaskListToggleButtons} />
       <${EdimButton}
