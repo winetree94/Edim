@@ -1,10 +1,11 @@
 import { Plugin as PMPlugin, Transaction } from 'prosemirror-state';
+import { NodeType } from 'prosemirror-model';
 import { canJoin } from 'prosemirror-transform';
-import { NodePair, NodeTypeOrGetter } from '../types';
+import { NodePair } from '../types';
 import { parseNodeType } from '../utils';
 
 export interface EdimMergeAdjacentNodeOption {
-  nodeType: NodeTypeOrGetter;
+  nodeType: NodeType;
   beforeMergeTransaction?: (tr: Transaction, joinPos: number) => Transaction;
 }
 

@@ -1,11 +1,10 @@
-import { Node } from 'prosemirror-model';
+import { Node, NodeType } from 'prosemirror-model';
 import { Command, EditorState, Transaction } from 'prosemirror-state';
 import { liftOutOfFlatList } from '../transforms';
-import { NodeTypeOrGetter, parseNodeType } from '@edim-editor/core';
 
 export interface IndentListItemCommandConfigs {
-  listNodeTypes: NodeTypeOrGetter[];
-  listItemNodeType: NodeTypeOrGetter;
+  listNodeTypes: NodeType[];
+  listItemNodeType: NodeType;
   reduce: number;
 }
 
@@ -16,11 +15,6 @@ export const indentListItem = (
     state: EditorState,
     dispatch?: (tr: Transaction) => void,
   ): boolean => {
-    const listNodeTypes = configs.listNodeTypes.map((maybeType) =>
-      parseNodeType(maybeType, state),
-    );
-    const listItemNodeType = parseNodeType(configs.listItemNodeType, state);
-
     let tr = state.tr;
     let selection = state.selection;
     const { $from, $to } = selection;
@@ -54,7 +48,7 @@ export const indentListItem = (
           6,
         );
 
-        if (node.type !== listItemNodeType) {
+        if (node.type !== configs.listItemNodeType) {
           const targetIndent = Math.max(expectedIndent, 0);
           if (targetIndent === originIndent) {
             return tr;
@@ -68,7 +62,7 @@ export const indentListItem = (
           const range = tr.doc
             .resolve(pos)
             .blockRange(tr.doc.resolve(pos + node.nodeSize), (node) => {
-              return listNodeTypes.includes(node.type);
+              return configs.listNodeTypes.includes(node.type);
             });
           return liftOutOfFlatList(tr, range!)!;
         }

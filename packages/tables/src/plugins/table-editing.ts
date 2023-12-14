@@ -3,8 +3,17 @@ import { edimTableCellButtonPlugins } from './cell-button';
 import { edimFocusedCellDecorationPlugins } from './focused-cell';
 import { Plugin as PMPlugin } from 'prosemirror-state';
 import { EdimTableNodeView } from '../node-views';
+import { NodeType } from 'prosemirror-model';
 
-export const edimTableEditingPlugins = () => {
+export interface EdimTableEditingPluginConfigs {
+  tableNodeType: NodeType;
+  tableRowNodeType: NodeType;
+  tableCellNodeType: NodeType;
+}
+
+export const edimTableEditingPlugins = (
+  configs: EdimTableEditingPluginConfigs,
+) => {
   return [
     ...edimFocusedCellDecorationPlugins(),
     ...edimTableCellButtonPlugins(),

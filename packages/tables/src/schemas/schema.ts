@@ -1,6 +1,10 @@
 import { AttributeSpec, Attrs, Node, NodeSpec } from 'prosemirror-model';
 import { MutableAttrs, TableRole } from 'prosemirror-tables';
 
+export const EDIM_TABLE_DEFAULT_NODE_NAME = 'table';
+export const EDIM_TABLE_ROW_DEFAULT_NODE_NAME = 'table_row';
+export const EDIM_TABLE_CELL_DEFAULT_NODE_NAME = 'table_cell';
+
 export interface TableNodeSpec extends NodeSpec {
   tableRole: TableRole;
 }

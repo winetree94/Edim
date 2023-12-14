@@ -50,7 +50,13 @@ import {
   EDIM_CODEBLOCK_NODE_NAME,
   edimCodeBlockPlugins,
 } from '@edim-editor/codeblock';
-import { edimTableEditingPlugins, edimTablePlugins } from '@edim-editor/tables';
+import {
+  EDIM_TABLE_CELL_DEFAULT_NODE_NAME,
+  EDIM_TABLE_DEFAULT_NODE_NAME,
+  EDIM_TABLE_ROW_DEFAULT_NODE_NAME,
+  edimTableEditingPlugins,
+  edimTablePlugins,
+} from '@edim-editor/tables';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 import { Schema } from 'prosemirror-model';
 
@@ -90,8 +96,16 @@ export const edimPresetPlugins = (
   ...edimCodeBlockPlugins({
     nodeType: configs.schema.nodes[EDIM_CODEBLOCK_NODE_NAME],
   }),
-  ...edimTablePlugins(),
-  ...edimTableEditingPlugins(),
+  ...edimTablePlugins({
+    tableNodeType: configs.schema.nodes[EDIM_TABLE_DEFAULT_NODE_NAME],
+    tableRowNodeType: configs.schema.nodes[EDIM_TABLE_ROW_DEFAULT_NODE_NAME],
+    tableCellNodeType: configs.schema.nodes[EDIM_TABLE_CELL_DEFAULT_NODE_NAME],
+  }),
+  ...edimTableEditingPlugins({
+    tableNodeType: configs.schema.nodes[EDIM_TABLE_DEFAULT_NODE_NAME],
+    tableRowNodeType: configs.schema.nodes[EDIM_TABLE_ROW_DEFAULT_NODE_NAME],
+    tableCellNodeType: configs.schema.nodes[EDIM_TABLE_CELL_DEFAULT_NODE_NAME],
+  }),
   ...edimItalicPlugins({
     markType: configs.schema.marks[EDIM_ITALIC_MARK_NAME],
   }),
@@ -113,6 +127,6 @@ export const edimPresetPlugins = (
   ...edimSuperscriptPlugins({
     markType: configs.schema.marks[EDIM_SUPERSCRIPT_MARK_NAME],
   }),
-  ...edimMenubarPlugins(),
+  ...edimMenubarPlugins({}),
   ...edimCorePlugins(),
 ];

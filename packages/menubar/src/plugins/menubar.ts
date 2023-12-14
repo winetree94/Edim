@@ -5,15 +5,19 @@ import { EditorView } from 'prosemirror-view';
 import { html } from '@edim-editor/ui';
 import { EdimMenubar } from '../components';
 
+export interface EdimMenubarPluginConfigs {}
+
 export class EdimMenubarView implements PluginView {
   public readonly editorRoot: HTMLDivElement;
   public readonly editorWrapper: HTMLDivElement;
   public readonly menubarWrapper: HTMLDivElement;
-  public readonly editorView: EditorView;
 
   public isScrollTop = false;
 
-  public constructor(editorView: EditorView) {
+  public constructor(
+    public readonly editorView: EditorView,
+    private readonly configs: EdimMenubarPluginConfigs,
+  ) {
     this.editorView = editorView;
 
     const editorRoot = document.createElement('div');
@@ -64,12 +68,13 @@ export class EdimMenubarView implements PluginView {
   }
 }
 
-export const edimMenubarPlugins = (): Plugin[] => {
-  return [
-    new Plugin({
-      view: (editorView) => {
-        return new EdimMenubarView(editorView);
-      },
-    }),
-  ];
+export const edimMenubarPlugins = (
+  configs: EdimMenubarPluginConfigs,
+): Plugin[] => {
+  const plugin = new Plugin({
+    view: (editorView) => {
+      return new EdimMenubarView(editorView, configs);
+    },
+  });
+  return [plugin];
 };
