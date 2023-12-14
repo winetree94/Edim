@@ -2,11 +2,11 @@ import { NodeType } from 'prosemirror-model';
 import { edimHorizontalKeymapPlugins } from './keymap';
 
 export interface EdimHorizontalRulePluginConfigs {
-  nodeType?: NodeType;
+  nodeType: NodeType;
 }
 
 export const edimHorizontalRulePlugins = (
-  configs?: EdimHorizontalRulePluginConfigs,
+  configs: EdimHorizontalRulePluginConfigs,
 ) => {
   return [...edimHorizontalKeymapPlugins(configs)];
 };

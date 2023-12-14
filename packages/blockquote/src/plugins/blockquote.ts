@@ -3,15 +3,14 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import { edimBlockquoteInputRulePlugins } from './input-rules';
 import { edimBlockquoteKeymapPlugins } from './keymaps';
 import { edimMergeAdjacentNodePlugins } from '@edim-editor/core';
-import { checkBlockquoteNodeType } from '../utils';
 
 export interface EdimBlockQuotePluginConfigs {
-  nodeType?: NodeType;
+  nodeType: NodeType;
   mergeAdjacentBlockquote?: boolean;
 }
 
 export const edimBlockQuotePlugins = (
-  configs?: EdimBlockQuotePluginConfigs,
+  configs: EdimBlockQuotePluginConfigs,
 ): PMPlugin[] => {
   const plugins: PMPlugin[] = [
     ...edimBlockquoteInputRulePlugins(configs),
@@ -23,7 +22,7 @@ export const edimBlockQuotePlugins = (
       ...edimMergeAdjacentNodePlugins({
         specs: [
           {
-            nodeType: checkBlockquoteNodeType(configs?.nodeType),
+            nodeType: configs.nodeType,
           },
         ],
       }),

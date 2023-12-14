@@ -1,21 +1,21 @@
 import { keymap } from 'prosemirror-keymap';
 import { NodeType } from 'prosemirror-model';
-import { checkHorizontalNodeType } from '../utils';
 
 export interface EdimHorizontalKeymapPluginConfigs {
-  nodeType?: NodeType;
+  nodeType: NodeType;
 }
 
 export const edimHorizontalKeymapPlugins = (
-  configs?: EdimHorizontalKeymapPluginConfigs,
+  configs: EdimHorizontalKeymapPluginConfigs,
 ) => {
   return [
     keymap({
       'Mod-_': (state, dispatch) => {
-        const nodeType = checkHorizontalNodeType(configs?.nodeType)(state);
         if (dispatch) {
           dispatch(
-            state.tr.replaceSelectionWith(nodeType.create()).scrollIntoView(),
+            state.tr
+              .replaceSelectionWith(configs.nodeType.create())
+              .scrollIntoView(),
           );
         }
         return true;
