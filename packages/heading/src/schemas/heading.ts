@@ -6,18 +6,47 @@ export const EDIM_DEFAULT_HEADING_LEVEL = 6;
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
-export interface HeadingAttributes {
+export interface EdimHeadingAttrs {
   level: HeadingLevel;
   indent: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   align: 'left' | 'right' | 'center' | null;
 }
 
-export const edimHeadingNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_HEADING_NODE_NAME]: {
+export interface EdimHeadingNodeSpec extends NodeSpec {
+  configs?: EdimHeadingNodeConfigs;
+}
+
+export interface EdimHeadingNodeConfigs {
+  allowIndent?: boolean;
+  allowAlign?: boolean;
+  level?: HeadingLevel[];
+}
+
+const EDIM_DEFAULT_HEADING_NODE_CONFIGS: Required<EdimHeadingNodeConfigs> = {
+  allowIndent: true,
+  allowAlign: true,
+  level: [1, 2, 3, 4, 5, 6],
+};
+
+export const edimHeadingNodes = (
+  configs?: EdimHeadingNodeConfigs,
+): Record<string, NodeSpec> => {
+  const _configs = {
+    ...EDIM_DEFAULT_HEADING_NODE_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     attrs: {
-      level: { default: 1 },
-      indent: { default: 0 },
-      align: { default: 'left' },
+      level: {
+        default: 1,
+      },
+      indent: {
+        default: 0,
+      },
+      align: {
+        default: 'left',
+      },
     },
     content: 'inline*',
     group: 'block',
@@ -37,7 +66,7 @@ export const edimHeadingNodes = (): Record<string, NodeSpec> => ({
       },
     })),
     toDOM(node) {
-      const attrs = node.attrs as HeadingAttributes;
+      const attrs = node.attrs as EdimHeadingAttrs;
       const classes = ['edim-heading'];
       classes.push(`edim-heading-indent-${attrs.indent}`);
       if (attrs.align) {
@@ -52,5 +81,9 @@ export const edimHeadingNodes = (): Record<string, NodeSpec> => ({
         0,
       ];
     },
-  },
-});
+  };
+
+  return {
+    [EDIM_HEADING_NODE_NAME]: nodeSpec,
+  };
+};

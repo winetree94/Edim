@@ -14,13 +14,13 @@ import { edimSuperscriptPlugins } from '@edim-editor/superscript';
 import { edimUnderlinePlugins } from '@edim-editor/underline';
 import { edimBlockQuotePlugins } from '@edim-editor/blockquote';
 import { edimCodeBlockPlugins } from '@edim-editor/codeblock';
-import { edimTableEditingPlugins, edimTablePlugins } from '../../../tables/dist';
+import { edimTableEditingPlugins, edimTablePlugins } from '@edim-editor/tables';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 
 export const edimPresetPlugins = (): PMPlugin[] => [
-  ...edimParagraphPlugins(),
   ...edimFlatListPlugins(),
   ...edimFlatTaskListPlugins(),
+  ...edimParagraphPlugins(),
   ...edimBlockQuotePlugins(),
   ...edimHorizontalRulePlugins(),
   ...edimHeadingPlugins(),
@@ -34,6 +34,6 @@ export const edimPresetPlugins = (): PMPlugin[] => [
   ...edimStrikethroughPlugins(),
   ...edimSubscriptPlugins(),
   ...edimSuperscriptPlugins(),
-  ...edimCorePlugins(),
   ...edimMenubarPlugins(),
+  ...edimCorePlugins(),
 ];

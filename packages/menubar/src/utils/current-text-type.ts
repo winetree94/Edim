@@ -1,5 +1,5 @@
 import { EditorState } from 'prosemirror-state';
-import { HeadingAttributes } from '@edim-editor/heading';
+import { EdimHeadingAttrs } from '@edim-editor/heading';
 
 export const getTextType = (state: EditorState) => {
   const { selection } = state;
@@ -9,7 +9,7 @@ export const getTextType = (state: EditorState) => {
     $from.parent === $to.parent &&
     $from.parent.type === state.schema.nodes['heading']
   ) {
-    const attrs = $from.parent.attrs as HeadingAttributes;
+    const attrs = $from.parent.attrs as EdimHeadingAttrs;
     return `h${attrs.level}`;
   }
 

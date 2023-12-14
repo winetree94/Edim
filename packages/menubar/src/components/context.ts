@@ -5,6 +5,7 @@ import { EditorView } from 'prosemirror-view';
 
 export interface EdimMenubarOptions {
   paragraphNodeType?: NodeType;
+  headingNodeType?: NodeType;
   flatOrderedListNodeType?: NodeType;
   flatBulletListNodeType?: NodeType;
   flatListItemNodeType?: NodeType;

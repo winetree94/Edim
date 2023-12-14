@@ -6,7 +6,7 @@ import {
   indentListItem,
   listItemBackspace,
 } from '@edim-editor/flat-list';
-import { checkTaskListNodeType } from '../utils';
+import { checkTaskListItemNodeType, checkTaskListNodeType } from '../utils';
 
 export interface EdimFlatTaskListKeymapPluginConfigs {
   taskListNodeType?: NodeType;
@@ -19,10 +19,10 @@ export const edimFlatTaskListKeymapPlugins = (
   return [
     keymap({
       Enter: splitListItem(
-        checkTaskListNodeType(configs?.taskListItemNodeType),
+        checkTaskListItemNodeType(configs?.taskListItemNodeType),
       ),
       'Shift-Enter': splitListItem(
-        checkTaskListNodeType(configs?.taskListItemNodeType),
+        checkTaskListItemNodeType(configs?.taskListItemNodeType),
       ),
       Tab: indentListItem({
         listNodeTypes: [checkTaskListNodeType(configs?.taskListNodeType)],

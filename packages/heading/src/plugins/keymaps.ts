@@ -2,7 +2,7 @@ import { setBlockType } from 'prosemirror-commands';
 import { keymap } from 'prosemirror-keymap';
 import { Node, NodeType } from 'prosemirror-model';
 import { Plugin as PMPlugin, Command, Transaction } from 'prosemirror-state';
-import { EDIM_DEFAULT_HEADING_LEVEL, HeadingAttributes } from '../schemas';
+import { EDIM_DEFAULT_HEADING_LEVEL, EdimHeadingAttrs } from '../schemas';
 import { checkHeadingNodeType } from '../utils';
 
 export interface EdimHeadingKeymapPluginConfigs {
@@ -51,7 +51,7 @@ export const edimHeadingKeymapPlugins = (
             return false;
           }
 
-          const attrs = node.attrs as HeadingAttributes;
+          const attrs = node.attrs as EdimHeadingAttrs;
           const targetIndent = Math.max(0, attrs.indent - 1);
 
           if (targetIndent === attrs.indent) {
@@ -111,7 +111,7 @@ export const edimHeadingKeymapPlugins = (
           }
 
           const tr = nodes.reduce<Transaction>((tr, node) => {
-            const attrs = node.node.attrs as HeadingAttributes;
+            const attrs = node.node.attrs as EdimHeadingAttrs;
             const targetIndent = Math.max(
               0,
               Math.min(attrs.indent + (shiftPressed ? -1 : 1), 6),

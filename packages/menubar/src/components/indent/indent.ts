@@ -31,17 +31,17 @@ export const EdimMenubarIndentButtons = () => {
   };
 
   return html`
-  <${EdimButton}
-  className="edim-icon-button"
-  onClick=${() => onDecreaseIndentClick()}
-  >
-  <i className="ri-indent-decrease" />
-</${EdimButton}>
-<${EdimButton}
-  className="edim-icon-button"
-  onClick=${() => onIncreaseIndentClick()}
-  >
-  <i className="ri-indent-increase" />
-</${EdimButton}>
+    <${EdimButton}
+      className="edim-icon-button"
+      onClick=${() => onDecreaseIndentClick()}
+      >
+      <i className="ri-indent-decrease" />
+    </${EdimButton}>
+    <${EdimButton}
+      className="edim-icon-button"
+      onClick=${() => onIncreaseIndentClick()}
+      >
+      <i className="ri-indent-increase" />
+    </${EdimButton}>
   `;
 };

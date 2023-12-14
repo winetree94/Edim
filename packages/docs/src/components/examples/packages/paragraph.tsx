@@ -15,7 +15,11 @@ import { edimMenubarPlugins } from '@edim-editor/menubar';
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes(),
+    ...edimParagraphNodes({
+      allowAlign: true,
+      allowIndent: true,
+      nodeName: 'paragraph',
+    }),
   },
 });
 

@@ -15,6 +15,7 @@ import { mac, transformRangeToBlock } from '@edim-editor/core';
 export const EdimMenubarTextTypeSelect = () => {
   const context = useContext(EdimMenubarContext);
   const textType = getTextType(context.editorView.state);
+
   const textTypeOptions = [
     ...([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((level) => ({
       value: `h${level}`,
