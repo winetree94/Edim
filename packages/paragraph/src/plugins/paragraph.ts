@@ -4,10 +4,22 @@ import { edimParagraphKeymapPlugins } from './keymaps';
 
 export interface EdimParagraphPluginConfigs {
   nodeType: NodeType;
+  shortcutKey?: string | false;
 }
 
 export const edimParagraphPlugins = (
   configs: EdimParagraphPluginConfigs,
 ): PMPlugin[] => {
-  return [...edimParagraphKeymapPlugins(configs)];
+  const plugins: PMPlugin[] = [];
+
+  if (configs.shortcutKey !== false) {
+    plugins.push(
+      ...edimParagraphKeymapPlugins({
+        nodeType: configs.nodeType,
+        shortcutKey: configs.shortcutKey,
+      }),
+    );
+  }
+
+  return plugins;
 };

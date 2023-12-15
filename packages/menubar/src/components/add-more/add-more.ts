@@ -1,9 +1,9 @@
 import { EdimMenubarContext } from '../context';
 import { useContext, useRef, useState } from 'preact/hooks';
 import { EdimLayer, EdimSelect, html } from '@edim-editor/ui';
-import { getRangeFirstAlignment } from '@edim-editor/paragraph';
 import { EdimLinkFormLayer, addLink } from '@edim-editor/link';
 import { Fragment } from 'preact';
+import { getRangeFirstAlignment } from '@edim-editor/core';
 
 export const EdimMenubarAddMoreSelect = () => {
   const context = useContext(EdimMenubarContext);

@@ -22,28 +22,38 @@ npm install @edim-editor/paragraph
 ## 사용 예시
 
 ```typescript title="src/index.ts"
-import { Plugin } from 'prosemirror-state';
+import { EditorState, Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import {
-  edimBaseNodes,
-  edimCorePlugins,
-} from '@edim-editor/core';
-import {
-  edimParagraphNodes,
-} from '@edim-editor/paragraph';
+import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
+
+const schema = new Schema({
+  nodes: {
+    ...edimBaseNodes(),
+    ...edimParagraphNodes({
+      allowAlign: true,
+      nodeName: 'paragraph',
+    }),
+  },
+});
+
+const plugins: Plugin[] = [
+  ...edimParagraphPlugins({
+    nodeType: schema.nodes.paragraph,
+    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
+  }),
+  ...edimMenubarPlugins({
+    align: {},
+  }),
+  ...edimCorePlugins(),
+];
 
 const view = new EditorView(document.querySelector('#editor'), {
   state: EditorState.create({
-    schema: new Schema({
-      nodes: {
-        ...edimBaseNodes(),
-        ...edimParagraphNodes(),
-      },
-    }),
-    plugins: [
-      ...edimCorePlugins()
-    ],
+    schema: schema,
+    plugins: plugins,
   }),
 });
 ```

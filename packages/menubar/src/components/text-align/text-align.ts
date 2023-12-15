@@ -2,10 +2,10 @@ import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import { EdimSelect, EdimSeparator, classes, html } from '@edim-editor/ui';
 import {
-  TextAlignment,
+  TEXT_ALIGNMENT,
   getRangeFirstAlignment,
-  setAlignment,
-} from '@edim-editor/paragraph';
+  setTextAlign,
+} from '@edim-editor/core';
 
 export const EdimMenubarTextAlignSelect = () => {
   const context = useContext(EdimMenubarContext);
@@ -17,21 +17,19 @@ export const EdimMenubarTextAlignSelect = () => {
   const firstAlignment =
     getRangeFirstAlignment(context.editorView.state) || 'left';
 
-  const alignmentOptions = (['left', 'center', 'right'] as TextAlignment[]).map(
-    (align) => {
-      return {
-        value: align,
-        icon: html`<i className="ri-align-${align}" />`,
-        command: () => {
-          setAlignment(align)(
-            context.editorView.state,
-            context.editorView.dispatch,
-          );
-          context.editorView.focus();
-        },
-      };
-    },
-  );
+  const alignmentOptions = Object.values(TEXT_ALIGNMENT).map((align) => {
+    return {
+      value: align,
+      icon: html`<i className="ri-align-${align}" />`,
+      command: () => {
+        setTextAlign(align)(
+          context.editorView.state,
+          context.editorView.dispatch,
+        );
+        context.editorView.focus();
+      },
+    };
+  });
 
   return html`
     <${EdimSelect.Root} 

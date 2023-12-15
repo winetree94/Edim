@@ -5,7 +5,7 @@ import {
 import { EditorState, Plugin } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
-import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
 import {
   edimParagraphNodes,
   edimParagraphPlugins,
@@ -25,6 +25,7 @@ const schema = new Schema({
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
     nodeType: schema.nodes.paragraph,
+    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
   }),
   ...edimMenubarPlugins({
     align: {},

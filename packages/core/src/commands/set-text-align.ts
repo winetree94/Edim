@@ -1,10 +1,17 @@
 import { Command, Transaction } from 'prosemirror-state';
-import { NodePair } from '@edim-editor/core';
+import { NodePair } from '../types';
 import { Attrs } from 'prosemirror-model';
 
-export type TextAlignment = 'left' | 'right' | 'center';
+export const TEXT_ALIGNMENT = {
+  LEFT: 'left',
+  RIGHT: 'right',
+  CENTER: 'center',
+} as const;
 
-export const setAlignment = (align: TextAlignment): Command => {
+export type TEXT_ALIGNMENTS =
+  (typeof TEXT_ALIGNMENT)[keyof typeof TEXT_ALIGNMENT];
+
+export const setTextAlign = (align: TEXT_ALIGNMENTS | null): Command => {
   return (state, dispatch) => {
     let selection = state.selection;
     let tr = state.tr;
@@ -25,7 +32,6 @@ export const setAlignment = (align: TextAlignment): Command => {
 
     tr = targetNodes.reduce<Transaction>((tr, { node, pos }) => {
       return tr.setNodeMarkup(pos, undefined, <Attrs>{
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         ...(node.attrs || {}),
         align: align,
       });
