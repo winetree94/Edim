@@ -15,6 +15,10 @@ import { getTextType } from '../../utils';
 export const EdimMenubarTextTypeSelect = () => {
   const context = useContext(EdimMenubarContext);
 
+  if (!context.options?.textType) {
+    return null;
+  }
+
   const paragraphNodeType = context.options?.textType?.paragraphNodeType;
   const headingNodeType = context.options?.textType?.headingNodeType;
 

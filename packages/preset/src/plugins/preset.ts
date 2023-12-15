@@ -1,4 +1,4 @@
-import { Plugin as PMPlugin } from 'prosemirror-state';
+import { Plugin as PMPlugin, Plugin } from 'prosemirror-state';
 import { edimCorePlugins } from '@edim-editor/core';
 import {
   EDIM_HEADING_DEFAULT_NODE_NAME,
@@ -83,7 +83,7 @@ export interface EdimPresetPluginConfigs {
 export const edimPresetPlugins = (
   configs: EdimPresetPluginConfigs,
 ): PMPlugin[] => {
-  return [
+  const plugins: Plugin[] = [
     ...edimParagraphPlugins({
       nodeType: configs.schema.nodes[EDIM_PARAGRAPH_DEFAULT_NODE_NAME],
     }),
@@ -156,4 +156,6 @@ export const edimPresetPlugins = (
     }),
     ...edimCorePlugins(),
   ];
+
+  return plugins;
 };

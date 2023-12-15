@@ -12,7 +12,9 @@ export interface EdimMenubarPluginConfigs {
     headingNodeType: NodeType;
     headingLevels: EdimHeadingLevel[];
   };
-  fontFamilyMarkType?: NodeType;
+  fontFamily?: {
+    fontFamilyMarkType?: NodeType;
+  };
   flatOrderedListNodeType?: NodeType;
   flatBulletListNodeType?: NodeType;
   flatListItemNodeType?: NodeType;
