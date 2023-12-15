@@ -34,8 +34,19 @@ export interface EdimMenubarPluginConfigs {
     flatBulletListNodeType: NodeType;
     flatListItemNodeType: NodeType;
   };
-  flatTaskListNodeType?: NodeType;
-  flatTaskListItemNodeType?: NodeType;
+  taskList?: {
+    flatTaskListNodeType: NodeType;
+    flatTaskListItemNodeType: NodeType;
+  };
+  blockquote?: {
+    blockQuoteNodeType: NodeType;
+  };
+  codeblock?: {
+    codeBlockNodeType: NodeType;
+  };
+  table?: {
+    tableNodeType: NodeType;
+  };
   blockQuoteNodeType?: NodeType;
   codeBlockNodeType?: NodeType;
   tableNodeType?: NodeType;

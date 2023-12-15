@@ -1,7 +1,5 @@
 import { forwardRef } from 'preact/compat';
-import { setBlockType } from 'prosemirror-commands';
-import { EdimSeparator, EdimButton, classes, html } from '@edim-editor/ui';
-import { insertTable } from '@edim-editor/tables';
+import { EdimSeparator, classes, html } from '@edim-editor/ui';
 import { EdimMenubarContext, EdimMenubarContextType } from './context';
 import { EdimMenubarTextTypeSelect } from './text-type';
 import { EdimMenubarFontFamilySelect } from './font-family';
@@ -11,6 +9,9 @@ import { EdimMenubarTextAlignSelect } from './text-align';
 import { EdimMenubarListToggleButtons } from './list';
 import { EdimMenubarAddMoreSelect } from './add-more';
 import { EdimMenubarTaskListToggleButtons } from './task-list';
+import { EdimMenubarBlockquoteToggleButtons } from './blockquote';
+import { EdimMenubarCodeblockToggleButtons } from './codeblock';
+import { EdimMenubarTableButtons } from './table';
 
 export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
   const useTextType = !!props.options.textType;
@@ -38,34 +39,9 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
         <${EdimMenubarListToggleButtons} />
 
         <${EdimMenubarTaskListToggleButtons} />
-        <${EdimButton}
-          className="edim-icon-button"
-          onClick=${() => {
-            setBlockType(props.editorView.state.schema.nodes['blockquote'])(
-              props.editorView.state,
-              props.editorView.dispatch,
-            );
-          }}>
-          <i class="ri-double-quotes-r"></i>
-        </${EdimButton}>
-        <${EdimButton}
-          className="edim-icon-button"
-          onClick=${() => {
-            setBlockType(props.editorView.state.schema.nodes['code_block'])(
-              props.editorView.state,
-              props.editorView.dispatch,
-            );
-          }}>
-          <i class="ri-code-s-slash-line"></i>
-        </${EdimButton}>
-        <${EdimButton}
-          className="edim-icon-button"
-          onClick=${() => {
-            insertTable()(props.editorView.state, props.editorView.dispatch);
-            props.editorView.focus();
-          }}>
-          <i class="ri-table-2"></i>
-        </${EdimButton}>
+        <${EdimMenubarBlockquoteToggleButtons} />
+        <${EdimMenubarCodeblockToggleButtons} />
+        <${EdimMenubarTableButtons} />
         <${EdimMenubarAddMoreSelect} />
       </div>
     </${EdimMenubarContext.Provider}>

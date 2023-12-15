@@ -3,38 +3,31 @@ import { useContext } from 'preact/hooks';
 import { EdimButton, html } from '@edim-editor/ui';
 import { toggleList } from '@edim-editor/flat-list';
 import { findParentNode } from 'prosemirror-utils';
-import {
-  EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME,
-  EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME,
-} from '@edim-editor/flat-task-list';
 
 export const EdimMenubarTaskListToggleButtons = () => {
   const context = useContext(EdimMenubarContext);
 
-  const useTaskList =
-    context.editorState.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME];
-  const useTaskListItem =
-    context.editorState.schema.nodes[
-      EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME
-    ];
-
-  if (!useTaskList || !useTaskListItem) {
+  if (!context.options.taskList) {
     return null;
   }
 
+  const taskListNodeType = context.options.taskList.flatTaskListNodeType;
+  const taskListItemNodeType =
+    context.options.taskList.flatTaskListItemNodeType;
+
   const canTaskList = toggleList({
-    listType: context.editorView.state.schema.nodes['task_list'],
-    listItemType: context.editorView.state.schema.nodes['task_list_item'],
+    listType: taskListNodeType,
+    listItemType: taskListItemNodeType,
   })(context.editorView.state);
 
   const activeOrderedList = !!findParentNode(
-    (node) => node.type === context.editorView.state.schema.nodes['task_list'],
+    (node) => node.type === taskListNodeType,
   )(context.editorView.state.selection);
 
   const onTaskListClick = (): void => {
     toggleList({
-      listType: context.editorView.state.schema.nodes['task_list'],
-      listItemType: context.editorView.state.schema.nodes['task_list_item'],
+      listType: taskListNodeType,
+      listItemType: taskListItemNodeType,
     })(context.editorView.state, context.editorView.dispatch);
     context.editorView.focus();
   };

@@ -182,6 +182,18 @@ export const edimPresetPlugins = (
         flatListItemNodeType:
           configs.schema.nodes[EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME],
       },
+      taskList: {
+        flatTaskListNodeType:
+          configs.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME],
+        flatTaskListItemNodeType:
+          configs.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME],
+      },
+      blockquote: {
+        blockQuoteNodeType: configs.schema.nodes[EDIM_BLOCKQUOTE_NODE_NAME],
+      },
+      codeblock: {
+        codeBlockNodeType: configs.schema.nodes[EDIM_CODEBLOCK_NODE_NAME],
+      },
     }),
     ...edimCorePlugins(),
   ];

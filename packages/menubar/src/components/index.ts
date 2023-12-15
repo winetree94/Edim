@@ -6,5 +6,6 @@ export * from './marks';
 export * from './list';
 export * from './menubar';
 export * from './context';
+export * from './blockquote';
 export * from './add-more';
 export * from './task-list';
