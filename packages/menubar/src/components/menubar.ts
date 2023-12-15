@@ -22,50 +22,52 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
       editorState: props.editorState,
       options: props.options,
     }}">
-    <div className=${classes('edim-view-menubar-wrapper')}>
-      <${EdimMenubarTextTypeSelect} />
-      <${EdimMenubarFontFamilySelect} />
-      ${
-        useTextType || useFontFamily
-          ? html` <${EdimSeparator} className="edim-view-menubar-separator" /> `
-          : null
-      }
-      <${EdimMenubarMarkToggleButtons} />
-      <${EdimMenubarFontColorSelect} />
-      <${EdimMenubarTextAlignSelect} />
-      <${EdimMenubarListToggleButtons} />
+      <div className=${classes('edim-view-menubar-wrapper')}>
+        <${EdimMenubarTextTypeSelect} />
+        <${EdimMenubarFontFamilySelect} />
+        ${
+          useTextType || useFontFamily
+            ? html`
+                <${EdimSeparator} className="edim-view-menubar-separator" />
+              `
+            : null
+        }
+        <${EdimMenubarMarkToggleButtons} />
+        <${EdimMenubarFontColorSelect} />
+        <${EdimMenubarTextAlignSelect} />
+        <${EdimMenubarListToggleButtons} />
 
-      <${EdimMenubarTaskListToggleButtons} />
-      <${EdimButton}
-        className="edim-icon-button"
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['blockquote'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-        }}>
-        <i class="ri-double-quotes-r"></i>
-      </${EdimButton}>
-      <${EdimButton}
-        className="edim-icon-button"
-        onClick=${() => {
-          setBlockType(props.editorView.state.schema.nodes['code_block'])(
-            props.editorView.state,
-            props.editorView.dispatch,
-          );
-        }}>
-        <i class="ri-code-s-slash-line"></i>
-      </${EdimButton}>
-      <${EdimButton}
-        className="edim-icon-button"
-        onClick=${() => {
-          insertTable()(props.editorView.state, props.editorView.dispatch);
-          props.editorView.focus();
-        }}>
-        <i class="ri-table-2"></i>
-      </${EdimButton}>
-      <${EdimMenubarAddMoreSelect} />
-    </div>
+        <${EdimMenubarTaskListToggleButtons} />
+        <${EdimButton}
+          className="edim-icon-button"
+          onClick=${() => {
+            setBlockType(props.editorView.state.schema.nodes['blockquote'])(
+              props.editorView.state,
+              props.editorView.dispatch,
+            );
+          }}>
+          <i class="ri-double-quotes-r"></i>
+        </${EdimButton}>
+        <${EdimButton}
+          className="edim-icon-button"
+          onClick=${() => {
+            setBlockType(props.editorView.state.schema.nodes['code_block'])(
+              props.editorView.state,
+              props.editorView.dispatch,
+            );
+          }}>
+          <i class="ri-code-s-slash-line"></i>
+        </${EdimButton}>
+        <${EdimButton}
+          className="edim-icon-button"
+          onClick=${() => {
+            insertTable()(props.editorView.state, props.editorView.dispatch);
+            props.editorView.focus();
+          }}>
+          <i class="ri-table-2"></i>
+        </${EdimButton}>
+        <${EdimMenubarAddMoreSelect} />
+      </div>
     </${EdimMenubarContext.Provider}>
   `;
 });
