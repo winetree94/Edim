@@ -7,11 +7,11 @@ import { EdimMenubarMarkToggleButtons } from './marks';
 import { EdimMenubarFontColorSelect } from './font-color';
 import { EdimMenubarTextAlignSelect } from './text-align';
 import { EdimMenubarListToggleButtons } from './list';
-import { EdimMenubarAddMoreSelect } from './add-more';
 import { EdimMenubarTaskListToggleButtons } from './task-list';
 import { EdimMenubarBlockquoteToggleButtons } from './blockquote';
 import { EdimMenubarCodeblockToggleButtons } from './codeblock';
 import { EdimMenubarTableButtons } from './table';
+import { EdimMenubarLinkButton } from './link';
 
 export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
   const useTextType = !!props.options.textType;
@@ -42,7 +42,7 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
         <${EdimMenubarBlockquoteToggleButtons} />
         <${EdimMenubarCodeblockToggleButtons} />
         <${EdimMenubarTableButtons} />
-        <${EdimMenubarAddMoreSelect} />
+        <${EdimMenubarLinkButton} />
       </div>
     </${EdimMenubarContext.Provider}>
   `;

@@ -1,7 +1,9 @@
 import { MarkSpec } from 'prosemirror-model';
 
+export const EDIM_LINK_DEFAULT_MARK_NAME = 'link';
+
 export const edimLinkMarks = (): Record<string, MarkSpec> => ({
-  link: {
+  [EDIM_LINK_DEFAULT_MARK_NAME]: {
     attrs: {
       href: { default: null },
       title: { default: null },

@@ -47,10 +47,9 @@ export interface EdimMenubarPluginConfigs {
   table?: {
     tableNodeType: NodeType;
   };
-  blockQuoteNodeType?: NodeType;
-  codeBlockNodeType?: NodeType;
-  tableNodeType?: NodeType;
-  linkNodeType?: NodeType;
+  link?: {
+    linkMarkType: MarkType;
+  };
   translates?: {}
 }
 

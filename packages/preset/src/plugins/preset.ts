@@ -68,6 +68,7 @@ import {
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 import { Schema } from 'prosemirror-model';
 import { EDIM_FONT_FAMILY_DEFAULT_MARK_NAME } from '@edim-editor/font-family';
+import { EDIM_LINK_DEFAULT_MARK_NAME } from '@edim-editor/link';
 
 export interface EdimPresetPluginConfigs {
   schema: Schema;
@@ -193,6 +194,12 @@ export const edimPresetPlugins = (
       },
       codeblock: {
         codeBlockNodeType: configs.schema.nodes[EDIM_CODEBLOCK_NODE_NAME],
+      },
+      table: {
+        tableNodeType: configs.schema.nodes[EDIM_TABLE_DEFAULT_NODE_NAME],
+      },
+      link: {
+        linkMarkType: configs.schema.marks[EDIM_LINK_DEFAULT_MARK_NAME],
       },
     }),
     ...edimCorePlugins(),
