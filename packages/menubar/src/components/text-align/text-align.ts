@@ -10,11 +10,7 @@ import {
 export const EdimMenubarTextAlignSelect = () => {
   const context = useContext(EdimMenubarContext);
 
-  const hasAlignableNode = Object.values(context.editorState.schema.nodes).some(
-    (nodeSpec) => !!nodeSpec.spec.attrs?.['align'],
-  );
-
-  if (!hasAlignableNode) {
+  if (!context.options.align) {
     return null;
   }
 

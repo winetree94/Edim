@@ -4,6 +4,7 @@ import {
   COLORS,
   EdimColor,
   EdimSelect,
+  EdimSeparator,
   classes,
   html,
 } from '@edim-editor/ui';
@@ -56,6 +57,12 @@ const currentTextColor = (state: EditorState): string | null => {
 
 export const EdimMenubarFontColorSelect = () => {
   const context = useContext(EdimMenubarContext);
+
+  if (!context.options.textColor) {
+    return null;
+  }
+
+  const textColorMarkType = context.options.textColor.textColorMarkType;
   const currentColor = currentTextColor(context.editorView.state);
 
   return html`
@@ -65,7 +72,7 @@ export const EdimMenubarFontColorSelect = () => {
       onChange="${(color: string) => {
         const { from, to } = context.editorView.state.tr.selection;
         if (from === to) {
-          toggleMark(context.editorView.state.schema.marks['text_color'], {
+          toggleMark(textColorMarkType, {
             color,
           })(context.editorView.state, context.editorView.dispatch);
           context.editorView.focus();
@@ -75,7 +82,7 @@ export const EdimMenubarFontColorSelect = () => {
         tr = tr.addMark(
           from,
           to,
-          context.editorView.state.schema.marks['text_color'].create({
+          textColorMarkType.create({
             color,
           }),
         );
@@ -109,5 +116,6 @@ export const EdimMenubarFontColorSelect = () => {
       )}
       </${EdimSelect.OptionGroup}>
     </${EdimSelect.Root}>
+    <${EdimSeparator} className="edim-view-menubar-separator" />
   `;
 };

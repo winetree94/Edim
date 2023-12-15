@@ -1,14 +1,6 @@
 import { forwardRef } from 'preact/compat';
-import { useRef, useState } from 'preact/hooks';
 import { setBlockType } from 'prosemirror-commands';
-import {
-  EdimLayer,
-  EdimSeparator,
-  EdimButton,
-  classes,
-  html,
-  EdimEmojiPicker,
-} from '@edim-editor/ui';
+import { EdimSeparator, EdimButton, classes, html } from '@edim-editor/ui';
 import { insertTable } from '@edim-editor/tables';
 import { EdimMenubarContext, EdimMenubarContextType } from './context';
 import { EdimMenubarTextTypeSelect } from './text-type';
@@ -21,12 +13,8 @@ import { EdimMenubarAddMoreSelect } from './add-more';
 import { EdimMenubarTaskListToggleButtons } from './task-list';
 
 export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
-  const [emojiLayerRef, setEmojiLayerRef] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
-
-  const emojiButtonRef = useRef<HTMLButtonElement>(null);
+  const useTextType = !!props.options.textType;
+  const useFontFamily = !!props.options.fontFamily;
 
   return html`
     <${EdimMenubarContext.Provider} value="${{
@@ -36,26 +24,14 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
     }}">
     <div className=${classes('edim-view-menubar-wrapper')}>
       <${EdimMenubarTextTypeSelect} />
+      <${EdimMenubarFontFamilySelect} />
       ${
-        props.editorView.state.schema.marks['font_family'] &&
-        html` <${EdimMenubarFontFamilySelect} /> `
-      }
-      ${
-        props.editorView.state.schema.nodes['heading'] ||
-        props.editorView.state.schema.marks['font_family']
+        useTextType || useFontFamily
           ? html` <${EdimSeparator} className="edim-view-menubar-separator" /> `
           : null
       }
       <${EdimMenubarMarkToggleButtons} />
-
-      ${
-        props.editorView.state.schema.marks['text_color'] &&
-        html`
-          <${EdimMenubarFontColorSelect} />
-          <${EdimSeparator} className="edim-view-menubar-separator" />
-        `
-      }
-
+      <${EdimMenubarFontColorSelect} />
       <${EdimMenubarTextAlignSelect} />
       <${EdimMenubarListToggleButtons} />
 
@@ -88,38 +64,6 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
         }}>
         <i class="ri-table-2"></i>
       </${EdimButton}>
-
-      ${
-        props.editorState.schema.nodes['emoji'] &&
-        html`
-        <${EdimButton}
-          className="edim-icon-button"
-          ref=${emojiButtonRef} onClick=${() => {
-            const rect = emojiButtonRef.current!.getBoundingClientRect();
-            setEmojiLayerRef({
-              top: rect.top + rect.height + 10,
-              left: rect.left,
-            });
-          }}>
-          <i className="ri-emoji-sticker-line" />
-        </${EdimButton}>
-      `
-      }
-      ${
-        emojiLayerRef &&
-        html`
-        <${EdimLayer}
-          top=${emojiLayerRef.top}
-          left=${emojiLayerRef.left}
-          closeOnEsc=${true}
-          outerMousedown=${() => setEmojiLayerRef(null)}
-          onClose=${() => setEmojiLayerRef(null)}
-          >
-          <${EdimEmojiPicker} size=${32} gap=${1}>emoji</${EdimEmojiPicker}>
-        </${EdimLayer}>
-      `
-      }
-
       <${EdimMenubarAddMoreSelect} />
     </div>
     </${EdimMenubarContext.Provider}>

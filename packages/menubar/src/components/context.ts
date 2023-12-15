@@ -6,10 +6,11 @@ import { EditorView } from 'prosemirror-view';
 export interface EdimMenubarContextType {
   editorView: EditorView;
   editorState: EditorState;
-  options?: EdimMenubarPluginConfigs;
+  options: EdimMenubarPluginConfigs;
 }
 
 export const EdimMenubarContext = createContext<EdimMenubarContextType>({
   editorView: null as any,
   editorState: null as any,
+  options: null as any,
 });

@@ -1,5 +1,7 @@
 import { MarkSpec, MarkType } from 'prosemirror-model';
 
+export const EDIM_FONT_FAMILY_DEFAULT_MARK_NAME = 'font_family';
+
 export interface EdimFontFamilyAttrs {
   fontFamily: string | null;
 }
@@ -17,8 +19,11 @@ export interface EdimFontFamilyMarkType extends MarkType {
   spec: EdimFontFamilyMarkSpec;
 }
 
-export const edimFontFamilyMarks = (): Record<string, EdimFontFamilyMarkSpec> => ({
-  font_family: {
+export const edimFontFamilyMarks = (): Record<
+  string,
+  EdimFontFamilyMarkSpec
+> => ({
+  [EDIM_FONT_FAMILY_DEFAULT_MARK_NAME]: {
     fonts: [
       {
         fontFamily: 'Noto Sans KR',

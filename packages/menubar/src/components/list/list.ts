@@ -1,28 +1,19 @@
 import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import { EdimButton, EdimSeparator, html } from '@edim-editor/ui';
-import {
-  EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME,
-  EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME,
-  EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME,
-  indentListItem,
-  toggleList,
-} from '@edim-editor/flat-list';
+import { indentListItem, toggleList } from '@edim-editor/flat-list';
 import { findParentNode } from 'prosemirror-utils';
 
 export const EdimMenubarListToggleButtons = () => {
   const context = useContext(EdimMenubarContext);
 
-  const orderedListNodeType =
-    context.editorState.schema.nodes[EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME];
-  const bulletListNodeType =
-    context.editorState.schema.nodes[EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME];
-  const listItemNodeType =
-    context.editorState.schema.nodes[EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME];
-
-  if ((!orderedListNodeType && !bulletListNodeType) || !listItemNodeType) {
+  if (!context.options.list) {
     return null;
   }
+
+  const orderedListNodeType = context.options.list.flatOrderedListNodeType;
+  const bulletListNodeType = context.options.list.flatBulletListNodeType;
+  const listItemNodeType = context.options.list.flatListItemNodeType;
 
   const canOrderedList =
     orderedListNodeType &&

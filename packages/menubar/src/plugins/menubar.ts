@@ -3,7 +3,7 @@ import { EditorState, Plugin, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { html } from '@edim-editor/ui';
 import { EdimMenubar } from '../components';
-import { NodeType } from 'prosemirror-model';
+import { MarkType, NodeType } from 'prosemirror-model';
 import { EdimHeadingLevel } from '@edim-editor/heading';
 
 export interface EdimMenubarPluginConfigs {
@@ -13,17 +13,34 @@ export interface EdimMenubarPluginConfigs {
     headingLevels: EdimHeadingLevel[];
   };
   fontFamily?: {
-    fontFamilyMarkType?: NodeType;
+    fontFamilyMarkType?: MarkType;
   };
-  flatOrderedListNodeType?: NodeType;
-  flatBulletListNodeType?: NodeType;
-  flatListItemNodeType?: NodeType;
+  textStyles?: {
+    boldMarkType?: MarkType;
+    italicMarkType?: MarkType;
+    underlineMarkType?: MarkType;
+    strikethroughMarkType?: MarkType;
+    codeMarkType?: MarkType;
+    subscriptMarkType?: MarkType;
+    superscriptMarkType?: MarkType;
+    useClearBUtton?: boolean;
+  };
+  textColor?: {
+    textColorMarkType: MarkType;
+  };
+  align?: {},
+  list?: {
+    flatOrderedListNodeType: NodeType;
+    flatBulletListNodeType: NodeType;
+    flatListItemNodeType: NodeType;
+  };
   flatTaskListNodeType?: NodeType;
   flatTaskListItemNodeType?: NodeType;
   blockQuoteNodeType?: NodeType;
   codeBlockNodeType?: NodeType;
   tableNodeType?: NodeType;
   linkNodeType?: NodeType;
+  translates?: {}
 }
 
 export class EdimMenubarView implements PluginView {

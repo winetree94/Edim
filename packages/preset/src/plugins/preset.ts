@@ -67,6 +67,7 @@ import {
 } from '@edim-editor/tables';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 import { Schema } from 'prosemirror-model';
+import { EDIM_FONT_FAMILY_DEFAULT_MARK_NAME } from '@edim-editor/font-family';
 
 export interface EdimPresetPluginConfigs {
   schema: Schema;
@@ -152,6 +153,34 @@ export const edimPresetPlugins = (
           configs.schema.nodes[EDIM_PARAGRAPH_DEFAULT_NODE_NAME],
         headingNodeType: configs.schema.nodes[EDIM_HEADING_DEFAULT_NODE_NAME],
         headingLevels: [1, 2, 3, 4, 5, 6],
+      },
+      fontFamily: {
+        fontFamilyMarkType:
+          configs.schema.marks[EDIM_FONT_FAMILY_DEFAULT_MARK_NAME],
+      },
+      textStyles: {
+        boldMarkType: configs.schema.marks[EDIM_BOLD_MARK_NAME],
+        italicMarkType: configs.schema.marks[EDIM_ITALIC_MARK_NAME],
+        underlineMarkType: configs.schema.marks[EDIM_UNDERLINE_MARK_NAME],
+        strikethroughMarkType:
+          configs.schema.marks[EDIM_STRIKETHROUGH_MARK_NAME],
+        codeMarkType: configs.schema.marks[EDIM_CODE_MARK_NAME],
+        subscriptMarkType: configs.schema.marks[EDIM_SUBSCRIPT_MARK_NAME],
+        superscriptMarkType: configs.schema.marks[EDIM_SUPERSCRIPT_MARK_NAME],
+        useClearBUtton: true,
+      },
+      textColor: {
+        textColorMarkType:
+          configs.schema.marks[EDIM_FONT_FAMILY_DEFAULT_MARK_NAME],
+      },
+      align: {},
+      list: {
+        flatOrderedListNodeType:
+          configs.schema.nodes[EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME],
+        flatBulletListNodeType:
+          configs.schema.nodes[EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME],
+        flatListItemNodeType:
+          configs.schema.nodes[EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME],
       },
     }),
     ...edimCorePlugins(),

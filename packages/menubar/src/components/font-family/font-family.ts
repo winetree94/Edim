@@ -6,6 +6,11 @@ import { EdimFontFamilyMarkType } from '@edim-editor/font-family';
 
 export const EdimMenubarFontFamilySelect = () => {
   const context = useContext(EdimMenubarContext);
+
+  if (!context.options?.fontFamily) {
+    return null;
+  }
+
   const fontFamilyMarkType = context.editorView.state.schema.marks[
     'font_family'
   ] as EdimFontFamilyMarkType;

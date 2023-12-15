@@ -19,13 +19,8 @@ export const EdimMenubarTextTypeSelect = () => {
     return null;
   }
 
-  const paragraphNodeType = context.options?.textType?.paragraphNodeType;
-  const headingNodeType = context.options?.textType?.headingNodeType;
-
-  if (!paragraphNodeType || !headingNodeType) {
-    return null;
-  }
-
+  const paragraphNodeType = context.options.textType.paragraphNodeType;
+  const headingNodeType = context.options.textType.headingNodeType;
   const textType = getTextType(context.editorView.state);
 
   const textTypeOptions = [
