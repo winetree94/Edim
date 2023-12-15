@@ -7,6 +7,7 @@ import { MarkType, NodeType } from 'prosemirror-model';
 import { EdimHeadingLevel } from '@edim-editor/heading';
 
 export interface EdimMenubarPluginConfigs {
+  position?: 'top' | 'bottom';
   textType?: {
     paragraphNodeType: NodeType;
     headingNodeType: NodeType;
@@ -28,7 +29,7 @@ export interface EdimMenubarPluginConfigs {
   textColor?: {
     textColorMarkType: MarkType;
   };
-  align?: {},
+  align?: {};
   list?: {
     flatOrderedListNodeType: NodeType;
     flatBulletListNodeType: NodeType;
@@ -50,7 +51,7 @@ export interface EdimMenubarPluginConfigs {
   link?: {
     linkMarkType: MarkType;
   };
-  translates?: {}
+  translates?: {};
 }
 
 export class EdimMenubarView implements PluginView {
@@ -83,9 +84,17 @@ export class EdimMenubarView implements PluginView {
     const originIndex = Array.from(originParent.children).indexOf(
       editorView.dom,
     );
-    this.editorRoot.appendChild(this.menubarWrapper);
-    this.editorRoot.appendChild(this.editorWrapper);
+
+    if (configs.position === 'bottom') {
+      this.editorRoot.appendChild(this.editorWrapper);
+      this.editorRoot.appendChild(this.menubarWrapper);
+      this.menubarWrapper.classList.add('bottom');
+    } else {
+      this.editorRoot.appendChild(this.menubarWrapper);
+      this.editorRoot.appendChild(this.editorWrapper);
+    }
     this.editorWrapper.appendChild(editorView.dom);
+
     originParent.insertBefore(
       this.editorRoot,
       originParent.children[originIndex],

@@ -26,7 +26,9 @@ const plugins: Plugin[] = [
   ...edimParagraphPlugins({
     nodeType: schema.nodes.paragraph,
   }),
-  ...edimMenubarPlugins({}),
+  ...edimMenubarPlugins({
+    align: {},
+  }),
   ...edimCorePlugins(),
 ];
 
