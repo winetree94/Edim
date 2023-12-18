@@ -17,16 +17,9 @@
   "types": "dist/index.d.ts",
   "private": true,
   "dependencies": {
-    "prosemirror-state": "*",
-    "prosemirror-view": "*",
-    "prosemirror-model": "*",
-    "prosemirror-keymap": "*",
-    "prosemirror-commands": "*",
-    "prosemirror-history": "*",
-    "prosemirror-utils": "*",
-    "preact": "*",
-    "htm": "*",
-    "remixicon": "^3.5.0"
+    "preact": ">=10.0.0",
+    "htm": ">=3.0.0",
+    "remixicon": ">=3.0.0"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

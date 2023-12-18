@@ -25,7 +25,8 @@
     "prosemirror-inputrules": "*",
     "prosemirror-history": "*",
     "prosemirror-gapcursor": "*",
-    "prosemirror-dropcursor": "*"
+    "prosemirror-dropcursor": "*",
+    "@edim-editor/ui": "*"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",

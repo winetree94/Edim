@@ -38,10 +38,10 @@
     "@edim-editor/text-color": "*",
     "@edim-editor/font-family": "*",
     "@edim-editor/ui": "*",
-    "emoji-datasource": "15.0.1",
-    "preact": "*",
-    "htm": "*",
-    "remixicon": "^3.5.0"
+    "emoji-datasource": ">=15.0.0",
+    "preact": ">=10.0.0",
+    "htm": ">=3.0.0",
+    "remixicon": ">=3.0.0"
   },
   "devDependencies": {
     "rimraf": "^5.0.5",
