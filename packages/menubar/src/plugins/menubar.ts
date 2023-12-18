@@ -11,7 +11,7 @@ export interface EdimMenubarPluginConfigs {
   textType?: {
     paragraphNodeType: NodeType;
     headingNodeType: NodeType;
-    headingLevels: EdimHeadingLevel[];
+    headingLevels?: EdimHeadingLevel[];
   };
   fontFamily?: {
     fontFamilyMarkType?: MarkType;
