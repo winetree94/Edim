@@ -1,1 +1,1 @@
-export * from './strong';
+export * from './bold';

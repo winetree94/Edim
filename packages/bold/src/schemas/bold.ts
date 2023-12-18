@@ -1,8 +1,7 @@
-import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
+import { MarkSpec } from 'prosemirror-model';
 
-export const EDIM_BOLD_MARK_NAME = 'strong';
+export const EDIM_BOLD_MARK_NAME = 'bold';
 
-const boldDOM: DOMOutputSpec = ['strong', 0];
 export const edimBoldMarks = (): Record<string, MarkSpec> => ({
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
@@ -29,7 +28,7 @@ export const edimBoldMarks = (): Record<string, MarkSpec> => ({
       },
     ],
     toDOM() {
-      return boldDOM;
+      return ['strong', 0];
     },
   },
 });

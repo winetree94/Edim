@@ -3,7 +3,7 @@ import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
 export const EDIM_STRIKETHROUGH_MARK_NAME = 'strikethrough';
 
 const strikethroughDOM: DOMOutputSpec = ['s', 0];
-export const edimStrikeThroughMarks = (): Record<string, MarkSpec> => ({
+export const edimStrikethroughMarks = (): Record<string, MarkSpec> => ({
   [EDIM_STRIKETHROUGH_MARK_NAME]: {
     parseDOM: [{ tag: 's' }],
     toDOM() {

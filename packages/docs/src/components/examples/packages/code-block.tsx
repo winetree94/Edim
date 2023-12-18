@@ -5,54 +5,43 @@ import {
 import { EditorState, Plugin } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import {
   edimParagraphNodes,
   edimParagraphPlugins,
 } from '@edim-editor/paragraph';
-import {
-  edimFlatOrderedListNodes,
-  edimFlatBulletListNodes,
-  edimFlatListItemNodes,
-  edimFlatListPlugins,
-} from '@edim-editor/flat-list';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import {
+  edimCodeBlockNodes,
+  edimCodeBlockPlugins,
+} from '@edim-editor/codeblock';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+    ...edimCodeBlockNodes({
+      nodeName: 'code_block',
     }),
-    ...edimFlatOrderedListNodes(),
-    ...edimFlatBulletListNodes(),
-    ...edimFlatListItemNodes(),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
     nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
   }),
-  ...edimFlatListPlugins({
-    bulletListNodeType: schema.nodes.bullet_list,
-    orderedListNodeType: schema.nodes.ordered_list,
-    listItemNodeType: schema.nodes.list_item,
+  ...edimCodeBlockPlugins({
+    nodeType: schema.nodes.code_block,
   }),
   ...edimMenubarPlugins({
-    list: {
-      flatOrderedListNodeType: schema.nodes.ordered_list,
-      flatBulletListNodeType: schema.nodes.bullet_list,
-      flatListItemNodeType: schema.nodes.list_item,
+    codeblock: {
+      codeBlockNodeType: schema.nodes.code_block,
     },
-    align: {},
   }),
   ...edimCorePlugins(),
 ];
 
-export const FlatListExample = (props: ProseMirrorProps) => {
+export const CodeBlockExample = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
       doc: schema.nodeFromJSON({

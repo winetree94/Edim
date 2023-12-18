@@ -5,54 +5,45 @@ import {
 import { EditorState, Plugin } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import {
   edimParagraphNodes,
   edimParagraphPlugins,
 } from '@edim-editor/paragraph';
-import {
-  edimFlatOrderedListNodes,
-  edimFlatBulletListNodes,
-  edimFlatListItemNodes,
-  edimFlatListPlugins,
-} from '@edim-editor/flat-list';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import {
+  edimBlockQuotePlugins,
+  edimBlockquoteNodes,
+} from '@edim-editor/blockquote';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+    ...edimBlockquoteNodes({
+      multiline: true,
     }),
-    ...edimFlatOrderedListNodes(),
-    ...edimFlatBulletListNodes(),
-    ...edimFlatListItemNodes(),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
     nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
   }),
-  ...edimFlatListPlugins({
-    bulletListNodeType: schema.nodes.bullet_list,
-    orderedListNodeType: schema.nodes.ordered_list,
-    listItemNodeType: schema.nodes.list_item,
+  ...edimBlockQuotePlugins({
+    nodeType: schema.nodes.blockquote,
+    mergeAdjacentBlockquote: true,
   }),
   ...edimMenubarPlugins({
-    list: {
-      flatOrderedListNodeType: schema.nodes.ordered_list,
-      flatBulletListNodeType: schema.nodes.bullet_list,
-      flatListItemNodeType: schema.nodes.list_item,
+    blockquote: {
+      blockQuoteNodeType: schema.nodes.blockquote,
     },
     align: {},
   }),
   ...edimCorePlugins(),
 ];
 
-export const FlatListExample = (props: ProseMirrorProps) => {
+export const BlockquoteExample = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
       doc: schema.nodeFromJSON({

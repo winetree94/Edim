@@ -95,7 +95,7 @@ export const edimPresetPlugins = (
     ...edimFlatListPlugins({
       bulletListNodeType:
         configs.schema.nodes[EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME],
-      orderListNodeType:
+      orderedListNodeType:
         configs.schema.nodes[EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME],
       listItemNodeType:
         configs.schema.nodes[EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME],

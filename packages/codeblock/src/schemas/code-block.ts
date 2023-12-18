@@ -14,8 +14,28 @@ const preDOM: DOMOutputSpec = [
   ],
 ];
 
-export const edimCodeBlockNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_CODEBLOCK_NODE_NAME]: {
+export interface EdimCodeBlockNodeConfigs {
+  /**
+   * node name
+   *
+   * @default "code_block"
+   */
+  nodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimCodeBlockNodeConfigs> = {
+  nodeName: EDIM_CODEBLOCK_NODE_NAME,
+};
+
+export const edimCodeBlockNodes = (
+  configs?: EdimCodeBlockNodeConfigs,
+): Record<string, NodeSpec> => {
+  const _configs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     content: 'text*',
     marks: '',
     group: 'block',
@@ -25,5 +45,9 @@ export const edimCodeBlockNodes = (): Record<string, NodeSpec> => ({
     toDOM() {
       return preDOM;
     },
-  },
-});
+  };
+
+  return {
+    [_configs.nodeName]: nodeSpec,
+  };
+};

@@ -1,9 +1,9 @@
 ---
-sidebar_position: 7
+sidebar_position: 9
 ---
 import BrowserOnly from '@docusaurus/BrowserOnly';
 
-# Flat Task List
+# Code Block
 
 `@edim-editor/flat-list` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
@@ -60,8 +60,8 @@ const view = new EditorView(document.querySelector('#editor'), {
 
 <BrowserOnly>
   {() => {
-    const { FlatTaskListExample } = require('@site/src/components/examples/packages/flat-task-list.tsx');
-    return <FlatTaskListExample />
+    const { CodeBlockExample } = require('@site/src/components/examples/packages/code-block.tsx');
+    return <CodeBlockExample />
   }}
 </BrowserOnly>
 

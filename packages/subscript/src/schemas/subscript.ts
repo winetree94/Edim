@@ -1,14 +1,43 @@
-import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
+import { MarkSpec } from 'prosemirror-model';
 
 export const EDIM_SUBSCRIPT_MARK_NAME = 'subscript';
 
-const subscriptDOM: DOMOutputSpec = ['sub', 0];
-export const edimSubscriptMarks = (): Record<string, MarkSpec> => ({
-  [EDIM_SUBSCRIPT_MARK_NAME]: {
+export interface EdimSubscriptMarkConfigs {
+  /**
+   * mark name
+   *
+   * @default "subscript"
+   */
+  markName?: string;
+
+  superscriptMarkName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimSubscriptMarkConfigs> = {
+  markName: EDIM_SUBSCRIPT_MARK_NAME,
+  superscriptMarkName: '',
+};
+
+export const edimSubscriptMarks = (
+  configs?: EdimSubscriptMarkConfigs,
+): Record<string, MarkSpec> => {
+  const _configs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const markSpec: MarkSpec = {
     parseDOM: [{ tag: 'sub' }],
-    excludes: 'superscript',
     toDOM() {
-      return subscriptDOM;
+      return ['sub', 0];
     },
-  },
-});
+  };
+
+  if (_configs.superscriptMarkName) {
+    markSpec.excludes = _configs.superscriptMarkName;
+  }
+
+  return {
+    [_configs.markName]: markSpec,
+  };
+};

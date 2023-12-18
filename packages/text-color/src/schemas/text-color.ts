@@ -16,9 +16,10 @@ export interface EdimTextColorMarkType extends MarkType {
   spec: EdimTextColorMarkSpec;
 }
 
-export const edimTextColorMarks = (): Record<string, EdimTextColorMarkSpec> => ({
-  /// A strong mark. Rendered as `<strong>`, parse rules also match
-  /// `<b>` and `font-weight: bold`.
+export const edimTextColorMarks = (): Record<
+  string,
+  EdimTextColorMarkSpec
+> => ({
   text_color: {
     colors: [],
     attrs: {

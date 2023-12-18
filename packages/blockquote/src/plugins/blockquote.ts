@@ -9,20 +9,30 @@ export interface EdimBlockQuotePluginConfigs {
   mergeAdjacentBlockquote?: boolean;
 }
 
+const DEFAULT_CONFIGS: Required<Omit<EdimBlockQuotePluginConfigs, 'nodeType'>> =
+  {
+    mergeAdjacentBlockquote: false,
+  };
+
 export const edimBlockQuotePlugins = (
   configs: EdimBlockQuotePluginConfigs,
 ): PMPlugin[] => {
+  const _configs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
   const plugins: PMPlugin[] = [
-    ...edimBlockquoteInputRulePlugins(configs),
-    ...edimBlockquoteKeymapPlugins(configs),
+    ...edimBlockquoteInputRulePlugins(_configs),
+    ...edimBlockquoteKeymapPlugins(_configs),
   ];
 
-  if (configs?.mergeAdjacentBlockquote) {
+  if (_configs.mergeAdjacentBlockquote) {
     plugins.push(
       ...edimMergeAdjacentNodePlugins({
         specs: [
           {
-            nodeType: configs.nodeType,
+            nodeType: _configs.nodeType,
           },
         ],
       }),

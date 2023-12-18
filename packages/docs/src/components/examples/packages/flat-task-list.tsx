@@ -11,11 +11,10 @@ import {
   edimParagraphPlugins,
 } from '@edim-editor/paragraph';
 import {
-  edimFlatOrderedListNodes,
-  edimFlatBulletListNodes,
-  edimFlatListItemNodes,
-  edimFlatListPlugins,
-} from '@edim-editor/flat-list';
+  edimFlatTaskListNodes,
+  edimFlatTaskListItemNodes,
+  edimFlatTaskListPlugins,
+} from '@edim-editor/flat-task-list';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 
 const schema = new Schema({
@@ -25,9 +24,8 @@ const schema = new Schema({
       allowAlign: true,
       nodeName: 'paragraph',
     }),
-    ...edimFlatOrderedListNodes(),
-    ...edimFlatBulletListNodes(),
-    ...edimFlatListItemNodes(),
+    ...edimFlatTaskListNodes(),
+    ...edimFlatTaskListItemNodes(),
   },
 });
 
@@ -36,23 +34,21 @@ const plugins: Plugin[] = [
     nodeType: schema.nodes.paragraph,
     shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
   }),
-  ...edimFlatListPlugins({
-    bulletListNodeType: schema.nodes.bullet_list,
-    orderedListNodeType: schema.nodes.ordered_list,
-    listItemNodeType: schema.nodes.list_item,
+  ...edimFlatTaskListPlugins({
+    taskListNodeType: schema.nodes.task_list,
+    taskListItemNodeType: schema.nodes.task_list_item,
   }),
   ...edimMenubarPlugins({
-    list: {
-      flatOrderedListNodeType: schema.nodes.ordered_list,
-      flatBulletListNodeType: schema.nodes.bullet_list,
-      flatListItemNodeType: schema.nodes.list_item,
+    taskList: {
+      flatTaskListNodeType: schema.nodes.task_list,
+      flatTaskListItemNodeType: schema.nodes.task_list_item,
     },
     align: {},
   }),
   ...edimCorePlugins(),
 ];
 
-export const FlatListExample = (props: ProseMirrorProps) => {
+export const FlatTaskListExample = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
       doc: schema.nodeFromJSON({
