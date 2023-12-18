@@ -1,5 +1,67 @@
 ---
 sidebar_position: 18
 ---
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Font Family
+
+`@edim-editor/paragraph` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+
+## 설치
+
+```bash
+npm install @edim-editor/paragraph
+```
+
+## 스타일
+
+```css title="src/index.scss"
+@import "@edim-editor/paragraph/styles/paragraph.scss";
+```
+
+## 사용 예시
+
+```typescript title="src/index.ts"
+import { EditorState, Plugin } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
+
+const schema = new Schema({
+  nodes: {
+    ...edimBaseNodes(),
+    ...edimParagraphNodes({
+      allowAlign: true,
+      nodeName: 'paragraph',
+    }),
+  },
+});
+
+const plugins: Plugin[] = [
+  ...edimParagraphPlugins({
+    nodeType: schema.nodes.paragraph,
+    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
+  }),
+  ...edimMenubarPlugins({
+    align: {},
+  }),
+  ...edimCorePlugins(),
+];
+
+const view = new EditorView(document.querySelector('#editor'), {
+  state: EditorState.create({
+    schema: schema,
+    plugins: plugins,
+  }),
+});
+```
+
+<BrowserOnly>
+  {() => {
+    const { FontFamilyExample } = require('@site/src/components/examples/packages/font-family.tsx');
+    return <FontFamilyExample />
+  }}
+</BrowserOnly>
+
