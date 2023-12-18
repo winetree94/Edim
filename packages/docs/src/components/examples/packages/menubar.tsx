@@ -11,7 +11,7 @@ const plugins = edimPresetPlugins({
   schema,
 });
 
-export const Maximum = (props: ProseMirrorProps) => {
+export const MenubarExample = (props: ProseMirrorProps) => {
   const [state] = useState(
     EditorState.create({
       schema: schema,
@@ -19,5 +19,12 @@ export const Maximum = (props: ProseMirrorProps) => {
     }),
   );
 
-  return <ProseMirror state={state} {...props} />;
+  return (
+    <ProseMirror
+      state={state}
+      style={{ height: '300px' }}
+      className="border"
+      {...props}
+    />
+  );
 };
