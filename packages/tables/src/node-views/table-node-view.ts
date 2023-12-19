@@ -47,7 +47,10 @@ export class EdimTableNodeView implements NodeView {
     private readonly getPos: () => number | undefined,
   ) {
     this.dom.classList.add('edim-table-container');
-    render(html`<${EdimTableView} ref=${this.ref}></${EdimTableView}>`, this.dom);
+    render(
+      html`<${EdimTableView} ref=${this.ref}></${EdimTableView}>`,
+      this.dom,
+    );
     updateColumnsOnResize(
       node,
       this.ref.current!.colgroup(),
@@ -61,7 +64,10 @@ export class EdimTableNodeView implements NodeView {
       return false;
     }
     this.node = node;
-    render(html`<${EdimTableView} ref=${this.ref}></${EdimTableView}>`, this.dom);
+    render(
+      html`<${EdimTableView} ref=${this.ref}></${EdimTableView}>`,
+      this.dom,
+    );
     updateColumnsOnResize(
       node,
       this.ref.current!.colgroup(),
