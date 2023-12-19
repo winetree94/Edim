@@ -30,7 +30,7 @@ const DEFAULT_CONFIGS: Required<EdimCodeBlockNodeConfigs> = {
 export const edimCodeBlockNodes = (
   configs?: EdimCodeBlockNodeConfigs,
 ): Record<string, NodeSpec> => {
-  const _configs = {
+  const mergedConfigs = {
     ...DEFAULT_CONFIGS,
     ...configs,
   };
@@ -48,6 +48,6 @@ export const edimCodeBlockNodes = (
   };
 
   return {
-    [_configs.nodeName]: nodeSpec,
+    [mergedConfigs.nodeName]: nodeSpec,
   };
 };

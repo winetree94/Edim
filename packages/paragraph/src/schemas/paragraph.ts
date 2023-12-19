@@ -31,7 +31,7 @@ const DEFAULT_CONFIGS: Required<EdimParagraphNodeConfigs> = {
 export const edimParagraphNodes = (
   configs?: EdimParagraphNodeConfigs,
 ): Record<string, NodeSpec> => {
-  const _configs = {
+  const mergedConfigs = {
     ...DEFAULT_CONFIGS,
     ...configs,
   };
@@ -72,13 +72,13 @@ export const edimParagraphNodes = (
     },
   };
 
-  if (_configs.allowAlign) {
+  if (mergedConfigs.allowAlign) {
     nodeSpec.attrs!['align'] = {
       default: 'left',
     };
   }
 
   return {
-    [_configs.nodeName]: nodeSpec,
+    [mergedConfigs.nodeName]: nodeSpec,
   };
 };

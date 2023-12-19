@@ -31,23 +31,23 @@ const schema = new Schema({
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimHeadingPlugins({
-    nodeType: schema.nodes.heading,
+    nodeType: schema.nodes['heading'],
   }),
   // ...edimHeadingKeymapPlugins({
-  //   nodeType: schema.nodes.heading,
+  //   nodeType: schema.nodes['heading'],
   //   level: 6,
   // }),
   // ...edimHeadingInputRulePlugins({
-  //   nodeType: schema.nodes.heading,
+  //   nodeType: schema.nodes['heading'],
   //   level: 6,
   // }),
   ...edimMenubarPlugins({
     textType: {
-      headingNodeType: schema.nodes.heading,
-      paragraphNodeType: schema.nodes.paragraph,
+      headingNodeType: schema.nodes['heading'],
+      paragraphNodeType: schema.nodes['paragraph'],
     },
     align: {},
   }),

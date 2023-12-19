@@ -44,7 +44,7 @@ const EDIM_DEFAULT_HEADING_NODE_CONFIGS: Required<EdimHeadingNodeConfigs> = {
 export const edimHeadingNodes = (
   configs?: EdimHeadingNodeConfigs,
 ): Record<string, EdimHeadingNodeSpec> => {
-  const _configs = {
+  const mergedConfigs = {
     ...EDIM_DEFAULT_HEADING_NODE_CONFIGS,
     ...configs,
   };
@@ -59,7 +59,7 @@ export const edimHeadingNodes = (
       },
     },
     meta: {
-      levels: _configs.level,
+      levels: mergedConfigs.level,
       maxIndent: 6,
     },
     content: 'inline*',
@@ -97,6 +97,6 @@ export const edimHeadingNodes = (
   };
 
   return {
-    [_configs.nodeName]: nodeSpec,
+    [mergedConfigs.nodeName]: nodeSpec,
   };
 };

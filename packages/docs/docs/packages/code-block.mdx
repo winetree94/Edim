@@ -5,19 +5,43 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Code Block
 
-`@edim-editor/flat-list` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+`@edim-editor/codeblock` 에디터에 **코드 블록**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/heading
+npm install @edim-editor/codeblock
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/heading/styles/heading.scss";
+@import "@edim-editor/codeblock/styles/codeblock.scss";
 ```
+
+## 서식
+
+#### `edimCodeBlockNodes`
+
+코드를 표현하기 위한 서식을 제공합니다.
+
+## 플러그인
+
+#### `edimCodeBlockPlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimCodeBlockKeymapPlugins`
+
+`Shift+Ctrl+\` 키를 누르면 코드 블록 노드로 전환하는 Keymap 을 제공합니다.
+
+#### `edimCodeBlockInputRulePlugins`
+
+`\`\`\`` 패턴의 문자를 입력하면 코드 블록 노드로 전환하는 InputRule 을 제공합니다.
+
+#### `edimCodeBlockMergePlugins`
+
+동일한 인접 코드 블록 노드를 자동으로 병합하는 기능을 제공합니다.
 
 ## 사용 예시
 
@@ -25,26 +49,33 @@ npm install @edim-editor/heading
 import { EditorState, Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimCodeBlockNodes, edimCodeBlockPlugins } from '@edim-editor/codeblock';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+    ...edimCodeBlockNodes({
+      nodeName: 'code_block',
     }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
+  }),
+  ...edimCodeBlockPlugins({
+    nodeType: schema.nodes['code_block'],
+    mergeAdjacentCodeBlock: true,
   }),
   ...edimMenubarPlugins({
-    align: {},
+    codeblock: {
+      codeBlockNodeType: schema.nodes['code_block'],
+    },
   }),
   ...edimCorePlugins(),
 ];

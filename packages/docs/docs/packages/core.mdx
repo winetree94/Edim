@@ -64,19 +64,8 @@ import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
-import {
-  edimBaseNodes,
-  edimCorePlugins,
-  edimBasicKeymapPlugins,
-  edimDropCursorPlugins,
-  edimGapCursorPlugins,
-  edimHistoryPlugins,
-  edimVirtualCursorPlugins,
-} from '@edim-editor/core';
-import {
-  edimParagraphNodes,
-  edimParagraphPlugins,
-} from '@edim-editor/paragraph';
+import { edimBaseNodes, edimCorePlugins, edimBasicKeymapPlugins, edimDropCursorPlugins, edimGapCursorPlugins, edimHistoryPlugins, edimVirtualCursorPlugins } from '@edim-editor/core';
+import { edimParagraphNodes, edimParagraphPlugins } from '@edim-editor/paragraph';
 
 const schema = new Schema({
   nodes: {

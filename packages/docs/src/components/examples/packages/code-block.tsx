@@ -28,14 +28,15 @@ const schema = new Schema({
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimCodeBlockPlugins({
-    nodeType: schema.nodes.code_block,
+    nodeType: schema.nodes['code_block'],
+    mergeAdjacentCodeBlock: true,
   }),
   ...edimMenubarPlugins({
     codeblock: {
-      codeBlockNodeType: schema.nodes.code_block,
+      codeBlockNodeType: schema.nodes['code_block'],
     },
   }),
   ...edimCorePlugins(),

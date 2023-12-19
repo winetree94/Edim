@@ -5,19 +5,43 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Blockquote
 
-`@edim-editor/flat-list` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+에디터에 **인용구**를 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/heading
+npm install @edim-editor/blockquote
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/heading/styles/heading.scss";
+@import "@edim-editor/blockquote/styles/blockquote.scss";
 ```
+
+## 서식
+
+#### `edimBlockquoteNodes`
+
+인용을 표현하기 위한 서식을 제공합니다.
+
+## 플러그인
+
+#### `edimBlockQuotePlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimBlockquoteKeymapPlugins`
+
+Flat List 내부에서 되는 기본 단축키를 제공합니다.
+
+#### `edimBlockquoteInputRulePlugins`
+
+`>` 패턴의 문자를 입력하면 Flat Task List 노드로 전환하는 InputRule 을 제공합니다.
+
+#### `edimBlockQuoteMergePlugins`
+
+동일한 인접 인용 노드를 자동으로 병합하는 기능을 제공합니다.
 
 ## 사용 예시
 
@@ -25,25 +49,34 @@ npm install @edim-editor/heading
 import { EditorState, Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimBlockQuotePlugins, edimBlockquoteNodes } from '@edim-editor/blockquote';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+    ...edimBlockquoteNodes({
+      multiline: true,
+      nodeName: 'blockquote',
     }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
+  }),
+  ...edimBlockQuotePlugins({
+    nodeType: schema.nodes['blockquote'],
+    mergeAdjacentBlockquote: true,
   }),
   ...edimMenubarPlugins({
+    blockquote: {
+      blockQuoteNodeType: schema.nodes['blockquote'],
+    },
     align: {},
   }),
   ...edimCorePlugins(),

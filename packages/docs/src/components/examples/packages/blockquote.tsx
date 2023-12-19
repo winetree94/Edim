@@ -22,6 +22,7 @@ const schema = new Schema({
     ...edimParagraphNodes(),
     ...edimBlockquoteNodes({
       multiline: true,
+      nodeName: 'blockquote',
     }),
   },
 });

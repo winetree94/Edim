@@ -21,7 +21,7 @@ const DEFAULT_CONFIGS: Required<EdimSuperscriptMarkConfigs> = {
 export const edimSuperscriptMarks = (
   configs?: EdimSuperscriptMarkConfigs,
 ): Record<string, MarkSpec> => {
-  const _configs = {
+  const mergedConfigs = {
     ...DEFAULT_CONFIGS,
     ...configs,
   };
@@ -33,8 +33,8 @@ export const edimSuperscriptMarks = (
     },
   };
 
-  if (_configs.subscriptMarkName) {
-    markSpec.excludes = _configs.subscriptMarkName;
+  if (mergedConfigs.subscriptMarkName) {
+    markSpec.excludes = mergedConfigs.subscriptMarkName;
   }
 
   return {

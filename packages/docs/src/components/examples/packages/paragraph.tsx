@@ -24,7 +24,7 @@ const schema = new Schema({
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimMenubarPlugins({
     align: {},
