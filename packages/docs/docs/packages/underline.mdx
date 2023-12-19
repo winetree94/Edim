@@ -42,7 +42,6 @@ const schema = new Schema({
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
     nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
   }),
   ...edimMenubarPlugins({
     align: {},

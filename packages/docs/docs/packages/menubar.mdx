@@ -20,6 +20,12 @@ npm install @edim-editor/menubar
 @import "@edim-editor/menubar/styles/menubar.scss";
 ```
 
+## 플러그인
+
+#### edimMenubarPlugins
+
+에디터의 툴바를 표시하고 본문의 스크롤 영역을 생성합니다.
+
 ## 사용 예시
 
 ```typescript title="src/index.ts"
@@ -30,26 +36,59 @@ import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
 
-const schema = new Schema({
-  nodes: {
-    ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
-    }),
-  },
+const schema = edimPresetSchema();
+
+const plugins = edimPresetPlugins({
+  schema,
+  menubar: false,
 });
 
-const plugins: Plugin[] = [
-  ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
-  }),
+plugins.push(
   ...edimMenubarPlugins({
+    textType: {
+      paragraphNodeType: schema.nodes['paragraph'],
+      headingNodeType: schema.nodes['heading'],
+    },
+    fontFamily: {
+      fontFamilyMarkType: schema.marks['font_family'],
+    },
+    textStyles: {
+      boldMarkType: schema.marks['bold'],
+      italicMarkType: schema.marks['italic'],
+      underlineMarkType: schema.marks['underline'],
+      strikethroughMarkType: schema.marks['strikethrough'],
+      codeMarkType: schema.marks['code'],
+      subscriptMarkType: schema.marks['subscript'],
+      superscriptMarkType: schema.marks['superscript'],
+      useClearButton: true,
+    },
+    textColor: {
+      textColorMarkType: schema.marks['text_color'],
+    },
     align: {},
+    list: {
+      flatOrderedListNodeType: schema.nodes['ordered_list'],
+      flatBulletListNodeType: schema.nodes['bullet_list'],
+      flatListItemNodeType: schema.nodes['list_item'],
+    },
+    taskList: {
+      flatTaskListNodeType: schema.nodes['task_list'],
+      flatTaskListItemNodeType: schema.nodes['task_list_item'],
+    },
+    blockquote: {
+      blockQuoteNodeType: schema.nodes['blockquote'],
+    },
+    codeblock: {
+      codeBlockNodeType: schema.nodes['code_block'],
+    },
+    table: {
+      tableNodeType: schema.nodes['table'],
+    },
+    link: {
+      linkMarkType: schema.marks['link'],
+    },
   }),
-  ...edimCorePlugins(),
-];
+);
 
 const view = new EditorView(document.querySelector('#editor'), {
   state: EditorState.create({

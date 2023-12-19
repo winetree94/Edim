@@ -5,43 +5,43 @@ import {
 import { EditorState, Plugin } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import {
   edimParagraphNodes,
   edimParagraphPlugins,
 } from '@edim-editor/paragraph';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
 import {
   edimFlatTaskListNodes,
   edimFlatTaskListItemNodes,
   edimFlatTaskListPlugins,
 } from '@edim-editor/flat-task-list';
-import { edimMenubarPlugins } from '@edim-editor/menubar';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+    ...edimFlatTaskListNodes({
+      nodeName: 'task_list',
     }),
-    ...edimFlatTaskListNodes(),
-    ...edimFlatTaskListItemNodes(),
+    ...edimFlatTaskListItemNodes({
+      nodeName: 'task_list_item',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimFlatTaskListPlugins({
-    taskListNodeType: schema.nodes.task_list,
-    taskListItemNodeType: schema.nodes.task_list_item,
+    taskListNodeType: schema.nodes['task_list'],
+    taskListItemNodeType: schema.nodes['task_list_item'],
   }),
   ...edimMenubarPlugins({
     taskList: {
-      flatTaskListNodeType: schema.nodes.task_list,
-      flatTaskListItemNodeType: schema.nodes.task_list_item,
+      taskListNodeType: schema.nodes['task_list'],
+      taskListItemNodeType: schema.nodes['task_list_item'],
     },
     align: {},
   }),

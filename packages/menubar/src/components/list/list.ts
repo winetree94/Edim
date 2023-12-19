@@ -11,9 +11,9 @@ export const EdimMenubarListToggleButtons = () => {
     return null;
   }
 
-  const orderedListNodeType = context.options.list.flatOrderedListNodeType;
-  const bulletListNodeType = context.options.list.flatBulletListNodeType;
-  const listItemNodeType = context.options.list.flatListItemNodeType;
+  const orderedListNodeType = context.options.list.orderedListNodeType;
+  const bulletListNodeType = context.options.list.bulletListNodeType;
+  const listItemNodeType = context.options.list.listItemNodeType;
 
   const canOrderedList =
     orderedListNodeType &&

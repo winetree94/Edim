@@ -3,8 +3,23 @@ import { isQuillTaskList } from '@edim-editor/core';
 
 export const EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME = 'task_list';
 
-export const edimFlatTaskListNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME]: {
+export interface EdimFlatTaskLIstNodeConfigs {
+  nodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimFlatTaskLIstNodeConfigs> = {
+  nodeName: EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME,
+};
+
+export const edimFlatTaskListNodes = (
+  configs?: EdimFlatTaskLIstNodeConfigs,
+): Record<string, NodeSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     parseDOM: [
       {
         tag: 'ul',
@@ -31,5 +46,9 @@ export const edimFlatTaskListNodes = (): Record<string, NodeSpec> => ({
         0,
       ];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.nodeName]: nodeSpec,
+  };
+};

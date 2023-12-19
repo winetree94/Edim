@@ -1,5 +1,4 @@
-import { MarkType, Node, NodeType } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
+import { Node } from 'prosemirror-model';
 
 export interface NodePair {
   node: Node;
@@ -7,5 +6,10 @@ export interface NodePair {
   parent: Node | null;
 }
 
-export type NodeTypeOrGetter = NodeType | ((state: EditorState) => NodeType);
-export type MarkTypeOrGetter = MarkType | ((state: EditorState) => MarkType);
+export interface BaseMarkConfigs {
+  markName?: string;
+}
+
+export interface BaseNodeConfigs {
+  nodeName?: string;
+}

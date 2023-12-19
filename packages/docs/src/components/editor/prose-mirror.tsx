@@ -1,12 +1,9 @@
 import React from 'react';
 import { classes } from '@edim-editor/ui';
 import { EditorView } from 'prosemirror-view';
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { EditorState } from 'prosemirror-state';
 
-export interface ProseMirrorRef {
-  view: EditorView;
-}
 export interface ProseMirrorProps {
   className?: string;
   state: EditorState;
@@ -14,34 +11,26 @@ export interface ProseMirrorProps {
   onStateChange?: (doc: any) => void;
 }
 
-export const ProseMirror = forwardRef<ProseMirrorRef, ProseMirrorProps>(
-  (props, ref) => {
-    const editorDomRef = useRef<HTMLDivElement>(null);
-    const editorViewRef = useRef<EditorView | null>(null);
+export const ProseMirror = (props: ProseMirrorProps) => {
+  const editorDomRef = useRef<HTMLDivElement>(null);
+  const editorViewRef = useRef<EditorView | null>(null);
 
-    useImperativeHandle(ref, () => ({
-      get view() {
-        return editorViewRef.current;
-      },
-    }));
+  useEffect(() => {
+    const view = new EditorView(editorDomRef.current, {
+      state: props.state,
+      ...props,
+    });
+    editorViewRef.current = view;
+    return () => {
+      view.destroy();
+    };
+  }, []);
 
-    useEffect(() => {
-      const view = new EditorView(editorDomRef.current, {
-        state: props.state,
-        ...props,
-      });
-      editorViewRef.current = view;
-      return () => {
-        view.destroy();
-      };
-    }, []);
-
-    return (
-      <div
-        ref={editorDomRef}
-        className={classes('edim-root', props.className)}
-        style={props.style}
-      ></div>
-    );
-  },
-);
+  return (
+    <div
+      ref={editorDomRef}
+      className={classes('edim-root', props.className)}
+      style={props.style}
+    ></div>
+  );
+};

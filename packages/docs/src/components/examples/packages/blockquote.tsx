@@ -28,15 +28,15 @@ const schema = new Schema({
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimBlockQuotePlugins({
-    nodeType: schema.nodes.blockquote,
+    nodeType: schema.nodes['blockquote'],
     mergeAdjacentBlockquote: true,
   }),
   ...edimMenubarPlugins({
     blockquote: {
-      blockQuoteNodeType: schema.nodes.blockquote,
+      blockQuoteNodeType: schema.nodes['blockquote'],
     },
     align: {},
   }),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ProseMirror,
   ProseMirrorProps,
@@ -5,21 +6,23 @@ import {
 import { EditorState, Plugin } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
 import {
   edimParagraphNodes,
   edimParagraphPlugins,
 } from '@edim-editor/paragraph';
-import { edimHeadingNodes, edimHeadingPlugins } from '@edim-editor/heading';
-import { edimMenubarPlugins } from '@edim-editor/menubar';
+import {
+  edimHeadingInputRulePlugins,
+  edimHeadingKeymapPlugins,
+  edimHeadingNodes,
+  edimHeadingPlugins,
+} from '@edim-editor/heading';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
-    }),
+    ...edimParagraphNodes(),
     ...edimHeadingNodes({
       nodeName: 'heading',
     }),
@@ -29,11 +32,18 @@ const schema = new Schema({
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
     nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
   }),
   ...edimHeadingPlugins({
     nodeType: schema.nodes.heading,
   }),
+  // ...edimHeadingKeymapPlugins({
+  //   nodeType: schema.nodes.heading,
+  //   level: 6,
+  // }),
+  // ...edimHeadingInputRulePlugins({
+  //   nodeType: schema.nodes.heading,
+  //   level: 6,
+  // }),
   ...edimMenubarPlugins({
     textType: {
       headingNodeType: schema.nodes.heading,

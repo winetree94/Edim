@@ -19,20 +19,22 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimBoldMarks(),
+    ...edimBoldMarks({
+      markName: 'bold',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimBoldPlugins({
-    markType: schema.marks.bold,
+    markType: schema.marks['bold'],
   }),
   ...edimMenubarPlugins({
     textStyles: {
-      boldMarkType: schema.marks.bold,
+      boldMarkType: schema.marks['bold'],
     },
   }),
   ...edimCorePlugins(),

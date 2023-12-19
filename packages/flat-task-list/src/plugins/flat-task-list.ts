@@ -1,8 +1,8 @@
 import { NodeType } from 'prosemirror-model';
 import { Plugin as PMPlugin } from 'prosemirror-state';
-import { edimMergeAdjacentNodePlugins } from '@edim-editor/core';
 import { edimTaskListInputRulePlugins } from './input-rules';
 import { edimFlatTaskListKeymapPlugins } from './keymaps';
+import { edimFlatTaskListMergePlugins } from './merge';
 
 export interface EdimFlatTaskListPluginConfigs {
   taskListNodeType: NodeType;
@@ -20,12 +20,8 @@ export const edimFlatTaskListPlugins = (
       taskListNodeType: configs.taskListNodeType,
       taskListItemNodeType: configs.taskListItemNodeType,
     }),
-    ...edimMergeAdjacentNodePlugins({
-      specs: [
-        {
-          nodeType: configs.taskListNodeType,
-        },
-      ],
+    ...edimFlatTaskListMergePlugins({
+      taskListNodeType: configs.taskListNodeType,
     }),
   ];
 };

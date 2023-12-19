@@ -5,47 +5,49 @@ import {
 import { EditorState, Plugin } from 'prosemirror-state';
 import React, { useState } from 'react';
 import { Schema } from 'prosemirror-model';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import {
   edimParagraphNodes,
   edimParagraphPlugins,
 } from '@edim-editor/paragraph';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
 import {
   edimFlatOrderedListNodes,
   edimFlatBulletListNodes,
   edimFlatListItemNodes,
   edimFlatListPlugins,
 } from '@edim-editor/flat-list';
-import { edimMenubarPlugins } from '@edim-editor/menubar';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+    ...edimFlatOrderedListNodes({
+      nodeName: 'ordered_list',
     }),
-    ...edimFlatOrderedListNodes(),
-    ...edimFlatBulletListNodes(),
-    ...edimFlatListItemNodes(),
+    ...edimFlatBulletListNodes({
+      nodeName: 'bullet_list',
+    }),
+    ...edimFlatListItemNodes({
+      nodeName: 'list_item',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimFlatListPlugins({
-    bulletListNodeType: schema.nodes.bullet_list,
-    orderedListNodeType: schema.nodes.ordered_list,
-    listItemNodeType: schema.nodes.list_item,
+    orderedListNodeType: schema.nodes['ordered_list'],
+    bulletListNodeType: schema.nodes['bullet_list'],
+    listItemNodeType: schema.nodes['list_item'],
   }),
   ...edimMenubarPlugins({
     list: {
-      flatOrderedListNodeType: schema.nodes.ordered_list,
-      flatBulletListNodeType: schema.nodes.bullet_list,
-      flatListItemNodeType: schema.nodes.list_item,
+      orderedListNodeType: schema.nodes['ordered_list'],
+      bulletListNodeType: schema.nodes['bullet_list'],
+      listItemNodeType: schema.nodes['list_item'],
     },
     align: {},
   }),

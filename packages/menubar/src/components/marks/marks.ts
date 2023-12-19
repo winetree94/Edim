@@ -35,7 +35,7 @@ export const EdimMenubarMarkToggleButtons = () => {
   const codeMarkType = context.options.textStyles.codeMarkType;
   const subscriptMarkType = context.options.textStyles.subscriptMarkType;
   const superscriptMarkType = context.options.textStyles.superscriptMarkType;
-  const useClearButton = context.options.textStyles.useClearBUtton;
+  const useClearButton = context.options.textStyles.useClearButton;
 
   const hasMark = !!Object.values(context.editorState.schema.marks).length;
 

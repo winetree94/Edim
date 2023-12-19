@@ -1,10 +1,11 @@
 ---
 sidebar_position: 1
 ---
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Core 
 
-`@edim-editor/core` 패키지는 Edim 이 동작하기 위한 기본 서식과 기초 기능을 위한 플러그인을 제공합니다. 또한 다른 패키지간의 공통 로직을 제공합니다.
+`@edim-editor/core` 패키지는 에디터의 기초 서식과 스타일, 그리고 기본 동작을 위한 플러그인을 제공합니다. Edim 을 사용하기 위해선 필수로 설치해야 합니다.
 
 ## 설치
 
@@ -18,5 +19,96 @@ npm install @edim-editor/core
 @import "@edim-editor/core/styles/core.scss";
 ```
 
-## 플러그인 목록
+## 서식
+
+#### `edimBaseNodes`
+
+문서 루트에 해당하는 `doc` 노드와 인라인 텍스트에 해당하는 `text` 노드를 제공합니다. ProseMirror 가 동작하기 위해선 `doc`, `text` 노드와 최소한 한개의 블록 노드를 함께 선언해 사용해야 합니다.
+
+## 플러그인
+
+#### `edimCorePlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimBasicKeymapPlugins`
+
+에디터에서 서식에 의존하지 않는 기본 단축키(`Enter`, `Backspace` 등) 기능을 제공합니다.
+
+#### `edimHistoryPlugins`
+
+에디터의 기본적인 히스토리 기능과 단축키(`Mod-z`, `Shift-Mod-Z`) 기능을 제공합니다. 자세한 사항은 [prosemirror-history](https://github.com/prosemirror/prosemirror-history)를 참고하세요.
+
+#### `edimVirtualCursorPlugins`
+
+Mark 사이를 키보드의 방향키를 통해 이동할 때 가상의 커서를 제공합니다.
+
+#### `edimDropCursorPlugins`
+
+에디터의 콘텐츠를 드래그&드롭 할 때 드롭되는 위치에 가상의 커서를 표시합니다. 자세한 사항은 [prosemirror-dropcursor](https://github.com/ProseMirror/prosemirror-dropcursor)를 참고하세요.
+
+#### `edimGapCursorPlugins`
+
+일반적으로 커서가 위치할 수 없는 블록 노드 사이에 가상의 커서를 생성합니다. 자세한 사항은 [prosemirror-gapcursor](https://github.com/ProseMirror/prosemirror-gapcursor)를 참고하세요.
+
+#### `edimMergeAdjacentNodePlugins`
+
+인접한 블록 레벨의 노드를 자동으로 병합하는 기능을 제공합니다. `edimCorePlugins` 에 포함되어 있지 않습니다.
+
+
+## 사용 예시
+
+```typescript title="src/index.ts"
+import { EditorState, Plugin } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
+import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
+import {
+  edimBaseNodes,
+  edimCorePlugins,
+  edimBasicKeymapPlugins,
+  edimDropCursorPlugins,
+  edimGapCursorPlugins,
+  edimHistoryPlugins,
+  edimVirtualCursorPlugins,
+} from '@edim-editor/core';
+import {
+  edimParagraphNodes,
+  edimParagraphPlugins,
+} from '@edim-editor/paragraph';
+
+const schema = new Schema({
+  nodes: {
+    ...edimBaseNodes(),
+    ...edimParagraphNodes(),
+  },
+});
+
+const plugins: Plugin[] = [
+  ...edimParagraphPlugins({
+    nodeType: schema.nodes['paragraph'],
+  }),
+  ...edimCorePlugins(),
+  // ...edimBasicKeymapPlugins(),
+  // ...edimHistoryPlugins(),
+  // ...edimVirtualCursorPlugins(),
+  // ...edimDropCursorPlugins(),
+  // ...edimGapCursorPlugins(),
+];
+
+const view = new EditorView(document.querySelector('#editor'), {
+  state: EditorState.create({
+    schema: schema,
+    plugins: plugins,
+  }),
+});
+```
+
+<BrowserOnly>
+  {() => {
+    const { CoreExample } = require('@site/src/components/examples/packages/core.tsx');
+    return <CoreExample />
+  }}
+</BrowserOnly>
 

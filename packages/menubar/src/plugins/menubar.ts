@@ -4,14 +4,12 @@ import { EditorView } from 'prosemirror-view';
 import { html } from '@edim-editor/ui';
 import { EdimMenubar } from '../components';
 import { MarkType, NodeType } from 'prosemirror-model';
-import { EdimHeadingLevel } from '@edim-editor/heading';
 
 export interface EdimMenubarPluginConfigs {
   position?: 'top' | 'bottom';
   textType?: {
     paragraphNodeType: NodeType;
     headingNodeType: NodeType;
-    headingLevels?: EdimHeadingLevel[];
   };
   fontFamily?: {
     fontFamilyMarkType?: MarkType;
@@ -24,20 +22,20 @@ export interface EdimMenubarPluginConfigs {
     codeMarkType?: MarkType;
     subscriptMarkType?: MarkType;
     superscriptMarkType?: MarkType;
-    useClearBUtton?: boolean;
+    useClearButton?: boolean;
   };
   textColor?: {
     textColorMarkType: MarkType;
   };
   align?: {};
   list?: {
-    flatOrderedListNodeType: NodeType;
-    flatBulletListNodeType: NodeType;
-    flatListItemNodeType: NodeType;
+    orderedListNodeType: NodeType;
+    bulletListNodeType: NodeType;
+    listItemNodeType: NodeType;
   };
   taskList?: {
-    flatTaskListNodeType: NodeType;
-    flatTaskListItemNodeType: NodeType;
+    taskListNodeType: NodeType;
+    taskListItemNodeType: NodeType;
   };
   blockquote?: {
     blockQuoteNodeType: NodeType;

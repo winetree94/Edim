@@ -1,11 +1,25 @@
 import { MarkSpec } from 'prosemirror-model';
+import { BaseMarkConfigs } from '@edim-editor/core';
 
 export const EDIM_BOLD_MARK_NAME = 'bold';
 
-export const edimBoldMarks = (): Record<string, MarkSpec> => ({
+export interface EdimBoldMarkConfigs extends BaseMarkConfigs {}
+
+const DEFAULT_CONFIGS: Required<EdimBoldMarkConfigs> = {
+  markName: EDIM_BOLD_MARK_NAME,
+};
+
+export const edimBoldMarks = (
+  configs?: EdimBoldMarkConfigs,
+): Record<string, MarkSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
   /// A strong mark. Rendered as `<strong>`, parse rules also match
   /// `<b>` and `font-weight: bold`.
-  [EDIM_BOLD_MARK_NAME]: {
+  const markSpec: MarkSpec = {
     parseDOM: [
       { tag: 'strong' },
       // This works around a Google Docs misbehavior where
@@ -30,5 +44,9 @@ export const edimBoldMarks = (): Record<string, MarkSpec> => ({
     toDOM() {
       return ['strong', 0];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.markName]: markSpec,
+  };
+};

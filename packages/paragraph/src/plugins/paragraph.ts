@@ -4,7 +4,6 @@ import { edimParagraphKeymapPlugins } from './keymaps';
 
 export interface EdimParagraphPluginConfigs {
   nodeType: NodeType;
-  shortcutKey?: string | false;
 }
 
 export const edimParagraphPlugins = (
@@ -12,14 +11,11 @@ export const edimParagraphPlugins = (
 ): PMPlugin[] => {
   const plugins: PMPlugin[] = [];
 
-  if (configs.shortcutKey !== false) {
-    plugins.push(
-      ...edimParagraphKeymapPlugins({
-        nodeType: configs.nodeType,
-        shortcutKey: configs.shortcutKey,
-      }),
-    );
-  }
+  plugins.push(
+    ...edimParagraphKeymapPlugins({
+      nodeType: configs.nodeType,
+    }),
+  );
 
   return plugins;
 };

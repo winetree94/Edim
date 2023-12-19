@@ -3,8 +3,23 @@ import { isQuillTaskList } from '@edim-editor/core';
 
 export const EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME = 'bullet_list';
 
-export const edimFlatBulletListNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME]: {
+export interface EdimFlatBulletListNodeConfigs {
+  nodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimFlatBulletListNodeConfigs> = {
+  nodeName: EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME,
+};
+
+export const edimFlatBulletListNodes = (
+  configs?: EdimFlatBulletListNodeConfigs,
+): Record<string, NodeSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     parseDOM: [
       {
         tag: 'ul',
@@ -28,5 +43,9 @@ export const edimFlatBulletListNodes = (): Record<string, NodeSpec> => ({
         0,
       ];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.nodeName]: nodeSpec,
+  };
+};

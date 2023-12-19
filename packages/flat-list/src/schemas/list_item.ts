@@ -12,8 +12,23 @@ export interface ListItemAttrs {
   align: 'left' | 'right' | 'center' | null;
 }
 
-export const edimFlatListItemNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME]: {
+export interface EdimFlatListItemNodeConfigs {
+  nodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimFlatListItemNodeConfigs> = {
+  nodeName: EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME,
+};
+
+export const edimFlatListItemNodes = (
+  configs?: EdimFlatListItemNodeConfigs,
+): Record<string, NodeSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     content: 'paragraph',
     group: 'disable-paragraph-attributes',
     selectable: false,
@@ -61,5 +76,9 @@ export const edimFlatListItemNodes = (): Record<string, NodeSpec> => ({
       ];
     },
     defining: true,
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.nodeName]: nodeSpec,
+  };
+};

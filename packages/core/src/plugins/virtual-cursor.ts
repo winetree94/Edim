@@ -8,7 +8,7 @@ import { Plugin as PMPlugin, TextSelection } from 'prosemirror-state';
  * https://github.com/ocavue/prosemirror-virtual-cursor
  */
 export function edimVirtualCursorPlugins(): PMPlugin[] {
-  return [
+  const plugins = [
     new PMPlugin({
       props: {
         handleKeyDown: (view, event): boolean => {
@@ -80,7 +80,7 @@ export function edimVirtualCursorPlugins(): PMPlugin[] {
           if (
             event.key === 'ArrowRight' &&
             $pos.textOffset + 1 ===
-              $pos.parent.maybeChild($pos.index())?.nodeSize
+            $pos.parent.maybeChild($pos.index())?.nodeSize
           ) {
             view.dispatch(
               view.state.tr
@@ -97,6 +97,8 @@ export function edimVirtualCursorPlugins(): PMPlugin[] {
       },
     }),
   ];
+
+  return plugins;
 }
 
 function getMarksAround($pos: ResolvedPos) {

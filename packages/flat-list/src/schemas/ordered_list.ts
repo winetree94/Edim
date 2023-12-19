@@ -1,17 +1,24 @@
-import { DOMOutputSpec, NodeSpec } from 'prosemirror-model';
+import { NodeSpec } from 'prosemirror-model';
 
 export const EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME = 'ordered_list';
 
-const olDOM: DOMOutputSpec = [
-  'ol',
-  {
-    class: 'edim-ordered-list',
-  },
-  0,
-];
+export interface EdimFlatOrderedListNodeConfigs {
+  nodeName?: string;
+}
 
-export const edimFlatOrderedListNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME]: {
+const DEFAULT_CONFIGS: Required<EdimFlatOrderedListNodeConfigs> = {
+  nodeName: EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME,
+};
+
+export const edimFlatOrderedListNodes = (
+  configs?: EdimFlatOrderedListNodeConfigs,
+): Record<string, NodeSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     parseDOM: [
       {
         tag: 'ol',
@@ -23,7 +30,17 @@ export const edimFlatOrderedListNodes = (): Record<string, NodeSpec> => ({
     content: 'list_item*',
     group: 'block list',
     toDOM() {
-      return olDOM;
+      return [
+        'ol',
+        {
+          class: 'edim-ordered-list',
+        },
+        0,
+      ];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.nodeName]: nodeSpec,
+  };
+};

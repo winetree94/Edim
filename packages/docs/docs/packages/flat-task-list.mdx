@@ -5,19 +5,47 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Flat Task List
 
-`@edim-editor/flat-list` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+에디터에 **할일 목록**를 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/heading
+npm install @edim-editor/flat-task-list
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/heading/styles/heading.scss";
+@import "@edim-editor/flat-task-list/styles/flat-task-list.scss";
 ```
+
+## 서식
+
+#### `edimFlatTaskListNodes`
+
+할일 목록을 표현하기 위한 서식을 제공합니다. 반드시 `edimFlatTaskListItemNodes` 와 함께 사용해야 합니다.
+
+#### `edimFlatTaskListItemNodes`
+
+할일 목록의 항목을 표현하기 위한 서식을 제공합니다. 반드시 `edimFlatTaskListNodes` 와 함께 사용해야 합니다.
+
+## 플러그인
+
+#### `edimFlatTaskListPlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimFlatTaskListKeymapPlugins`
+
+Flat List 내부에서 되는 기본 단축키를 제공합니다.
+
+#### `edimTaskListInputRulePlugins`
+
+`[]` 또는 `[x]` 패턴의 문자를 입력하면 Flat Task List 노드로 전환하는 InputRule 을 제공합니다.
+
+#### `edimFlatTaskListMergePlugins`
+
+동일한 인접 리스트 노드를 자동으로 병합하는 기능을 제공합니다.
 
 ## 사용 예시
 
@@ -25,26 +53,37 @@ npm install @edim-editor/heading
 import { EditorState, Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimFlatTaskListNodes, edimFlatTaskListItemNodes, edimFlatTaskListPlugins } from '@edim-editor/flat-task-list';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+    ...edimFlatTaskListNodes({
+      nodeName: 'task_list',
+    }),
+    ...edimFlatTaskListItemNodes({
+      nodeName: 'task_list_item',
     }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
-    shortcutKey: mac ? 'Alt-Meta-º' : 'Ctrl-Alt-0',
+    nodeType: schema.nodes['paragraph'],
+  }),
+  ...edimFlatTaskListPlugins({
+    taskListNodeType: schema.nodes['task_list'],
+    taskListItemNodeType: schema.nodes['task_list_item'],
   }),
   ...edimMenubarPlugins({
+    taskList: {
+      taskListNodeType: schema.nodes['task_list'],
+      taskListItemNodeType: schema.nodes['task_list_item'],
+    },
     align: {},
   }),
   ...edimCorePlugins(),

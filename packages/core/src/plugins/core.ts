@@ -5,11 +5,7 @@ import { edimVirtualCursorPlugins } from './virtual-cursor';
 import { edimDropCursorPlugins } from './drop-cursor';
 import { edimGapCursorPlugins } from './gap-cursor';
 
-export interface EdimCorePluginConfigs {}
-
-export const edimCorePlugins = (
-  configs?: EdimCorePluginConfigs,
-): PMPlugin[] => {
+export const edimCorePlugins = (): PMPlugin[] => {
   return [
     ...edimBasicKeymapPlugins(),
     ...edimHistoryPlugins(),

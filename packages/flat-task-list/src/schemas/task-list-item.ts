@@ -13,8 +13,23 @@ export interface EdimFlatTaskListItemAttrs {
   checked: boolean;
 }
 
-export const edimFlatTaskListItemNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME]: {
+export interface EdimFlatTaskListItemNodeConfigs {
+  nodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimFlatTaskListItemNodeConfigs> = {
+  nodeName: EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME,
+};
+
+export const edimFlatTaskListItemNodes = (
+  configs?: EdimFlatTaskListItemNodeConfigs,
+): Record<string, NodeSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     content: 'paragraph',
     group: 'disable-paragraph-attributes',
     selectable: false,
@@ -78,5 +93,9 @@ export const edimFlatTaskListItemNodes = (): Record<string, NodeSpec> => ({
       ];
     },
     defining: true,
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.nodeName]: nodeSpec,
+  };
+};
