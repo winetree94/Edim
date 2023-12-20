@@ -14,7 +14,7 @@ export interface EdimTableEditingPluginConfigs {
 export const edimTableEditingPlugins = (
   configs: EdimTableEditingPluginConfigs,
 ) => {
-  return [
+  const plugins: PMPlugin[] = [
     ...edimFocusedCellDecorationPlugins(),
     ...edimTableCellButtonPlugins(),
     new PMPlugin({
@@ -28,4 +28,5 @@ export const edimTableEditingPlugins = (
     columnResizing(),
     tableEditing(),
   ];
+  return plugins;
 };

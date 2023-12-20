@@ -1,13 +1,31 @@
-import { DOMOutputSpec, MarkSpec } from 'prosemirror-model';
+import { MarkSpec } from 'prosemirror-model';
 
 export const EDIM_UNDERLINE_MARK_NAME = 'underline';
 
-const underlineDOM: DOMOutputSpec = ['u', 0];
-export const edimUnderlineMarks = (): Record<string, MarkSpec> => ({
-  [EDIM_UNDERLINE_MARK_NAME]: {
+export interface EdimUnderlineMarkConfigs {
+  markName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimUnderlineMarkConfigs> = {
+  markName: EDIM_UNDERLINE_MARK_NAME,
+};
+
+export const edimUnderlineMarks = (
+  configs?: EdimUnderlineMarkConfigs,
+): Record<string, MarkSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const markSpec: MarkSpec = {
     parseDOM: [{ tag: 'u' }],
     toDOM() {
-      return underlineDOM;
+      return ['u', 0];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.markName]: markSpec,
+  };
+};

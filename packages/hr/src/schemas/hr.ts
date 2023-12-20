@@ -1,14 +1,32 @@
-import { DOMOutputSpec, NodeSpec } from 'prosemirror-model';
+import { NodeSpec } from 'prosemirror-model';
 
 export const EDIM_HORIZONTAL_RULE_NODE_NAME = 'horizontal_rule';
 
-const hrDOM: DOMOutputSpec = ['hr'];
-export const edimHorizontalRuleNodes = (): Record<string, NodeSpec> => ({
-  [EDIM_HORIZONTAL_RULE_NODE_NAME]: {
+export interface EdimHorizontalRuleNodeConfigs {
+  nodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimHorizontalRuleNodeConfigs> = {
+  nodeName: EDIM_HORIZONTAL_RULE_NODE_NAME,
+};
+
+export const edimHorizontalRuleNodes = (
+  configs?: EdimHorizontalRuleNodeConfigs,
+): Record<string, NodeSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const nodeSpec: NodeSpec = {
     group: 'block',
     parseDOM: [{ tag: 'hr' }],
     toDOM() {
-      return hrDOM;
+      return ['hr'];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.nodeName]: nodeSpec,
+  };
+};

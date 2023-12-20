@@ -1,5 +1,7 @@
 import { MarkSpec, MarkType } from 'prosemirror-model';
 
+export const EDIM_TEXT_COLOR_DEFAULT_MARK_NAME = 'text_color';
+
 export interface EdimTextColorAttrs {
   color: string;
 }
@@ -16,11 +18,23 @@ export interface EdimTextColorMarkType extends MarkType {
   spec: EdimTextColorMarkSpec;
 }
 
-export const edimTextColorMarks = (): Record<
-  string,
-  EdimTextColorMarkSpec
-> => ({
-  text_color: {
+export interface EdimTextColorMarkConfigs {
+  markName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimTextColorMarkConfigs> = {
+  markName: EDIM_TEXT_COLOR_DEFAULT_MARK_NAME,
+};
+
+export const edimTextColorMarks = (
+  configs?: EdimTextColorMarkConfigs,
+): Record<string, EdimTextColorMarkSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const markSpec: EdimTextColorMarkSpec = {
     colors: [],
     attrs: {
       color: { default: '' },
@@ -40,5 +54,9 @@ export const edimTextColorMarks = (): Record<
         0,
       ];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.markName]: markSpec,
+  };
+};

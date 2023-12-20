@@ -21,7 +21,11 @@ const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
     ...edimParagraphNodes(),
-    ...edimTableNodes(),
+    ...edimTableNodes({
+      tableNodeName: 'table',
+      tableRowNodeName: 'table_row',
+      tableCellNodeName: 'table_cell',
+    }),
   },
 });
 

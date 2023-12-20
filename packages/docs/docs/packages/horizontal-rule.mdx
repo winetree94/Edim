@@ -5,19 +5,35 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Horizontal Rule
 
-`@edim-editor/paragraph` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+`@edim-editor/hr` 에디터에 **수평 구분선**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/paragraph
+npm install @edim-editor/hr
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/paragraph/styles/paragraph.scss";
+@import "@edim-editor/hr/styles/hr.scss";
 ```
+
+## 서식
+
+#### `edimHorizontalRuleNodes`
+
+수평선 서식을 제공합니다.
+
+## 플러그인
+
+#### `edimHorizontalRulePlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimHorizontalKeymapPlugins`
+
+현재 커서 위치에서 수평선 노드를 추가하는 단축키(Ctrl Shift _)를 제공합니다.
 
 ## 사용 예시
 
@@ -25,9 +41,10 @@ npm install @edim-editor/paragraph
 import { EditorState, Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimHorizontalRuleNodes, edimHorizontalRulePlugins } from '@edim-editor/hr';
 
 const schema = new Schema({
   nodes: {
@@ -36,18 +53,22 @@ const schema = new Schema({
       allowAlign: true,
       nodeName: 'paragraph',
     }),
+    ...edimHorizontalRuleNodes({
+      nodeName: 'horizontal_rule',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
-  ...edimMenubarPlugins({
-    align: {},
+  ...edimHorizontalRulePlugins({
+    nodeType: schema.nodes['horizontal_rule'],
   }),
   ...edimCorePlugins(),
 ];
+
 
 const view = new EditorView(document.querySelector('#editor'), {
   state: EditorState.create({

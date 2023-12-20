@@ -22,16 +22,18 @@ const schema = new Schema({
       allowAlign: true,
       nodeName: 'paragraph',
     }),
-    ...edimHorizontalRuleNodes(),
+    ...edimHorizontalRuleNodes({
+      nodeName: 'horizontal_rule',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimHorizontalRulePlugins({
-    nodeType: schema.nodes.horizontal_rule,
+    nodeType: schema.nodes['horizontal_rule'],
   }),
   ...edimCorePlugins(),
 ];

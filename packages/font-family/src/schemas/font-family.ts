@@ -19,11 +19,23 @@ export interface EdimFontFamilyMarkType extends MarkType {
   spec: EdimFontFamilyMarkSpec;
 }
 
-export const edimFontFamilyMarks = (): Record<
-  string,
-  EdimFontFamilyMarkSpec
-> => ({
-  [EDIM_FONT_FAMILY_DEFAULT_MARK_NAME]: {
+export interface EdimFontFamilyMarkConfigs {
+  markName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimFontFamilyMarkConfigs> = {
+  markName: EDIM_FONT_FAMILY_DEFAULT_MARK_NAME,
+};
+
+export const edimFontFamilyMarks = (
+  configs?: EdimFontFamilyMarkConfigs,
+): Record<string, EdimFontFamilyMarkSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const markSpec: EdimFontFamilyMarkSpec = {
     fonts: [
       {
         fontFamily: 'Noto Sans KR',
@@ -69,5 +81,9 @@ export const edimFontFamilyMarks = (): Record<
         0,
       ];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.markName]: markSpec,
+  };
+};

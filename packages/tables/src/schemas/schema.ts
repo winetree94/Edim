@@ -16,27 +16,6 @@ export interface CellAttributes {
   background: string | null;
 }
 
-// export const EDIM_TABLE_NODES: Record<string, NodeSpec> = {
-//   ...tableNodes({
-//     tableGroup: 'block',
-//     cellContent: 'block+',
-//     cellAttributes: {
-//       background: {
-//         default: null,
-//         getFromDOM(dom) {
-//           return dom.style.backgroundColor || null;
-//         },
-//         setDOMAttr(value, attrs) {
-//           if (value) {
-//             attrs['style'] =
-//               (attrs['style'] || '') + `background-color: ${value};`;
-//           }
-//         },
-//       },
-//     },
-//   }),
-// };
-
 export interface CellAttrs {
   colspan: number;
   rowspan: number;
@@ -99,8 +78,27 @@ for (const prop in extraAttrs) {
   cellAttrs[prop] = { default: extraAttrs[prop].default };
 }
 
-export const edimTableNodes = (): Record<string, NodeSpec> => ({
-  table: {
+export interface EdimTableNodeConfigs {
+  tableNodeName?: string;
+  tableRowNodeName?: string;
+  tableCellNodeName?: string;
+}
+
+const DEFAULT_CONFIGS: Required<EdimTableNodeConfigs> = {
+  tableNodeName: EDIM_TABLE_DEFAULT_NODE_NAME,
+  tableRowNodeName: EDIM_TABLE_ROW_DEFAULT_NODE_NAME,
+  tableCellNodeName: EDIM_TABLE_CELL_DEFAULT_NODE_NAME,
+};
+
+export const edimTableNodes = (
+  configs?: EdimTableNodeConfigs,
+): Record<string, NodeSpec> => {
+  const mergedConfigs = {
+    ...DEFAULT_CONFIGS,
+    ...configs,
+  };
+
+  const tableNodeSpec: NodeSpec = {
     content: 'table_row+',
     tableRole: 'table',
     isolating: true,
@@ -113,9 +111,10 @@ export const edimTableNodes = (): Record<string, NodeSpec> => ({
     toDOM() {
       return ['table', ['tbody', 0]];
     },
-  },
-  table_row: {
-    content: '(table_cell | table_header)*',
+  };
+
+  const tableRowNodeSpec: NodeSpec = {
+    content: 'table_cell*',
     tableRole: 'row',
     parseDOM: [
       {
@@ -125,8 +124,9 @@ export const edimTableNodes = (): Record<string, NodeSpec> => ({
     toDOM() {
       return ['tr', 0];
     },
-  },
-  table_cell: {
+  };
+
+  const tableCellNodeSpec: NodeSpec = {
     content: 'block+',
     group: 'block-container',
     attrs: {
@@ -150,37 +150,19 @@ export const edimTableNodes = (): Record<string, NodeSpec> => ({
         tag: 'td',
         getAttrs: (dom) => getCellAttrs(dom, extraAttrs),
       },
-    ],
-    toDOM(node: Node) {
-      return ['td', setCellAttrs(node, extraAttrs), 0];
-    },
-  },
-  table_header: {
-    content: 'block+',
-    attrs: {
-      colspan: {
-        default: 1,
-      },
-      rowspan: {
-        default: 1,
-      },
-      colwidth: {
-        default: null,
-      },
-      background: {
-        default: null,
-      },
-    },
-    tableRole: 'header_cell',
-    isolating: true,
-    parseDOM: [
       {
         tag: 'th',
         getAttrs: (dom) => getCellAttrs(dom, extraAttrs),
       },
     ],
     toDOM(node: Node) {
-      return ['th', setCellAttrs(node, extraAttrs), 0];
+      return ['td', setCellAttrs(node, extraAttrs), 0];
     },
-  },
-});
+  };
+
+  return {
+    [mergedConfigs.tableNodeName]: tableNodeSpec,
+    [mergedConfigs.tableRowNodeName]: tableRowNodeSpec,
+    [mergedConfigs.tableCellNodeName]: tableCellNodeSpec,
+  };
+};
