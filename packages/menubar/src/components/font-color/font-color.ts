@@ -1,7 +1,6 @@
 import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import {
-  COLORS,
   EdimColor,
   EdimSelect,
   EdimSeparator,
@@ -11,7 +10,10 @@ import {
 import { toggleMark } from 'prosemirror-commands';
 import { EditorState, TextSelection } from 'prosemirror-state';
 import { markActive } from '@edim-editor/core';
-import { EdimTextColorAttrs } from '@edim-editor/text-color';
+import {
+  EdimTextColorAttrs,
+  EdimTextColorMarkType,
+} from '@edim-editor/text-color';
 
 const currentTextColor = (state: EditorState): string | null => {
   const selection = state.selection;
@@ -62,7 +64,8 @@ export const EdimMenubarFontColorSelect = () => {
     return null;
   }
 
-  const textColorMarkType = context.options.textColor.textColorMarkType;
+  const textColorMarkType = context.options.textColor
+    .textColorMarkType as EdimTextColorMarkType;
   const currentColor = currentTextColor(context.editorView.state);
 
   return html`
@@ -102,16 +105,16 @@ export const EdimMenubarFontColorSelect = () => {
         }}"></span>
       </${EdimSelect.Text}>
       <${EdimSelect.OptionGroup} className="edim-color-layer-list">
-      ${COLORS.map(
+      ${textColorMarkType.spec.colors?.map(
         (color) => html`
         <${EdimSelect.Option}
-        className="edim-colo-layer-list-item"
-        value="${color}">
-          <${EdimColor}
-            color=${color}
-            className=${'context.color' === color ? 'selected' : ''}
-          />
-          </${EdimSelect.Option}>
+          className="edim-colo-layer-list-item"
+          value="${color.color}">
+            <${EdimColor}
+              color=${color.color}
+              className=${'context.color' === color.color ? 'selected' : ''}
+            />
+        </${EdimSelect.Option}>
         `,
       )}
       </${EdimSelect.OptionGroup}>

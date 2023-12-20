@@ -19,20 +19,22 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimItalicMarks(),
+    ...edimItalicMarks({
+      markName: 'em',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimItalicPlugins({
-    markType: schema.marks.em,
+    markType: schema.marks['em'],
   }),
   ...edimMenubarPlugins({
     textStyles: {
-      italicMarkType: schema.marks.em,
+      italicMarkType: schema.marks['em'],
     },
   }),
   ...edimCorePlugins(),

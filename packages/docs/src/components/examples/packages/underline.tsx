@@ -22,20 +22,22 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimUnderlineMarks(),
+    ...edimUnderlineMarks({
+      markName: 'underline',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimUnderlinePlugins({
-    markType: schema.marks.underline,
+    markType: schema.marks['underline'],
   }),
   ...edimMenubarPlugins({
     textStyles: {
-      underlineMarkType: schema.marks.underline,
+      underlineMarkType: schema.marks['underline'],
     },
   }),
   ...edimCorePlugins(),

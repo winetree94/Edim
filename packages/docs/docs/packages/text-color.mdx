@@ -5,19 +5,25 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Text Color
 
-`@edim-editor/paragraph` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+에디터에 **텍스트 색상**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/paragraph
+npm install @edim-editor/text-color
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/paragraph/styles/paragraph.scss";
+@import "@edim-editor/text-color/styles/text-color.scss";
 ```
+
+## 서식
+
+#### `edimTextColorMarks`
+
+텍스트 색상 서식을 제공합니다.
 
 ## 사용 예시
 
@@ -28,23 +34,39 @@ import { EditorView } from 'prosemirror-view';
 import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimTextColorMarks } from '@edim-editor/text-color';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+  },
+  marks: {
+    ...edimTextColorMarks({
+      markName: 'text_color',
+      colors: [
+        '#182B4D',
+        '#0055CC',
+        '#206A83',
+        '#216E4E',
+        '#E56910',
+        '#AE2E24',
+        '#5E4DB2',
+      ].map((color) => ({
+        color: color,
+      })),
     }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimMenubarPlugins({
-    align: {},
+    textColor: {
+      textColorMarkType: schema.marks['text_color'],
+    },
   }),
   ...edimCorePlugins(),
 ];

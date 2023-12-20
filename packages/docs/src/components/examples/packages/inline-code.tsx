@@ -19,20 +19,22 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimCodeMarks(),
+    ...edimCodeMarks({
+      markName: 'code',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimCodePlugins({
-    markType: schema.marks.code,
+    markType: schema.marks['code'],
   }),
   ...edimMenubarPlugins({
     textStyles: {
-      codeMarkType: schema.marks.code,
+      codeMarkType: schema.marks['code'],
     },
   }),
   ...edimCorePlugins(),

@@ -42,7 +42,13 @@ export const edimBoldMarks = (
       },
     ],
     toDOM() {
-      return ['strong', 0];
+      return [
+        'strong',
+        {
+          class: 'edim-bold',
+        },
+        0,
+      ];
     },
   };
 

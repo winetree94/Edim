@@ -22,20 +22,22 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimSubscriptMarks(),
+    ...edimSubscriptMarks({
+      markName: 'subscript',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimSubscriptPlugins({
-    markType: schema.marks.subscript,
+    markType: schema.marks['subscript'],
   }),
   ...edimMenubarPlugins({
     textStyles: {
-      subscriptMarkType: schema.marks.subscript,
+      subscriptMarkType: schema.marks['subscript'],
     },
   }),
   ...edimCorePlugins(),

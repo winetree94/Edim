@@ -1,23 +1,40 @@
 ---
 sidebar_position: 13
 ---
+
 import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Italic
 
-`@edim-editor/paragraph` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+에디터에서 **기울임** 텍스트를 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/paragraph
+npm install @edim-editor/italic
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/paragraph/styles/paragraph.scss";
+@import "@edim-editor/italic/styles/italic.scss";
 ```
+
+## 서식
+
+#### `edimItalicMarks`
+
+기울임 텍스트 서식을 제공합니다.
+
+## 플러그인
+
+#### `edimItalicPlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimItalicKeymapPlugins`
+
+현재 텍스트를 기울임 텍스트로 전환하는 단축키(Mod-i)를 제공합니다.
 
 ## 사용 예시
 
@@ -25,26 +42,34 @@ npm install @edim-editor/paragraph
 import { EditorState, Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimItalicMarks, edimItalicPlugins } from '@edim-editor/italic';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+  },
+  marks: {
+    ...edimItalicMarks({
+      markName: 'em',
     }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
+  }),
+  ...edimItalicPlugins({
+    markType: schema.marks['em'],
   }),
   ...edimMenubarPlugins({
-    align: {},
+    textStyles: {
+      italicMarkType: schema.marks['em'],
+    },
   }),
   ...edimCorePlugins(),
 ];

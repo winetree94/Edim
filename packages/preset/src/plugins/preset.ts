@@ -61,6 +61,7 @@ import { edimMenubarPlugins } from '@edim-editor/menubar';
 import { Schema } from 'prosemirror-model';
 import { EDIM_FONT_FAMILY_DEFAULT_MARK_NAME } from '@edim-editor/font-family';
 import { EDIM_LINK_DEFAULT_MARK_NAME } from '@edim-editor/link';
+import { EDIM_TEXT_COLOR_DEFAULT_MARK_NAME } from '@edim-editor/text-color';
 
 /**
  * @see https://edim.me/docs/packages/menubar
@@ -187,7 +188,7 @@ export const edimPresetPlugins = (
         },
         textColor: {
           textColorMarkType:
-            mergedConfigs.schema.marks[EDIM_FONT_FAMILY_DEFAULT_MARK_NAME],
+            mergedConfigs.schema.marks[EDIM_TEXT_COLOR_DEFAULT_MARK_NAME],
         },
         align: {},
         list: {

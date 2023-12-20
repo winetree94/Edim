@@ -5,19 +5,35 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Strikethrough
 
-`@edim-editor/paragraph` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+에디터에서 **취소선** 텍스트를 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/paragraph
+npm install @edim-editor/strikethrough
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/paragraph/styles/paragraph.scss";
+@import "@edim-editor/strikethrough/styles/strikethrough.scss";
 ```
+
+## 서식
+
+#### `edimStrikethroughMarks`
+
+취소선 텍스트 서식을 제공합니다.
+
+## 플러그인
+
+#### `edimStrikethroughPlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimStrikethroughKeymapPlugins`
+
+현재 텍스트를 취소선 텍스트로 전환하는 단축키(Mod-Shift-S)를 제공합니다.
 
 ## 사용 예시
 
@@ -25,26 +41,34 @@ npm install @edim-editor/paragraph
 import { EditorState, Plugin } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimBaseNodes, edimCorePlugins } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimStrikethroughMarks, edimStrikethroughPlugins } from '@edim-editor/strikethrough';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+  },
+  marks: {
+    ...edimStrikethroughMarks({
+      markName: 'strikethrough',
     }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
+  }),
+  ...edimStrikethroughPlugins({
+    markType: schema.marks['strikethrough'],
   }),
   ...edimMenubarPlugins({
-    align: {},
+    textStyles: {
+      strikethroughMarkType: schema.marks['strikethrough'],
+    },
   }),
   ...edimCorePlugins(),
 ];

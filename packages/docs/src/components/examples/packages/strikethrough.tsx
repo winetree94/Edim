@@ -22,20 +22,22 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimStrikethroughMarks(),
+    ...edimStrikethroughMarks({
+      markName: 'strikethrough',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimStrikethroughPlugins({
-    markType: schema.marks.strikethrough,
+    markType: schema.marks['strikethrough'],
   }),
   ...edimMenubarPlugins({
     textStyles: {
-      strikethroughMarkType: schema.marks.strikethrough,
+      strikethroughMarkType: schema.marks['strikethrough'],
     },
   }),
   ...edimCorePlugins(),

@@ -22,20 +22,22 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimSuperscriptMarks(),
+    ...edimSuperscriptMarks({
+      markName: 'superscript',
+    }),
   },
 });
 
 const plugins: Plugin[] = [
   ...edimParagraphPlugins({
-    nodeType: schema.nodes.paragraph,
+    nodeType: schema.nodes['paragraph'],
   }),
   ...edimSuperscriptPlugins({
-    markType: schema.marks.superscript,
+    markType: schema.marks['superscript'],
   }),
   ...edimMenubarPlugins({
     textStyles: {
-      superscriptMarkType: schema.marks.superscript,
+      superscriptMarkType: schema.marks['superscript'],
     },
   }),
   ...edimCorePlugins(),
