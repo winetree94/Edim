@@ -1,6 +1,7 @@
 {
   "label": "패키지 목록",
   "position": 4,
+  "collapsed": false,
   "link": {
     "type": "generated-index",
     "description": "5 minutes to learn the most important Docusaurus concepts."

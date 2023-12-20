@@ -1,6 +1,7 @@
 {
   "label": "시작하기",
   "position": 2,
+  "collapsed": false,
   "link": {
     "type": "generated-index",
     "description": "Edim 을 시작하기 위한 가이드"
