@@ -55,11 +55,161 @@ export const FlatTaskListExample = (props: ProseMirrorProps) => {
         type: 'doc',
         content: [
           {
-            type: 'paragraph',
+            type: 'task_list',
             content: [
               {
-                type: 'text',
-                text: 'This is a minimal example of a ProseMirror editor with a few plugins.',
+                type: 'task_list_item',
+                attrs: {
+                  indent: 1,
+                  align: 'left',
+                  checked: false,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      align: 'left',
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asdfa',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'task_list_item',
+                attrs: {
+                  indent: 2,
+                  align: 'left',
+                  checked: false,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      align: 'left',
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asdfasdf',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'task_list_item',
+                attrs: {
+                  indent: 2,
+                  align: 'left',
+                  checked: false,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      align: 'left',
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asdfasdf',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'task_list_item',
+                attrs: {
+                  indent: 1,
+                  align: 'left',
+                  checked: true,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      align: 'left',
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asdfasdfasdf',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'task_list_item',
+                attrs: {
+                  indent: 1,
+                  align: 'left',
+                  checked: true,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      align: 'left',
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asdfas',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'task_list_item',
+                attrs: {
+                  indent: 2,
+                  align: 'left',
+                  checked: false,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      align: 'left',
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'fdasdf',
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                type: 'task_list_item',
+                attrs: {
+                  indent: 2,
+                  align: 'left',
+                  checked: false,
+                },
+                content: [
+                  {
+                    type: 'paragraph',
+                    attrs: {
+                      align: 'left',
+                    },
+                    content: [
+                      {
+                        type: 'text',
+                        text: 'asdfasdf',
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },

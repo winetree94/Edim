@@ -71,6 +71,7 @@ export const indentListItem = (
           return tr;
         }
         return tr.setNodeMarkup(pos, node.type, {
+          ...attrs,
           indent: expectedIndent,
         });
       }, tr);

@@ -4,6 +4,7 @@ import {
   parseQuillIndent,
   parseQuillTextAlign,
 } from '@edim-editor/core';
+import { createNode } from '../utils';
 
 export const EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME = 'task_list_item';
 
@@ -47,12 +48,12 @@ export const edimFlatTaskListItemNodes = (
       {
         tag: 'li',
         getAttrs(node) {
-          const dom = node as HTMLElement;
+          const dom = node as HTMLLIElement;
           const align = dom.getAttribute('data-text-align');
           const quillAlign = parseQuillTextAlign(dom);
           const indent = dom.dataset['indent'];
           const quillIndent = parseQuillIndent(dom);
-          const checked = dom.dataset['checked'];
+          const checked = dom.dataset['checked'] === 'true';
 
           if (dom.parentElement && isQuillTaskList(dom.parentElement)) {
             return {
@@ -71,25 +72,30 @@ export const edimFlatTaskListItemNodes = (
       },
     ],
     toDOM(node) {
-      const attrs = node.attrs as EdimFlatTaskListItemAttrs;
-      const classes = ['edim-task-list-item'];
-      if (attrs.align && attrs.align !== 'left') {
-        classes.push(`edim-align-${attrs.align}`);
-      }
-      classes.push(`edim-indent-${attrs.indent || 1}`);
-      if (attrs.checked) {
-        classes.push('edim-task-list-item-checked');
-      }
-      return [
-        'li',
-        {
-          class: classes.join(' '),
-          'data-text-align': attrs.align || 'left',
-          'data-indent': attrs.indent || 1,
-          'data-checked': attrs.checked ? 'true' : 'false',
-        },
-        0,
-      ];
+      const li = createNode(node);
+      return {
+        dom: li,
+        contentDOM: li,
+      };
+      // const attrs = node.attrs as EdimFlatTaskListItemAttrs;
+      // const classes = ['edim-task-list-item'];
+      // if (attrs.align && attrs.align !== 'left') {
+      //   classes.push(`edim-align-${attrs.align}`);
+      // }
+      // classes.push(`edim-indent-${attrs.indent || 1}`);
+      // if (attrs.checked) {
+      //   classes.push('edim-task-list-item-checked');
+      // }
+      // return [
+      //   'li',
+      //   {
+      //     class: classes.join(' '),
+      //     'data-text-align': attrs.align || 'left',
+      //     'data-indent': attrs.indent || 1,
+      //     'data-checked': attrs.checked ? 'true' : 'false',
+      //   },
+      //   0,
+      // ];
     },
     defining: true,
   };

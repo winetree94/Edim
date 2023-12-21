@@ -3,6 +3,7 @@ import { Plugin as PMPlugin } from 'prosemirror-state';
 import { edimTaskListInputRulePlugins } from './input-rules';
 import { edimFlatTaskListKeymapPlugins } from './keymaps';
 import { edimFlatTaskListMergePlugins } from './merge';
+import { edimTaskListItemNodeViewPlugins } from './task-list-item';
 
 export interface EdimFlatTaskListPluginConfigs {
   taskListNodeType: NodeType;
@@ -13,6 +14,9 @@ export const edimFlatTaskListPlugins = (
   configs: EdimFlatTaskListPluginConfigs,
 ): PMPlugin[] => {
   return [
+    ...edimTaskListItemNodeViewPlugins({
+      taskListItemNodeType: configs.taskListItemNodeType,
+    }),
     ...edimTaskListInputRulePlugins({
       taskListNodeType: configs.taskListNodeType,
     }),

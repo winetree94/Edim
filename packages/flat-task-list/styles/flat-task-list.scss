@@ -9,8 +9,6 @@
     list-style-type: none;
 
     li.edim-task-list-item {
-
-
       word-break: break-all;
       line-height: normal;
 
@@ -33,19 +31,20 @@
 
       @for $i from 1 through 6 {
         &.edim-indent-#{$i} {
-          margin-left: 30px * $i;
+          padding-left: 30px * $i;
         }
       }
 
       &::before {
         cursor: pointer;
         vertical-align: top;
-        margin-left: -1.5em;
-        margin-right: 0.3em;
+        position: absolute;
+        margin-left: -30px;
         text-align: right;
         display: inline-block;
         white-space: nowrap;
-        width: 1.2em;
+        text-align: center;
+        width: 30px;
         content: '\2610';
       }
 

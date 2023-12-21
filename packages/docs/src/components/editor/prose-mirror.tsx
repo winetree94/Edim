@@ -21,6 +21,7 @@ export const ProseMirror = (props: ProseMirrorProps) => {
       ...props,
     });
     editorViewRef.current = view;
+    console.log(view);
     return () => {
       view.destroy();
     };
