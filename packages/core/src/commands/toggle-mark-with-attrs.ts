@@ -52,7 +52,7 @@ export const toggleMarkWithAttrs = (
               if (missing) {
                 return false;
               }
-              console.log(node);
+
               missing =
                 !(
                   markType.isInSet(node.marks) &&
@@ -74,7 +74,6 @@ export const toggleMarkWithAttrs = (
                 );
               return undefined;
             });
-            console.log(missing);
             return !missing;
           });
         }

@@ -1,6 +1,7 @@
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 import { Plugin } from 'prosemirror-state';
+import { clearMarks } from '../commands';
 
 export const edimBasicKeymapPlugins = (): Plugin[] => {
   return [
@@ -53,6 +54,10 @@ export const edimBasicKeymapPlugins = (): Plugin[] => {
         const tr = state.tr.setNodeMarkup(0, firstNodeFromSchema);
         dispatch?.(tr);
 
+        return true;
+      },
+      'Mod-\\': (state, dispatch) => {
+        clearMarks()(state, dispatch);
         return true;
       },
     }),
