@@ -31,6 +31,9 @@ export const edimTaskListItemNodeViewPlugins = (
                 return;
               }
 
+              event.preventDefault();
+              event.stopPropagation();
+
               const pos = getPos();
               if (pos === undefined) {
                 return;
