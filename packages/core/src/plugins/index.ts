@@ -5,3 +5,4 @@ export * from './keymap';
 export * from './core';
 export * from './drop-cursor';
 export * from './gap-cursor';
+export * from './reset-mark';
