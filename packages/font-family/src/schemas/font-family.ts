@@ -8,7 +8,6 @@ export interface EdimFontFamilyAttrs {
 
 export interface EdimFontFamily {
   fontFamily: string;
-  label: string;
 }
 
 export interface EdimFontFamilyMarkSpec extends MarkSpec {
@@ -21,10 +20,31 @@ export interface EdimFontFamilyMarkType extends MarkType {
 
 export interface EdimFontFamilyMarkConfigs {
   markName?: string;
+  fonts?: EdimFontFamily[];
 }
 
 const DEFAULT_CONFIGS: Required<EdimFontFamilyMarkConfigs> = {
   markName: EDIM_FONT_FAMILY_DEFAULT_MARK_NAME,
+  fonts: [
+    {
+      fontFamily: 'Arial',
+    },
+    {
+      fontFamily: 'Verdana',
+    },
+    {
+      fontFamily: 'Tahoma',
+    },
+    {
+      fontFamily: 'Trebuchet MS',
+    },
+    {
+      fontFamily: 'Times New Roman',
+    },
+    {
+      fontFamily: 'Georgia',
+    },
+  ],
 };
 
 export const edimFontFamilyMarks = (
@@ -35,21 +55,15 @@ export const edimFontFamilyMarks = (
     ...configs,
   };
 
+  const fontByNames = mergedConfigs.fonts.reduce<{
+    [key: string]: EdimFontFamily;
+  }>((acc, font) => {
+    acc[font.fontFamily] = font;
+    return acc;
+  }, {});
+
   const markSpec: EdimFontFamilyMarkSpec = {
-    fonts: [
-      {
-        fontFamily: 'Noto Sans KR',
-        label: 'Noto Sans KR',
-      },
-      {
-        fontFamily: 'Nanum Gothic',
-        label: 'Nanum Gothic',
-      },
-      {
-        fontFamily: 'Dhurjati',
-        label: 'Dhurjati',
-      },
-    ],
+    fonts: mergedConfigs.fonts,
     attrs: {
       fontFamily: {
         default: null,
@@ -60,7 +74,10 @@ export const edimFontFamilyMarks = (
         tag: 'span.edim-font-family',
         getAttrs: (node) => {
           const dom = node as HTMLElement;
-          const fontFamily = dom.getAttribute('data-font-family');
+          const fontFamily = dom.dataset['fontFamily'] || '';
+          if (mergedConfigs.fonts && !fontByNames[fontFamily]) {
+            return false;
+          }
           return {
             fontFamily: fontFamily || null,
           };

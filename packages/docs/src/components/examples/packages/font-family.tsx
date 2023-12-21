@@ -19,7 +19,12 @@ const schema = new Schema({
     ...edimParagraphNodes(),
   },
   marks: {
-    ...edimFontFamilyMarks(),
+    ...edimFontFamilyMarks({
+      markName: 'font_family',
+      fonts: ['Arial', 'Verdana', 'Tahoma', 'Trebuchet MS'].map((font) => ({
+        fontFamily: font,
+      })),
+    }),
   },
 });
 

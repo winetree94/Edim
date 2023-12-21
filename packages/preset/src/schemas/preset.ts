@@ -32,6 +32,7 @@ export const edimPresetSchema = () =>
     nodes: {
       ...edimBaseNodes(),
       ...edimParagraphNodes(),
+      ...edimHeadingNodes(),
       ...edimFlatBulletListNodes(),
       ...edimFlatOrderedListNodes(),
       ...edimFlatListItemNodes(),
@@ -39,7 +40,6 @@ export const edimPresetSchema = () =>
       ...edimFlatTaskListItemNodes(),
       ...edimBlockquoteNodes(),
       ...edimHorizontalRuleNodes(),
-      ...edimHeadingNodes(),
       ...edimCodeBlockNodes(),
       ...edimTableNodes(),
     },

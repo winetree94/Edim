@@ -18,7 +18,6 @@ export const EdimMenubarFontFamilySelect = () => {
 
   const fontOptions = [
     {
-      label: 'Default',
       value: 'default',
       command: () => {
         const tr =
@@ -29,7 +28,6 @@ export const EdimMenubarFontFamilySelect = () => {
     },
     ...fontFamilyMarkType.spec.fonts.map((font) => ({
       value: font.fontFamily,
-      label: font.label,
       command: () => {
         const tr = context.editorView.state.tr.addStoredMark(
           fontFamilyMarkType.create({
@@ -42,23 +40,26 @@ export const EdimMenubarFontFamilySelect = () => {
     })),
   ];
   return html`
-  <${EdimSelect.Root} 
-  className="${classes('edim-menubar-font-select')}"
-  value="${currentFont}">
-<${EdimSelect.Text}>
-<${EdimParagraph}>
-${fontOptions.find((option) => option.value === currentFont)?.label || ''}
-</${EdimParagraph}>
-</${EdimSelect.Text}>
-<${EdimSelect.OptionGroup}>
-  ${fontOptions.map((option) => {
-    return html`
-      <${EdimSelect.Option} value="${option.value}" onClick=${option.command}>
-        <${EdimParagraph} style="font-family:${option.value}">${option.label}</${EdimParagraph}> 
-      </${EdimSelect.Option}>
-    `;
-  })}
-</${EdimSelect.OptionGroup}>
-</${EdimSelect.Root}>
+    <${EdimSelect.Root} 
+      className="${classes('edim-menubar-font-select')}"
+      value="${currentFont}">
+      <${EdimSelect.Text}>
+        <${EdimParagraph}>
+          ${
+            fontOptions.find((option) => option.value === currentFont)?.value ||
+            ''
+          }
+        </${EdimParagraph}>
+      </${EdimSelect.Text}>
+      <${EdimSelect.OptionGroup}>
+        ${fontOptions.map((option) => {
+          return html`
+            <${EdimSelect.Option} value="${option.value}" onClick=${option.command}>
+              <${EdimParagraph} style="font-family: ${option.value};">${option.value}</${EdimParagraph}> 
+            </${EdimSelect.Option}>
+          `;
+        })}
+      </${EdimSelect.OptionGroup}>
+    </${EdimSelect.Root}>
   `;
 };

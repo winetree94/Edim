@@ -5,19 +5,25 @@ import BrowserOnly from '@docusaurus/BrowserOnly';
 
 # Font Family
 
-`@edim-editor/paragraph` 에디터에 **문단**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+에디터에 사용자 지정 **폰트**를 표현하기 위한 서식과 관련 플러그인을 제공합니다.
 
 ## 설치
 
 ```bash
-npm install @edim-editor/paragraph
+npm install @edim-editor/font-family
 ```
 
 ## 스타일
 
 ```css title="src/index.scss"
-@import "@edim-editor/paragraph/styles/paragraph.scss";
+@import "@edim-editor/font-family/styles/font-family.scss";
 ```
+
+## 서식
+
+#### `edimFontFamilyMarks`
+
+텍스트 색상 서식을 제공합니다.
 
 ## 사용 예시
 
@@ -28,13 +34,19 @@ import { EditorView } from 'prosemirror-view';
 import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
 import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
 import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { edimFontFamilyMarks } from '@edim-editor/font-family';
 
 const schema = new Schema({
   nodes: {
     ...edimBaseNodes(),
-    ...edimParagraphNodes({
-      allowAlign: true,
-      nodeName: 'paragraph',
+    ...edimParagraphNodes(),
+  },
+  marks: {
+    ...edimFontFamilyMarks({
+      markName: 'font_family',
+      fonts: ['Arial', 'Verdana', 'Tahoma', 'Trebuchet MS'].map((font) => ({
+        fontFamily: font,
+      })),
     }),
   },
 });
@@ -44,7 +56,9 @@ const plugins: Plugin[] = [
     nodeType: schema.nodes.paragraph,
   }),
   ...edimMenubarPlugins({
-    align: {},
+    fontFamily: {
+      fontFamilyMarkType: schema.marks.fontFamily,
+    },
   }),
   ...edimCorePlugins(),
 ];
