@@ -4,8 +4,8 @@ import { Attrs } from 'prosemirror-model';
 
 export const TEXT_ALIGNMENT = {
   LEFT: 'left',
-  RIGHT: 'right',
   CENTER: 'center',
+  RIGHT: 'right',
 } as const;
 
 export type TEXT_ALIGNMENTS =
