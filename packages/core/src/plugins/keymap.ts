@@ -56,10 +56,7 @@ export const edimBasicKeymapPlugins = (): Plugin[] => {
 
         return true;
       },
-      'Mod-\\': (state, dispatch) => {
-        clearMarks()(state, dispatch);
-        return true;
-      },
+      'Mod-\\': clearMarks(),
     }),
     keymap(baseKeymap),
   ];
