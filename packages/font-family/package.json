@@ -17,6 +17,8 @@
   "private": true,
   "dependencies": {
     "prosemirror-model": "*",
+    "prosemirror-state": "*",
+    "prosemirror-commands": "*",
     "@edim-editor/core": "*"
   },
   "devDependencies": {

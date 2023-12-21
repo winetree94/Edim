@@ -11,6 +11,11 @@ export const TEXT_ALIGNMENT = {
 export type TEXT_ALIGNMENTS =
   (typeof TEXT_ALIGNMENT)[keyof typeof TEXT_ALIGNMENT];
 
+/**
+ * Specify the text alignment of the current selection. Only applicable nodes will be affected.
+ * @param align
+ * @returns Command
+ */
 export const setTextAlign = (align: TEXT_ALIGNMENTS | null): Command => {
   return (state, dispatch) => {
     let selection = state.selection;

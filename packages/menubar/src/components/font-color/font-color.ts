@@ -7,12 +7,12 @@ import {
   classes,
   html,
 } from '@edim-editor/ui';
-import { toggleMark } from 'prosemirror-commands';
 import { EditorState, TextSelection } from 'prosemirror-state';
 import { markActive } from '@edim-editor/core';
 import {
   EdimTextColorAttrs,
   EdimTextColorMarkType,
+  toggleTextColor,
 } from '@edim-editor/text-color';
 
 const currentTextColor = (state: EditorState): string | null => {
@@ -73,23 +73,9 @@ export const EdimMenubarFontColorSelect = () => {
       className="${classes('edim-menubar-color-select')}"
       value="${'black'}"
       onChange="${(color: string) => {
-        const { from, to } = context.editorView.state.tr.selection;
-        if (from === to) {
-          toggleMark(textColorMarkType, {
-            color,
-          })(context.editorView.state, context.editorView.dispatch);
-          context.editorView.focus();
-          return;
-        }
-        let tr = context.editorView.state.tr;
-        tr = tr.addMark(
-          from,
-          to,
-          textColorMarkType.create({
-            color,
-          }),
-        );
-        context.editorView.dispatch(tr);
+        toggleTextColor(textColorMarkType, {
+          color,
+        })(context.editorView.state, context.editorView.dispatch);
         context.editorView.focus();
       }}">
       <${EdimSelect.Text}>

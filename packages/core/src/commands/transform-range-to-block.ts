@@ -3,6 +3,14 @@ import { Attrs, NodeType } from 'prosemirror-model';
 import { liftOut } from '../transforms';
 import { getBlockContainerChildren } from '../utils';
 
+/**
+ * Convert all nodes within the current selection to a specific node.
+ * This applies only to convertible nodes.
+ *
+ * @param nodeType
+ * @param attrs
+ * @returns Command
+ */
 export const transformRangeToBlock =
   (nodeType: NodeType, attrs?: Attrs): Command =>
   (state, dispatch) => {
