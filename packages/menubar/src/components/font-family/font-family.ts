@@ -1,11 +1,12 @@
 import { EdimMenubarContext } from '../context';
 import { useContext } from 'preact/hooks';
 import { EdimParagraph, EdimSelect, classes, html } from '@edim-editor/ui';
-import { currentFontFamily } from '../../utils';
 import {
+  EdimFontFamilyAttrs,
   EdimFontFamilyMarkType,
   toggleFontFamily,
 } from '@edim-editor/font-family';
+import { markActive } from '@edim-editor/core';
 
 export const EdimMenubarFontFamilySelect = () => {
   const context = useContext(EdimMenubarContext);
@@ -17,7 +18,9 @@ export const EdimMenubarFontFamilySelect = () => {
   const fontFamilyMarkType = context.editorView.state.schema.marks[
     'font_family'
   ] as EdimFontFamilyMarkType;
-  const currentFont = currentFontFamily(context.editorView.state);
+  const currentMark = markActive(context.editorView.state, fontFamilyMarkType);
+  const currentFont =
+    (currentMark?.attrs as EdimFontFamilyAttrs | null)?.fontFamily || 'default';
 
   const fontOptions = [
     {

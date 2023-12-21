@@ -61,6 +61,7 @@ export const edimFontFamilyMarks = (
     acc[font.fontFamily] = font;
     return acc;
   }, {});
+  console.log(fontByNames);
 
   const markSpec: EdimFontFamilyMarkSpec = {
     fonts: mergedConfigs.fonts,
@@ -75,7 +76,13 @@ export const edimFontFamilyMarks = (
         getAttrs: (node) => {
           const dom = node as HTMLElement;
           const fontFamily = dom.dataset['fontFamily'] || '';
+
+          if (!fontFamily) {
+            return false;
+          }
+
           if (mergedConfigs.fonts && !fontByNames[fontFamily]) {
+            console.log('false');
             return false;
           }
           return {
@@ -89,7 +96,7 @@ export const edimFontFamilyMarks = (
       return [
         'span',
         {
-          class: 'font-family',
+          class: 'edim-font-family',
           style: attrs.fontFamily
             ? `font-family: ${attrs.fontFamily}`
             : undefined,

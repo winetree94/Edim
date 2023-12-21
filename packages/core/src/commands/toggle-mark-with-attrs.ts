@@ -1,6 +1,6 @@
 import { Attrs, MarkType } from 'prosemirror-model';
 import { Command, TextSelection } from 'prosemirror-state';
-import { markApplies } from '../utils';
+import { isInMark, markApplies } from '../utils';
 
 /// Create a command function that toggles the given mark with the
 /// given attributes. Will return `false` when the current selection
@@ -17,15 +17,9 @@ export const toggleMarkWithAttrs = (
     /// already and part doesn't, the mark is removed (`true`, the
     /// default) or added (`false`).
     removeWhenPresent: boolean;
-    /**
-     * Only use it when you want to release when the attrs of the text node are the same, otherwise reapply the attrs.
-     * @returns boolean
-     */
-    attrComparator?: (a: Attrs | null, b: Attrs | null) => boolean;
   },
 ): Command => {
   const removeWhenPresent = (options && options.removeWhenPresent) !== false;
-  const attrsComparator = options?.attrComparator || (() => true);
   return (state, dispatch) => {
     const { empty, $cursor, ranges } = state.selection as TextSelection;
     if ((empty && !$cursor) || !markApplies(state.doc, ranges, markType)) {
@@ -33,7 +27,8 @@ export const toggleMarkWithAttrs = (
     }
     if (dispatch) {
       if ($cursor) {
-        if (markType.isInSet(state.storedMarks || $cursor.marks())) {
+        const marks = state.storedMarks || $cursor.marks();
+        if (isInMark(marks, markType, attrs)) {
           dispatch(state.tr.removeStoredMark(markType));
         } else {
           dispatch(state.tr.addStoredMark(markType.create(attrs)));
@@ -54,13 +49,7 @@ export const toggleMarkWithAttrs = (
               }
 
               missing =
-                !(
-                  markType.isInSet(node.marks) &&
-                  attrsComparator(
-                    attrs,
-                    node.marks.find((m) => m.type === markType)?.attrs || null,
-                  )
-                ) &&
+                !isInMark(node.marks, markType, attrs) &&
                 !!parent &&
                 parent.type.allowsMarkType(markType) &&
                 !(

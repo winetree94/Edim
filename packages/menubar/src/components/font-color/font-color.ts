@@ -12,7 +12,7 @@ import { markActive } from '@edim-editor/core';
 import {
   EdimTextColorAttrs,
   EdimTextColorMarkType,
-  toggleTextColor,
+  toggleTextColorWithAttrs,
 } from '@edim-editor/text-color';
 
 const currentTextColor = (state: EditorState): string | null => {
@@ -73,7 +73,7 @@ export const EdimMenubarFontColorSelect = () => {
       className="${classes('edim-menubar-color-select')}"
       value="${'black'}"
       onChange="${(color: string) => {
-        toggleTextColor(textColorMarkType, {
+        toggleTextColorWithAttrs(textColorMarkType, {
           color,
         })(context.editorView.state, context.editorView.dispatch);
         context.editorView.focus();

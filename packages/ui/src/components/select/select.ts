@@ -51,41 +51,41 @@ const EdimSelectRoot = forwardRef<HTMLDivElement, EdimSelectProps>(
     };
 
     return html`
-    <${EdimSelectContext.Provider} value=${{
-      opened: opened,
-      value: props.value,
-      onSelect: onSelect,
-      close: close,
-    }}>
-      <${EdimButton}
-        ref="${wrapperRef}"
-        disabled="${props.disabled}"
-        className="${classes(
-          'edim-select',
-          opened ? 'edim-active' : '',
-          props.disabled ? 'edim-disabled' : '',
-          className,
-        )}"
-        onclick="${() => {
-          const rect = wrapperRef.current!.getBoundingClientRect();
-          setOpened(opened ? null : rect);
-        }}"
-      >
-        ${children}
-        ${
-          !props.hideArrow
-            ? html`
-                <i
-                  className="${classes(
-                    'edim-select-arrow-icon',
-                    'ri-arrow-down-s-line',
-                  )}"
-                ></i>
-              `
-            : null
-        }
-      </${EdimButton}>
-    </${EdimSelectContext.Provider}>
+      <${EdimSelectContext.Provider} value=${{
+        opened: opened,
+        value: props.value,
+        onSelect: onSelect,
+        close: close,
+      }}>
+        <${EdimButton}
+          ref="${wrapperRef}"
+          disabled="${props.disabled}"
+          className="${classes(
+            'edim-select',
+            opened ? 'edim-active' : '',
+            props.disabled ? 'edim-disabled' : '',
+            className,
+          )}"
+          onclick="${() => {
+            const rect = wrapperRef.current!.getBoundingClientRect();
+            setOpened(opened ? null : rect);
+          }}"
+        >
+          ${children}
+          ${
+            !props.hideArrow
+              ? html`
+                  <i
+                    className="${classes(
+                      'edim-select-arrow-icon',
+                      'ri-arrow-down-s-line',
+                    )}"
+                  ></i>
+                `
+              : null
+          }
+        </${EdimButton}>
+      </${EdimSelectContext.Provider}>
     `;
   },
 );
