@@ -25,6 +25,8 @@ const schema = new Schema({
     ...edimParagraphNodes(),
     ...edimHeadingNodes({
       nodeName: 'heading',
+      allowAlign: true,
+      levels: [2, 4, 6],
     }),
   },
 });

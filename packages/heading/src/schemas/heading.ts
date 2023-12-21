@@ -1,11 +1,13 @@
 import { parseQuillTextAlign } from '@edim-editor/core';
 import { NodeSpec } from 'prosemirror-model';
 
-export const EDIM_HEADING_DEFAULT_NODE_NAME = 'heading';
-export const EDIM_DEFAULT_HEADING_LEVEL = 6;
-
 export type EdimHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 export type EdimHeadingAlign = 'left' | 'right' | 'center' | null;
+
+export const EDIM_HEADING_DEFAULT_NODE_NAME = 'heading';
+export const EDIM_HEADING_ALLOWED_LEVELS: EdimHeadingLevel[] = [
+  1, 2, 3, 4, 5, 6,
+];
 
 export interface EdimHeadingAttrs {
   level: EdimHeadingLevel;
@@ -23,21 +25,18 @@ export interface EdimHeadingNodeSpec extends NodeSpec {
   };
   meta: {
     levels: EdimHeadingLevel[];
-    maxIndent: number;
   };
 }
 
 export interface EdimHeadingNodeConfigs {
-  allowIndent?: boolean;
   allowAlign?: boolean;
-  level?: EdimHeadingLevel[];
+  levels?: EdimHeadingLevel[];
   nodeName?: string;
 }
 
 const EDIM_DEFAULT_HEADING_NODE_CONFIGS: Required<EdimHeadingNodeConfigs> = {
-  allowIndent: true,
   allowAlign: true,
-  level: [1, 2, 3, 4, 5, 6],
+  levels: EDIM_HEADING_ALLOWED_LEVELS.slice(),
   nodeName: EDIM_HEADING_DEFAULT_NODE_NAME,
 };
 
@@ -49,33 +48,39 @@ export const edimHeadingNodes = (
     ...configs,
   };
 
+  if (
+    !mergedConfigs.levels.every((level) =>
+      EDIM_HEADING_ALLOWED_LEVELS.includes(level),
+    )
+  ) {
+    throw new Error('Invalid heading levels');
+  }
+
   const nodeSpec: EdimHeadingNodeSpec = {
     attrs: {
       level: {
-        default: 1,
+        default: mergedConfigs.levels[0],
       },
       align: {
         default: 'left',
       },
     },
     meta: {
-      levels: mergedConfigs.level,
-      maxIndent: 6,
+      levels: mergedConfigs.levels,
     },
     content: 'inline*',
     group: 'block',
     defining: true,
-    parseDOM: [1, 2, 3, 4, 5, 6].map((level) => ({
+    parseDOM: mergedConfigs.levels.map((level) => ({
       tag: `h${level}`,
       getAttrs: (node) => {
         const dom = node as HTMLElement;
         const align = dom.getAttribute('data-text-align');
         const quillAlign = parseQuillTextAlign(dom);
-        const indent = Number(dom.getAttribute('data-indent'));
+
         return {
           level,
           align: align || quillAlign || null,
-          indent: indent || 0,
         };
       },
     })),

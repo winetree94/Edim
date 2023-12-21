@@ -61,7 +61,6 @@ export const edimFontFamilyMarks = (
     acc[font.fontFamily] = font;
     return acc;
   }, {});
-  console.log(fontByNames);
 
   const markSpec: EdimFontFamilyMarkSpec = {
     fonts: mergedConfigs.fonts,
@@ -82,7 +81,6 @@ export const edimFontFamilyMarks = (
           }
 
           if (mergedConfigs.fonts && !fontByNames[fontFamily]) {
-            console.log('false');
             return false;
           }
           return {

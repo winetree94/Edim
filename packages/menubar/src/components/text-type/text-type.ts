@@ -8,7 +8,7 @@ import {
   classes,
   html,
 } from '@edim-editor/ui';
-import { EdimHeadingLevel } from '@edim-editor/heading';
+import { EdimHeadingNodeSpec } from '@edim-editor/heading';
 import { mac, transformRangeToBlock } from '@edim-editor/core';
 import { getTextType } from '../../utils';
 
@@ -21,10 +21,12 @@ export const EdimMenubarTextTypeSelect = () => {
 
   const paragraphNodeType = context.options.textType.paragraphNodeType;
   const headingNodeType = context.options.textType.headingNodeType;
+  const headingNodeSpec = headingNodeType.spec as EdimHeadingNodeSpec;
+
   const textType = getTextType(context.editorView.state);
 
   const textTypeOptions = [
-    ...([1, 2, 3, 4, 5, 6] as EdimHeadingLevel[]).map((level) => ({
+    ...headingNodeSpec.meta.levels.map((level) => ({
       value: `h${level}`,
       label: `Heading ${level}`,
       Element: EdimHeadingByNumber[level],

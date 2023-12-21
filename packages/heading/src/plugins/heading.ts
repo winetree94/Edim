@@ -4,7 +4,6 @@ import { NodeType } from 'prosemirror-model';
 
 export interface EdimHeadingPluginConfigs {
   nodeType: NodeType;
-  level?: number;
 }
 
 export const edimHeadingPlugins = (configs: EdimHeadingPluginConfigs) => {
