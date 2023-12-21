@@ -7,55 +7,12 @@ import {
   classes,
   html,
 } from '@edim-editor/ui';
-import { EditorState, TextSelection } from 'prosemirror-state';
 import { markActive } from '@edim-editor/core';
 import {
   EdimTextColorAttrs,
   EdimTextColorMarkType,
   toggleTextColorWithAttrs,
 } from '@edim-editor/text-color';
-
-const currentTextColor = (state: EditorState): string | null => {
-  const selection = state.selection;
-
-  if (!(selection instanceof TextSelection)) {
-    return null;
-  }
-
-  const actived = markActive(state, state.schema.marks['text_color']);
-
-  if (!actived) {
-    return null;
-  }
-
-  const storedFont = state.storedMarks?.find(
-    (mark) => mark.type === state.schema.marks['text_color'],
-  )?.attrs as EdimTextColorAttrs;
-
-  if (storedFont) {
-    return storedFont.color;
-  }
-
-  const fromFont = selection.$from
-    .marks()
-    .find((mark) => mark.type === state.schema.marks['text_color'])
-    ?.attrs as EdimTextColorAttrs;
-
-  const toFont = selection.$from
-    .marks()
-    .find((mark) => mark.type === state.schema.marks['text_color'])
-    ?.attrs as EdimTextColorAttrs;
-
-  if (!fromFont || !toFont) {
-    return null;
-  }
-
-  if (fromFont.color !== toFont.color) {
-    return null;
-  }
-
-  return fromFont.color;
-};
 
 export const EdimMenubarFontColorSelect = () => {
   const context = useContext(EdimMenubarContext);
@@ -66,7 +23,10 @@ export const EdimMenubarFontColorSelect = () => {
 
   const textColorMarkType = context.options.textColor
     .textColorMarkType as EdimTextColorMarkType;
-  const currentColor = currentTextColor(context.editorView.state);
+
+  const currentMark = markActive(context.editorView.state, textColorMarkType);
+  const currentColor =
+    (currentMark?.attrs as EdimTextColorAttrs | null)?.color || null;
 
   return html`
     <${EdimSelect.Root} 

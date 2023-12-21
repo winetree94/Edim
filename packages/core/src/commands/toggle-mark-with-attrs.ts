@@ -1,6 +1,6 @@
 import { Attrs, MarkType } from 'prosemirror-model';
 import { Command, TextSelection } from 'prosemirror-state';
-import { isInMark, markApplies } from '../utils';
+import { isInMarks, markApplies } from '../utils';
 
 /// Create a command function that toggles the given mark with the
 /// given attributes. Will return `false` when the current selection
@@ -28,7 +28,7 @@ export const toggleMarkWithAttrs = (
     if (dispatch) {
       if ($cursor) {
         const marks = state.storedMarks || $cursor.marks();
-        if (isInMark(marks, markType, attrs)) {
+        if (isInMarks(marks, markType, attrs)) {
           dispatch(state.tr.removeStoredMark(markType));
         } else {
           dispatch(state.tr.addStoredMark(markType.create(attrs)));
@@ -49,7 +49,7 @@ export const toggleMarkWithAttrs = (
               }
 
               missing =
-                !isInMark(node.marks, markType, attrs) &&
+                !isInMarks(node.marks, markType, attrs) &&
                 !!parent &&
                 parent.type.allowsMarkType(markType) &&
                 !(
