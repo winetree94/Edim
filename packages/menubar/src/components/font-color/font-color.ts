@@ -94,7 +94,7 @@ export const EdimMenubarFontColorSelect = () => {
       ${textColorMarkType.spec.colors?.map(
         (color) => html`
         <${EdimSelect.Option}
-          className="edim-colo-layer-list-item"
+          className="edim-color-layer-list-item"
           value="${color.color}">
             <${EdimColor}
               color=${color.color}
