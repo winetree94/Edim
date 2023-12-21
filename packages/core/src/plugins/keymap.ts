@@ -6,17 +6,6 @@ import { clearMarks } from '../commands';
 export const edimBasicKeymapPlugins = (): Plugin[] => {
   return [
     keymap({
-      Backspace: (state, dispatch) => {
-        const selection = state.selection;
-
-        if (!selection.empty || selection.from !== selection.to) {
-          return false;
-        }
-
-        return false;
-      },
-    }),
-    keymap({
       /**
        * Switch to the default node of the Schema when the first node is empty.
        */

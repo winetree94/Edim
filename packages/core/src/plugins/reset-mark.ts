@@ -1,17 +1,24 @@
-import { Plugin as PMPlugin } from 'prosemirror-state';
+import { Plugin as PMPlugin, TextSelection } from 'prosemirror-state';
 
 export const edimResetMarkPlugins = (): PMPlugin[] => {
   const plugins: PMPlugin[] = [
     new PMPlugin({
-      // props: {
-      //   handleKeyDown: (view, event) => {
-      //     if (event.key !== 'Backspace') {
-      //       return false;
-      //     }
-      //     console.log('backspace');
-      //     return false;
-      //   },
-      // },
+      appendTransaction: (transactions, oldState, newState) => {
+        if (!transactions.some((tr) => tr.docChanged)) {
+          return;
+        }
+
+        if (!(newState.selection instanceof TextSelection)) {
+          return;
+        }
+
+        const { $cursor } = newState.selection;
+        if (!$cursor || !newState.storedMarks) {
+          return;
+        }
+
+        return newState.tr.setStoredMarks([]);
+      },
     }),
   ];
 
