@@ -10,6 +10,7 @@ export const toggleFontFamily = (
   return toggleMarkWithAttrs(markType, attr, {
     removeWhenPresent: false,
     attrComparator(a, b) {
+      console.log(a, b);
       return (
         (a as null | EdimFontFamilyAttrs)?.['fontFamily'] ===
         (b as null | EdimFontFamilyAttrs)?.['fontFamily']

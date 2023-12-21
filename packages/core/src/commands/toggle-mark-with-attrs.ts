@@ -52,10 +52,14 @@ export const toggleMarkWithAttrs = (
               if (missing) {
                 return false;
               }
+              console.log(node);
               missing =
                 !(
                   markType.isInSet(node.marks) &&
-                  attrsComparator(attrs, node.attrs)
+                  attrsComparator(
+                    attrs,
+                    node.marks.find((m) => m.type === markType)?.attrs || null,
+                  )
                 ) &&
                 !!parent &&
                 parent.type.allowsMarkType(markType) &&
@@ -70,6 +74,7 @@ export const toggleMarkWithAttrs = (
                 );
               return undefined;
             });
+            console.log(missing);
             return !missing;
           });
         }
