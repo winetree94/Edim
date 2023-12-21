@@ -18,16 +18,13 @@ export const edimTaskListItemNodeViewPlugins = (
             const li = createNode(node);
 
             li.addEventListener('mousedown', (event) => {
-              const rect = li.getBoundingClientRect();
+              const firstChild = li.firstElementChild as HTMLElement;
+              const rect = firstChild.getBoundingClientRect();
               const clickX = event.clientX;
-              const liLeftX = rect.left;
+              const startX = rect.left - 30;
+              const endX = rect.left - 5;
 
-              const paddingLeftValue = li
-                .computedStyleMap()
-                .get('padding-left') as CSSUnitValue;
-              const paddingLeft = paddingLeftValue.value;
-
-              if (clickX > liLeftX + paddingLeft) {
+              if (clickX > endX || clickX < startX) {
                 return;
               }
 
