@@ -102,6 +102,12 @@ export const edimPresetPlugins = (
     ...edimHeadingPlugins({
       nodeType: mergedConfigs.schema.nodes[EDIM_HEADING_DEFAULT_NODE_NAME],
     }),
+    ...edimFlatTaskListPlugins({
+      taskListNodeType:
+        mergedConfigs.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME],
+      taskListItemNodeType:
+        mergedConfigs.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME],
+    }),
     ...edimFlatListPlugins({
       bulletListNodeType:
         mergedConfigs.schema.nodes[EDIM_FLAT_BULLET_LIST_DEFAULT_NODE_NAME],
@@ -109,12 +115,6 @@ export const edimPresetPlugins = (
         mergedConfigs.schema.nodes[EDIM_FLAT_ORDERED_LIST_DEFAULT_NODE_NAME],
       listItemNodeType:
         mergedConfigs.schema.nodes[EDIM_FLAT_LIST_ITEM_DEFAULT_NODE_NAME],
-    }),
-    ...edimFlatTaskListPlugins({
-      taskListNodeType:
-        mergedConfigs.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME],
-      taskListItemNodeType:
-        mergedConfigs.schema.nodes[EDIM_DEFAULT_FLAT_TASK_LIST_ITEM_NODE_NAME],
     }),
     ...edimBlockQuotePlugins({
       nodeType: mergedConfigs.schema.nodes[EDIM_BLOCKQUOTE_NODE_NAME],
