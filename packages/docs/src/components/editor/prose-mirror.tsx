@@ -19,6 +19,9 @@ export const ProseMirror = (props: ProseMirrorProps) => {
     const view = new EditorView(editorDomRef.current, {
       state: props.state,
       ...props,
+      attributes: {
+        spellcheck: 'false',
+      },
     });
     editorViewRef.current = view;
     console.log(view);

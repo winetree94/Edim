@@ -1,0 +1,592 @@
+{
+  "type": "doc",
+  "content": [
+      {
+          "type": "heading",
+          "attrs": {
+              "level": 1,
+              "align": "center"
+          },
+          "content": [
+              {
+                  "type": "text",
+                  "text": "Edim Rich Text Editor"
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          }
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          },
+          "content": [
+              {
+                  "type": "text",
+                  "text": "Lorem "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "bold"
+                      }
+                  ],
+                  "text": "ipsum dolor"
+              },
+              {
+                  "type": "text",
+                  "text": " sit"
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "subscript"
+                      }
+                  ],
+                  "text": "asldkfj"
+              },
+              {
+                  "type": "text",
+                  "text": " amet, "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "text_color",
+                          "attrs": {
+                              "color": "#1D7AFC"
+                          }
+                      }
+                  ],
+                  "text": "consectetur"
+              },
+              {
+                  "type": "text",
+                  "text": " "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "code"
+                      }
+                  ],
+                  "text": "adipiscing"
+              },
+              {
+                  "type": "text",
+                  "text": " elit. Sed do "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "bold"
+                      }
+                  ],
+                  "text": "eiusmod"
+              },
+              {
+                  "type": "text",
+                  "text": " tempor "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "text_color",
+                          "attrs": {
+                              "color": "#1D7AFC"
+                          }
+                      }
+                  ],
+                  "text": "incididunt"
+              },
+              {
+                  "type": "text",
+                  "text": " ut labore et "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "link",
+                          "attrs": {
+                              "href": "link",
+                              "title": null
+                          }
+                      }
+                  ],
+                  "text": "link"
+              },
+              {
+                  "type": "text",
+                  "text": " dolore magna aliqua. Ut enim ad "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "bold"
+                      },
+                      {
+                          "type": "em"
+                      }
+                  ],
+                  "text": "minim veniam"
+              },
+              {
+                  "type": "text",
+                  "text": ", quis nostrud "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "link",
+                          "attrs": {
+                              "href": "link",
+                              "title": null
+                          }
+                      }
+                  ],
+                  "text": "link"
+              },
+              {
+                  "type": "text",
+                  "text": " exercitation ullamco laboris nisi ut aliquip ex ea "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "text_color",
+                          "attrs": {
+                              "color": "#AE2E24"
+                          }
+                      }
+                  ],
+                  "text": "commodo"
+              },
+              {
+                  "type": "text",
+                  "text": " consequat"
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "superscript"
+                      }
+                  ],
+                  "text": "minimal"
+              },
+              {
+                  "type": "text",
+                  "text": "."
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          }
+      },
+      {
+          "type": "ordered_list",
+          "content": [
+              {
+                  "type": "list_item",
+                  "attrs": {
+                      "indent": 1,
+                      "align": "left"
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": "Duis aute irure "
+                              },
+                              {
+                                  "type": "text",
+                                  "marks": [
+                                      {
+                                          "type": "code"
+                                      }
+                                  ],
+                                  "text": "dolor"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": " in "
+                              },
+                              {
+                                  "type": "text",
+                                  "marks": [
+                                      {
+                                          "type": "bold"
+                                      }
+                                  ],
+                                  "text": "reprehenderit"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": " in voluptate velit esse cillum "
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "type": "list_item",
+                  "attrs": {
+                      "indent": 2,
+                      "align": "left"
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": "in voluptate "
+                              },
+                              {
+                                  "type": "text",
+                                  "marks": [
+                                      {
+                                          "type": "underline"
+                                      }
+                                  ],
+                                  "text": "velit esse"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": " cillum dolo"
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "type": "bullet_list",
+          "content": [
+              {
+                  "type": "list_item",
+                  "attrs": {
+                      "indent": 1,
+                      "align": "left"
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": "sint occaecat cupidatat non pro "
+                              },
+                              {
+                                  "type": "text",
+                                  "marks": [
+                                      {
+                                          "type": "link",
+                                          "attrs": {
+                                              "href": "link",
+                                              "title": null
+                                          }
+                                      }
+                                  ],
+                                  "text": "link"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": " "
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "type": "list_item",
+                  "attrs": {
+                      "indent": 2,
+                      "align": "left"
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": " minim veniam, "
+                              },
+                              {
+                                  "type": "text",
+                                  "marks": [
+                                      {
+                                          "type": "em"
+                                      }
+                                  ],
+                                  "text": "quis nostrud"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": " "
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          }
+      },
+      {
+          "type": "blockquote",
+          "content": [
+              {
+                  "type": "paragraph",
+                  "attrs": {
+                      "align": "left"
+                  },
+                  "content": [
+                      {
+                          "type": "text",
+                          "text": "Duis aute irure dolor in reprehenderit in "
+                      }
+                  ]
+              },
+              {
+                  "type": "paragraph",
+                  "attrs": {
+                      "align": "left"
+                  },
+                  "content": [
+                      {
+                          "type": "text",
+                          "text": "proident, sunt in culpa qui officia deserunt mollit"
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          }
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          },
+          "content": [
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "bold"
+                      }
+                  ],
+                  "text": "Duis aute irure dolor"
+              },
+              {
+                  "type": "text",
+                  "text": " in "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "underline"
+                      }
+                  ],
+                  "text": "reprehenderit"
+              },
+              {
+                  "type": "text",
+                  "text": " in voluptate"
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "subscript"
+                      }
+                  ],
+                  "text": "velit"
+              },
+              {
+                  "type": "text",
+                  "text": " esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat "
+              },
+              {
+                  "type": "text",
+                  "marks": [
+                      {
+                          "type": "text_color",
+                          "attrs": {
+                              "color": "#C9372C"
+                          }
+                      }
+                  ],
+                  "text": "cupidatat non proident, sunt in"
+              },
+              {
+                  "type": "text",
+                  "text": " culpa qui officia deserunt mollit anim id est laborum."
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          }
+      },
+      {
+          "type": "task_list",
+          "content": [
+              {
+                  "type": "task_list_item",
+                  "attrs": {
+                      "indent": 1,
+                      "align": "left",
+                      "checked": true
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": "asdlfkjasdf"
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "type": "task_list_item",
+                  "attrs": {
+                      "indent": 2,
+                      "align": "left",
+                      "checked": false
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": "sunt in culpa qui officia deserunt "
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "type": "task_list_item",
+                  "attrs": {
+                      "indent": 3,
+                      "align": "left",
+                      "checked": true
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": "dolor sit amet, consectetur "
+                              }
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "type": "task_list_item",
+                  "attrs": {
+                      "indent": 2,
+                      "align": "left",
+                      "checked": false
+                  },
+                  "content": [
+                      {
+                          "type": "paragraph",
+                          "attrs": {
+                              "align": "left"
+                          },
+                          "content": [
+                              {
+                                  "type": "text",
+                                  "text": "quis nostrud exercitation ullamco laboris "
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          }
+      },
+      {
+          "type": "code_block",
+          "content": [
+              {
+                  "type": "text",
+                  "text": "class Greeter {\n    greeting: string;\n\n    constructor(message: string) {\n        this.greeting = message;\n    }\n\n    greet() {\n        return \"Hello, \" + this.greeting;\n    }\n}\n\nlet greeter = new Greeter(\"world\");\nconsole.log(greeter.greet());"
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "attrs": {
+              "align": "left"
+          }
+      }
+  ]
+}
