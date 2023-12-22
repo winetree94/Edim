@@ -1,5 +1,9 @@
 import { Command } from 'prosemirror-state';
 
+/**
+ * To initiate a mention input, insert the @ character.
+ * If there is no space before the current cursor position, it will be inserted along with a space.
+ */
 export const addMention = (): Command => {
   return (state, dispatch) => {
     let tr = state.tr;

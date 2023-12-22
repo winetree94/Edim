@@ -18,6 +18,9 @@ export interface EdimMentionPluginConfigs {
   ) => MentionPluginView;
 }
 
+/**
+ * Provides a feature to display a mention search popup when the "@" character is entered.
+ */
 export const edimMentionCommandPlugins = (
   configs: EdimMentionPluginConfigs,
 ) => {
