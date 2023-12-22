@@ -12,8 +12,7 @@ export const EdimMenubarTaskListToggleButtons = () => {
   }
 
   const taskListNodeType = context.options.taskList.taskListNodeType;
-  const taskListItemNodeType =
-    context.options.taskList.taskListItemNodeType;
+  const taskListItemNodeType = context.options.taskList.taskListItemNodeType;
 
   const canTaskList = toggleList({
     listType: taskListNodeType,

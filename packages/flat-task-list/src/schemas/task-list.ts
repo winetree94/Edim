@@ -22,7 +22,7 @@ export const edimFlatTaskListNodes = (
   const nodeSpec: NodeSpec = {
     parseDOM: [
       {
-        tag: 'ul',
+        tag: 'ul.edim-task-list',
         getAttrs: (node) => {
           const dom = node as HTMLElement;
           if (isQuillTaskList(dom)) {

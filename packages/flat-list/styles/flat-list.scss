@@ -10,8 +10,14 @@
     list-style-type: none;
 
     li.edim-list-item {
+      display: flex;
       word-break: break-all;
       line-height: normal;
+
+      &::before {
+        flex-shrink: 0;
+        font-family: auto;
+      }
 
       &:first-child {
         margin-top: 10px; 
@@ -19,15 +25,16 @@
       margin: 10px 0;
 
       p.edim-paragraph {
-        display: inline-block;
         margin: 0;
       }
 
       &.edim-align-center {
         text-align: center;
+        justify-content: center;
       }
       &.edim-align-right {
         text-align: right;
+        justify-content: flex-end;
       }
 
       @for $i from 1 through 6 {
@@ -40,6 +47,7 @@
         vertical-align: top;
         margin-left: -1.5em;
         margin-right: 0.3em;
+        margin-top: 2px;
         text-align: right;
         display: inline-block;
         white-space: nowrap;

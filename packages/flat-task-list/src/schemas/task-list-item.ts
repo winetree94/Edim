@@ -48,6 +48,11 @@ export const edimFlatTaskListItemNodes = (
         tag: 'li',
         getAttrs(node) {
           const dom = node as HTMLLIElement;
+
+          if (dom.classList.contains('edim-list-item')) {
+            return false;
+          }
+
           const align = dom.getAttribute('data-text-align');
           const quillAlign = parseQuillTextAlign(dom);
           const indent = dom.dataset['indent'];

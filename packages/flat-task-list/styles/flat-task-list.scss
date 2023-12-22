@@ -11,6 +11,7 @@
     li.edim-task-list-item {
       word-break: break-all;
       line-height: normal;
+      display: flex;
 
       &:first-child {
         margin-top: 10px; 
@@ -18,15 +19,16 @@
       margin: 10px 0;
 
       p.edim-paragraph {
-        display: inline-block;
         margin: 0;
       }
 
       &.edim-align-center {
         text-align: center;
+        justify-content: center;
       }
       &.edim-align-right {
         text-align: right;
+        justify-content: flex-end;
       }
 
       @for $i from 1 through 6 {
@@ -37,15 +39,15 @@
 
       &::before {
         cursor: pointer;
+        font-family: auto;
         vertical-align: top;
-        position: absolute;
-        margin-left: -30px;
+        margin-left: -1.5em;
+        margin-right: 0.3em;
+        margin-top: 1px;
         text-align: right;
         display: inline-block;
         white-space: nowrap;
-        text-align: center;
-        font-family: auto;
-        width: 25px;
+        width: 1.2em;
         content: '\2610';
       }
 
