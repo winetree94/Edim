@@ -76,25 +76,6 @@ export const edimFlatTaskListItemNodes = (
         dom: li,
         contentDOM: li,
       };
-      // const attrs = node.attrs as EdimFlatTaskListItemAttrs;
-      // const classes = ['edim-task-list-item'];
-      // if (attrs.align && attrs.align !== 'left') {
-      //   classes.push(`edim-align-${attrs.align}`);
-      // }
-      // classes.push(`edim-indent-${attrs.indent || 1}`);
-      // if (attrs.checked) {
-      //   classes.push('edim-task-list-item-checked');
-      // }
-      // return [
-      //   'li',
-      //   {
-      //     class: classes.join(' '),
-      //     'data-text-align': attrs.align || 'left',
-      //     'data-indent': attrs.indent || 1,
-      //     'data-checked': attrs.checked ? 'true' : 'false',
-      //   },
-      //   0,
-      // ];
     },
     defining: true,
   };
