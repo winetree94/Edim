@@ -1,5 +1,5 @@
 import { render } from 'preact';
-import { EditorState, Plugin, PluginView } from 'prosemirror-state';
+import { EditorState, Plugin, PluginKey, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { html } from '@edim-editor/ui';
 import { EdimMenubar } from '../components';
@@ -129,6 +129,7 @@ export const edimMenubarPlugins = (
   configs: EdimMenubarPluginConfigs,
 ): Plugin[] => {
   const plugin = new Plugin({
+    key: new PluginKey('edimMenubar'),
     view: (editorView) => {
       return new EdimMenubarView(editorView, configs);
     },

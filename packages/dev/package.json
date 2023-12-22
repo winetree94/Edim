@@ -1,0 +1,50 @@
+{
+  "name": "dev",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "clean:dist": "rimraf dist",
+    "clean:dependency": "rimraf node_modules",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@edim-editor/blockquote": "*",
+    "@edim-editor/bold": "*",
+    "@edim-editor/code": "*",
+    "@edim-editor/codeblock": "*",
+    "@edim-editor/command": "*",
+    "@edim-editor/core": "*",
+    "@edim-editor/emoji": "*",
+    "@edim-editor/flat-list": "*",
+    "@edim-editor/flat-task-list": "*",
+    "@edim-editor/font-family": "*",
+    "@edim-editor/heading": "*",
+    "@edim-editor/hr": "*",
+    "@edim-editor/image": "*",
+    "@edim-editor/italic": "*",
+    "@edim-editor/link": "*",
+    "@edim-editor/mention": "*",
+    "@edim-editor/menubar": "*",
+    "@edim-editor/paragraph": "*",
+    "@edim-editor/preset": "*",
+    "@edim-editor/strikethrough": "*",
+    "@edim-editor/subscript": "*",
+    "@edim-editor/superscript": "*",
+    "@edim-editor/tables": "*",
+    "@edim-editor/text-color": "*",
+    "@edim-editor/ui": "*",
+    "@edim-editor/underline": "*",
+    "prosemirror-commands": "*",
+    "prosemirror-model": "*",
+    "prosemirror-state": "*",
+    "prosemirror-transform": "*",
+    "prosemirror-view": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  }
+}

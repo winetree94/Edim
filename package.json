@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx start docs",
+    "dev": "nx start dev",
     "clean:dist": "nx run-many -t clean:dist --all --maxParallel=10",
     "clean:dependency": "nx run-many -t clean:dependency --all --maxParallel=10 && rimraf node_modules",
     "reconfigure": "npm run clean:dist && npm run clean:dependency && rimraf package-lock.json && npm install",

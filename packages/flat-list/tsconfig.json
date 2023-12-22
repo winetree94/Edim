@@ -6,7 +6,6 @@
     "declaration": true,
     "paths": {
       "@edim-editor/core": ["../../core/src/index.ts"],
-      "@edim-editor/core": ["../../core/src/index.ts"]
     }
   },
   "include": [
