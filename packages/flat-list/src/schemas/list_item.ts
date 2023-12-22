@@ -30,7 +30,6 @@ export const edimFlatListItemNodes = (
 
   const nodeSpec: NodeSpec = {
     content: 'paragraph',
-    selectable: false,
     attrs: {
       indent: {
         default: 1,
