@@ -1,10 +1,10 @@
-import { Plugin } from 'prosemirror-state';
+import { Plugin as PMPlugin } from 'prosemirror-state';
 
 /**
  * Provides a feature to unmention when text with mention formatting is partially deleted.
  */
 export const edimMentionUnsetPlugins = () => {
-  const mentionPlugin: Plugin = new Plugin({
+  const mentionPlugin = new PMPlugin({
     appendTransaction: (transactions, oldState, newState) => {
       const tr = newState.tr;
       let modified = false;

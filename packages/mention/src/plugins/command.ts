@@ -1,4 +1,4 @@
-import { Plugin, PluginKey, PluginView } from 'prosemirror-state';
+import { Plugin as PMPlugin, PluginKey, PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { getMentionRange } from '../utils';
 
@@ -23,7 +23,7 @@ export interface EdimMentionPluginConfigs {
  */
 export const edimMentionCommandPlugins = (
   configs: EdimMentionPluginConfigs,
-) => {
+): PMPlugin[] => {
   const defaultPluginState: MentionPluginState = {
     active: false,
     keyword: '',
@@ -32,8 +32,8 @@ export const edimMentionCommandPlugins = (
   const mentionPluginKey = new PluginKey<MentionPluginState>('mention');
   let mentionPluginView: MentionPluginView | null = null;
 
-  const mentionPlugin: Plugin<MentionPluginState> =
-    new Plugin<MentionPluginState>({
+  const mentionPlugin: PMPlugin<MentionPluginState> =
+    new PMPlugin<MentionPluginState>({
       key: mentionPluginKey,
       state: {
         init: () => ({
