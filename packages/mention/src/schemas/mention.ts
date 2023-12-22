@@ -24,6 +24,7 @@ export const edimMentionMarks = (
 
   const markSpec: MarkSpec = {
     inclusive: false,
+    excludes: '_',
     attrs: {
       data_id: {
         default: '',

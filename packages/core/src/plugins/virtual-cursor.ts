@@ -65,8 +65,16 @@ export function edimVirtualCursorPlugins(): PMPlugin[] {
             }
           }
 
+          const hasInexclusiveMark = marks.find(
+            (m) => m?.type.spec.inclusive === false,
+          );
+
           // Move the cursor and also change the stored marks
-          if (event.key === 'ArrowLeft' && $pos.textOffset === 1) {
+          if (
+            event.key === 'ArrowLeft' &&
+            $pos.textOffset === 1 &&
+            !hasInexclusiveMark
+          ) {
             view.dispatch(
               view.state.tr
                 .setSelection(
@@ -80,7 +88,8 @@ export function edimVirtualCursorPlugins(): PMPlugin[] {
           if (
             event.key === 'ArrowRight' &&
             $pos.textOffset + 1 ===
-            $pos.parent.maybeChild($pos.index())?.nodeSize
+              $pos.parent.maybeChild($pos.index())?.nodeSize &&
+            !hasInexclusiveMark
           ) {
             view.dispatch(
               view.state.tr

@@ -7,6 +7,12 @@ export const edimBasicKeymapPlugins = (): Plugin[] => {
   return [
     keymap({
       /**
+       * Prevents focus from leaving when the Tab key is pressed.
+       */
+      'Shift-Tab': () => true,
+      Tab: () => true,
+
+      /**
        * Switch to the default node of the Schema when the first node is empty.
        */
       Backspace: (state, dispatch) => {
