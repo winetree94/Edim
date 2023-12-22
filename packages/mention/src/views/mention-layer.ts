@@ -6,14 +6,13 @@ import {
   classes,
   html,
 } from '@edim-editor/ui';
-import { MentionPluginView } from '../plugin';
-import { MentionPluginState } from '../state';
 import { EditorState, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { render } from 'preact';
 import { getMentionRange } from '../utils';
 import { useEffect } from 'preact/hooks';
 import { forwardRef } from 'preact/compat';
+import { MentionPluginState, MentionPluginView } from '../plugins';
 
 export interface MentionItem {
   icon: string;
@@ -117,28 +116,28 @@ export class EdimMentionView implements MentionPluginView {
 
     render(
       html`
-      <${EdimLayer}
-        left=${start.left}
-        top=${end.bottom}
-        disableBackdrop=${true}
-        maxWidth=${200}
-        minWidth=${200}
-        maxHeight=${300}
-      >
-        <${EdimMention}
-          items=${items}
-          selectedIndex=${this.index}
-          onHover=${(index: number) => {
-            this.index = index;
-            this.update(view);
-          }}
-          onClick=${(index: number) => {
-            this.index = index;
-            this.update(view);
-            this.applyMention(items[index]);
-          }}
-        />
-      </${EdimLayer}>
+        <${EdimLayer}
+          left=${start.left}
+          top=${end.bottom}
+          disableBackdrop=${true}
+          maxWidth=${200}
+          minWidth=${200}
+          maxHeight=${300}
+        >
+          <${EdimMention}
+            items=${items}
+            selectedIndex=${this.index}
+            onHover=${(index: number) => {
+              this.index = index;
+              this.update(view);
+            }}
+            onClick=${(index: number) => {
+              this.index = index;
+              this.update(view);
+              this.applyMention(items[index]);
+            }}
+          />
+        </${EdimLayer}>
       `,
       this.wrapper,
     );

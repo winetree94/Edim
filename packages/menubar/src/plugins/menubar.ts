@@ -49,6 +49,9 @@ export interface EdimMenubarPluginConfigs {
   link?: {
     linkMarkType: MarkType;
   };
+  mention?: {
+    mentionMarkType: MarkType;
+  };
   translates?: {};
 }
 

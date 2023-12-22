@@ -12,6 +12,7 @@ import { EdimMenubarBlockquoteToggleButtons } from './blockquote';
 import { EdimMenubarCodeblockToggleButtons } from './codeblock';
 import { EdimMenubarTableButtons } from './table';
 import { EdimMenubarLinkButton } from './link';
+import { EdimMenubarMentionButtons } from './mention';
 
 export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
   const useTextType = !!props.options.textType;
@@ -43,6 +44,7 @@ export const EdimMenubar = forwardRef((props: EdimMenubarContextType) => {
         <${EdimMenubarCodeblockToggleButtons} />
         <${EdimMenubarTableButtons} />
         <${EdimMenubarLinkButton} />
+        <${EdimMenubarMentionButtons} />
       </div>
     </${EdimMenubarContext.Provider}>
   `;

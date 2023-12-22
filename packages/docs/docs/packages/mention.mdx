@@ -1,0 +1,106 @@
+---
+sidebar_position: 20
+---
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
+# Mention
+
+`@edim-editor/mention` 에디터에 **멘션**을 표현하기 위한 서식과 관련 플러그인을 제공합니다.
+
+## 설치
+
+```bash
+npm install @edim-editor/mention
+```
+
+## 스타일
+
+```css title="src/index.scss"
+@import "@edim-editor/mention/styles/mention.scss";
+```
+
+## 서식
+
+#### `edimMentionMarks`
+
+멘션 서식을 제공합니다.
+
+## 플러그인
+
+#### `edimMentionPlugins`
+
+하단의 모든 플러그인을 통합 제공합니다.
+
+#### `edimMentionCommandPlugins`
+
+`@` 문자를 입력한 경우 멘션 검색 팝업을 표시하는 기능을 제공합니다.
+
+#### `edimMentionUnsetPlugins`
+
+멘션 서식의 일부 텍스트가 지워진 경우 멘션을 해제하는 기능을 제공합니다.
+
+## 사용 예시
+
+```typescript title="src/index.ts"
+import { EditorState, Plugin } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { edimBaseNodes, edimCorePlugins, mac } from '@edim-editor/core';
+import { edimParagraphNodes, edimParagraphPlugins, } from '@edim-editor/paragraph';
+import { edimMenubarPlugins } from '@edim-editor/menubar';
+import { EdimMentionView, edimMentionMarks, edimMentionPlugins } from '@edim-editor/mention';
+import { faker } from '@faker-js/faker';
+
+const persons = Array.from({ length: 200 }).map(() => ({
+  id: faker.string.uuid(),
+  name: faker.person.fullName(),
+  icon: faker.image.avatar(),
+}));
+
+const schema = new Schema({
+  nodes: {
+    ...edimBaseNodes(),
+    ...edimParagraphNodes(),
+  },
+  marks: {
+    ...edimMentionMarks({
+      markName: 'mention',
+    }),
+  },
+});
+
+const plugins: Plugin[] = [
+  ...edimParagraphPlugins({
+    nodeType: schema.nodes['paragraph'],
+  }),
+  ...edimMentionPlugins({
+    markType: schema.marks['mention'],
+    commandView: (view, plugin) =>
+      new EdimMentionView(view, plugin, (keyword) => {
+        return persons.filter((person) => person.name.includes(keyword));
+      }),
+  }),
+  ...edimMenubarPlugins({
+    mention: {
+      mentionMarkType: schema.marks['mention'],
+    },
+  }),
+  ...edimCorePlugins(),
+];
+
+
+const view = new EditorView(document.querySelector('#editor'), {
+  state: EditorState.create({
+    schema: schema,
+    plugins: plugins,
+  }),
+});
+```
+
+<BrowserOnly>
+  {() => {
+    const { MentionExample } = require('@site/src/components/examples/packages/mention.tsx');
+    return <MentionExample />
+  }}
+</BrowserOnly>
+

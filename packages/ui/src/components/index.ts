@@ -11,3 +11,5 @@ export * from './select';
 export * from './heading';
 export * from './tooltip';
 export * from './shortcut';
+export * from './popover';
+

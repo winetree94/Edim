@@ -27,6 +27,7 @@
       "@edim-editor/superscript": ["../../superscript/src/index.ts"],
       "@edim-editor/text-color": ["../../text-color/src/index.ts"],
       "@edim-editor/underline": ["../../underline/src/index.ts"],
+      "@edim-editor/mention": ["../../mention/src/index.ts"],
       "@edim-editor/ui": ["../../ui/src/index.ts"],
       "@edim-editor/menubar": ["../../menubar/src/index.ts"]
     }

@@ -114,7 +114,7 @@ const EdimSelectOption = forwardRef<HTMLLIElement, EdimSelectOptionProps>(
           'edim-select-option',
           context.value === value ? 'edim-active' : '',
           className,
-        )}" 
+        )}"
         onclick=${() => {
           context.onSelect(value);
           onClick?.();

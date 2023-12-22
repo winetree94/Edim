@@ -9,3 +9,4 @@ export * from './context';
 export * from './blockquote';
 export * from './add-more';
 export * from './task-list';
+export * from './mention';

@@ -61,6 +61,10 @@ import { edimMenubarPlugins } from '@edim-editor/menubar';
 import { Schema } from 'prosemirror-model';
 import { EDIM_FONT_FAMILY_DEFAULT_MARK_NAME } from '@edim-editor/font-family';
 import { EDIM_LINK_DEFAULT_MARK_NAME } from '@edim-editor/link';
+import {
+  EDIM_MENTION_DEFAULT_MARK_NAME,
+  edimMentionPlugins,
+} from '@edim-editor/mention';
 import { EDIM_TEXT_COLOR_DEFAULT_MARK_NAME } from '@edim-editor/text-color';
 
 /**
@@ -156,6 +160,9 @@ export const edimPresetPlugins = (
     ...edimSuperscriptPlugins({
       markType: mergedConfigs.schema.marks[EDIM_SUPERSCRIPT_MARK_NAME],
     }),
+    ...edimMentionPlugins({
+      markType: mergedConfigs.schema.marks[EDIM_MENTION_DEFAULT_MARK_NAME],
+    }),
     ...edimCorePlugins(),
   ];
 
@@ -223,6 +230,10 @@ export const edimPresetPlugins = (
         },
         link: {
           linkMarkType: mergedConfigs.schema.marks[EDIM_LINK_DEFAULT_MARK_NAME],
+        },
+        mention: {
+          mentionMarkType:
+            mergedConfigs.schema.marks[EDIM_MENTION_DEFAULT_MARK_NAME],
         },
       }),
     );
