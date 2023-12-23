@@ -36,11 +36,13 @@ export const edimMergeAdjacentNodePlugins = (
         }
       });
 
-      nodeTypes.reverse().reduce((tr, { pos }, index, self) => {
+      nodeTypes.reverse().reduce((tr, { pos, node }, index, self) => {
+        const previous = self[index + 1];
         if (
-          self[index + 1] &&
-          canJoin(tr.doc, pos) &&
-          self[index + 1].node.type === self[index].node.type
+          previous &&
+          previous.node.type === node.type &&
+          previous.pos + previous.node.nodeSize === pos &&
+          canJoin(tr.doc, pos)
         ) {
           const joinPredicate = configs.specs.find(
             (spec) => spec.nodeType === self[index].node.type,
