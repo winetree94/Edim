@@ -17,6 +17,7 @@ export const edimCodeBlockEjectPlugins = (
           if (!['ArrowRight', 'ArrowDown'].includes(event.key)) {
             return;
           }
+
           if (!isInCodeBlock(view.state, configs.nodeType)) {
             return false;
           }
@@ -41,14 +42,21 @@ export const edimCodeBlockEjectPlugins = (
             return false;
           }
 
-          let tr = view.state.tr;
+          if (
+            view.state.doc.content.size !==
+            codeblock.pos + codeblock.node.nodeSize
+          ) {
+            return false;
+          }
 
-          tr = tr.insert(
-            codeblock.pos + codeblock.node.nodeSize,
-            view.state.schema.nodes['paragraph'].create(),
+          view.dispatch(
+            view.state.tr
+              .insert(
+                codeblock.pos + codeblock.node.nodeSize,
+                view.state.schema.nodes['paragraph'].create(),
+              )
+              .scrollIntoView(),
           );
-
-          view.dispatch(tr.scrollIntoView());
 
           return false;
         },
