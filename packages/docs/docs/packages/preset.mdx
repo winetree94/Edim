@@ -1,0 +1,79 @@
+---
+sidebar_position: -1
+---
+import BrowserOnly from '@docusaurus/BrowserOnly';
+
+# Preset
+
+Edim 의 모든 서식과 플러그인을 통합 제공하는 단일 패키지입니다.
+
+## 설치
+
+```bash
+npm install @edim-editor/preset
+```
+
+## 스타일
+
+```css title="src/index.scss"
+@import "@edim-editor/preset/styles/preset.scss";
+```
+
+## 서식
+
+#### `edimPresetSchema`
+
+Edim 의 모든 서식(Node, Mark)를 사용한 Schema 를 제공합니다.
+
+## 플러그인
+
+#### `edimPresetPlugins`
+
+Edim 의 모든 서식의 플러그인을 제공합니다.
+
+## 사용 예시
+
+```typescript title="src/index.ts"
+import { EditorState, Plugin } from 'prosemirror-state';
+import { Schema } from 'prosemirror-model';
+import { EditorView } from 'prosemirror-view';
+import { Node } from 'prosemirror-model';
+import { edimPresetSchema, edimPresetPlugins } from '@edim-editor/preset';
+import { EdimMentionView } from '@edim-editor/mention';
+import { faker } from '@faker-js/faker';
+
+const persons = Array.from({ length: 200 }).map(() => ({
+  id: faker.string.uuid(),
+  name: faker.person.fullName(),
+  icon: faker.image.avatar(),
+}));
+
+const schema = edimPresetSchema();
+const plugins = edimPresetPlugins({
+  schema,
+  mention: {
+    markType: schema.marks['mention'],
+    commandView: (view, plugin) =>
+      new EdimMentionView(view, plugin, (keyword) => {
+        return persons.filter((person) =>
+          person.name.toLowerCase().includes(keyword.toLowerCase()),
+        );
+      }),
+  },
+});
+
+const view = new EditorView(document.querySelector('#editor'), {
+  state: EditorState.create({
+    schema: schema,
+    plugins: plugins,
+  }),
+});
+```
+
+<BrowserOnly>
+  {() => {
+    const { PresetExample } = require('@site/src/components/examples/packages/preset.tsx');
+    return <PresetExample />
+  }}
+</BrowserOnly>
+
