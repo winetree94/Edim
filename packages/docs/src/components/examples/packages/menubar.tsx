@@ -10,7 +10,7 @@ import { edimMenubarPlugins } from '@edim-editor/menubar';
 const schema = edimPresetSchema();
 const plugins = edimPresetPlugins({
   schema,
-  menubar: false,
+  menubar: null,
 });
 
 plugins.push(

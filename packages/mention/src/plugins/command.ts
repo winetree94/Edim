@@ -11,7 +11,7 @@ export interface MentionPluginView extends PluginView {
   handleKeydown?(view: EditorView, event: KeyboardEvent): boolean | void;
 }
 
-export interface EdimMentionPluginConfigs {
+export interface EdimMentionCommandPluginConfigs {
   view?: (
     view: EditorView,
     plugin: PluginKey<MentionPluginState>,
@@ -22,7 +22,7 @@ export interface EdimMentionPluginConfigs {
  * Provides a feature to display a mention search popup when the "@" character is entered.
  */
 export const edimMentionCommandPlugins = (
-  configs: EdimMentionPluginConfigs,
+  configs: EdimMentionCommandPluginConfigs,
 ): PMPlugin[] => {
   const defaultPluginState: MentionPluginState = {
     active: false,

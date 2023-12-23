@@ -3,16 +3,16 @@ import { isQuillTaskList } from '@edim-editor/core';
 
 export const EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME = 'task_list';
 
-export interface EdimFlatTaskLIstNodeConfigs {
+export interface EdimFlatTaskListNodeConfigs {
   nodeName?: string;
 }
 
-const DEFAULT_CONFIGS: Required<EdimFlatTaskLIstNodeConfigs> = {
+const DEFAULT_CONFIGS: Required<EdimFlatTaskListNodeConfigs> = {
   nodeName: EDIM_DEFAULT_FLAT_TASK_LIST_NODE_NAME,
 };
 
 export const edimFlatTaskListNodes = (
-  configs?: EdimFlatTaskLIstNodeConfigs,
+  configs?: EdimFlatTaskListNodeConfigs,
 ): Record<string, NodeSpec> => {
   const mergedConfigs = {
     ...DEFAULT_CONFIGS,
