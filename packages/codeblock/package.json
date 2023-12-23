@@ -21,6 +21,7 @@
     "prosemirror-state": "*",
     "prosemirror-commands": "*",
     "prosemirror-keymap": "*",
+    "prosemirror-utils": "*",
     "@edim-editor/core": "*"
   },
   "devDependencies": {
