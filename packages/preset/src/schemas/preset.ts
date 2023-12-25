@@ -89,6 +89,7 @@ export interface EdimPresetSchemaConfigs {
 }
 
 const DEFAULT_CONFIGS: Required<EdimPresetSchemaConfigs> = {
+  // nodes
   paragraph: {},
   heading: {},
   flatTaskList: {},
@@ -101,6 +102,7 @@ const DEFAULT_CONFIGS: Required<EdimPresetSchemaConfigs> = {
   codeblock: {},
   table: {},
 
+  // marks
   bold: {},
   italic: {},
   underline: {},
