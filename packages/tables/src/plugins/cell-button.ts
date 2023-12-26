@@ -14,11 +14,15 @@ export const edimTableCellButtonPlugins = (): PMPlugin[] => {
       init() {
         return DecorationSet.empty;
       },
-      apply(tr) {
+      apply(tr, set) {
         const selection = tr.selection;
         const cell = findCellClosestToPos(selection.$from);
         if (!cell) {
           return DecorationSet.empty;
+        }
+        const existingDeco = set.find(cell.pos + 1, cell.pos + 2);
+        if (existingDeco.length > 0) {
+          return set;
         }
         const wrapper = document.createElement('div');
         wrapper.classList.add('edim-table-cell-buttons-wrapper');

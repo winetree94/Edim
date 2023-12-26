@@ -12,7 +12,7 @@ import { EdimListItem, EdimUnorderedList } from '../list';
 import { EdimButton } from '../button';
 
 interface EdimSelectContextValue {
-  opened: DOMRect | null;
+  opened: { target: HTMLElement } | null;
   value: string;
   onSelect: (value: string) => void;
   close: () => void;
@@ -37,7 +37,7 @@ export interface EdimSelectProps {
 const EdimSelectRoot = forwardRef<HTMLDivElement, EdimSelectProps>(
   ({ children, className, ...props }, ref) => {
     const wrapperRef = useRef<HTMLDivElement>();
-    const [opened, setOpened] = useState<DOMRect | null>(null);
+    const [opened, setOpened] = useState<{ target: HTMLElement } | null>(null);
 
     useImperativeHandle(ref, () => wrapperRef.current!);
 
@@ -67,8 +67,7 @@ const EdimSelectRoot = forwardRef<HTMLDivElement, EdimSelectProps>(
             className,
           )}"
           onclick="${() => {
-            const rect = wrapperRef.current!.getBoundingClientRect();
-            setOpened(opened ? null : rect);
+            setOpened(opened ? null : { target: wrapperRef.current! });
           }}"
         >
           ${children}
@@ -141,11 +140,15 @@ const EdimSelectOptionGroup = forwardRef<
     return null;
   }
 
+  const target = context.opened.target;
+  const rect = target.getBoundingClientRect();
+
   return html`
     <${EdimOverlay}>
       <${EdimLayer}
-        left="${context.opened.left}"
-        top="${context.opened.bottom}"
+        target="${context.opened.target}"
+        left="${rect.left}"
+        top="${rect.bottom}"
         maxHeight="${300}"
         width="${props.matchWidth ? context.opened.width : undefined}"
         outerMousedown="${() => context.close()}">

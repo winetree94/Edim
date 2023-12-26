@@ -48,7 +48,6 @@ const EdimPopoverTrigger = (props: EdimPopoverTriggerProps) => {
   const ref = useRef<HTMLElement>();
 
   useEffect(() => {
-    console.log('useEffect');
     const element = ref.current;
     if (!element || !(element instanceof HTMLElement)) {
       return;
@@ -94,7 +93,8 @@ export interface EdimPopoverContentProps {
 }
 
 const EdimPopoverContent = (props: EdimPopoverContentProps) => {
-  return html`${props.children}`;
+  const context = useContext(EdimPopoverContext);
+  return html`<div className="edim-popover-content">${props.children}</div>`;
 };
 
 export const EdimPopover = {

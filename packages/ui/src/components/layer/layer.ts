@@ -6,6 +6,7 @@ import { forwardRef } from 'preact/compat';
 export interface EdimLayerProps {
   top: number;
   left: number;
+  target?: HTMLElement;
   width?: number;
   minWidth?: number;
   maxWidth?: number;
@@ -36,6 +37,25 @@ export const EdimLayer = forwardRef((props: EdimLayerProps) => {
     };
     // eslint-disable-next-line @typescript-eslint/unbound-method
   }, [props, props.onClose, props.closeOnEsc]);
+
+  useEffect(() => {
+    if (!props.target) {
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      console.log('target');
+    });
+    observer.observe(props.target, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [props.target]);
 
   const layer = html`
     <div
