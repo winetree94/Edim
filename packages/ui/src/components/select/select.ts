@@ -147,10 +147,8 @@ const EdimSelectOptionGroup = forwardRef<
     <${EdimOverlay}>
       <${EdimLayer}
         target="${context.opened.target}"
-        left="${rect.left}"
-        top="${rect.bottom}"
         maxHeight="${300}"
-        width="${props.matchWidth ? context.opened.width : undefined}"
+        width="${props.matchWidth ? rect.width : undefined}"
         outerMousedown="${() => context.close()}">
         <${EdimUnorderedList} className="${classes(className)}">
           ${children}

@@ -1,7 +1,14 @@
 import { JSX } from 'preact';
-import { useEffect } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { html } from '../../cdk';
 import { forwardRef } from 'preact/compat';
+
+export interface EdimLayerPos {
+  top: number;
+  left: number;
+  width: number | null;
+  height: number | null;
+}
 
 export interface EdimLayerProps {
   top: number;
@@ -22,6 +29,13 @@ export interface EdimLayerProps {
 }
 
 export const EdimLayer = forwardRef((props: EdimLayerProps) => {
+  const [pos, setPos] = useState<EdimLayerPos>({
+    top: props.top,
+    left: props.left,
+    width: props.width ?? null,
+    height: props.height ?? null,
+  });
+
   useEffect(() => {
     if (!props.closeOnEsc) {
       return;
@@ -39,21 +53,28 @@ export const EdimLayer = forwardRef((props: EdimLayerProps) => {
   }, [props, props.onClose, props.closeOnEsc]);
 
   useEffect(() => {
-    if (!props.target) {
+    const target = props.target;
+    if (!target) {
       return;
     }
-
-    const observer = new MutationObserver(() => {
-      console.log('target');
-    });
-    observer.observe(props.target, {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    });
-
+    const doCheck = () => {
+      const rect = target.getBoundingClientRect();
+      setPos({
+        ...pos,
+        top: rect.bottom,
+        left: rect.left,
+      });
+    };
+    doCheck();
+    const scrollListener = doCheck.bind(null);
+    const resizeObserver = new ResizeObserver(() => doCheck());
+    window.addEventListener('scroll', scrollListener);
+    window.addEventListener('wheel', scrollListener);
+    resizeObserver.observe(target);
     return () => {
-      observer.disconnect();
+      window.removeEventListener('scroll', scrollListener);
+      window.removeEventListener('wheel', scrollListener);
+      resizeObserver.disconnect();
     };
   }, [props.target]);
 
@@ -61,12 +82,12 @@ export const EdimLayer = forwardRef((props: EdimLayerProps) => {
     <div
       className="layer-root"
       style=${{
-        top: `${props.top}px`,
-        left: `${props.left}px`,
-        width: props.width ? `${props.width}px` : undefined,
+        top: `${pos.top}px`,
+        left: `${pos.left}px`,
+        width: pos.width ? `${pos.width}px` : undefined,
         minWidth: props.minWidth ? `${props.minWidth}px` : undefined,
         maxWidth: props.maxWidth ? `${props.maxWidth}px` : undefined,
-        height: props.height ? `${props.height}px` : undefined,
+        height: pos.height ? `${pos.height}px` : undefined,
         minHeight: props.minHeight ? `${props.minHeight}px` : undefined,
         maxHeight: props.maxHeight ? `${props.maxHeight}px` : undefined,
       }}
