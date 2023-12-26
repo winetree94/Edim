@@ -1,9 +1,9 @@
-import { html } from '@edim-editor/ui';
+import { html, EdimButton } from '@edim-editor/ui';
 
 export const EdimTableCellButtonWrapper = () => {
   return html`
-    <button>
+    <${EdimButton} className="edim-icon-button edim-table-cell-button">
       <i class="ri-arrow-down-s-line"></i>
-    </button>
+    </${EdimButton}>
   `;
 };

@@ -1,3 +1,5 @@
+@import '../src/components/cell-button.scss';
+
 .ProseMirror .edim-table-container {
   overflow-x: auto;
   height: auto;
@@ -70,11 +72,4 @@
     background-color: #adf;
     pointer-events: none;
   }
-}
-
-.edim-table-cell-buttons-wrapper {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  pointer-events: none;
 }
