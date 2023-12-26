@@ -1,7 +1,8 @@
+import { ComponentChildren } from 'preact';
 import { html } from '../../cdk';
 
 export interface EdimShortcutProps {
-  children: JSX.Element;
+  children: ComponentChildren;
 }
 
 export const EdimShortCut = (props: EdimShortcutProps) => {

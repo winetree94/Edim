@@ -1,3 +1,4 @@
+import { ComponentChildren } from 'preact';
 import { classes, html, EdimOverlay } from '../../cdk';
 import {
   createContext,
@@ -26,7 +27,7 @@ const EdimSelectContext = createContext<EdimSelectContextValue>({
 });
 
 export interface EdimSelectProps {
-  children: JSX.Element;
+  children: ComponentChildren;
   value: string;
   className: string;
   hideArrow?: boolean;
@@ -90,7 +91,7 @@ const EdimSelectRoot = forwardRef<HTMLDivElement, EdimSelectProps>(
 );
 
 export interface EdimSelectTextProps {
-  children: JSX.Element;
+  children: ComponentChildren;
 }
 
 const EdimSelectText = ({ children }: EdimSelectTextProps) => {
@@ -98,7 +99,7 @@ const EdimSelectText = ({ children }: EdimSelectTextProps) => {
 };
 
 export interface EdimSelectOptionProps {
-  children: JSX.Element;
+  children: ComponentChildren;
   className?: string;
   onClick?: () => void;
   value: string;
@@ -126,7 +127,7 @@ const EdimSelectOption = forwardRef<HTMLLIElement, EdimSelectOptionProps>(
 
 export interface EdimSelectOptionGroupProps {
   className: string;
-  children: JSX.Element;
+  children: ComponentChildren;
   matchWidth: boolean;
 }
 

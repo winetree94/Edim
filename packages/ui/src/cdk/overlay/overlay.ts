@@ -1,3 +1,4 @@
+import { ComponentChildren } from 'preact';
 import { createPortal } from 'preact/compat';
 
 const overlayContainer = ((): HTMLDivElement => {
@@ -13,6 +14,10 @@ const overlayContainer = ((): HTMLDivElement => {
   return div;
 })();
 
-export const EdimOverlay = ({ children }: { children: JSX.Element }) => {
+export interface EdimOverlayProps {
+  children: ComponentChildren;
+}
+
+export const EdimOverlay = ({ children }: EdimOverlayProps) => {
   return createPortal(children, overlayContainer);
 };

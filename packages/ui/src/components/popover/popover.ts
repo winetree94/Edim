@@ -1,4 +1,4 @@
-import { Attributes, VNode, cloneElement, createContext } from 'preact';
+import { ComponentChildren, cloneElement, createContext } from 'preact';
 import {
   Children,
   useContext,
@@ -23,7 +23,7 @@ const EdimPopoverContext = createContext<EdimPopoverContextType>({
 });
 
 export interface EdimPopoverRootProps {
-  children: VNode<Attributes> | VNode<Attributes>[];
+  children: ComponentChildren;
 }
 
 const EdimPopoverRoot = (props: EdimPopoverRootProps) => {
@@ -40,7 +40,7 @@ const EdimPopoverRoot = (props: EdimPopoverRootProps) => {
 };
 
 export interface EdimPopoverTriggerProps {
-  children: VNode<Attributes>;
+  children: ComponentChildren;
 }
 
 const EdimPopoverTrigger = (props: EdimPopoverTriggerProps) => {
@@ -77,7 +77,7 @@ const EdimPopoverTrigger = (props: EdimPopoverTriggerProps) => {
 };
 
 export interface EdimPopoverPortalProps {
-  children: VNode<Attributes>;
+  children: ComponentChildren;
 }
 
 const EdimPopoverPortal = (props: EdimPopoverPortalProps) => {
@@ -89,7 +89,7 @@ const EdimPopoverPortal = (props: EdimPopoverPortalProps) => {
 };
 
 export interface EdimPopoverContentProps {
-  children: VNode<Attributes>;
+  children: ComponentChildren;
 }
 
 const EdimPopoverContent = (props: EdimPopoverContentProps) => {
