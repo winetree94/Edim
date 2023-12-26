@@ -112,8 +112,6 @@ export const edimCodeBlockEjectPlugins = (
           node: state.doc,
         };
 
-        console.log(nearestBlockContainer);
-
         const isLastNode =
           nearestBlockContainer.node.lastChild === codeblock.node;
 

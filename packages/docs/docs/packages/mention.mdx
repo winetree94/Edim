@@ -77,7 +77,7 @@ const plugins: Plugin[] = [
     markType: schema.marks['mention'],
     commandView: (view, plugin) =>
       new EdimMentionView(view, plugin, (keyword) => {
-        return persons.filter((person) => person.name.includes(keyword));
+        return persons.filter((person) => person.name.toLowerCase().includes(keyword.toLowerCase()));
       }),
   }),
   ...edimMenubarPlugins({
