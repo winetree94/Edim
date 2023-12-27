@@ -5,6 +5,8 @@ import { getMentionRange } from '../utils';
 export interface MentionPluginState {
   active: boolean;
   keyword: string;
+  start: number;
+  end: number;
 }
 
 export interface MentionPluginView extends PluginView {
@@ -27,6 +29,8 @@ export const edimMentionCommandPlugins = (
   const defaultPluginState: MentionPluginState = {
     active: false,
     keyword: '',
+    start: 0,
+    end: 0,
   };
 
   const mentionPluginKey = new PluginKey<MentionPluginState>('mention');
@@ -40,6 +44,8 @@ export const edimMentionCommandPlugins = (
           type: 'mention',
           active: false,
           keyword: '',
+          start: 0,
+          end: 0,
         }),
         apply(tr, value, oldState, newState) {
           const range = getMentionRange(newState);
@@ -49,6 +55,8 @@ export const edimMentionCommandPlugins = (
           return {
             active: true,
             keyword: range.keyword,
+            start: range.rangeStart,
+            end: range.rangeEnd,
           };
         },
       },

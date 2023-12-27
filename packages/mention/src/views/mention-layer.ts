@@ -101,8 +101,7 @@ export class EdimMentionView implements MentionPluginView {
       return;
     }
 
-    const { from } = editorState.selection;
-    const start = view.coordsAtPos(from);
+    const start = view.coordsAtPos(pluginState.start);
 
     if (!this.wrapper) {
       this.wrapper = document.createElement('div');
