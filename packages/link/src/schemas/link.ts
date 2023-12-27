@@ -23,7 +23,7 @@ export const edimLinkMarks = (
       href: { default: null },
       title: { default: null },
     },
-    inclusive: false,
+    // inclusive: false,
     parseDOM: [
       {
         tag: 'a[href]',

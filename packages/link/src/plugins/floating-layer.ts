@@ -1,7 +1,6 @@
 import { Plugin as PMPlugin } from 'prosemirror-state';
-import { isInMarks, isTextSelection } from '@edim-editor/core';
+import { findMark, isTextSelection } from '@edim-editor/core';
 import { MarkType } from 'prosemirror-model';
-import { findParentNode } from 'prosemirror-utils';
 
 export interface EdimLinkFloatingLayerPluginState {
   active: boolean;
@@ -29,13 +28,16 @@ export const edimLinkFloatingLayerPlugins = (
         active: false,
       }),
       apply: (tr, value, oldState, newState) => {
-        if (!isTextSelection(newState.selection) || !newState.selection.empty) {
+        if (!isTextSelection(newState.selection)) {
           return DEFAULT_STATE;
         }
-        const marks = newState.selection.$head.marks();
-        if (!isInMarks(marks, configs.markType)) {
+        const link = findMark(configs.markType, { includeAdjacent: true })(
+          newState,
+        );
+        if (!link) {
           return DEFAULT_STATE;
         }
+        console.log(link);
         return {
           active: true,
         };
