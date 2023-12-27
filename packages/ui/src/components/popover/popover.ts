@@ -1,11 +1,5 @@
-import { ComponentChildren, cloneElement, createContext } from 'preact';
-import {
-  Children,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'preact/compat';
+import { ComponentChildren, createContext } from 'preact';
+import { useContext, useEffect, useRef, useState } from 'preact/compat';
 import { EdimOverlay, html } from '../../cdk';
 
 interface EdimPopoverOpenedState {
@@ -69,11 +63,11 @@ const EdimPopoverTrigger = (props: EdimPopoverTriggerProps) => {
     };
   }, [ref.current]);
 
-  const childrenWithProps = Children.map(props.children, (child) => {
-    return cloneElement(child, { ...child.props, ref });
-  });
+  // const childrenWithProps = Children.map(props.children, (child) => {
+  //   return cloneElement(child, { ...child.props, ref });
+  // });
 
-  return html`${childrenWithProps}`;
+  return html`${props.children}`;
 };
 
 export interface EdimPopoverPortalProps {
