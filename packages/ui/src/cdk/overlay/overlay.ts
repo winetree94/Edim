@@ -1,4 +1,4 @@
-import { VNode } from 'preact';
+import { Attributes, VNode } from 'preact';
 import { createPortal } from 'preact/compat';
 
 const overlayContainer = ((): HTMLDivElement => {
@@ -15,7 +15,7 @@ const overlayContainer = ((): HTMLDivElement => {
 })();
 
 export interface EdimOverlayProps {
-  children: VNode;
+  children: VNode<Attributes>;
 }
 
 export const EdimOverlay = ({ children }: EdimOverlayProps) => {
