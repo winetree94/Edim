@@ -6,6 +6,7 @@ import { edimDropCursorPlugins } from './drop-cursor';
 import { edimGapCursorPlugins } from './gap-cursor';
 import { edimResetMarkPlugins } from './reset-mark';
 import { edimOverlayPlugins } from './overlay';
+import { edimSelectionElementPlugins } from './selection-element';
 
 export const edimCorePlugins = (): PMPlugin[] => {
   return [
@@ -15,6 +16,7 @@ export const edimCorePlugins = (): PMPlugin[] => {
     ...edimVirtualCursorPlugins(),
     ...edimResetMarkPlugins(),
     ...edimDropCursorPlugins(),
+    ...edimSelectionElementPlugins(),
     ...edimGapCursorPlugins(),
   ];
 };

@@ -87,7 +87,11 @@ import {
 } from '@edim-editor/menubar';
 import { Schema } from 'prosemirror-model';
 import { EDIM_FONT_FAMILY_DEFAULT_MARK_NAME } from '@edim-editor/font-family';
-import { EDIM_LINK_DEFAULT_MARK_NAME } from '@edim-editor/link';
+import {
+  EDIM_LINK_DEFAULT_MARK_NAME,
+  EdimLinkPluginConfigs,
+  edimLinkPlugins,
+} from '@edim-editor/link';
 import {
   EDIM_MENTION_DEFAULT_MARK_NAME,
   EdimMentionPluginConfigs,
@@ -121,6 +125,7 @@ export interface EdimPresetPluginConfigs {
   strikethrough?: EdimStrikethroughPluginConfigs | null;
   subscript?: EdimSubscriptPluginConfigs | null;
   superscript?: EdimSuperscriptPluginConfigs | null;
+  link?: EdimLinkPluginConfigs | null;
   mention?: EdimMentionPluginConfigs | null;
 
   /**
@@ -184,6 +189,9 @@ const getDefaultConfigs = (
     },
     superscript: {
       markType: schema.marks[EDIM_SUPERSCRIPT_MARK_NAME],
+    },
+    link: {
+      markType: schema.marks[EDIM_LINK_DEFAULT_MARK_NAME],
     },
     mention: {
       markType: schema.marks[EDIM_MENTION_DEFAULT_MARK_NAME],
@@ -309,6 +317,10 @@ export const edimPresetPlugins = (
 
   if (mergedConfigs.superscript) {
     plugins.push(...edimSuperscriptPlugins(mergedConfigs.superscript));
+  }
+
+  if (mergedConfigs.link) {
+    plugins.push(...edimLinkPlugins(mergedConfigs.link));
   }
 
   if (mergedConfigs.mention) {
