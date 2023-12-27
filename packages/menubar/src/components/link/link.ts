@@ -1,11 +1,12 @@
 
 import { Fragment } from 'preact';
-import { useContext, useState } from 'preact/hooks';
+import { useContext, useRef, useState } from 'preact/hooks';
 import { EdimButton, EdimLayer, html } from '@edim-editor/ui';
 import { EdimLinkFormLayer, addLink } from '@edim-editor/link';
 import { EdimMenubarContext } from '../context';
 
 export const EdimMenubarLinkButton = () => {
+  const ref = useRef<HTMLButtonElement>();
   const context = useContext(EdimMenubarContext);
 
   if (!context.options.link) {
@@ -24,6 +25,7 @@ export const EdimMenubarLinkButton = () => {
   return html`
     <${Fragment}>
       <${EdimButton}
+        ref=${ref}
         className="edim-icon-button"
         onClick=${() => {
           const { from, to } = context.editorView.state.selection;
@@ -44,8 +46,7 @@ export const EdimMenubarLinkButton = () => {
         linkLayerRef &&
         html`
         <${EdimLayer}
-          top=${linkLayerRef.top}
-          left=${linkLayerRef.left}
+          target=${ref.current}
           closeOnEsc=${true}
           outerMousedown=${() => setLinkLayerRef(null)}
           onClose=${() => setLinkLayerRef(null)}

@@ -134,20 +134,21 @@ export class EdimCommandView implements EdimCommandPluginView {
       return;
     }
 
-    const { from, to } = editorState.selection;
+    const { from } = editorState.selection;
     const start = view.coordsAtPos(from);
-    const end = view.coordsAtPos(to);
 
     if (!this.wrapper) {
       this.wrapper = document.createElement('div');
+      this.wrapper.style.position = 'fixed';
+      this.wrapper.style.top = `${start.bottom}px`;
+      this.wrapper.style.left = `${start.left}px`;
       this.view.dom.parentElement?.appendChild(this.wrapper);
     }
 
     render(
       html`
         <${EdimLayer}
-          left=${start.left}
-          top=${end.bottom}
+          target=${this.wrapper}
           disableBackdrop=${true}
           maxWidth=${200}
           minWidth=${200}

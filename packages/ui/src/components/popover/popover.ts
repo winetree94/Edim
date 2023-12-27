@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'preact/compat';
-import { html } from '../../cdk';
+import { EdimOverlay, html } from '../../cdk';
 
 interface EdimPopoverOpenedState {
   triggerRef: HTMLElement | null;
@@ -85,7 +85,11 @@ const EdimPopoverPortal = (props: EdimPopoverPortalProps) => {
   if (!context.opened) {
     return null;
   }
-  return html`${props.children}`;
+  return html`
+    <${EdimOverlay}>
+      ${props.children}
+    </${EdimOverlay}>
+  `;
 };
 
 export interface EdimPopoverContentProps {

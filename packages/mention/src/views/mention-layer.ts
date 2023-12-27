@@ -101,12 +101,14 @@ export class EdimMentionView implements MentionPluginView {
       return;
     }
 
-    const { from, to } = editorState.selection;
+    const { from } = editorState.selection;
     const start = view.coordsAtPos(from);
-    const end = view.coordsAtPos(to);
 
     if (!this.wrapper) {
       this.wrapper = document.createElement('div');
+      this.wrapper.classList.add('edim-view-mention-wrapper');
+      this.wrapper.style.top = `${start.bottom}px`;
+      this.wrapper.style.left = `${start.left}px`;
       this.view.dom.parentElement?.appendChild(this.wrapper);
     }
 
@@ -117,8 +119,7 @@ export class EdimMentionView implements MentionPluginView {
     render(
       html`
         <${EdimLayer}
-          left=${start.left}
-          top=${end.bottom}
+          target=${this.wrapper}
           disableBackdrop=${true}
           maxWidth=${200}
           minWidth=${200}

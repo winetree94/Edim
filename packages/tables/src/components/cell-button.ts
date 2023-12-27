@@ -1,40 +1,45 @@
-import {
-  html,
-  EdimButton,
-  EdimPopover,
-  EdimUnorderedList,
-  EdimListItem,
-} from '@edim-editor/ui';
+import { html, EdimSelect } from '@edim-editor/ui';
 import { Fragment } from 'preact';
-import { useState } from 'preact/hooks';
 
 export const EdimTableCellButtonWrapper = () => {
-  const [opened, setOpened] = useState<boolean>(false);
-
   return html`
     <${Fragment}>
-      <${EdimPopover.Root}>
-        <${EdimPopover.Trigger}>
-          <${EdimButton} className="edim-icon-button edim-table-cell-button">
-            <i class="ri-arrow-down-s-line"></i>
-          </${EdimButton}>
-        </${EdimPopover.Trigger}>
-        <${EdimPopover.Portal}>
-          <${EdimPopover.Content}>
-            <${EdimUnorderedList}>
-              <${EdimListItem}>
-                Hello World!
-              </${EdimListItem}>
-              <${EdimListItem}>
-                Hello World!
-              </${EdimListItem}>
-              <${EdimListItem}>
-                Hello World!
-              </${EdimListItem}>
-            </${EdimUnorderedList}>
-          </${EdimPopover.Content}>
-        </${EdimPopover.Portal}>
-      </${EdimPopover.Root}>
+      <${EdimSelect.Root} 
+        className="edim-icon-button">
+      <${EdimSelect.OptionGroup}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Insert Column Before
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Insert Column After
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Insert Row Before
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Insert Row After
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Delete Column
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Delete Row 
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Delete Table
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Merge Cell
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Split Cell
+        </${EdimSelect.Option}>
+        <${EdimSelect.Option} value="${'asdf'}">
+          Delete Cell Content
+        </${EdimSelect.Option}>
+
+      </${EdimSelect.OptionGroup}>
+    </${EdimSelect.Root}> 
     </${Fragment}>
   `;
 };

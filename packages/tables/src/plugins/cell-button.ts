@@ -26,6 +26,7 @@ export const edimTableCellButtonPlugins = (): PMPlugin[] => {
         }
         const wrapper = document.createElement('div');
         wrapper.classList.add('edim-table-cell-buttons-wrapper');
+        wrapper.addEventListener('mousedown', (e) => e.stopPropagation());
         const deco = Decoration.widget(cell.pos + 1, wrapper, {
           destroy: () => {
             render(null, wrapper);

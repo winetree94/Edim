@@ -1,5 +1,5 @@
 import { JSX } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useState } from 'preact/hooks';
 import { html } from '../../cdk';
 import { forwardRef } from 'preact/compat';
 
@@ -52,7 +52,7 @@ export const EdimLayer = forwardRef((props: EdimLayerProps) => {
     // eslint-disable-next-line @typescript-eslint/unbound-method
   }, [props, props.onClose, props.closeOnEsc]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const target = props.target;
     if (!target) {
       return;
@@ -68,12 +68,12 @@ export const EdimLayer = forwardRef((props: EdimLayerProps) => {
     doCheck();
     const scrollListener = doCheck.bind(null);
     const resizeObserver = new ResizeObserver(() => doCheck());
-    window.addEventListener('scroll', scrollListener);
-    window.addEventListener('wheel', scrollListener);
+    window.addEventListener('scroll', scrollListener, {
+      capture: true,
+    });
     resizeObserver.observe(target);
     return () => {
       window.removeEventListener('scroll', scrollListener);
-      window.removeEventListener('wheel', scrollListener);
       resizeObserver.disconnect();
     };
   }, [props.target]);
