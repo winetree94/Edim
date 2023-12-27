@@ -7,5 +7,5 @@ export interface EdimLinkPluginConfigs {
 }
 
 export const edimLinkPlugins = (configs: EdimLinkPluginConfigs): PMPlugin[] => {
-  return [...edimLinkFloatingLayerPlugins()];
+  return [...edimLinkFloatingLayerPlugins(configs)];
 };

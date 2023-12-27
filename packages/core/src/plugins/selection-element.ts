@@ -1,67 +1,59 @@
-import {
-  Plugin as PMPlugin,
-  Selection,
-  TextSelection,
-} from 'prosemirror-state';
+import { Plugin as PMPlugin } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
-
-function isTextSelection(selection: Selection): selection is TextSelection {
-  return selection && typeof selection === 'object' && '$cursor' in selection;
-}
+import { isTextSelection } from '../utils';
 
 export const edimSelectionElementPlugins = (): PMPlugin[] => {
-  const element = document.createElement('div');
+  const element = document.createElement('span');
   element.classList.add('edim-selection-element');
-  element.style.position = 'fixed';
-  element.style.border = '1px solid red';
+  element.style.position = 'absolute';
 
-  const plugin = new PMPlugin({
-    // view: (editorView) => {
-    //   const clear = () => {
-    //     if (element.parentElement) {
-    //       element.remove();
-    //     }
-    //   };
-
-    //   const apply = () => {
-    //     const selection = editorView.state.selection;
-    //     if (!selection.empty) {
-    //       clear();
-    //       return;
-    //     }
-    //     const fromPos = editorView.coordsAtPos(selection.from);
-    //     const endPos = editorView.coordsAtPos(selection.to);
-
-    //     element.style.top = `${fromPos.top}px`;
-    //     element.style.height = `${endPos.bottom - fromPos.top}px`;
-    //     element.style.left = `${fromPos.left}px`;
-
-    //     if (!element.parentElement) {
-    //       editorView.dom.parentElement?.appendChild(element);
-    //     }
-    //   };
-    //   apply();
-
-    //   return {
-    //     update: (view, prevState) => apply(),
-    //     destroy: () => clear(),
-    //   };
-    // },
-    props: {
-      decorations: (state) => {
-        if (
-          !element ||
-          !isTextSelection(state.selection) ||
-          !state.selection.empty
-        ) {
+  const plugin: PMPlugin<DecorationSet> = new PMPlugin<DecorationSet>({
+    view: (editorView) => {
+      const apply = () => {
+        const selection = editorView.state.selection;
+        if (!selection.empty) {
           return;
         }
 
-        return DecorationSet.create(state.doc, [
-          Decoration.widget(0, element, {
-            key: 'prosemirror-virtual-cursor',
-          }),
-        ]);
+        const viewPos = editorView.dom.getBoundingClientRect();
+        const fromPos = editorView.coordsAtPos(selection.from);
+        const endPos = editorView.coordsAtPos(selection.to);
+
+        element.style.top = `${fromPos.top - viewPos.top}px`;
+        element.style.left = `${fromPos.left - viewPos.left}px`;
+        element.style.height = `${endPos.bottom - fromPos.top}px`;
+
+        if (!element.parentElement) {
+          editorView.dom.parentElement?.appendChild(element);
+        }
+      };
+      apply();
+
+      return {
+        update: () => apply(),
+      };
+    },
+    state: {
+      init: () => DecorationSet.empty,
+      apply: (tr, oldState, newState) => {
+        if (
+          !element ||
+          !isTextSelection(newState.selection) ||
+          !newState.selection.empty
+        ) {
+          return DecorationSet.empty;
+        }
+
+        const widget = Decoration.widget(0, element, {
+          key: 'edim-selection-element',
+        });
+
+        return DecorationSet.create(newState.doc, [widget]);
+      },
+    },
+    props: {
+      decorations: (state) => {
+        return plugin.getState(state);
       },
     },
   });

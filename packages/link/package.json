@@ -19,6 +19,7 @@
   "dependencies": {
     "prosemirror-state": "*",
     "prosemirror-model": "*",
+    "prosemirror-utils": "*",
     "@edim-editor/core": "*",
     "@edim-editor/ui": "*"
   },
