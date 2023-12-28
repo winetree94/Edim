@@ -16,12 +16,15 @@ export const findMark = (markType: MarkType, configs?: FindMarkConfigs) => {
     ...DEFAULT_CONFIGS,
     ...configs,
   };
+
   return (state: EditorState): NodePair | null => {
     const parent = findParentNode(() => true)(state.selection);
 
     if (!parent) {
       return null;
     }
+
+    const parentPos = parent.pos;
 
     const start = Math.max(
       Math.min(
@@ -43,21 +46,29 @@ export const findMark = (markType: MarkType, configs?: FindMarkConfigs) => {
       parent.node.content.size,
     );
 
+    console.log(state.selection.from, state.selection.to);
+
     let findResult: NodePair | null = null;
     parent.node.nodesBetween(start, end, (node, pos, parent) => {
-      if (findResult) {
+      if (findResult !== null) {
         return false;
       }
       const mark = node.marks.find((mark) => mark.type === markType);
-      if (mark) {
-        findResult = {
-          node,
-          pos,
-          parent,
-        };
-        return false;
+      if (!mark) {
+        return true;
       }
-      return true;
+      // if (
+      //   pos > state.selection.from ||
+      //   pos + node.nodeSize < state.selection.to
+      // ) {
+      //   return true;
+      // }
+      findResult = {
+        node,
+        pos: pos + parentPos + 1,
+        parent,
+      };
+      return false;
     });
 
     if (findResult === null) {
