@@ -20,6 +20,7 @@
     "prosemirror-state": "*",
     "prosemirror-model": "*",
     "prosemirror-utils": "*",
+    "prosemirror-view": "*",
     "@edim-editor/core": "*",
     "@edim-editor/ui": "*"
   },

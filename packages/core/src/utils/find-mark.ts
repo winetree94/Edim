@@ -1,10 +1,17 @@
 import { EditorState } from 'prosemirror-state';
-import { MarkType } from 'prosemirror-model';
+import { Mark, MarkType, Node } from 'prosemirror-model';
 import { findParentNode } from 'prosemirror-utils';
-import { NodePair } from '../types';
+import { rangeBetween } from '../utils';
 
 export interface FindMarkConfigs {
   includeAdjacent?: boolean;
+}
+
+export interface FindMarkResult {
+  node: Node;
+  pos: number;
+  mark: Mark;
+  parent: Node | null;
 }
 
 const DEFAULT_CONFIGS: Readonly<FindMarkConfigs> = {
@@ -17,7 +24,7 @@ export const findMark = (markType: MarkType, configs?: FindMarkConfigs) => {
     ...configs,
   };
 
-  return (state: EditorState): NodePair | null => {
+  return (state: EditorState): FindMarkResult | null => {
     const parent = findParentNode(() => true)(state.selection);
 
     if (!parent) {
@@ -46,9 +53,7 @@ export const findMark = (markType: MarkType, configs?: FindMarkConfigs) => {
       parent.node.content.size,
     );
 
-    console.log(state.selection.from, state.selection.to);
-
-    let findResult: NodePair | null = null;
+    let findResult: FindMarkResult | null = null;
     parent.node.nodesBetween(start, end, (node, pos, parent) => {
       if (findResult !== null) {
         return false;
@@ -57,16 +62,22 @@ export const findMark = (markType: MarkType, configs?: FindMarkConfigs) => {
       if (!mark) {
         return true;
       }
-      // if (
-      //   pos > state.selection.from ||
-      //   pos + node.nodeSize < state.selection.to
-      // ) {
-      //   return true;
-      // }
+
+      const actualPos = pos + parentPos + 1;
+      if (
+        !rangeBetween(actualPos, actualPos + node.nodeSize)(
+          state.selection.from,
+          state.selection.to,
+        )
+      ) {
+        return true;
+      }
+
       findResult = {
         node,
-        pos: pos + parentPos + 1,
+        pos: actualPos,
         parent,
+        mark,
       };
       return false;
     });
