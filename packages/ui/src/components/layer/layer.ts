@@ -1,6 +1,6 @@
 import { JSX } from 'preact';
 import { useEffect, useLayoutEffect, useState } from 'preact/hooks';
-import { html } from '../../cdk';
+import { classes, html } from '../../cdk';
 import { forwardRef } from 'preact/compat';
 
 export interface EdimLayerPos {
@@ -24,6 +24,7 @@ export interface EdimLayerProps {
   closeOnEsc?: boolean;
   disableBackdrop?: boolean;
   inline?: boolean;
+  className?: string;
   onClose?(): void;
   outerMousedown?: (e: MouseEvent) => void;
 }
@@ -80,7 +81,7 @@ export const EdimLayer = forwardRef((props: EdimLayerProps) => {
 
   const layer = html`
     <div
-      className="layer-root"
+      className="${classes('edim-layer-container', props.className)}"
       style=${{
         top: `${pos.top}px`,
         left: `${pos.left}px`,

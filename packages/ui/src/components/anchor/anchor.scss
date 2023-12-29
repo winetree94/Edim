@@ -1,0 +1,9 @@
+.edim-anchor {
+  color: var(--spindle-600);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--spindle-600);
+    text-decoration: underline;
+  }
+}
