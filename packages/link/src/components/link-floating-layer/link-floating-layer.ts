@@ -25,7 +25,6 @@ export const EdimLinkFloatingLayer = (props: EdimLinkFloatingLayerProps) => {
           <${EdimAnchor}>Edit</${EdimAnchor}>
           <${EdimAnchor}
             onclick=${() => {
-              console.log(1);
             }}>
             Remove
           </${EdimAnchor}>

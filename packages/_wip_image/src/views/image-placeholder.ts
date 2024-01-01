@@ -83,6 +83,5 @@ export class EdimImagePlaceholderViewProvider
 
   public destroy() {
     render(null, this.wrapper);
-    console.log('destroyed');
   }
 }

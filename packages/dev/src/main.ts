@@ -6,8 +6,6 @@ import { edimPresetSchema, edimPresetPlugins } from '@edim-editor/preset';
 const schema = edimPresetSchema();
 const plugins = edimPresetPlugins({ schema });
 
-console.log(plugins);
-
 const state = EditorState.create({
   schema: schema,
   plugins: plugins,
