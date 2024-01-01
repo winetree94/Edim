@@ -48,6 +48,7 @@
         display: inline-block;
         white-space: nowrap;
         width: 1.2em;
+        flex-shrink: 0;
         content: '\2610';
       }
 
